@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* =====================================================================
+   Rastro — sistema visual
+   Informe médico / app de banco: papel claro, una tipografía, un acento.
+   El naranja (#E8590C) se reserva para lo expuesto y para la acción
+   principal. Nunca decorativo.
+   ===================================================================== */
+@theme {
+  --color-paper: #faf9f7; /* fondo de página */
+  --color-surface: #ffffff; /* tarjetas */
+  --color-ink: #1a1a19; /* texto principal */
+  --color-muted: #6b6b66; /* texto secundario */
+  --color-faint: #9a9a93; /* pistas, notas al pie */
+  --color-line: #e7e4de; /* bordes */
+  --color-accent: #e8590c; /* acento único */
+  --color-accent-soft: #fdf1e8; /* fondo del acento */
+  --color-danger: #b4231a;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 14px;
+}
+
+:root {
+  color-scheme: light; /* la estética es clara a propósito; sin tema oscuro */
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco visible y coherente en todo lo interactivo. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

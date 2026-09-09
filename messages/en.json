@@ -1,0 +1,105 @@
+{
+  "locale": { "es": "Español", "en": "English", "switchTo": "Change language" },
+
+  "nav": { "brand": "Rastro", "privacy": "Privacy", "legal": "Legal" },
+
+  "hero": {
+    "eyebrow": "Free exposure report",
+    "title": "See what AI knows about you.",
+    "subtitle": "Enter your name and your email. We look up what's public about you — breaches, profiles, and what AI assistants say — and explain it plainly, in a report scored from 0 to 100.",
+    "trust": {
+      "own": "About yourself only",
+      "verify": "We verify your email before we search",
+      "retention": "Everything is deleted after 30 days"
+    }
+  },
+
+  "form": {
+    "title": "Get your report",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Ana",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "García Ruiz",
+    "email": "Your email",
+    "emailPlaceholder": "ana@example.com",
+    "emailHelp": "We send a link to confirm it's yours. Without that step we generate nothing.",
+    "city": "City",
+    "cityOptional": "optional",
+    "cityPlaceholder": "Valencia",
+    "cityHelp": "Helps tell you apart from people with the same name.",
+    "consent": "I have read the {privacy} and I consent to Rastro searching public information about me and sending me the report.",
+    "consentPrivacyLink": "privacy policy",
+    "submit": "Send verification link",
+    "submitting": "Sending…",
+    "onlyYourself": "You can only request a report about yourself."
+  },
+
+  "formErrors": {
+    "firstName": "Enter your first name.",
+    "lastName": "Enter your last name.",
+    "email": "Enter a valid email address.",
+    "consent": "We need your consent to continue.",
+    "rateLimit": "You've requested too many reports today. Try again tomorrow.",
+    "generic": "Something went wrong on our side. Please try again in a moment."
+  },
+
+  "sent": {
+    "title": "Check your email",
+    "body": "We sent a link to {email}. Open it and we'll start preparing your report.",
+    "spam": "If it doesn't arrive within a few minutes, check spam or promotions.",
+    "expires": "The link expires in 24 hours.",
+    "again": "Use a different email"
+  },
+
+  "how": {
+    "title": "How it works",
+    "step1Title": "You give us your name and email",
+    "step1Body": "That's all. No passwords, no documents, no access to your accounts.",
+    "step2Title": "You confirm the email is yours",
+    "step2Body": "You get a link. Until you open it, we search nothing.",
+    "step3Title": "You get your report",
+    "step3Body": "A score from 0 to 100, what's visible about you, why it matters, and what you can do."
+  },
+
+  "verify": {
+    "loading": "Checking the link…",
+    "okTitle": "Email confirmed",
+    "okBody": "We can now prepare your report.",
+    "continue": "Continue",
+    "invalidTitle": "This link isn't valid",
+    "invalidBody": "It may have been used already, or copied incorrectly. Request a new one.",
+    "expiredTitle": "The link has expired",
+    "expiredBody": "Links last 24 hours. Request a new one and it'll be in your inbox.",
+    "retry": "Request a new link",
+    "soonTitle": "Almost there",
+    "soonBody": "Report generation is coming in the next few days. We'll let you know at this same address."
+  },
+
+  "email": {
+    "subject": "Confirm your email to see your Rastro report",
+    "preheader": "One click and we start preparing your report.",
+    "greeting": "Hi {name},",
+    "body": "You requested an exposure report from Rastro. Confirm this email is yours and we'll get started.",
+    "cta": "Confirm my email",
+    "fallback": "If the button doesn't work, copy this address into your browser:",
+    "expires": "The link expires in 24 hours.",
+    "ignore": "If this wasn't you, ignore this message. We won't do anything.",
+    "footer": "Rastro — See what AI knows about you."
+  },
+
+  "footer": {
+    "tagline": "See what AI knows about you.",
+    "privacy": "Privacy policy",
+    "legal": "Legal notice",
+    "contact": "Contact",
+    "rights": "Rastro. Reports about yourself only."
+  },
+
+  "legalStub": {
+    "privacyTitle": "Privacy policy",
+    "legalTitle": "Legal notice",
+    "draft": "Draft",
+    "body": "This text has not been written yet. It ships on Day 6, before the service opens to anyone. In short: the legal basis is your consent, we only process your name, your email and optionally your city, data is deleted after 30 days, and you can exercise your rights by writing to the contact that will appear here.",
+    "back": "Back to home"
+  }
+}

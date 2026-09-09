@@ -1,0 +1,90 @@
+import { RequestForm } from "@/components/RequestForm";
+import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
+import { getMessages, translator } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale";
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 20 20" className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true">
+      <path
+        d="m4.5 10.5 3.5 3.5 7.5-8"
+        fill="none"
+        stroke="#E8590C"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export default async function HomePage() {
+  const locale = await getLocale();
+  const messages = getMessages(locale);
+  const tr = translator(messages);
+
+  const trust = [tr("hero.trust.own"), tr("hero.trust.verify"), tr("hero.trust.retention")];
+
+  const steps = [
+    { title: tr("how.step1Title"), body: tr("how.step1Body") },
+    { title: tr("how.step2Title"), body: tr("how.step2Body") },
+    { title: tr("how.step3Title"), body: tr("how.step3Body") },
+  ];
+
+  return (
+    <>
+      <SiteHeader locale={locale} messages={messages} />
+
+      <main className="mx-auto w-full max-w-[640px] px-5">
+        <section className="pt-12 pb-10 sm:pt-16">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">
+            {tr("hero.eyebrow")}
+          </p>
+          <h1 className="mt-3 text-[34px] leading-[1.12] font-semibold tracking-[-0.025em] text-ink sm:text-[44px]">
+            {tr("hero.title")}
+          </h1>
+          <p className="mt-4 text-[16px] leading-[1.65] text-muted sm:text-[17px]">
+            {tr("hero.subtitle")}
+          </p>
+
+          <ul className="mt-6 grid gap-2.5">
+            {trust.map((item) => (
+              <li key={item} className="flex gap-2.5 text-[14px] leading-relaxed text-ink">
+                <CheckIcon />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="form" className="scroll-mt-6 pb-14">
+          <RequestForm messages={messages} locale={locale} />
+        </section>
+
+        <section className="border-t border-line py-12">
+          <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">
+            {tr("how.title")}
+          </h2>
+          <ol className="mt-6 grid gap-7">
+            {steps.map((step, index) => (
+              <li key={step.title} className="flex gap-4">
+                <span
+                  aria-hidden="true"
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-[13px] font-semibold text-accent"
+                >
+                  {index + 1}
+                </span>
+                <div>
+                  <h3 className="text-[15px] font-semibold text-ink">{step.title}</h3>
+                  <p className="mt-1 text-[14px] leading-relaxed text-muted">{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </main>
+
+      <SiteFooter messages={messages} />
+    </>
+  );
+}

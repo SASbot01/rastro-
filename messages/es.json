@@ -1,0 +1,105 @@
+{
+  "locale": { "es": "Español", "en": "English", "switchTo": "Cambiar idioma" },
+
+  "nav": { "brand": "Rastro", "privacy": "Privacidad", "legal": "Aviso legal" },
+
+  "hero": {
+    "eyebrow": "Informe gratuito de exposición",
+    "title": "Mira lo que la IA sabe de ti.",
+    "subtitle": "Escribe tu nombre y tu correo. Buscamos lo que hay público sobre ti —filtraciones, perfiles y lo que responden los asistentes de IA— y te lo contamos claro, en un informe con una puntuación del 0 al 100.",
+    "trust": {
+      "own": "Solo sobre ti mismo",
+      "verify": "Verificamos tu correo antes de buscar",
+      "retention": "Todo se borra a los 30 días"
+    }
+  },
+
+  "form": {
+    "title": "Pide tu informe",
+    "firstName": "Nombre",
+    "firstNamePlaceholder": "Ana",
+    "lastName": "Apellidos",
+    "lastNamePlaceholder": "García Ruiz",
+    "email": "Tu correo",
+    "emailPlaceholder": "ana@ejemplo.com",
+    "emailHelp": "Te enviamos un enlace para confirmar que es tuyo. Sin ese paso no generamos nada.",
+    "city": "Ciudad",
+    "cityOptional": "opcional",
+    "cityPlaceholder": "Valencia",
+    "cityHelp": "Ayuda a distinguirte de personas con tu mismo nombre.",
+    "consent": "He leído la {privacy} y doy mi consentimiento para que Rastro busque información pública sobre mí y me envíe el informe.",
+    "consentPrivacyLink": "política de privacidad",
+    "submit": "Enviar enlace de verificación",
+    "submitting": "Enviando…",
+    "onlyYourself": "Solo puedes pedir el informe sobre ti mismo."
+  },
+
+  "formErrors": {
+    "firstName": "Escribe tu nombre.",
+    "lastName": "Escribe tus apellidos.",
+    "email": "Escribe un correo válido.",
+    "consent": "Necesitamos tu consentimiento para continuar.",
+    "rateLimit": "Has pedido demasiados informes hoy. Inténtalo mañana.",
+    "generic": "Algo ha fallado por nuestro lado. Vuelve a intentarlo en un momento."
+  },
+
+  "sent": {
+    "title": "Revisa tu correo",
+    "body": "Hemos enviado un enlace a {email}. Ábrelo y empezamos a preparar tu informe.",
+    "spam": "Si no aparece en unos minutos, mira en spam o promociones.",
+    "expires": "El enlace caduca en 24 horas.",
+    "again": "Usar otro correo"
+  },
+
+  "how": {
+    "title": "Cómo funciona",
+    "step1Title": "Nos das tu nombre y tu correo",
+    "step1Body": "Nada más. No pedimos contraseñas, ni documentos, ni acceso a tus cuentas.",
+    "step2Title": "Confirmas que el correo es tuyo",
+    "step2Body": "Te llega un enlace. Hasta que no lo abres, no buscamos nada.",
+    "step3Title": "Recibes tu informe",
+    "step3Body": "Una puntuación del 0 al 100, qué se ve de ti, por qué importa y qué puedes hacer."
+  },
+
+  "verify": {
+    "loading": "Comprobando el enlace…",
+    "okTitle": "Correo confirmado",
+    "okBody": "Ya podemos preparar tu informe.",
+    "continue": "Continuar",
+    "invalidTitle": "Este enlace no vale",
+    "invalidBody": "Puede que ya se haya usado o que esté mal copiado. Pide uno nuevo.",
+    "expiredTitle": "El enlace ha caducado",
+    "expiredBody": "Los enlaces duran 24 horas. Pide uno nuevo y lo tendrás en tu correo.",
+    "retry": "Pedir un enlace nuevo",
+    "soonTitle": "Ya casi",
+    "soonBody": "La generación del informe llega en los próximos días. Te avisaremos en este mismo correo."
+  },
+
+  "email": {
+    "subject": "Confirma tu correo para ver tu informe de Rastro",
+    "preheader": "Un clic y empezamos a preparar tu informe.",
+    "greeting": "Hola {name}:",
+    "body": "Has pedido un informe de exposición en Rastro. Confirma que este correo es tuyo y empezamos.",
+    "cta": "Confirmar mi correo",
+    "fallback": "Si el botón no funciona, copia esta dirección en tu navegador:",
+    "expires": "El enlace caduca en 24 horas.",
+    "ignore": "Si no has sido tú, ignora este mensaje. No haremos nada.",
+    "footer": "Rastro — Mira lo que la IA sabe de ti."
+  },
+
+  "footer": {
+    "tagline": "Mira lo que la IA sabe de ti.",
+    "privacy": "Política de privacidad",
+    "legal": "Aviso legal",
+    "contact": "Contacto",
+    "rights": "Rastro. Informes solo sobre uno mismo."
+  },
+
+  "legalStub": {
+    "privacyTitle": "Política de privacidad",
+    "legalTitle": "Aviso legal",
+    "draft": "Borrador",
+    "body": "Este texto todavía no está redactado. Se publica en el Día 6, antes de abrir el servicio a nadie. Resumen de lo que dirá: la base legal es tu consentimiento, solo tratamos tu nombre, tu correo y opcionalmente tu ciudad, los datos se borran a los 30 días, y puedes ejercer tus derechos escribiendo al contacto que aparecerá aquí.",
+    "back": "Volver al inicio"
+  }
+}
