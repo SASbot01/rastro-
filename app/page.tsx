@@ -36,7 +36,7 @@ export default async function HomePage() {
       <SiteHeader locale={locale} messages={messages} />
 
       <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-12">
-        <section className="pt-8 pb-8 sm:pt-14 lg:sticky lg:top-20">
+        <section className="pt-8 pb-8 sm:pt-14">
           <div className="mb-6 flex items-center gap-4 rounded-card border border-line bg-surface p-4">
             <div className="relative h-[72px] w-[72px] shrink-0">
               <svg viewBox="0 0 72 72" className="h-full w-full -rotate-90" aria-hidden="true">

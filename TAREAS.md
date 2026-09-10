@@ -46,6 +46,10 @@ Han pasado por el chat y por iCloud. Cuando toque, rotar y actualizar en `/home/
 - [ ] Probar con un buzón de prueba y ajustar heurísticas (dominios que salen mal agrupados, servicios que faltan).
 - [ ] Cuando funcione comercialmente: verificación OAuth de Google + auditoría CASA nivel 2 (500–1.500 €/año) para pasar de 100 usuarios. Entonces, plan **Pro Total** (34 €/mes · 199 €/año) con escáner + re-escaneo mensual; ahora va incluido en Pro durante la beta.
 
+## Siguiente bloque acordado (10-09-2026)
+
+- [ ] **Comprobación diaria + calendario semanal** en el perfil, al estilo de la referencia de UX (tira Lun–Dom con puntos): cada día se comprueba lo barato (HIBP: filtraciones y pastes nuevos; Gravatar) y una vez al mes lo caro (Brave + Perplexity + Anthropic). El calendario marca los días comprobados y los días con novedades; racha de días. Pro.
+
 ## Mejoras propuestas (no empezadas)
 
 - [ ] Paso "¿cuál de estos eres tú?" antes del informe (desambiguación de homónimos, cambio de flujo).

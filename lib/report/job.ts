@@ -139,6 +139,7 @@ export async function runReportJob(requestId: string): Promise<void> {
     // Cache completa: mismo correo, nombre, ciudad e idioma -> copia sin tocar APIs.
     if (
       cached &&
+      cached.report.generator === "ai" && // un informe de plantilla (IA caida) no vale como cache
       sameText(cached.request.full_name, row.full_name) &&
       sameText(cached.request.city, row.city) &&
       sameText(cached.request.occupation, row.occupation) &&

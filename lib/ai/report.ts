@@ -19,7 +19,8 @@ import type { KnownAccount } from "@/lib/report/accounts";
 
 const DEFAULT_MODEL = "claude-sonnet-5";
 const TIMEOUT_MS = 60_000;
-const MAX_TOKENS = 4000;
+const MAX_TOKENS = 8000;
+const MAX_TOKENS_RETRY = 14000;
 const MAX_FINDINGS = 12;
 
 const CategorySchema = z.enum(["breaches", "ai", "profiles", "false"]);
@@ -161,11 +162,21 @@ export function reportModel(): string {
 }
 
 export async function writeReport(data: InputData): Promise<AiReportResult> {
+  const first = await writeReportOnce(data, MAX_TOKENS);
+  // Si la salida se corto (JSON truncado o stop_reason max_tokens), un reintento con mas espacio.
+  if (!first.ok && first.reason === "parse") {
+    console.warn("[ai] salida truncada; reintento con mas tokens");
+    return writeReportOnce(data, MAX_TOKENS_RETRY);
+  }
+  return first;
+}
+
+async function writeReportOnce(data: InputData, maxTokens: number): Promise<AiReportResult> {
   const model = reportModel();
   try {
     const response = await anthropic().messages.parse({
       model,
-      max_tokens: MAX_TOKENS,
+      max_tokens: maxTokens,
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
       messages: [
         {
@@ -182,7 +193,7 @@ export async function writeReport(data: InputData): Promise<AiReportResult> {
       return { ok: false, reason: "refusal", detail: response.stop_details?.explanation ?? undefined };
     }
     const parsed = response.parsed_output;
-    if (!parsed) return { ok: false, reason: "parse", detail: `stop_reason=${response.stop_reason}` };
+    if (!parsed || response.stop_reason === "max_tokens") return { ok: false, reason: "parse", detail: `stop_reason=${response.stop_reason}` };
 
     // Cinturon y tirantes: limites que el esquema no impone.
     parsed.findings = parsed.findings.slice(0, MAX_FINDINGS);
@@ -190,6 +201,8 @@ export async function writeReport(data: InputData): Promise<AiReportResult> {
 
     return { ok: true, report: parsed, model, usage: response.usage };
   } catch (error) {
+    // El SDK lanza al no poder parsear un JSON cortado: se trata como truncado (reintentable).
+    if (error instanceof Error && /parse structured output|Unterminated|JSON/i.test(error.message)) return { ok: false, reason: "parse", detail: error.message.slice(0, 120) };
     if (error instanceof Anthropic.AuthenticationError) return { ok: false, reason: "error", detail: "auth" };
     if (error instanceof Anthropic.RateLimitError) return { ok: false, reason: "error", detail: "rate_limited" };
     if (error instanceof Anthropic.APIError) return { ok: false, reason: "error", detail: `${error.status}: ${error.message}` };
