@@ -276,3 +276,7 @@ alter table public.community_messages enable row level security;
 -- Comunidad retirada (decision del propietario, 10-09-2026).
 drop table if exists public.community_messages;
 alter table public.users drop column if exists alias;
+-- Perfil editable: nombre para mostrar y foto (JPEG pequeno en data URL, <=120 KB).
+alter table public.users
+  add column if not exists display_name text,
+  add column if not exists avatar text;

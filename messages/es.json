@@ -884,5 +884,78 @@
     "error": "Ahora mismo no puedo responder. Prueba de nuevo en un momento.",
     "close": "Cerrar",
     "disclaimer": "Soy un asistente automático. Para temas de tu cuenta, usa Soporte."
+  },
+  "dash": {
+    "hello": "Hola, {name}",
+    "exposure": "Tu exposición ahora",
+    "outOf": "/ 100",
+    "delta": "{n} puntos desde el informe anterior",
+    "deltaFlat": "Sin cambios desde el informe anterior",
+    "first": "Tu primer informe",
+    "updated": "Actualizado el {date}",
+    "quick": {
+      "report": "Nuevo informe",
+      "scan": "Sondear Gmail",
+      "letters": "Cartas RGPD",
+      "tools": "Herramientas"
+    },
+    "donutTitle": "Dónde pierdes puntos",
+    "donutBody": "Cada color es un motivo. Lo verde es lo que te queda de margen.",
+    "remaining": "Margen",
+    "rules": {
+      "breachWithPassword": "Filtraciones con contraseña",
+      "breachWithoutPassword": "Filtraciones sin contraseña",
+      "publicProfile": "Perfiles públicos",
+      "aiKnowsEmployer": "La IA sabe dónde trabajas",
+      "aiKnowsCity": "La IA sabe tu ciudad",
+      "contactDataPublic": "Teléfono o dirección públicos",
+      "aiFalseData": "Datos falsos en la IA"
+    },
+    "clean": "Ahora mismo no pierdes puntos por nada. Sigue así.",
+    "topTitle": "Principales hallazgos",
+    "seeAll": "Ver todo",
+    "historyTitle": "Evolución",
+    "historyBody": "Puntuación de cada informe. Cuanto más alta, menos expuesto.",
+    "guideTitle": "Tu guía: qué hacer ahora",
+    "guideBody": "Marca lo que ya hayas hecho. Se guarda en este dispositivo.",
+    "guideDone": "{done} de {total} hechas",
+    "guideEmpty": "Cuando tengas un informe, aquí saldrán los pasos recomendados.",
+    "askTitle": "Pregúntale a Rastro",
+    "askChips": [
+      "¿Cómo subo mi puntuación?",
+      "¿Qué hago con una filtración con contraseña?",
+      "¿Cómo pido que borren mis datos?",
+      "¿Para qué sirve la vigilancia?"
+    ],
+    "vigil": {
+      "on": "Vigilancia activa",
+      "off": "Vigilancia desactivada",
+      "next": "Próxima comprobación {date}",
+      "cta": "Activar"
+    },
+    "scan": {
+      "title": "Sondeo de Gmail",
+      "none": "Sin sondear",
+      "services": "{n} servicios",
+      "cta": "Sondear"
+    },
+    "noReportTitle": "Aún no tienes ningún informe",
+    "noReportBody": "Pide el primero y aquí verás tu puntuación, tus hallazgos y una guía de pasos.",
+    "noReportCta": "Pedir mi informe"
+  },
+  "profile2": {
+    "edit": "Editar perfil",
+    "name": "Nombre",
+    "namePlaceholder": "Cómo quieres que te llamemos",
+    "photo": "Foto",
+    "photoChange": "Cambiar foto",
+    "photoRemove": "Quitar foto",
+    "photoHelp": "JPG, PNG o WebP. Se recorta en cuadrado y se guarda pequeña.",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "saved": "Perfil guardado",
+    "errName": "El nombre debe tener entre 2 y 60 caracteres.",
+    "errPhoto": "No se pudo leer la imagen. Prueba con otra."
   }
 }

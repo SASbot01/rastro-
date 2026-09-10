@@ -884,5 +884,78 @@
     "error": "I can't answer right now. Try again in a moment.",
     "close": "Close",
     "disclaimer": "I'm an automated assistant. For account matters, use Support."
+  },
+  "dash": {
+    "hello": "Hi, {name}",
+    "exposure": "Your exposure now",
+    "outOf": "/ 100",
+    "delta": "{n} points since the previous report",
+    "deltaFlat": "No change since the previous report",
+    "first": "Your first report",
+    "updated": "Updated {date}",
+    "quick": {
+      "report": "New report",
+      "scan": "Scan Gmail",
+      "letters": "GDPR letters",
+      "tools": "Tools"
+    },
+    "donutTitle": "Where you lose points",
+    "donutBody": "Each colour is a reason. Green is the margin you have left.",
+    "remaining": "Margin",
+    "rules": {
+      "breachWithPassword": "Breaches with password",
+      "breachWithoutPassword": "Breaches without password",
+      "publicProfile": "Public profiles",
+      "aiKnowsEmployer": "AI knows where you work",
+      "aiKnowsCity": "AI knows your city",
+      "contactDataPublic": "Phone or address public",
+      "aiFalseData": "False claims in AI"
+    },
+    "clean": "Right now you're not losing points for anything. Keep it up.",
+    "topTitle": "Top findings",
+    "seeAll": "See all",
+    "historyTitle": "Progress",
+    "historyBody": "Score of each report. The higher, the less exposed.",
+    "guideTitle": "Your guide: what to do now",
+    "guideBody": "Tick what you've already done. Saved on this device.",
+    "guideDone": "{done} of {total} done",
+    "guideEmpty": "Once you have a report, the recommended steps will show here.",
+    "askTitle": "Ask Rastro",
+    "askChips": [
+      "How do I raise my score?",
+      "What do I do about a breach with password?",
+      "How do I ask for my data to be deleted?",
+      "What is monitoring for?"
+    ],
+    "vigil": {
+      "on": "Monitoring active",
+      "off": "Monitoring off",
+      "next": "Next check {date}",
+      "cta": "Turn on"
+    },
+    "scan": {
+      "title": "Gmail scan",
+      "none": "Not scanned",
+      "services": "{n} services",
+      "cta": "Scan"
+    },
+    "noReportTitle": "You don't have a report yet",
+    "noReportBody": "Request your first one and you'll see your score, findings and a step-by-step guide here.",
+    "noReportCta": "Get my report"
+  },
+  "profile2": {
+    "edit": "Edit profile",
+    "name": "Name",
+    "namePlaceholder": "What should we call you",
+    "photo": "Photo",
+    "photoChange": "Change photo",
+    "photoRemove": "Remove photo",
+    "photoHelp": "JPG, PNG or WebP. Cropped to a square and stored small.",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "saved": "Profile saved",
+    "errName": "Name must be 2 to 60 characters.",
+    "errPhoto": "Couldn't read the image. Try another one."
   }
 }

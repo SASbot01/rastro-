@@ -3,10 +3,12 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { TopTabs } from "@/components/BottomNav";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { getSession } from "@/lib/session";
+import { findUserByEmail } from "@/lib/users";
 
 export async function SiteHeader({ locale, messages }: { locale: Locale; messages: Messages }) {
   const tr = translator(messages);
   const session = await getSession();
+  const me = session ? await findUserByEmail(session.email) : null;
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-paper/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-[640px] lg:max-w-[920px] items-center justify-between gap-4 px-5 py-3.5">
@@ -34,9 +36,9 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
           <Link
             href={session ? "/cuenta" : "/entrar"}
             aria-label={session ? tr("nav.account") : tr("nav.login")}
-            className={"flex h-9 items-center justify-center rounded-full px-3 text-[13px] font-semibold " + (session ? "bg-surface-2 text-ink" : "bg-accent text-black")}
+            className={"flex h-9 items-center justify-center overflow-hidden rounded-full text-[13px] font-semibold " + (session ? "w-9 bg-surface-2 text-ink" : "bg-accent px-3 text-black")}
           >
-            {session ? session.email.slice(0, 1).toUpperCase() : tr("nav.login")}
+            {me?.avatar ? <img src={me.avatar} alt="" className="h-9 w-9 object-cover" /> : session ? (me?.display_name ?? session.email).slice(0, 1).toUpperCase() : tr("nav.login")}
           </Link>
           <LocaleSwitcher current={locale} messages={messages} />
         </div>

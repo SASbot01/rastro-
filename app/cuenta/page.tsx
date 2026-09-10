@@ -9,6 +9,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { levelFor } from "@/lib/report/score";
 import { isPro } from "@/lib/plan";
 import { VigilCalendar } from "@/components/VigilCalendar";
+import { ProfileEditor } from "@/components/ProfileEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -56,7 +57,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
   const checks = (checkRows ?? []).map((r) => r.created_at);
   const list = rows ?? [];
   const lastScore = list.map(scoreOf).find((v) => v !== null) ?? null;
-  const name = list[0]?.full_name ?? user.email.split("@")[0];
+  const name = user.display_name ?? list[0]?.full_name ?? user.email.split("@")[0];
 
   return (
     <>
@@ -72,8 +73,8 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
                 <span aria-hidden="true" className="radar-ring absolute -inset-1.5 rounded-full" />
               </>
             )}
-            <div className={"relative flex h-24 w-24 items-center justify-center rounded-full text-[34px] font-semibold text-accent " + (user.monitoring ? "border-2 border-paper bg-surface" : "border-2 border-dashed border-accent")}>
-              {name.slice(0, 1).toUpperCase()}
+            <div className={"relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full text-[34px] font-semibold text-accent " + (user.monitoring ? "border-2 border-paper bg-surface" : "border-2 border-dashed border-accent")}>
+              {user.avatar ? <img src={user.avatar} alt="" className="h-full w-full object-cover" /> : name.slice(0, 1).toUpperCase()}
             </div>
             <span className={"absolute -right-1 -bottom-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide " + (pro ? "bg-accent text-black" : "bg-surface-2 text-muted")}>
               {tr(`account.plan.${pro ? "pro" : "free"}`)}
@@ -81,6 +82,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
           </div>
           <h1 className="mt-4 text-[26px] font-semibold tracking-[-0.025em] text-ink">{name}</h1>
           <p className="text-[14px] text-faint">{user.email}</p>
+          <ProfileEditor messages={messages} name={name} avatar={user.avatar} email={user.email} />
           <ul className="mt-6 grid w-full grid-cols-3 divide-x divide-line rounded-card border border-line bg-surface">
             {[
               { v: lastScore ?? tr("profile.noScore"), l: tr("profile.score"), cls: lastScore !== null ? LEVEL_TEXT[levelFor(lastScore)] : "text-faint" },

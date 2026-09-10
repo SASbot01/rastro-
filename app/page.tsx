@@ -4,8 +4,11 @@ import { RequestForm } from "@/components/RequestForm";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { getMessages, translator, type Messages } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
+import { getSession } from "@/lib/session";
+import { findUserByEmail } from "@/lib/users";
+import { Dashboard } from "@/components/Dashboard";
 
-const CARD = "rounded-card border border-line bg-surface";
+const CARD = "min-w-0 rounded-card border border-line bg-surface";
 const H2 = "text-[24px] font-semibold tracking-[-0.025em] text-ink sm:text-[30px]";
 const EYEBROW = "text-[12px] font-semibold uppercase tracking-[0.08em] text-accent";
 
@@ -43,16 +46,16 @@ function MockBreaches({ tr }: { tr: (k: string) => string }) {
     <div className={CARD + " p-4"}>
       <div className="flex items-center justify-between">
         <p className="text-[14px] font-semibold text-ink">{tr("landing.mock.breachesTitle")}</p>
-        <span className="rounded-full bg-danger/15 px-2.5 py-0.5 text-[11px] font-semibold text-danger">{tr("landing.mock.breachesTag")}</span>
+        <span className="shrink-0 whitespace-nowrap rounded-full bg-danger/15 px-2.5 py-0.5 text-[11px] font-semibold text-danger">{tr("landing.mock.breachesTag")}</span>
       </div>
       <ul className="mt-3 grid gap-2">
         {rows.map((r) => (
-          <li key={r.name} className="flex items-center justify-between gap-3 rounded-[12px] bg-surface-2 px-3 py-2.5">
+          <li key={r.name} className="flex min-w-0 items-center justify-between gap-3 overflow-hidden rounded-[12px] bg-surface-2 px-3 py-2.5">
             <div className="min-w-0">
               <p className="truncate text-[13px] font-semibold text-ink">{r.name}</p>
               <p className="truncate text-[12px] text-faint">{r.detail}</p>
             </div>
-            <span className={"shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-semibold " + (r.pwd ? "bg-danger/15 text-danger" : "bg-warn/15 text-warn")}>
+            <span className={"shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[10.5px] font-semibold " + (r.pwd ? "bg-danger/15 text-danger" : "bg-warn/15 text-warn")}>
               {r.pwd ? tr("landing.mock.withPassword") : tr("landing.mock.noPassword")}
             </span>
           </li>
@@ -117,6 +120,19 @@ export default async function HomePage() {
   const messages: Messages = getMessages(locale);
   const tr = translator(messages);
 
+  // Con sesion, Inicio es el panel personal: la portada comercial ya no aporta nada.
+  const session = await getSession();
+  const user = session ? await findUserByEmail(session.email) : null;
+  if (user) {
+    return (
+      <>
+        <SiteHeader locale={locale} messages={messages} />
+        <Dashboard locale={locale} messages={messages} user={user} />
+        <SiteFooter messages={messages} />
+      </>
+    );
+  }
+
   const trust = [tr("hero.trust.own"), tr("hero.trust.verify"), tr("hero.trust.retention")];
   const steps = [
     { title: tr("how.step1Title"), body: tr("how.step1Body") },
@@ -175,7 +191,7 @@ export default async function HomePage() {
           <p className={EYEBROW}>{tr("report.eyebrow")}</p>
           <h2 className={"mt-2 " + H2}>{tr("landing.showTitle")}</h2>
           <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-muted">{tr("landing.showBody")}</p>
-          <div className="mt-6 grid gap-3 sm:grid-cols-3 sm:items-start">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:items-start">
             <MockBreaches tr={tr} />
             <MockAi tr={tr} />
             <MockScore tr={tr} />

@@ -21,8 +21,14 @@ export function AskRastro({ messages, locale }: { messages: Messages; locale: Lo
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // El evento "rastro:ask" abre el panel y, si trae una pregunta (chips del panel de inicio), la lanza.
+  const askRef = useRef<(q: string) => Promise<void>>(async () => {});
   useEffect(() => {
-    const onOpen = () => setOpen(true);
+    const onOpen = (e: Event) => {
+      setOpen(true);
+      const q = (e as CustomEvent<string>).detail;
+      if (typeof q === "string" && q.trim()) void askRef.current(q);
+    };
     window.addEventListener("rastro:ask", onOpen);
     return () => window.removeEventListener("rastro:ask", onOpen);
   }, []);
@@ -56,6 +62,10 @@ export function AskRastro({ messages, locale }: { messages: Messages; locale: Lo
       setBusy(false);
     }
   }
+
+  useEffect(() => {
+    askRef.current = ask;
+  });
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
