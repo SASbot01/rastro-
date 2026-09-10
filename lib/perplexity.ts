@@ -140,3 +140,9 @@ export async function askAboutPerson(opts: {
 
   return { ok: true, answers, usage: { prompt, completion }, raw };
 }
+
+/** Pregunta suelta a Perplexity (p. ej. contacto de privacidad de un sitio). */
+export async function askPerplexity(question: string, locale: Locale): Promise<AiAnswer | null> {
+  const r = await ask(question, "who", locale);
+  return "error" in r ? null : r.answer;
+}

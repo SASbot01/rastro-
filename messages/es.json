@@ -450,5 +450,49 @@
     "cta": "Ver el informe completo",
     "footer": "Recibes esto porque activaste la vigilancia mensual en Rastro. Puedes desactivarla en tu cuenta.",
     "unsubscribe": "Desactivar la vigilancia"
+  },
+  "letters": {
+    "generate": "Generar carta de supresión",
+    "title": "Carta de supresión de datos",
+    "subtitle": "Solicitud de supresión (artículo 17 del RGPD) dirigida a {host}. Cópiala y envíala tú desde tu correo; nosotros no la enviamos.",
+    "recipient": "Destinatario",
+    "contactFound": "Contacto de privacidad encontrado",
+    "contactNotFound": "No hemos encontrado un contacto de privacidad. Busca en el sitio «política de privacidad», «contacto» o «opt out» y envíala por ahí.",
+    "contactSource": "Fuente",
+    "subject": "Asunto",
+    "body": "Texto de la carta",
+    "copy": "Copiar carta",
+    "copied": "Copiada",
+    "markSent": "Ya la he enviado",
+    "markSentHelp": "Al marcarla como enviada empieza el plazo legal de un mes. Te avisaremos cuando venza.",
+    "sentOn": "Enviada el {date}",
+    "deadline": "Plazo de respuesta: {date}",
+    "markAnswered": "Me han contestado",
+    "markNoAnswer": "No han contestado",
+    "reopen": "Volver a borrador",
+    "status": {
+      "draft": "Borrador",
+      "sent": "Enviada",
+      "answered": "Contestada",
+      "no_answer": "Sin respuesta",
+      "closed": "Cerrada"
+    },
+    "listTitle": "Tus cartas",
+    "listEmpty": "Todavía no has generado ninguna carta. Desde tu informe puedes generar una por cada sitio que muestre tus datos.",
+    "open": "Abrir",
+    "back": "Volver al informe",
+    "onlyOwner": "Solo puedes generar cartas desde tus propios informes."
+  },
+  "letterTpl": {
+    "subject": "Solicitud de supresión de datos personales (artículo 17 RGPD) — {name}",
+    "salutation": "A la atención del responsable de protección de datos de {host}:",
+    "p1": "Me llamo {name}. He comprobado que en su sitio web aparecen datos personales que me conciernen en la siguiente dirección: {url}",
+    "p2": "En concreto: {what}",
+    "p3": "De acuerdo con el artículo 17 del Reglamento (UE) 2016/679 (RGPD), les solicito la supresión de todos los datos personales que me conciernen en esa página y en cualquier otro registro, fichero o copia que conserven, incluidos los que hayan cedido a terceros, a quienes deberán comunicar esta solicitud (artículos 17.2 y 19).",
+    "p4": "No existe base legal que legitime este tratamiento: no he dado mi consentimiento ni mantengo relación alguna con ustedes, y me opongo expresamente al tratamiento de mis datos (artículo 21).",
+    "p5": "Les recuerdo que deben atender esta solicitud sin dilación y, en todo caso, en el plazo máximo de un mes desde su recepción (artículo 12.3). Si no obtengo respuesta o esta no es satisfactoria, presentaré una reclamación ante la Agencia Española de Protección de Datos.",
+    "p6": "Les ruego que me confirmen por escrito la supresión en esta misma dirección de correo electrónico: {email}",
+    "closing": "Atentamente,",
+    "date": "{city}{date}"
   }
 }

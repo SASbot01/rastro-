@@ -146,17 +146,29 @@ export function ReportView({
                 </div>
                 <p className="text-[14px] leading-[1.6] text-muted">{f.detail}</p>
                 {f.source_url && (
-                  <a
-                    href={f.source_url}
-                    target="_blank"
-                    rel="noreferrer nofollow"
-                    className="inline-flex w-fit items-center gap-1 text-[13px] font-medium text-accent underline underline-offset-4"
-                  >
-                    {tr("report.source")}
-                    <svg viewBox="0 0 16 16" className="h-3 w-3" aria-hidden="true">
-                      <path d="M6 3h7v7M13 3 6.5 9.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </a>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <a
+                      href={f.source_url}
+                      target="_blank"
+                      rel="noreferrer nofollow"
+                      className="inline-flex w-fit items-center gap-1 text-[13px] font-medium text-accent underline underline-offset-4"
+                    >
+                      {tr("report.source")}
+                      <svg viewBox="0 0 16 16" className="h-3 w-3" aria-hidden="true">
+                        <path d="M6 3h7v7M13 3 6.5 9.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                    {/* Carta de supresion (RGPD art. 17) para sitios que muestran datos de la persona */}
+                    {(category === "profiles" || category === "ai") && f.severity !== "info" && (
+                      <form action="/api/letters" method="post">
+                        <input type="hidden" name="request_id" value={requestId} />
+                        <input type="hidden" name="finding_index" value={report.findings.indexOf(f)} />
+                        <button type="submit" className="text-[13px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+                          {tr("letters.generate")}
+                        </button>
+                      </form>
+                    )}
+                  </div>
                 )}
               </li>
             ))}

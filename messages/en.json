@@ -450,5 +450,49 @@
     "cta": "View the full report",
     "footer": "You receive this because you turned on monthly monitoring in Rastro. You can turn it off in your account.",
     "unsubscribe": "Turn off monitoring"
+  },
+  "letters": {
+    "generate": "Generate deletion letter",
+    "title": "Data deletion letter",
+    "subtitle": "Erasure request (Article 17 GDPR) addressed to {host}. Copy it and send it yourself from your email; we don't send it.",
+    "recipient": "Recipient",
+    "contactFound": "Privacy contact found",
+    "contactNotFound": "We couldn't find a privacy contact. Look on the site for \"privacy policy\", \"contact\" or \"opt out\" and send it there.",
+    "contactSource": "Source",
+    "subject": "Subject",
+    "body": "Letter text",
+    "copy": "Copy letter",
+    "copied": "Copied",
+    "markSent": "I've sent it",
+    "markSentHelp": "Marking it as sent starts the legal one-month deadline. We'll notify you when it expires.",
+    "sentOn": "Sent on {date}",
+    "deadline": "Reply deadline: {date}",
+    "markAnswered": "They replied",
+    "markNoAnswer": "No reply",
+    "reopen": "Back to draft",
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "answered": "Answered",
+      "no_answer": "No reply",
+      "closed": "Closed"
+    },
+    "listTitle": "Your letters",
+    "listEmpty": "You haven't generated any letter yet. From your report you can generate one for each site showing your data.",
+    "open": "Open",
+    "back": "Back to report",
+    "onlyOwner": "You can only generate letters from your own reports."
+  },
+  "letterTpl": {
+    "subject": "Request for erasure of personal data (Article 17 GDPR) — {name}",
+    "salutation": "To the Data Protection Officer / privacy team of {host}:",
+    "p1": "My name is {name}. I have found that your website displays personal data concerning me at the following address: {url}",
+    "p2": "Specifically: {what}",
+    "p3": "Pursuant to Article 17 of Regulation (EU) 2016/679 (GDPR), I request the erasure of all personal data concerning me on that page and in any other record, file or copy you hold, including data disclosed to third parties, whom you must inform of this request (Articles 17(2) and 19).",
+    "p4": "There is no legal basis for this processing: I have not given consent and have no relationship with you, and I expressly object to the processing of my data (Article 21).",
+    "p5": "I remind you that you must act on this request without undue delay and in any event within one month of receipt (Article 12(3)). If I receive no reply, or an unsatisfactory one, I will lodge a complaint with the competent supervisory authority.",
+    "p6": "Please confirm the erasure in writing to this email address: {email}",
+    "closing": "Sincerely,",
+    "date": "{city}{date}"
   }
 }

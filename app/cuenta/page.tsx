@@ -10,6 +10,14 @@ import { levelFor } from "@/lib/report/score";
 
 export const dynamic = "force-dynamic";
 
+interface LetterRow {
+  id: string;
+  host: string;
+  status: "draft" | "sent" | "answered" | "no_answer" | "closed";
+  deadline_at: string | null;
+  created_at: string;
+}
+
 interface Row {
   id: string;
   full_name: string;
@@ -47,6 +55,15 @@ export default async function AccountPage() {
     .returns<Row[]>();
 
   const list = rows ?? [];
+
+  const { data: letterRows } = await supabaseAdmin()
+    .from("letters")
+    .select("id, host, status, deadline_at, created_at")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(50)
+    .returns<LetterRow[]>();
+  const letters = letterRows ?? [];
 
   return (
     <>
@@ -130,6 +147,29 @@ export default async function AccountPage() {
                 </li>
               );
             })}
+          </ul>
+        )}
+
+        {/* Cartas RGPD */}
+        <h2 className="mt-10 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.listTitle")}</h2>
+        {letters.length === 0 ? (
+          <p className="mt-4 text-[14px] leading-relaxed text-muted">{tr("letters.listEmpty")}</p>
+        ) : (
+          <ul className="mt-4 grid gap-2">
+            {letters.map((l) => (
+              <li key={l.id} className="flex items-center justify-between gap-3 rounded-card border border-line bg-surface px-4 py-3">
+                <div className="min-w-0">
+                  <p className="truncate text-[14px] font-semibold text-ink">{l.host}</p>
+                  <p className="text-[12.5px] text-faint">
+                    {tr(`letters.status.${l.status}`)}
+                    {l.status === "sent" && l.deadline_at && ` · ${tr("letters.deadline", { date: fmt.format(new Date(l.deadline_at)) })}`}
+                  </p>
+                </div>
+                <Link href={`/cartas/${l.id}`} className="shrink-0 text-[13px] font-medium text-accent underline underline-offset-4">
+                  {tr("letters.open")}
+                </Link>
+              </li>
+            ))}
           </ul>
         )}
 
