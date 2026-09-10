@@ -251,7 +251,8 @@
             "Optionally, your job or company. It is only used to tell you apart from people with your name.",
             "The date and time you gave consent and verified your email.",
             "Your IP address, stored only as a hash (an irreversible fingerprint) to limit the number of reports per person and prevent abuse. We do not keep the IP in clear text.",
-            "The generated report: score, findings, recommended actions and the technical responses from the services consulted, kept so we can review errors."
+            "The generated report: score, findings, recommended actions and the technical responses from the services consulted, kept so we can review errors.",
+            "If you create an account (by verifying your email), we also store your email as the account identifier, your language, the date of your last access and, if you turn on monthly monitoring, the date you turned it on. The erasure letters you generate are stored with their status and dates to keep the deadline calendar."
           ]
         },
         {
@@ -259,7 +260,8 @@
           "paragraphs": [
             "Purpose: to generate and show you your exposure report, to send you the verification link by email, and to limit use of the service to prevent abuse.",
             "Legal basis: your consent (Article 6(1)(a) GDPR), which you give by ticking the box in the form and confirm by opening the link we email you. Without that double step we search nothing.",
-            "You may only request a report about yourself. Requesting one about someone else breaches these terms."
+            "You may only request a report about yourself. Requesting one about someone else breaches these terms.",
+            "Monthly monitoring (only if you turn it on): every month we query the same sources again with your data and email you only if something changed. You can turn it off in your account or from the link in the email itself."
           ]
         },
         {
@@ -279,6 +281,7 @@
           "title": "5. How long we keep it",
           "paragraphs": [
             "30 days from when you request the report. After that, the request and the report are automatically deleted from our database.",
+            "If you have an account, your reports and letters are kept while the account exists, so you can consult them and follow up. You can ask us to delete the account and everything linked to it by writing to {email}.",
             "The hashes used for rate limiting are renewed every 24 hours.",
             "If you want your report deleted sooner, write to {email} from the same address you used to request it."
           ]

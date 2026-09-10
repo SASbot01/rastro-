@@ -251,7 +251,8 @@
             "Si quieres, tu profesión o empresa. Solo sirve para distinguirte de personas con tu mismo nombre.",
             "La fecha y hora en que diste tu consentimiento y en que verificaste tu correo.",
             "Tu dirección IP, guardada únicamente como un hash (una huella irreversible) para limitar el número de informes por persona y evitar abusos. No conservamos la IP en claro.",
-            "El informe generado: puntuación, hallazgos, acciones recomendadas y las respuestas técnicas de los servicios consultados, que guardamos para poder revisar errores."
+            "El informe generado: puntuación, hallazgos, acciones recomendadas y las respuestas técnicas de los servicios consultados, que guardamos para poder revisar errores.",
+            "Si creas cuenta (al verificar tu correo), guardamos también tu correo como identificador de la cuenta, tu idioma, la fecha del último acceso y, si activas la vigilancia mensual, la fecha en que la activaste. Las cartas de supresión que generes se guardan con su estado y fechas para llevar el calendario de plazos."
           ]
         },
         {
@@ -259,7 +260,8 @@
           "paragraphs": [
             "Finalidad: generar y mostrarte tu informe de exposición, enviarte el enlace de verificación por correo y limitar el uso del servicio para evitar abusos.",
             "Base legal: tu consentimiento (artículo 6.1.a del RGPD), que das marcando la casilla del formulario y confirmas abriendo el enlace que te enviamos por correo. Sin ese doble paso no buscamos nada.",
-            "Solo puedes pedir un informe sobre ti mismo. Pedirlo sobre otra persona incumple estas condiciones."
+            "Solo puedes pedir un informe sobre ti mismo. Pedirlo sobre otra persona incumple estas condiciones.",
+            "Vigilancia mensual (solo si la activas): cada mes volvemos a consultar las mismas fuentes con tus datos y te enviamos un correo únicamente si hay cambios. Puedes desactivarla en tu cuenta o desde el enlace del propio correo."
           ]
         },
         {
@@ -279,6 +281,7 @@
           "title": "5. Cuánto tiempo los guardamos",
           "paragraphs": [
             "30 días desde que pides el informe. Pasado ese plazo, la solicitud y el informe se borran automáticamente de nuestra base de datos.",
+            "Si tienes cuenta, tus informes y cartas se conservan mientras la cuenta exista, para que puedas consultarlos y hacer el seguimiento. Puedes pedir que borremos la cuenta y todo lo asociado escribiendo a {email}.",
             "Los hashes usados para limitar el uso se renuevan cada 24 horas.",
             "Si quieres que borremos tu informe antes, escríbenos a {email} desde el mismo correo con el que lo pediste."
           ]

@@ -12,7 +12,11 @@ para levantar el proyecto.
 
 ## Estado
 
-**v1 completa (Días 1–7).** Formulario → verificación por correo → HIBP + Brave +
+**v1 completa (Días 1–7) y semana 2 completa salvo el cobro (Días 8–12).** Cuentas por enlace
+mágico, vigilancia mensual, cartas de supresión RGPD, calendario de plazos y reclamación AEPD.
+Stripe (plan Pro) queda pendiente por decisión del propietario; todo lo anterior funciona sin él.
+
+**v1 (Días 1–7).** Formulario → verificación por correo → HIBP + Brave +
 Perplexity + Anthropic → informe con puntuación, hallazgos y acciones (ES/EN) →
 imagen para compartir. Límites de uso, caché de 30 días, borrado automático y textos legales.
 
@@ -87,6 +91,21 @@ Abre <http://localhost:3000>.
 > cualquiera, verifica un dominio en resend.com/domains y pon `RESEND_FROM` con ese dominio.
 > `RATE_LIMIT_DISABLED=1` salta los límites (3/correo, 20/IP al día) solo fuera de producción.
 
+## Semana 2: cuentas y herramientas RGPD
+
+| Función | Dónde | Cómo funciona |
+| --- | --- | --- |
+| Cuenta | `/verify`, `/entrar`, `/cuenta` | Verificar el correo crea la cuenta y una sesión de 30 días (cookie firmada con `APP_SECRET`). Entrar después: enlace de acceso de un solo uso. Sin contraseñas, sin Supabase Auth. |
+| Informe privado | `/informe/[id]` | Solo la sesión del correo que lo pidió. La imagen compartible sigue siendo pública (nombre tapado). |
+| Vigilancia mensual | `/cuenta` → `/api/monitor`, cron `/api/cron/monitor` | Cada día el cron regenera (sin caché) los informes con más de 30 días de quien la tenga activa, compara señales deterministas y envía correo solo si hay cambios. La IA recibe su valoración anterior para no cambiar de opinión sin evidencia. |
+| Cartas RGPD | botón en cada hallazgo → `/cartas/[id]` | Plantilla legal fija (art. 17) con los datos del hallazgo; Perplexity busca el contacto de privacidad del sitio. Estados: borrador → enviada → contestada / sin respuesta. |
+| Plazos | `/cuenta` y cron `/api/cron/letters` | "Ya la he enviado" fija el plazo a un mes (art. 12.3). Al vencer, correo con enlace a la carta. |
+| Reclamación AEPD | `/cartas/[id]/reclamacion` | Escrito de reclamación (art. 77 RGPD) y guía de la sede electrónica, cuando pasa el mes sin respuesta. |
+
+Los tres crons van en `vercel.json`; en servidor propio, tres líneas de cron llamando a
+`/api/cron/purge`, `/api/cron/monitor` y `/api/cron/letters` con `Authorization: Bearer $CRON_SECRET`.
+Coste de la vigilancia: ~0,05 $ por usuario y mes.
+
 ## Despliegue
 
 ### Vercel
@@ -113,6 +132,8 @@ NODE_ENV=production PORT=3000 npm start
 
 ```bash
 0 4 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" https://tudominio.com/api/cron/purge
+0 5 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" https://tudominio.com/api/cron/monitor
+0 6 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" https://tudominio.com/api/cron/letters
 ```
 
 - `after()` (el job del informe) funciona en `next start` sin configuración extra.
@@ -136,7 +157,12 @@ app/
   informe/[id]/imagen/        Imagen compartible (OG 1200x630, ?f=story 1080x1920)
   api/request/route.ts        Valida, aplica límites, guarda y envía el enlace
   api/report/[id]/route.ts    Estado del job para el polling
-  api/cron/purge/route.ts     Borrado a 30 días (Bearer CRON_SECRET)
+  api/cron/purge/route.ts     Borrado a 30 días de solicitudes sin cuenta (Bearer CRON_SECRET)
+  api/cron/monitor/route.ts   Vigilancia mensual
+  api/cron/letters/route.ts   Avisos de plazo vencido
+  verify/route.ts             Consume el enlace, crea cuenta y sesión, lanza el job
+  entrar/ cuenta/ cartas/     Acceso, cuenta (historial, vigilancia, cartas, plazos), cartas y reclamación AEPD
+  api/login api/monitor api/letters api/session   Enlace de acceso, vigilancia, cartas, cierre de sesión
   api/dev/probe/route.ts      Solo desarrollo: prueba HIBP y Brave sin BD
   privacidad/ aviso-legal/    Textos legales
 components/                   Formulario, espera, visor del informe, compartir, legal, cabecera/pie
@@ -147,6 +173,9 @@ lib/
   report/score.ts             Reglas del score (CLAUDE.md §7), determinista y con desglose
   report/findings.ts          Plantillas de respaldo y señales para el score
   report/mask.ts              Nombre tapado para la imagen
+  report/diff.ts              Diferencias deterministas entre informes (vigilancia)
+  session.ts users.ts login-link.ts   Sesión firmada, cuentas, enlaces de acceso
+  letters.ts                  Carta de supresión y escrito de reclamación (plantillas)
   rate-limit.ts               3/correo y 20/IP al día (RPC atómica)
   i18n.ts locale.ts env.ts supabase.ts crypto.ts email.ts validation.ts
 messages/                     es.json / en.json — TODO el texto visible, mismas claves

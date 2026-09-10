@@ -73,6 +73,16 @@ Pago, plan Pro, monitorización, cartas RGPD, panel de usuario, cuentas persiste
 - **Día 6 ✅** — legal, textos, errores, casos raros (nombre común, sin resultados, HIBP vacío), pruebas con 10 correos reales.
 - **Día 7 ✅** — despliegue en Vercel, dominio, analítica básica (Plausible o Vercel Analytics), revisión final.
 
+### Semana 2 (v1.5) — estado
+
+- **Día 8 ✅** cuentas por enlace mágico, sesión firmada, `/cuenta`, informe privado.
+- **Día 9 ✅** vigilancia mensual (cron diario, diff determinista, correo solo con cambios).
+- **Día 10 ✅** cartas de supresión RGPD (plantilla art. 17 + contacto de privacidad vía Perplexity).
+- **Día 11 ✅** calendario de plazos y aviso de vencimiento.
+- **Día 12 ✅** reclamación AEPD (escrito + guía).
+- **Pendiente:** Stripe / plan Pro (decisión del propietario: "luego"). `users.plan` y `plan_until` ya existen para cuando toque; hoy todo es gratis.
+- Campo opcional "profesión o empresa" añadido para distinguir homónimos.
+
 ## 6. Modelo de datos (Supabase)
 
 Ver `supabase/schema.sql` (fuente de verdad).
@@ -108,7 +118,13 @@ rate_limits
   key text pk   -- 'email:<hash>' o 'ip:<hash>'
   count int
   window_start timestamptz
+
+users            -- semana 2: email único, plan ('free'|'pro'), plan_until, monitoring, monitor_last_at
+login_tokens     -- enlaces de acceso de un solo uso (hash, correo, caducidad, used_at)
+letters          -- cartas RGPD: sitio, URL, contacto, asunto, cuerpo, estado, sent_at, deadline_at, reminded_at
 ```
+
+`purge_expired()` borra a los 30 días solo las solicitudes **sin cuenta**; con cuenta se conservan mientras exista.
 
 RLS activado sin políticas en las tres tablas: solo el servidor entra, con `service_role`.
 
