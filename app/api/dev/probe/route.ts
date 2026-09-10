@@ -19,13 +19,14 @@ export async function GET(request: Request) {
   const email = searchParams.get("email");
   const name = searchParams.get("name");
   const city = searchParams.get("city");
+  const occupation = searchParams.get("occupation");
   const localeParam = searchParams.get("locale");
   const locale = isLocale(localeParam) ? localeParam : "es";
 
   const started = Date.now();
   const [hibp, brave] = await Promise.all([
     email ? getBreaches(email) : Promise.resolve(null),
-    name ? searchName({ fullName: name, city, locale }) : Promise.resolve(null),
+    name ? searchName({ fullName: name, city, occupation, locale }) : Promise.resolve(null),
   ]);
 
   // Sin `raw` en la salida: solo lo que el pipeline usara de verdad.

@@ -36,7 +36,10 @@
     "consentPrivacyLink": "política de privacidad",
     "submit": "Enviar enlace de verificación",
     "submitting": "Enviando…",
-    "onlyYourself": "Solo puedes pedir el informe sobre ti mismo."
+    "onlyYourself": "Solo puedes pedir el informe sobre ti mismo.",
+    "occupation": "Profesión o empresa",
+    "occupationPlaceholder": "Enfermera en el Hospital La Fe",
+    "occupationHelp": "Opcional. Con esto la IA distingue tus resultados de los de otras personas con tu nombre."
   },
   "formErrors": {
     "firstName": "Escribe tu nombre.",
@@ -242,6 +245,7 @@
           "title": "2. Qué datos tratamos",
           "paragraphs": [
             "Los que escribes en el formulario: nombre, apellidos, correo electrónico y, si quieres, tu ciudad.",
+            "Si quieres, tu profesión o empresa. Solo sirve para distinguirte de personas con tu mismo nombre.",
             "La fecha y hora en que diste tu consentimiento y en que verificaste tu correo.",
             "Tu dirección IP, guardada únicamente como un hash (una huella irreversible) para limitar el número de informes por persona y evitar abusos. No conservamos la IP en claro.",
             "El informe generado: puntuación, hallazgos, acciones recomendadas y las respuestas técnicas de los servicios consultados, que guardamos para poder revisar errores."
@@ -260,8 +264,8 @@
           "paragraphs": [
             "Para elaborar el informe consultamos servicios de terceros, enviando a cada uno solo lo imprescindible:",
             "Have I Been Pwned (Reino Unido): recibe tu correo electrónico para comprobar si aparece en filtraciones conocidas.",
-            "Brave Search (EE. UU.): recibe tu nombre y apellidos y, si la diste, tu ciudad, para buscar resultados públicos.",
-            "Perplexity (EE. UU.): recibe tu nombre y apellidos y, si la diste, tu ciudad, para preguntar qué dice la IA de ti.",
+            "Brave Search (EE. UU.): recibe tu nombre y apellidos y, si los diste, tu ciudad y tu profesión o empresa, para buscar resultados públicos.",
+            "Perplexity (EE. UU.): recibe tu nombre y apellidos y, si los diste, tu ciudad y tu profesión o empresa, para preguntar qué dice la IA de ti.",
             "Anthropic (EE. UU.): recibe los resultados anteriores (no tu correo) para redactar el informe en lenguaje llano.",
             "Además usamos proveedores que alojan y hacen funcionar el servicio: Supabase (base de datos), Resend (envío de correos) y el proveedor de alojamiento web. Actúan como encargados del tratamiento bajo contrato.",
             "Algunos de estos proveedores están fuera del Espacio Económico Europeo. Las transferencias se amparan en cláusulas contractuales tipo aprobadas por la Comisión Europea o en el Marco de Privacidad de Datos UE-EE. UU., según el proveedor.",

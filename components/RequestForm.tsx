@@ -41,6 +41,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
       lastName: String(data.get("lastName") ?? "").trim(),
       email: String(data.get("email") ?? "").trim(),
       city: String(data.get("city") ?? "").trim(),
+      occupation: String(data.get("occupation") ?? "").trim(),
       consent: data.get("consent") === "on",
       locale,
     };
@@ -222,6 +223,26 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
         />
         <p id="city-help" className={HELP}>
           {tr("form.cityHelp")}
+        </p>
+      </div>
+
+      <div className="mt-4">
+        <label className={LABEL} htmlFor="occupation">
+          {tr("form.occupation")}{" "}
+          <span className="font-normal text-faint">({tr("form.cityOptional")})</span>
+        </label>
+        <input
+          id="occupation"
+          name="occupation"
+          type="text"
+          autoComplete="organization-title"
+          placeholder={tr("form.occupationPlaceholder")}
+          disabled={busy}
+          aria-describedby="occupation-help"
+          className={`mt-1.5 ${FIELD}`}
+        />
+        <p id="occupation-help" className={HELP}>
+          {tr("form.occupationHelp")}
         </p>
       </div>
 

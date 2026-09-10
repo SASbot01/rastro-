@@ -10,6 +10,7 @@ export const requestSchema = z.object({
   lastName: z.string().trim().min(1, "formErrors.lastName").max(120, "formErrors.lastName"),
   email: z.email("formErrors.email").trim().toLowerCase().max(254, "formErrors.email"),
   city: z.string().trim().max(120).optional().or(z.literal("")),
+  occupation: z.string().trim().max(120).optional().or(z.literal("")),
   consent: z.literal(true, { error: "formErrors.consent" }),
   locale: z.enum(LOCALES).default("es"),
 });

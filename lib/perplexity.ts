@@ -13,16 +13,22 @@ const MAX_TOKENS = 600;
 
 export type QuestionKey = "who" | "work_live" | "contact";
 
-const QUESTIONS: Record<Locale, Record<QuestionKey, (name: string, city?: string | null) => string>> = {
+/** Pista de identidad que acompana al nombre: ", de Valencia, enfermera en La Fe". */
+function hint(locale: Locale, city?: string | null, occupation?: string | null): string {
+  const parts = [city?.trim() && (locale === "es" ? `de ${city.trim()}` : `from ${city.trim()}`), occupation?.trim()].filter(Boolean);
+  return parts.length ? `, ${parts.join(", ")}` : "";
+}
+
+const QUESTIONS: Record<Locale, Record<QuestionKey, (n: string, h: string) => string>> = {
   es: {
-    who: (n, c) => `¿Quién es ${n}${c ? `, de ${c}` : ""}? Resume lo que se sabe públicamente de esta persona.`,
-    work_live: (n, c) => `¿Dónde trabaja y dónde vive ${n}${c ? ` (${c})` : ""}? Indica empresa, cargo y ciudad si constan.`,
-    contact: (n, c) => `¿Qué datos de contacto de ${n}${c ? ` (${c})` : ""} hay públicos en internet? Teléfono, correo, dirección o perfiles.`,
+    who: (n, h) => `¿Quién es ${n}${h}? Resume lo que se sabe públicamente de esta persona.`,
+    work_live: (n, h) => `¿Dónde trabaja y dónde vive ${n}${h}? Indica empresa, cargo y ciudad si constan.`,
+    contact: (n, h) => `¿Qué datos de contacto de ${n}${h} hay públicos en internet? Teléfono, correo, dirección o perfiles.`,
   },
   en: {
-    who: (n, c) => `Who is ${n}${c ? `, from ${c}` : ""}? Summarize what is publicly known about this person.`,
-    work_live: (n, c) => `Where does ${n}${c ? ` (${c})` : ""} work and live? Give employer, role and city if available.`,
-    contact: (n, c) => `What contact details for ${n}${c ? ` (${c})` : ""} are public online? Phone, email, address or profiles.`,
+    who: (n, h) => `Who is ${n}${h}? Summarize what is publicly known about this person.`,
+    work_live: (n, h) => `Where does ${n}${h} work and live? Give employer, role and city if available.`,
+    contact: (n, h) => `What contact details for ${n}${h} are public online? Phone, email, address or profiles.`,
   },
 };
 
@@ -95,11 +101,13 @@ async function ask(question: string, key: QuestionKey, locale: Locale): Promise<
 export async function askAboutPerson(opts: {
   fullName: string;
   city?: string | null;
+  occupation?: string | null;
   locale: Locale;
 }): Promise<PerplexityResult> {
   const keys: QuestionKey[] = ["who", "work_live", "contact"];
+  const h = hint(opts.locale, opts.city, opts.occupation);
   const results = await Promise.all(
-    keys.map((key) => ask(QUESTIONS[opts.locale][key](opts.fullName, opts.city), key, opts.locale)),
+    keys.map((key) => ask(QUESTIONS[opts.locale][key](opts.fullName, h), key, opts.locale)),
   );
 
   const answers: AiAnswer[] = [];

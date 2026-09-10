@@ -44,7 +44,7 @@ Lo construye una sola persona con Claude Code. Presupuesto de APIs: máximo 100 
 
 ### Qué SÍ
 
-1. Landing con formulario (nombre, apellidos, correo, ciudad opcional, checkbox de consentimiento).
+1. Landing con formulario (nombre, apellidos, correo, ciudad opcional, profesión/empresa opcional, checkbox de consentimiento).
 2. Envío de magic link al correo. Sin él no hay informe.
 3. Pipeline de informe (job asíncrono, máximo 90 s):
    - HIBP → lista de brechas (nombre, fecha, tipo de datos).
@@ -136,7 +136,7 @@ Nunca alarmista, nunca vendedor.
 - Consentimiento explícito con checkbox y texto claro.
 - Verificación de correo obligatoria antes de procesar.
 - Retención 30 días, borrado automático de `requests` y `reports`.
-- No enviar datos a APIs sin necesidad: a Perplexity/Brave solo nombre y ciudad; a HIBP solo correo.
+- No enviar datos a APIs sin necesidad: a Perplexity/Brave solo nombre, ciudad y profesión/empresa (los dos últimos opcionales, añadidos tras la v1 para distinguir homónimos); a HIBP solo correo.
 - Política de privacidad y aviso legal en ES y EN, responsable del tratamiento con nombre real, contacto para ejercer derechos.
 
 ## 10. Roadmap posterior (contexto, NO implementar ahora)

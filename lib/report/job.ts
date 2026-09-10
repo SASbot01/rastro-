@@ -38,6 +38,7 @@ interface RequestRow {
   email: string;
   full_name: string;
   city: string | null;
+  occupation: string | null;
   locale: string;
   status: string;
   finished_at: string | null;
@@ -68,7 +69,7 @@ async function findCached(row: RequestRow): Promise<{ request: RequestRow; repor
   const since = new Date(Date.now() - CACHE_DAYS * 86_400_000).toISOString();
   const { data: prev } = await supabase
     .from("requests")
-    .select("id, email, full_name, city, locale, status, finished_at")
+    .select("id, email, full_name, city, occupation, locale, status, finished_at")
     .ilike("email", normalizeEmail(row.email))
     .eq("status", "done")
     .neq("id", row.id)
@@ -91,7 +92,7 @@ export async function runReportJob(requestId: string): Promise<void> {
 
   const { data: row, error } = await supabase
     .from("requests")
-    .select("id, email, full_name, city, locale, status, finished_at")
+    .select("id, email, full_name, city, occupation, locale, status, finished_at")
     .eq("id", requestId)
     .maybeSingle<RequestRow>();
 
@@ -103,7 +104,7 @@ export async function runReportJob(requestId: string): Promise<void> {
   if (row.status !== "processing" || row.finished_at) return;
 
   const locale: Locale = isLocale(row.locale) ? row.locale : "es";
-  const person = { full_name: row.full_name, city: row.city, locale };
+  const person = { full_name: row.full_name, city: row.city, occupation: row.occupation, locale };
   const startedAt = Date.now();
 
   try {
@@ -114,6 +115,7 @@ export async function runReportJob(requestId: string): Promise<void> {
       cached &&
       sameText(cached.request.full_name, row.full_name) &&
       sameText(cached.request.city, row.city) &&
+      sameText(cached.request.occupation, row.occupation) &&
       cached.request.locale === row.locale
     ) {
       await setStep(row.id, "report");
@@ -136,10 +138,10 @@ export async function runReportJob(requestId: string): Promise<void> {
     const hibp = cached?.report.raw?.hibp?.checked ? cached.report.raw.hibp : await getBreaches(row.email);
 
     await setStep(row.id, "brave");
-    const brave = await searchName({ fullName: row.full_name, city: row.city, locale });
+    const brave = await searchName({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale });
 
     await setStep(row.id, "ai");
-    const perplexity = await askAboutPerson({ fullName: row.full_name, city: row.city, locale });
+    const perplexity = await askAboutPerson({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale });
     const ai = await writeReport({ person, hibp, brave, perplexity });
     if (!ai.ok) console.warn(`[job] ${row.id}: Anthropic no disponible (${ai.reason} ${ai.detail ?? ""}); usando plantillas`);
 

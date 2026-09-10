@@ -45,7 +45,7 @@ async function handleRequest(request: Request) {
     );
   }
 
-  const { firstName, lastName, email, city, locale } = parsed.data;
+  const { firstName, lastName, email, city, occupation, locale } = parsed.data;
   const fullName = `${firstName} ${lastName}`.replace(/\s+/g, " ").trim();
 
   const h = await headers();
@@ -66,6 +66,7 @@ async function handleRequest(request: Request) {
       email,
       full_name: fullName,
       city: city || null,
+      occupation: occupation || null,
       locale,
       consent_at: now.toISOString(),
       status: "pending",

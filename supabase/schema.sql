@@ -124,3 +124,5 @@ $$;
 
 create index if not exists requests_email_done_idx
   on public.requests (lower(email), created_at desc) where status = 'done';
+-- Campo opcional "profesión o empresa": ancla la identidad frente a homónimos.
+alter table public.requests add column if not exists occupation text;

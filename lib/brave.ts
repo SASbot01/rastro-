@@ -94,17 +94,17 @@ function toHit(r: BraveWebResult): SearchHit {
   return { title: stripHtml(r.title), url: r.url, hostname, snippet, ...classify(hostname) };
 }
 
-export function buildNameQuery(fullName: string, city?: string | null): string {
-  const name = `"${fullName.trim()}"`;
-  return city?.trim() ? `${name} ${city.trim()}` : name;
+export function buildNameQuery(fullName: string, city?: string | null, occupation?: string | null): string {
+  return [`"${fullName.trim()}"`, city?.trim(), occupation?.trim()].filter(Boolean).join(" ");
 }
 
 export async function searchName(opts: {
   fullName: string;
   city?: string | null;
+  occupation?: string | null;
   locale: Locale;
 }): Promise<BraveResult> {
-  const query = buildNameQuery(opts.fullName, opts.city);
+  const query = buildNameQuery(opts.fullName, opts.city, opts.occupation);
   const params = new URLSearchParams({
     q: query,
     count: String(RESULT_COUNT),
