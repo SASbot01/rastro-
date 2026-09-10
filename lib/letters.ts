@@ -80,3 +80,38 @@ export async function findPrivacyContact(
   const optOut = a.sources.find((s) => s.url.includes(hostRoot) && /privacy|privacidad|opt|remov|delete|supres/i.test(s.url + s.title));
   return optOut ? { contact: optOut.url, source: optOut.url } : null;
 }
+
+export interface ComplaintInput extends LetterInput {
+  contact: string | null;
+  sentAt: string;
+  deadlineAt: string;
+}
+
+/** Escrito de reclamacion ante la AEPD (art. 77 RGPD) a partir de una carta sin respuesta. */
+export function buildComplaint(input: ComplaintInput): string {
+  const tr = translator(getMessages(input.locale));
+  const fmt = new Intl.DateTimeFormat(input.locale, { dateStyle: "long" });
+  const vars = {
+    name: input.fullName,
+    email: input.email,
+    host: input.host,
+    url: input.url,
+    what: input.what,
+    city: input.city ? (input.locale === "es" ? `, con domicilio en ${input.city}` : `, residing in ${input.city}`) : "",
+    city2: input.city ? `${input.city}, ` : "",
+    contact: input.contact ? ` (${input.contact})` : "",
+    sent: fmt.format(new Date(input.sentAt)),
+    deadline: fmt.format(new Date(input.deadlineAt)),
+    date: fmt.format(new Date()),
+  };
+  const t = (k: string) => tr(`aepdTpl.${k}`, vars);
+  return [
+    t("title"), "",
+    t("claimant"), t("respondent"), "",
+    t("factsTitle"), t("f1"), t("f2"), t("f3"), "",
+    t("lawTitle"), t("l1"), "",
+    t("requestTitle"), t("r1"), "",
+    t("docsTitle"), t("d1"), t("d2"), "",
+    t("signoff"), t("signature"),
+  ].join("\n");
+}

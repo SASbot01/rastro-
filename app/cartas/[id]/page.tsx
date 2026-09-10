@@ -166,6 +166,15 @@ export default async function LetterPage({ params }: PageProps<"/cartas/[id]">) 
               <StatusButton id={letter.id} status="no_answer" label={tr("letters.markNoAnswer")} />
             </div>
           )}
+          {/* Reclamacion AEPD: sin respuesta, o enviada con el plazo vencido */}
+          {(letter.status === "no_answer" || (letter.status === "sent" && letter.deadline_at && new Date(letter.deadline_at) < new Date())) && (
+            <Link
+              href={`/cartas/${letter.id}/reclamacion`}
+              className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90"
+            >
+              {tr("aepd.cta")}
+            </Link>
+          )}
           {(letter.status === "answered" || letter.status === "no_answer") && (
             <div className="mt-4">
               <StatusButton id={letter.id} status="draft" label={tr("letters.reopen")} />

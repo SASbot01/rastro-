@@ -512,5 +512,46 @@
     "ask": "If they replied, mark it on the letter. If not, the next step is a complaint to the data protection authority; we prepare it for you from the letter itself.",
     "cta": "Open the letter",
     "footer": "You receive this because you marked this letter as sent in Rastro."
+  },
+  "aepd": {
+    "cta": "Prepare a complaint to the AEPD",
+    "title": "Complaint to the AEPD",
+    "subtitle": "A month has passed without a reply from {host}. This is the complaint text ready to paste into the Spanish Data Protection Agency's electronic office.",
+    "notYet": "A complaint can be filed once a month has passed since the letter was sent without a satisfactory reply.",
+    "text": "Complaint text",
+    "copy": "Copy complaint",
+    "copied": "Copied",
+    "guideTitle": "How to file it, step by step",
+    "steps": [
+      "Go to the AEPD electronic office: sedeagpd.gob.es → \"Reclamaciones\" → \"Presentar reclamación\".",
+      "Identify yourself with a digital certificate, Cl@ve or, if you have neither, the form without certificate (you'll be asked for a copy of your ID).",
+      "Claimant: your details. Respondent: the site {host}{contact}.",
+      "Under \"Hechos\" (facts) paste the complaint text from this page.",
+      "Attach the letter you sent and proof of sending (screenshot of the sent email or form, with the date).",
+      "Save the registration number you get at the end. The AEPD usually replies within weeks; if it admits the complaint, it will require the site to delete your data."
+    ],
+    "attachments": "Documents you must attach",
+    "attach1": "Copy of the erasure request sent on {sent}.",
+    "attach2": "Proof of sending and date (screenshot of the email or form).",
+    "attach3": "If they replied insufficiently, a copy of that reply.",
+    "back": "Back to the letter"
+  },
+  "aepdTpl": {
+    "title": "COMPLAINT TO THE SPANISH DATA PROTECTION AGENCY (AEPD)",
+    "claimant": "CLAIMANT: {name}, email {email}{city}.",
+    "respondent": "RESPONDENT: the controller of the website {host}{contact}.",
+    "factsTitle": "FACTS",
+    "f1": "1. At {url} the respondent publishes personal data concerning me ({what}), without my consent or any other legal basis known to me.",
+    "f2": "2. On {sent} I exercised my right to erasure before the respondent under Article 17 of Regulation (EU) 2016/679 (GDPR), requesting deletion of that data and written confirmation. A copy of the request and proof of sending are attached.",
+    "f3": "3. The one-month period set in Article 12(3) GDPR expired on {deadline} without the respondent acting on the request or replying at all.",
+    "lawTitle": "LEGAL GROUNDS",
+    "l1": "Articles 12, 17, 19 and 21 GDPR; Article 77 GDPR and Articles 15 and 63 et seq. of Spanish Organic Law 3/2018 on Personal Data Protection and digital rights, which recognise the right to lodge a complaint with the supervisory authority when the controller fails to act on a rights request in time.",
+    "requestTitle": "REQUEST",
+    "r1": "That this complaint be admitted and, after the appropriate proceedings, the respondent be required to erase the personal data concerning me and confirm its deletion, without prejudice to any other measures the Agency deems appropriate.",
+    "docsTitle": "ATTACHED DOCUMENTS",
+    "d1": "1. Copy of the erasure request sent on {sent}.",
+    "d2": "2. Proof of sending and date.",
+    "signoff": "{city2}{date}",
+    "signature": "Signed: {name}"
   }
 }

@@ -512,5 +512,46 @@
     "ask": "Si te han contestado, márcalo en la carta. Si no, el siguiente paso es la reclamación ante la Agencia Española de Protección de Datos; te la preparamos desde la propia carta.",
     "cta": "Abrir la carta",
     "footer": "Recibes esto porque marcaste esta carta como enviada en Rastro."
+  },
+  "aepd": {
+    "cta": "Preparar reclamación a la AEPD",
+    "title": "Reclamación ante la AEPD",
+    "subtitle": "Pasó un mes sin respuesta de {host}. Este es el escrito de reclamación listo para pegar en la sede electrónica de la Agencia Española de Protección de Datos.",
+    "notYet": "La reclamación se puede presentar cuando haya pasado un mes desde el envío de la carta sin respuesta satisfactoria.",
+    "text": "Texto de la reclamación",
+    "copy": "Copiar reclamación",
+    "copied": "Copiada",
+    "guideTitle": "Cómo presentarla, paso a paso",
+    "steps": [
+      "Entra en la sede electrónica de la AEPD: sedeagpd.gob.es → «Reclamaciones» → «Presentar reclamación».",
+      "Identifícate con certificado digital, Cl@ve o, si no tienes, con el formulario sin certificado (te pedirán una copia de tu DNI).",
+      "Reclamante: tus datos. Reclamado: el sitio {host}{contact}.",
+      "En «Hechos» pega el texto de la reclamación de esta página.",
+      "Adjunta la carta que enviaste y la prueba de envío (captura del correo enviado o del formulario, con fecha).",
+      "Guarda el número de registro que te dan al terminar. La AEPD suele contestar en semanas; si admite la reclamación, requerirá al sitio a que borre tus datos."
+    ],
+    "attachments": "Documentos que debes adjuntar",
+    "attach1": "Copia de la solicitud de supresión enviada el {sent}.",
+    "attach2": "Prueba del envío y de la fecha (captura de pantalla del correo o del formulario).",
+    "attach3": "Si te contestaron de forma insuficiente, copia de esa respuesta.",
+    "back": "Volver a la carta"
+  },
+  "aepdTpl": {
+    "title": "RECLAMACIÓN ANTE LA AGENCIA ESPAÑOLA DE PROTECCIÓN DE DATOS",
+    "claimant": "RECLAMANTE: {name}, con correo electrónico {email}{city}.",
+    "respondent": "RECLAMADO: el responsable del sitio web {host}{contact}.",
+    "factsTitle": "HECHOS",
+    "f1": "1. En la dirección {url} el reclamado publica datos personales que me conciernen ({what}), sin mi consentimiento ni ninguna otra base legal que conozca.",
+    "f2": "2. El {sent} ejercí ante el reclamado mi derecho de supresión conforme al artículo 17 del Reglamento (UE) 2016/679 (RGPD), solicitando la eliminación de dichos datos y la confirmación por escrito. Se adjunta copia de la solicitud y prueba de su envío.",
+    "f3": "3. El plazo de un mes establecido en el artículo 12.3 del RGPD venció el {deadline} sin que el reclamado haya atendido la solicitud ni dado respuesta alguna.",
+    "lawTitle": "FUNDAMENTOS",
+    "l1": "Artículos 12, 17, 19 y 21 del RGPD; artículo 77 del RGPD y artículos 15 y 63 y siguientes de la Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales, que reconocen el derecho a presentar reclamación ante la autoridad de control cuando el responsable no atiende el ejercicio de derechos en plazo.",
+    "requestTitle": "SOLICITO",
+    "r1": "Que se admita esta reclamación y, previos los trámites oportunos, se requiera al reclamado para que suprima los datos personales que me conciernen y confirme su eliminación, sin perjuicio de las demás medidas que la Agencia considere procedentes.",
+    "docsTitle": "DOCUMENTOS QUE SE ADJUNTAN",
+    "d1": "1. Copia de la solicitud de supresión enviada el {sent}.",
+    "d2": "2. Prueba del envío y de la fecha.",
+    "signoff": "{city2}{date}",
+    "signature": "Fdo.: {name}"
   }
 }
