@@ -41,15 +41,15 @@ Han pasado por el chat y por iCloud. Cuando toque, rotar y actualizar en `/home/
 
 ## Escáner de buzón (Gmail) — código desplegado, falta el proyecto de Google
 
-- [ ] Google Cloud: proyecto "Rastro" → habilitar **Gmail API** → pantalla de consentimiento (Externa, en Pruebas; dominio `rastropro.com`, política `/privacidad`, condiciones `/aviso-legal`; scope `gmail.readonly`; **usuarios de prueba** hasta 100) → credencial OAuth "Aplicación web" con redirecciones `https://rastropro.com/api/google/callback` y `http://localhost:3000/api/google/callback`.
-- [ ] Servidor: `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET` en `/home/s4sf/rastro/.env.local` + `pm2 restart rastro`. Hasta entonces `/cuenta/buzon` dice "aún no está configurado".
+- [x] Google Cloud: proyecto "Rastro" → habilitar **Gmail API** → pantalla de consentimiento (Externa, en Pruebas; dominio `rastropro.com`, política `/privacidad`, condiciones `/aviso-legal`; scope `gmail.readonly`; **usuarios de prueba** hasta 100) → credencial OAuth "Aplicación web" con redirecciones `https://rastropro.com/api/google/callback` y `http://localhost:3000/api/google/callback`.
+- [x] Servidor: `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET` en `/home/s4sf/rastro/.env.local` + `pm2 restart rastro`. Hasta entonces `/cuenta/buzon` dice "aún no está configurado".
 - [ ] Probar con un buzón de prueba y ajustar heurísticas (dominios que salen mal agrupados, servicios que faltan).
 - [ ] Cuando funcione comercialmente: verificación OAuth de Google + auditoría CASA nivel 2 (500–1.500 €/año) para pasar de 100 usuarios. Entonces, plan **Pro Total** (34 €/mes · 199 €/año) con escáner + re-escaneo mensual; ahora va incluido en Pro durante la beta.
 
 ## Hecho el 10-09-2026 (tarde)
 
 - [x] Rediseño oscuro con acento lima, barra inferior (móvil) / lateral (escritorio), 5 secciones: Inicio · Informe · Herramientas · Comunidad · Perfil.
-- [x] Registro/acceso: "Continuar con Google" o correo con código de 6 dígitos (sin contraseñas). Pendiente tuyo: añadir `https://rastropro.com/api/auth/google/callback` a las URIs de redirección del cliente OAuth.
+- [x] Registro/acceso: "Continuar con Google" o correo con código de 6 dígitos (sin contraseñas). URI de redirección `https://rastropro.com/api/auth/google/callback` añadida (10-09-2026); comprobado que Google ya no devuelve `redirect_uri_mismatch`.
 - [x] Informe en desplegables; IA con más espacio de salida y reintento (adiós "versión preliminar").
 - [x] Chat de la comunidad con alias.
 
