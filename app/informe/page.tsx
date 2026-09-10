@@ -18,6 +18,14 @@ interface Row {
   reports: { score: number; summary: string } | { score: number; summary: string }[] | null;
 }
 
+interface ScanRow {
+  id: string;
+  mailbox: string;
+  status: "processing" | "done" | "error";
+  services: unknown[];
+  started_at: string;
+}
+
 const LEVEL_TEXT = { green: "text-ok", orange: "text-warn", red: "text-danger" } as const;
 
 function reportOf(row: Row) {
@@ -36,16 +44,28 @@ export default async function ReportsPage() {
   const user = session ? await findUserByEmail(session.email) : null;
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
 
-  const { data } = user
-    ? await supabaseAdmin()
-        .from("requests")
-        .select("id, full_name, city, status, created_at, reports(score, summary)")
-        .eq("user_id", user.id)
-        .in("status", ["done", "processing", "verified", "error"])
-        .order("created_at", { ascending: false })
-        .limit(30)
-        .returns<Row[]>()
-    : { data: null };
+  const supabase = supabaseAdmin();
+  const [{ data }, { data: scan }] = user
+    ? await Promise.all([
+        supabase
+          .from("requests")
+          .select("id, full_name, city, status, created_at, reports(score, summary)")
+          .eq("user_id", user.id)
+          .in("status", ["done", "processing", "verified", "error"])
+          .order("created_at", { ascending: false })
+          .limit(30)
+          .returns<Row[]>(),
+        // Ultimo sondeo del buzon (Gmail): se ve desde aqui y abre la herramienta.
+        supabase
+          .from("mailbox_scans")
+          .select("id, mailbox, status, services, started_at")
+          .eq("user_id", user.id)
+          .in("status", ["done", "processing"])
+          .order("started_at", { ascending: false })
+          .limit(1)
+          .maybeSingle<ScanRow>(),
+      ])
+    : [{ data: null }, { data: null }];
   const list = data ?? [];
   const [latest, ...rest] = list;
   const latestReport = latest ? reportOf(latest) : null;
@@ -126,6 +146,32 @@ export default async function ReportsPage() {
               </section>
             )}
           </>
+        )}
+
+        {/* Sondeo de Gmail */}
+        {user && (
+          <section className="mt-8">
+            <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("reports.scanTitle")}</h2>
+            {scan ? (
+              <Link href={`/cuenta/buzon?scan=${scan.id}`} className="mt-3 flex items-center justify-between gap-4 rounded-card border border-line bg-surface px-4 py-3.5 hover:border-faint sm:px-5">
+                <div className="min-w-0">
+                  <p className="truncate text-[15px] font-semibold text-ink">
+                    {scan.status === "processing" ? tr("reports.scanProcessing") : tr("reports.scanServices", { n: scan.services.length })}
+                  </p>
+                  <p className="mt-0.5 truncate text-[12.5px] text-faint">{scan.mailbox} · {fmt.format(new Date(scan.started_at))}</p>
+                </div>
+                <span className="shrink-0 text-[13px] font-medium text-accent underline underline-offset-4">{tr("reports.scanOpen")}</span>
+              </Link>
+            ) : (
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-card border border-line bg-surface px-4 py-3.5 sm:px-5">
+                <div className="min-w-0">
+                  <p className="text-[15px] font-semibold text-ink">{tr("reports.scanNone")}</p>
+                  <p className="mt-0.5 text-[13px] text-muted">{tr("reports.scanBody")}</p>
+                </div>
+                <Link href="/cuenta/buzon" className="shrink-0 rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("reports.scanCta")}</Link>
+              </div>
+            )}
+          </section>
         )}
       </main>
       <SiteFooter messages={messages} />

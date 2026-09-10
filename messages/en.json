@@ -741,6 +741,34 @@
     "previous": "Previous",
     "first": "Get my free report",
     "loginTitle": "Your reports will show here",
-    "loginBody": "Request your first free report from Home; confirming your email creates your account and keeps them here. If you already have an account, sign in."
+    "loginBody": "Request your first free report from Home; confirming your email creates your account and keeps them here. If you already have an account, sign in.",
+    "scanTitle": "Gmail scan",
+    "scanBody": "Where you're registered, according to your own inbox.",
+    "scanNone": "You haven't scanned your Gmail yet.",
+    "scanCta": "Scan my Gmail",
+    "scanOpen": "View scan",
+    "scanServices": "{n} services",
+    "scanProcessing": "Scan in progress…"
+  },
+  "vigil": {
+    "title": "Monitoring",
+    "active": "Active",
+    "inactive": "Off",
+    "justOn": "Monitoring is on. We'll look again for you every month.",
+    "since": "Protected for {n} days",
+    "sinceToday": "Protected since today",
+    "checks": "{n} checks",
+    "check_one": "1 check",
+    "next": "Next check",
+    "inDays": "in {n} days",
+    "today": "today",
+    "legend": {
+      "check": "Checked",
+      "next": "Next",
+      "today": "Today"
+    },
+    "offTitle": "Not monitoring",
+    "offBody": "Turn on monthly monitoring and your check calendar will show here.",
+    "offCta": "Turn on in Tools"
   }
 }

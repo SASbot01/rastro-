@@ -7,7 +7,8 @@ import { isPro } from "@/lib/plan";
 
 /**
  * Activa o desactiva la vigilancia mensual de la cuenta con sesion.
- * Formulario POST desde /cuenta (campo `enabled` = "1" | "0"); vuelve a /cuenta.
+ * Formulario POST desde /herramientas (campo `enabled` = "1" | "0").
+ * Al activar vuelve al perfil, que estrena el calendario con animacion.
  */
 export async function POST(request: Request) {
   const session = await getSession();
@@ -32,5 +33,5 @@ export async function POST(request: Request) {
     .eq("email", session.email);
   if (error) console.error("[/api/monitor] fallo:", error.message);
 
-  return NextResponse.redirect(absoluteUrl("/cuenta"), { status: 303 });
+  return NextResponse.redirect(absoluteUrl(enabled ? "/cuenta?vigilancia=on" : "/herramientas"), { status: 303 });
 }

@@ -113,7 +113,7 @@ export function SideNav({ messages }: { messages: Messages }) {
   return (
     <aside className="sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col border-r border-line bg-paper px-4 py-6 lg:flex">
       <Link href="/" className="flex items-center gap-2 px-2 text-[16px] font-semibold tracking-[-0.01em] text-ink">
-        <img src="/brand/icon-64.png" alt="" width={28} height={28} className="h-[28px] w-[28px] rounded-[8px]" />
+        <img src="/brand/logo-96.png" alt="" width={30} height={26} className="h-[26px] w-auto" />
         {tr("nav.brand")}
       </Link>
       <ul className="mt-8 grid gap-1">

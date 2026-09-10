@@ -8,6 +8,7 @@ import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import { levelFor } from "@/lib/report/score";
 import { isPro } from "@/lib/plan";
+import { VigilCalendar } from "@/components/VigilCalendar";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +34,7 @@ function scoreOf(row: Row): number | null {
  * (vigilancia, escaner, cartas, plazos) vive en /herramientas.
  */
 export default async function AccountPage({ searchParams }: PageProps<"/cuenta">) {
-  const { pago } = await searchParams;
+  const { pago, vigilancia } = await searchParams;
   const session = await getSession();
   if (!session) redirect("/entrar");
   const user = await findUserByEmail(session.email);
@@ -46,10 +47,13 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
   const pro = isPro(user);
 
   const supabase = supabaseAdmin();
-  const [{ data: rows }, { count: lettersCount }] = await Promise.all([
+  const [{ data: rows }, { count: lettersCount }, { data: checkRows }] = await Promise.all([
     supabase.from("requests").select("id, full_name, city, status, created_at, reports(score)").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50).returns<Row[]>(),
     supabase.from("letters").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+    // Comprobaciones mensuales hechas (solicitudes creadas por el cron de vigilancia).
+    supabase.from("requests").select("created_at").eq("user_id", user.id).eq("origin", "monitor").order("created_at", { ascending: false }).limit(24).returns<{ created_at: string }[]>(),
   ]);
+  const checks = (checkRows ?? []).map((r) => r.created_at);
   const list = rows ?? [];
   const lastScore = list.map(scoreOf).find((v) => v !== null) ?? null;
   const name = list[0]?.full_name ?? user.email.split("@")[0];
@@ -62,7 +66,13 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
         {/* Ficha */}
         <section className="flex flex-col items-center text-center lg:sticky lg:top-20">
           <div className="relative">
-            <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-accent text-[34px] font-semibold text-accent">
+            {user.monitoring && (
+              <>
+                <span aria-hidden="true" className="radar-ping absolute inset-0 rounded-full border border-accent/60" />
+                <span aria-hidden="true" className="radar-ring absolute -inset-1.5 rounded-full" />
+              </>
+            )}
+            <div className={"relative flex h-24 w-24 items-center justify-center rounded-full text-[34px] font-semibold text-accent " + (user.monitoring ? "border-2 border-paper bg-surface" : "border-2 border-dashed border-accent")}>
               {name.slice(0, 1).toUpperCase()}
             </div>
             <span className={"absolute -right-1 -bottom-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide " + (pro ? "bg-accent text-black" : "bg-surface-2 text-muted")}>
@@ -94,6 +104,17 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
               {tr("pro.thanks")} {tr("pro.thanksPending")}
             </p>
           )}
+
+          {/* Vigilancia: calendario de comprobaciones */}
+          <VigilCalendar
+            locale={locale}
+            messages={messages}
+            monitoring={user.monitoring}
+            consentAt={user.monitoring_consent_at}
+            lastAt={user.monitor_last_at}
+            checks={checks}
+            justEnabled={vigilancia === "on" && user.monitoring}
+          />
 
           {/* Plan */}
           <section className={CARD}>

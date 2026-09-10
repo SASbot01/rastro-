@@ -56,3 +56,29 @@ textarea {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Vigilancia: anillo radar en el avatar, entrada del calendario y latido de la proxima fecha. */
+@keyframes rastro-sweep {
+  to { transform: rotate(360deg); }
+}
+@keyframes rastro-ping {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+@keyframes rastro-pop {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes rastro-rise {
+  0% { transform: translateY(12px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.radar-ring {
+  background: conic-gradient(from 0deg, transparent 0 70%, rgba(200, 255, 61, 0.15) 85%, var(--color-accent) 100%);
+  animation: rastro-sweep 3.2s linear infinite;
+}
+.radar-ping { animation: rastro-ping 2.4s ease-out infinite; }
+.vigil-rise { animation: rastro-rise 0.5s ease-out both; }
+.vigil-pop { animation: rastro-pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.4) both; }
+.vigil-pulse { animation: rastro-ping 1.8s ease-out infinite; }

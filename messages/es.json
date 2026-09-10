@@ -741,6 +741,34 @@
     "previous": "Anteriores",
     "first": "Pedir mi informe gratis",
     "loginTitle": "Aquí verás tus informes",
-    "loginBody": "Pide tu primer informe gratis desde Inicio; al confirmar el correo se crea tu cuenta y quedan guardados aquí. Si ya tienes cuenta, entra."
+    "loginBody": "Pide tu primer informe gratis desde Inicio; al confirmar el correo se crea tu cuenta y quedan guardados aquí. Si ya tienes cuenta, entra.",
+    "scanTitle": "Sondeo de Gmail",
+    "scanBody": "Dónde estás registrado según tu propio buzón.",
+    "scanNone": "Aún no has sondeado tu Gmail.",
+    "scanCta": "Sondear mi Gmail",
+    "scanOpen": "Ver sondeo",
+    "scanServices": "{n} servicios",
+    "scanProcessing": "Sondeo en curso…"
+  },
+  "vigil": {
+    "title": "Vigilancia",
+    "active": "Activa",
+    "inactive": "Desactivada",
+    "justOn": "Vigilancia activada. Cada mes volvemos a mirar por ti.",
+    "since": "Protegido desde hace {n} días",
+    "sinceToday": "Protegido desde hoy",
+    "checks": "{n} comprobaciones",
+    "check_one": "1 comprobación",
+    "next": "Próxima comprobación",
+    "inDays": "en {n} días",
+    "today": "hoy",
+    "legend": {
+      "check": "Comprobado",
+      "next": "Próxima",
+      "today": "Hoy"
+    },
+    "offTitle": "Sin vigilancia",
+    "offBody": "Activa la vigilancia mensual y aquí verás el calendario de comprobaciones.",
+    "offCta": "Activar en Herramientas"
   }
 }
