@@ -8,6 +8,8 @@ import { getLocale } from "@/lib/locale";
 import { supabaseAdmin } from "@/lib/supabase";
 import { REPORT_STEPS, type ReportStep } from "@/lib/report/job";
 import { getSession, sessionOwns } from "@/lib/session";
+import { findUserByEmail } from "@/lib/users";
+import { isPro } from "@/lib/plan";
 
 export const dynamic = "force-dynamic";
 
@@ -119,6 +121,7 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
         locale={locale}
         messages={messages}
         partial={loaded.report.generator !== "ai"}
+        pro={isPro(session ? await findUserByEmail(session.email) : null)}
       />
     );
   } else if (loaded.request.status === "error" || loaded.request.status === "done") {

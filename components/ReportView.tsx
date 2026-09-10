@@ -71,6 +71,7 @@ export function ReportView({
   locale,
   messages,
   partial,
+  pro,
 }: {
   report: ReportData;
   requestId: string;
@@ -79,6 +80,8 @@ export function ReportView({
   messages: Messages;
   /** Aviso de version sin IA (plantillas de respaldo). */
   partial?: boolean;
+  /** Plan Pro activo: habilita las cartas de supresion. */
+  pro?: boolean;
 }) {
   const tr = translator(messages);
   const level = levelFor(report.score);
@@ -160,13 +163,19 @@ export function ReportView({
                     </a>
                     {/* Carta de supresion (RGPD art. 17) para sitios que muestran datos de la persona */}
                     {(category === "profiles" || category === "ai") && f.severity !== "info" && (
-                      <form action="/api/letters" method="post">
-                        <input type="hidden" name="request_id" value={requestId} />
-                        <input type="hidden" name="finding_index" value={report.findings.indexOf(f)} />
-                        <button type="submit" className="text-[13px] font-medium text-muted underline underline-offset-4 hover:text-ink">
-                          {tr("letters.generate")}
-                        </button>
-                      </form>
+                      pro ? (
+                        <form action="/api/letters" method="post">
+                          <input type="hidden" name="request_id" value={requestId} />
+                          <input type="hidden" name="finding_index" value={report.findings.indexOf(f)} />
+                          <button type="submit" className="text-[13px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+                            {tr("letters.generate")}
+                          </button>
+                        </form>
+                      ) : (
+                        <Link href="/pro" className="text-[13px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+                          {tr("letters.generate")} · {tr("pro.badge")}
+                        </Link>
+                      )
                     )}
                   </div>
                 )}

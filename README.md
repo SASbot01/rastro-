@@ -14,7 +14,7 @@ para levantar el proyecto.
 
 **v1 completa (Días 1–7) y semana 2 completa salvo el cobro (Días 8–12).** Cuentas por enlace
 mágico, vigilancia mensual, cartas de supresión RGPD, calendario de plazos y reclamación AEPD.
-Stripe (plan Pro) queda pendiente por decisión del propietario; todo lo anterior funciona sin él.
+Plan Pro con Stripe (Payment Links + webhook) construido; solo falta configurar claves y webhook en Stripe.
 
 **v1 (Días 1–7).** Formulario → verificación por correo → HIBP + Brave +
 Perplexity + Anthropic → informe con puntuación, hallazgos y acciones (ES/EN) →
@@ -101,6 +101,17 @@ Abre <http://localhost:3000>.
 | Cartas RGPD | botón en cada hallazgo → `/cartas/[id]` | Plantilla legal fija (art. 17) con los datos del hallazgo; Perplexity busca el contacto de privacidad del sitio. Estados: borrador → enviada → contestada / sin respuesta. |
 | Plazos | `/cuenta` y cron `/api/cron/letters` | "Ya la he enviado" fija el plazo a un mes (art. 12.3). Al vencer, correo con enlace a la carta. |
 | Reclamación AEPD | `/cartas/[id]/reclamacion` | Escrito de reclamación (art. 77 RGPD) y guía de la sede electrónica, cuando pasa el mes sin respuesta. |
+
+### Plan Pro (Stripe)
+
+Las funciones de la tabla anterior son del plan Pro (19 €/mes o 99 €/año). El informe sigue siendo gratis.
+
+- `/pro`: dos **Payment Links** de Stripe (`STRIPE_LINK_MONTHLY`, `STRIPE_LINK_YEARLY`) con el correo y la cuenta ya rellenados.
+- `/api/stripe/webhook`: verifica la firma (`STRIPE_WEBHOOK_SECRET`), es idempotente (`stripe_events`) y traduce `checkout.session.completed` / `customer.subscription.updated|deleted` a `users.plan`, `plan_until` y `plan_status`. Si quien paga no tiene cuenta, la crea con el correo del pago.
+- `/api/stripe/portal`: portal de facturación para cambiar tarjeta o cancelar (Pro sigue activo hasta el fin del periodo pagado).
+- Cierre: activar vigilancia, generar cartas y el cron mensual exigen `isPro(user)`.
+
+Configuración en Stripe: producto "Rastro Pro" con dos precios recurrentes; un Payment Link por precio con redirección tras el pago a `https://tudominio.com/cuenta?pago=ok`; endpoint de webhook `https://tudominio.com/api/stripe/webhook` con los tres eventos anteriores; portal del cliente activado. En local: `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
 
 Los tres crons van en `vercel.json`; en servidor propio, tres líneas de cron llamando a
 `/api/cron/purge`, `/api/cron/monitor` y `/api/cron/letters` con `Authorization: Bearer $CRON_SECRET`.

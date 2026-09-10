@@ -7,6 +7,7 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import { levelFor } from "@/lib/report/score";
+import { isPro } from "@/lib/plan";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +35,8 @@ function scoreOf(row: Row): number | null {
   return r ? r.score : null;
 }
 
-export default async function AccountPage() {
+export default async function AccountPage({ searchParams }: PageProps<"/cuenta">) {
+  const { pago } = await searchParams;
   const session = await getSession();
   if (!session) redirect("/entrar");
 
@@ -55,6 +57,7 @@ export default async function AccountPage() {
     .returns<Row[]>();
 
   const list = rows ?? [];
+  const pro = isPro(user);
 
   const { data: letterRows } = await supabaseAdmin()
     .from("letters")
@@ -75,11 +78,48 @@ export default async function AccountPage() {
             <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-ink">{tr("account.title")}</h1>
             <p className="mt-1 text-[13px] text-faint">{tr("account.signedInAs", { email: user.email })}</p>
           </div>
-          <span className="rounded-full bg-paper px-3 py-1 text-[12px] font-semibold text-muted">
-            {tr(`account.plan.${user.plan}`)}
+          <span className={"rounded-full px-3 py-1 text-[12px] font-semibold " + (pro ? "bg-accent text-white" : "bg-paper text-muted")}>
+            {tr(`account.plan.${pro ? "pro" : "free"}`)}
           </span>
         </div>
         <p className="mt-4 text-[15px] leading-relaxed text-muted">{tr("account.subtitle")}</p>
+
+        {pago === "ok" && !pro && (
+          <p className="mt-4 rounded-[10px] bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-accent">
+            {tr("pro.thanks")} {tr("pro.thanksPending")}
+          </p>
+        )}
+
+        {/* Plan */}
+        <section className="mt-6 rounded-card border border-line bg-surface p-5 sm:p-6">
+          {pro ? (
+            <>
+              <p className="text-[15px] font-semibold text-ink">{tr("pro.active")}</p>
+              {user.plan_until && (
+                <p className="mt-1 text-[13px] text-muted">
+                  {user.plan_status === "canceling"
+                    ? tr("pro.canceling", { date: fmt.format(new Date(user.plan_until)) })
+                    : tr("pro.until", { date: fmt.format(new Date(user.plan_until)) })}
+                </p>
+              )}
+              {user.stripe_customer_id && (
+                <form action="/api/stripe/portal" method="post" className="mt-3">
+                  <button type="submit" className="text-[14px] font-medium text-accent underline underline-offset-4">
+                    {tr("pro.manage")}
+                  </button>
+                </form>
+              )}
+            </>
+          ) : (
+            <>
+              <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
+              <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("pro.lockedBody")}</p>
+              <Link href="/pro" className="mt-3 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90">
+                {tr("pro.lockedCta")}
+              </Link>
+            </>
+          )}
+        </section>
 
         {/* Vigilancia mensual */}
         <section className="mt-8 rounded-card border border-line bg-surface p-5 sm:p-6">
@@ -97,6 +137,11 @@ export default async function AccountPage() {
                 : tr("monitor.neverChecked")}
             </p>
           )}
+          {!pro && !user.monitoring ? (
+            <Link href="/pro" className="mt-4 inline-block text-[14px] font-medium text-accent underline underline-offset-4">
+              {tr("pro.lockedCta")}
+            </Link>
+          ) : (
           <form action="/api/monitor" method="post" className="mt-4 grid gap-2">
             <input type="hidden" name="enabled" value={user.monitoring ? "0" : "1"} />
             <button
@@ -111,6 +156,7 @@ export default async function AccountPage() {
             </button>
             {!user.monitoring && <p className="text-[12px] leading-relaxed text-faint">{tr("monitor.consent")}</p>}
           </form>
+          )}
         </section>
 
         <h2 className="mt-10 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("account.reports")}</h2>

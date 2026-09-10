@@ -556,5 +556,36 @@
     "d2": "2. Prueba del envío y de la fecha.",
     "signoff": "{city2}{date}",
     "signature": "Fdo.: {name}"
+  },
+  "pro": {
+    "badge": "Pro",
+    "title": "Rastro Pro",
+    "subtitle": "El informe es y seguirá siendo gratis. Pro es para quien quiere que Rastro siga mirando por ti cada mes y te ayude a retirar lo que sobra.",
+    "monthly": "Mensual",
+    "monthlyPrice": "19 €",
+    "monthlyPer": "al mes",
+    "yearly": "Anual",
+    "yearlyPrice": "99 €",
+    "yearlyPer": "al año",
+    "yearlySave": "Ahorras 129 €",
+    "cta": "Elegir",
+    "ctaLogin": "Entra para suscribirte",
+    "features": [
+      "Vigilancia mensual: te avisamos solo si algo cambia",
+      "Cartas de supresión RGPD listas para enviar, con el contacto del sitio",
+      "Calendario de plazos legales y aviso al vencer",
+      "Escrito de reclamación ante la AEPD y guía paso a paso",
+      "Cancela cuando quieras desde tu cuenta"
+    ],
+    "note": "Pago seguro con Stripe. No guardamos tu tarjeta. Sin permanencia.",
+    "locked": "Función del plan Pro",
+    "lockedBody": "Vigilancia mensual, cartas RGPD, plazos y reclamación AEPD son del plan Pro (19 €/mes o 99 €/año).",
+    "lockedCta": "Ver el plan Pro",
+    "active": "Plan Pro activo",
+    "until": "Renovación: {date}",
+    "canceling": "Cancelado: activo hasta el {date}",
+    "manage": "Gestionar suscripción",
+    "thanks": "¡Gracias! Tu plan Pro se activará en unos segundos.",
+    "thanksPending": "Si no aparece como activo en un minuto, recarga la página o escríbenos."
   }
 }

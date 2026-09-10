@@ -36,6 +36,7 @@ export async function GET(request: Request) {
     .from("users")
     .select("id, email, locale, monitor_last_at")
     .eq("monitoring", true)
+    .eq("plan", "pro")
     .or(`monitor_last_at.is.null,monitor_last_at.lt.${cutoff}`)
     .order("monitor_last_at", { ascending: true, nullsFirst: true })
     .limit(BATCH)

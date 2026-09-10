@@ -5,6 +5,7 @@ import { findUserByEmail } from "@/lib/users";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { buildLetter, findPrivacyContact } from "@/lib/letters";
 import type { Finding } from "@/lib/report/findings";
+import { isPro } from "@/lib/plan";
 
 /**
  * Genera una carta de supresion para un hallazgo del informe (formulario
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
 
   const user = await findUserByEmail(session.email);
   if (!user) return NextResponse.redirect(new URL("/entrar", origin), { status: 303 });
+  if (!isPro(user)) return NextResponse.redirect(new URL("/pro", origin), { status: 303 });
 
   const { data: report } = await supabase
     .from("reports")

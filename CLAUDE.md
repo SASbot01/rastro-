@@ -80,7 +80,7 @@ Pago, plan Pro, monitorización, cartas RGPD, panel de usuario, cuentas persiste
 - **Día 10 ✅** cartas de supresión RGPD (plantilla art. 17 + contacto de privacidad vía Perplexity).
 - **Día 11 ✅** calendario de plazos y aviso de vencimiento.
 - **Día 12 ✅** reclamación AEPD (escrito + guía).
-- **Pendiente:** Stripe / plan Pro (decisión del propietario: "luego"). `users.plan` y `plan_until` ya existen para cuando toque; hoy todo es gratis.
+- **Día 13 ✅** plan Pro con Stripe: Payment Links + webhook firmado e idempotente + portal; vigilancia, cartas y cron exigen Pro. Falta solo configurar en Stripe (clave rotada, webhook con dominio).
 - Campo opcional "profesión o empresa" añadido para distinguir homónimos.
 
 ## 6. Modelo de datos (Supabase)

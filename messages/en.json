@@ -556,5 +556,36 @@
     "d2": "2. Proof of sending and date.",
     "signoff": "{city2}{date}",
     "signature": "Signed: {name}"
+  },
+  "pro": {
+    "badge": "Pro",
+    "title": "Rastro Pro",
+    "subtitle": "The report is and will stay free. Pro is for people who want Rastro to keep watching for them every month and help remove what shouldn't be there.",
+    "monthly": "Monthly",
+    "monthlyPrice": "€19",
+    "monthlyPer": "per month",
+    "yearly": "Yearly",
+    "yearlyPrice": "€99",
+    "yearlyPer": "per year",
+    "yearlySave": "Save €129",
+    "cta": "Choose",
+    "ctaLogin": "Sign in to subscribe",
+    "features": [
+      "Monthly monitoring: we alert you only if something changes",
+      "Ready-to-send GDPR erasure letters, with the site's contact",
+      "Legal deadline calendar and alert when it expires",
+      "Complaint text for the data protection authority and step-by-step guide",
+      "Cancel anytime from your account"
+    ],
+    "note": "Secure payment with Stripe. We don't store your card. No lock-in.",
+    "locked": "Pro plan feature",
+    "lockedBody": "Monthly monitoring, GDPR letters, deadlines and the complaint are part of the Pro plan (€19/month or €99/year).",
+    "lockedCta": "See the Pro plan",
+    "active": "Pro plan active",
+    "until": "Renews: {date}",
+    "canceling": "Cancelled: active until {date}",
+    "manage": "Manage subscription",
+    "thanks": "Thank you! Your Pro plan will be active in a few seconds.",
+    "thanksPending": "If it doesn't show as active within a minute, reload the page or write to us."
   }
 }

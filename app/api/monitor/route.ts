@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getSession } from "@/lib/session";
+import { findUserByEmail } from "@/lib/users";
+import { isPro } from "@/lib/plan";
 
 /**
  * Activa o desactiva la vigilancia mensual de la cuenta con sesion.
@@ -13,6 +15,11 @@ export async function POST(request: Request) {
 
   const form = await request.formData();
   const enabled = form.get("enabled") === "1";
+
+  // Activar es Pro; desactivar siempre se puede.
+  if (enabled && !isPro(await findUserByEmail(session.email))) {
+    return NextResponse.redirect(new URL("/pro", origin), { status: 303 });
+  }
 
   const { error } = await supabaseAdmin()
     .from("users")
