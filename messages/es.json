@@ -276,7 +276,8 @@
             "Finalidad: generar y mostrarte tu informe de exposición, enviarte el enlace de verificación por correo y limitar el uso del servicio para evitar abusos.",
             "Base legal: tu consentimiento (artículo 6.1.a del RGPD), que das marcando la casilla del formulario y confirmas abriendo el enlace que te enviamos por correo. Sin ese doble paso no buscamos nada.",
             "Solo puedes pedir un informe sobre ti mismo. Pedirlo sobre otra persona incumple estas condiciones.",
-            "Vigilancia mensual (solo si la activas): cada mes volvemos a consultar las mismas fuentes con tus datos y te enviamos un correo únicamente si hay cambios. Puedes desactivarla en tu cuenta o desde el enlace del propio correo."
+            "Vigilancia mensual (solo si la activas): cada mes volvemos a consultar las mismas fuentes con tus datos y te enviamos un correo únicamente si hay cambios. Puedes desactivarla en tu cuenta o desde el enlace del propio correo.",
+            "Escáner de buzón (solo plan Pro y solo si lo conectas tú): con tu autorización en Google leemos únicamente el remitente, el asunto y la fecha de tus correos para deducir en qué servicios tienes cuenta. No leemos el contenido, no guardamos ningún correo ni claves de acceso, y revocamos el acceso al terminar. Solo conservamos la lista de servicios resultante, que puedes borrar desde tu cuenta o escribiéndonos."
           ]
         },
         {
@@ -288,6 +289,7 @@
             "Perplexity (EE. UU.): recibe tu nombre y apellidos y, si los diste, tu ciudad y tu profesión o empresa, para preguntar qué dice la IA de ti.",
             "Anthropic (EE. UU.): recibe los resultados anteriores (no tu correo) para redactar el informe en lenguaje llano.",
             "Gravatar (Automattic, EE. UU.): recibe un hash (huella irreversible) de tu correo para comprobar si existe un perfil público asociado.",
+            "Google (EE. UU.): si conectas tu Gmail, Google recibe tu autorización y nosotros accedemos a las cabeceras de tus correos a través de su API, con el permiso de solo lectura que tú concedes y puedes revocar en cualquier momento desde tu cuenta de Google.",
             "Además usamos proveedores que alojan y hacen funcionar el servicio: Supabase (base de datos), Resend (envío de correos) y el proveedor de alojamiento web. Actúan como encargados del tratamiento bajo contrato.",
             "Algunos de estos proveedores están fuera del Espacio Económico Europeo. Las transferencias se amparan en cláusulas contractuales tipo aprobadas por la Comisión Europea o en el Marco de Privacidad de Datos UE-EE. UU., según el proveedor.",
             "No vendemos tus datos ni los cedemos a nadie más."
@@ -431,7 +433,10 @@
     "signedInAs": "Has entrado como {email}",
     "mustLoginTitle": "Este informe es privado",
     "mustLoginBody": "Solo puede verlo la persona que lo pidió. Entra con ese correo para abrirlo.",
-    "mustLoginCta": "Entrar"
+    "mustLoginCta": "Entrar",
+    "mailboxCard": "Escáner de buzón",
+    "mailboxCardBody": "Conecta tu Gmail y te decimos en qué sitios estás registrado. Solo cabeceras, sin guardar correos.",
+    "mailboxCardCta": "Abrir el escáner"
   },
   "monitor": {
     "title": "Vigilancia mensual",
@@ -603,5 +608,60 @@
     "manage": "Gestionar suscripción",
     "thanks": "¡Gracias! Tu plan Pro se activará en unos segundos.",
     "thanksPending": "Si no aparece como activo en un minuto, recarga la página o escríbenos."
+  },
+  "mailbox": {
+    "title": "Escáner de buzón",
+    "subtitle": "En qué sitios estás registrado, según tu propio correo.",
+    "beta": "Beta",
+    "connectTitle": "Conecta tu Gmail",
+    "rescan": "Volver a escanear",
+    "connect": "Conectar Gmail",
+    "connectBody": "Buscamos en tu buzón los correos de bienvenida, verificación, pedidos y newsletters, y los agrupamos por servicio. Así sabes dónde tienes cuenta, desde cuándo y qué llevas años sin usar.",
+    "promises": [
+      "Solo leemos remitente, asunto y fecha. Nunca el contenido de los correos.",
+      "No guardamos ningún correo: solo la lista de servicios.",
+      "El acceso se revoca solo al terminar el escaneo. No conservamos claves."
+    ],
+    "testersNote": "Durante la beta, Google muestra un aviso de «app no verificada»: es normal, pulsa «Continuar». Solo pueden conectar los correos dados de alta como probadores.",
+    "proBody": "El escáner de buzón forma parte del plan Pro.",
+    "scanning": "Escaneando",
+    "scanningBody": "Suele tardar entre uno y tres minutos según el tamaño del buzón. Puedes dejar esta página abierta.",
+    "step": {
+      "listing": "Buscando correos de altas, pedidos y newsletters",
+      "headers": "Leyendo remitentes y asuntos",
+      "grouping": "Agrupando por servicio"
+    },
+    "seen": "{n} correos leídos",
+    "doneEyebrow": "Escaneo terminado",
+    "doneTitle": "{n} servicios encontrados",
+    "doneBody": "Buzón {mailbox}, {seen} correos revisados. Cada servicio con su tipo, cuántos correos hay y desde cuándo.",
+    "privacyNote": "El acceso a tu buzón ya está revocado. Solo se guarda esta lista.",
+    "all": "Todos",
+    "kind": {
+      "account": "Cuenta",
+      "receipt": "Compras",
+      "newsletter": "Newsletter",
+      "other": "Otros"
+    },
+    "old": "Sin uso +2 años",
+    "msgs": "correos",
+    "search": "Buscar…",
+    "none": "Nada que mostrar con ese filtro.",
+    "closeLetter": "Carta de cierre",
+    "errorTitle": "No se ha podido completar el escaneo",
+    "errorBody": "Google ha cortado el acceso o el buzón es demasiado grande para esta versión. Vuelve a intentarlo; si se repite, escríbenos.",
+    "status": {
+      "processing": "en curso",
+      "error": "error"
+    },
+    "history": "Escaneos anteriores",
+    "errors": {
+      "denied": "Has cancelado el permiso en Google. Sin él no podemos escanear.",
+      "state": "La conexión ha caducado. Vuelve a empezar.",
+      "scope": "No has concedido el permiso de lectura de Gmail. Vuelve a conectar y marca la casilla.",
+      "google": "Google no ha respondido. Inténtalo de nuevo en un momento.",
+      "db": "Algo ha fallado por nuestro lado. Inténtalo de nuevo.",
+      "config": "El escáner aún no está configurado en este servidor."
+    }
   }
 }

@@ -39,6 +39,13 @@ Han pasado por el chat y por iCloud. Cuando toque, rotar y actualizar en `/home/
 - [ ] Borrar `support.rastropro.com` en Resend si se creó sin querer.
 - [ ] Copias de seguridad de la base de datos del servidor (cron con `docker exec supabase_db_rastro pg_dump -U postgres postgres > backup.sql`).
 
+## Escáner de buzón (Gmail) — código desplegado, falta el proyecto de Google
+
+- [ ] Google Cloud: proyecto "Rastro" → habilitar **Gmail API** → pantalla de consentimiento (Externa, en Pruebas; dominio `rastropro.com`, política `/privacidad`, condiciones `/aviso-legal`; scope `gmail.readonly`; **usuarios de prueba** hasta 100) → credencial OAuth "Aplicación web" con redirecciones `https://rastropro.com/api/google/callback` y `http://localhost:3000/api/google/callback`.
+- [ ] Servidor: `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET` en `/home/s4sf/rastro/.env.local` + `pm2 restart rastro`. Hasta entonces `/cuenta/buzon` dice "aún no está configurado".
+- [ ] Probar con un buzón de prueba y ajustar heurísticas (dominios que salen mal agrupados, servicios que faltan).
+- [ ] Cuando funcione comercialmente: verificación OAuth de Google + auditoría CASA nivel 2 (500–1.500 €/año) para pasar de 100 usuarios. Entonces, plan **Pro Total** (34 €/mes · 199 €/año) con escáner + re-escaneo mensual; ahora va incluido en Pro durante la beta.
+
 ## Mejoras propuestas (no empezadas)
 
 - [ ] Paso "¿cuál de estos eres tú?" antes del informe (desambiguación de homónimos, cambio de flujo).

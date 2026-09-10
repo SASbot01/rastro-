@@ -276,7 +276,8 @@
             "Purpose: to generate and show you your exposure report, to send you the verification link by email, and to limit use of the service to prevent abuse.",
             "Legal basis: your consent (Article 6(1)(a) GDPR), which you give by ticking the box in the form and confirm by opening the link we email you. Without that double step we search nothing.",
             "You may only request a report about yourself. Requesting one about someone else breaches these terms.",
-            "Monthly monitoring (only if you turn it on): every month we query the same sources again with your data and email you only if something changed. You can turn it off in your account or from the link in the email itself."
+            "Monthly monitoring (only if you turn it on): every month we query the same sources again with your data and email you only if something changed. You can turn it off in your account or from the link in the email itself.",
+            "Inbox scanner (Pro plan only, and only if you connect it): with your authorisation in Google we read only the sender, subject and date of your emails to infer which services you have accounts with. We don't read content, we store no emails or access keys, and we revoke access when done. We keep only the resulting list of services, which you can delete from your account or by writing to us."
           ]
         },
         {
@@ -288,6 +289,7 @@
             "Perplexity (USA): receives your first and last name and, if given, your city and job or company, to ask what AI says about you.",
             "Anthropic (USA): receives the results above (not your email) to write the report in plain language.",
             "Gravatar (Automattic, USA): receives a hash (irreversible fingerprint) of your email to check whether a public profile is associated with it.",
+            "Google (USA): if you connect your Gmail, Google receives your authorisation and we access your email headers through its API, with the read-only permission you grant and can revoke at any time from your Google account.",
             "We also use providers that host and run the service: Supabase (database), Resend (email delivery) and the web hosting provider. They act as data processors under contract.",
             "Some of these providers are outside the European Economic Area. Transfers rely on Standard Contractual Clauses approved by the European Commission or on the EU-US Data Privacy Framework, depending on the provider.",
             "We do not sell your data or share it with anyone else."
@@ -431,7 +433,10 @@
     "signedInAs": "Signed in as {email}",
     "mustLoginTitle": "This report is private",
     "mustLoginBody": "Only the person who requested it can view it. Sign in with that email to open it.",
-    "mustLoginCta": "Sign in"
+    "mustLoginCta": "Sign in",
+    "mailboxCard": "Inbox scanner",
+    "mailboxCardBody": "Connect your Gmail and we tell you where you're registered. Headers only, no emails stored.",
+    "mailboxCardCta": "Open the scanner"
   },
   "monitor": {
     "title": "Monthly monitoring",
@@ -603,5 +608,60 @@
     "manage": "Manage subscription",
     "thanks": "Thank you! Your Pro plan will be active in a few seconds.",
     "thanksPending": "If it doesn't show as active within a minute, reload the page or write to us."
+  },
+  "mailbox": {
+    "title": "Inbox scanner",
+    "subtitle": "Where you're registered, according to your own inbox.",
+    "beta": "Beta",
+    "connectTitle": "Connect your Gmail",
+    "rescan": "Scan again",
+    "connect": "Connect Gmail",
+    "connectBody": "We look in your inbox for welcome, verification, order and newsletter emails and group them by service. So you know where you have accounts, since when, and what you haven't used in years.",
+    "promises": [
+      "We read only sender, subject and date. Never the content of emails.",
+      "We store no emails: only the list of services.",
+      "Access is revoked automatically when the scan ends. We keep no keys."
+    ],
+    "testersNote": "During the beta, Google shows an \"unverified app\" warning: that's expected, press \"Continue\". Only emails added as testers can connect.",
+    "proBody": "The inbox scanner is part of the Pro plan.",
+    "scanning": "Scanning",
+    "scanningBody": "Usually one to three minutes depending on inbox size. You can keep this page open.",
+    "step": {
+      "listing": "Finding sign-up, order and newsletter emails",
+      "headers": "Reading senders and subjects",
+      "grouping": "Grouping by service"
+    },
+    "seen": "{n} emails read",
+    "doneEyebrow": "Scan finished",
+    "doneTitle": "{n} services found",
+    "doneBody": "Inbox {mailbox}, {seen} emails reviewed. Each service with its type, how many emails and since when.",
+    "privacyNote": "Access to your inbox is already revoked. Only this list is stored.",
+    "all": "All",
+    "kind": {
+      "account": "Account",
+      "receipt": "Purchases",
+      "newsletter": "Newsletter",
+      "other": "Other"
+    },
+    "old": "Unused 2+ years",
+    "msgs": "emails",
+    "search": "Search…",
+    "none": "Nothing to show with that filter.",
+    "closeLetter": "Closure letter",
+    "errorTitle": "The scan couldn't be completed",
+    "errorBody": "Google cut off access or the inbox is too large for this version. Try again; if it repeats, write to us.",
+    "status": {
+      "processing": "in progress",
+      "error": "error"
+    },
+    "history": "Previous scans",
+    "errors": {
+      "denied": "You cancelled the permission in Google. Without it we can't scan.",
+      "state": "The connection expired. Start again.",
+      "scope": "You didn't grant Gmail read permission. Connect again and tick the box.",
+      "google": "Google didn't respond. Try again in a moment.",
+      "db": "Something failed on our side. Try again.",
+      "config": "The scanner isn't configured on this server yet."
+    }
   }
 }

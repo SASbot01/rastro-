@@ -196,6 +196,18 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
           </ul>
         )}
 
+        {/* Escaner de buzon (Pro, beta) */}
+        <section className="mt-6 rounded-card border border-line bg-surface p-5 sm:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-[15px] font-semibold text-ink">{tr("account.mailboxCard")}</h2>
+            <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-accent">{tr("mailbox.beta")}</span>
+          </div>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("account.mailboxCardBody")}</p>
+          <Link href={pro ? "/cuenta/buzon" : "/pro"} className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90">
+            {pro ? tr("account.mailboxCardCta") : tr("pro.lockedCta")}
+          </Link>
+        </section>
+
         {/* Proximos plazos (cartas enviadas, ordenadas por vencimiento) */}
         {(() => {
           const pending = letters

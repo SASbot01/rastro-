@@ -25,6 +25,12 @@ export async function POST(request: Request) {
   const form = await request.formData();
   const requestId = String(form.get("request_id") ?? "");
   const index = Number(form.get("finding_index"));
+  const hostParam = String(form.get("host") ?? "").trim().toLowerCase();
+  const scanId = String(form.get("mailbox_scan_id") ?? "");
+
+  // Modo buzon: carta de cierre para un servicio detectado en el escaneo (sin informe ni hallazgo).
+  if (hostParam) return lettersFromMailbox(session.email, hostParam, scanId);
+
   if (!UUID.test(requestId) || !Number.isInteger(index) || index < 0) return new NextResponse(null, { status: 400 });
 
   const supabase = supabaseAdmin();
@@ -88,6 +94,49 @@ export async function POST(request: Request) {
     .single<{ id: string }>();
   if (error || !created) {
     console.error("[/api/letters] insert fallo:", error?.message);
+    return new NextResponse(null, { status: 500 });
+  }
+  return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });
+}
+
+async function lettersFromMailbox(sessionEmail: string, host: string, scanId: string) {
+  if (!/^[a-z0-9.-]+\.[a-z]{2,}$/.test(host)) return new NextResponse(null, { status: 400 });
+  const user = await findUserByEmail(sessionEmail);
+  if (!user) return NextResponse.redirect(absoluteUrl("/entrar"), { status: 303 });
+  if (!isPro(user)) return NextResponse.redirect(absoluteUrl("/pro"), { status: 303 });
+
+  const supabase = supabaseAdmin();
+  const { data: scan } = UUID.test(scanId)
+    ? await supabase.from("mailbox_scans").select("id, mailbox, services").eq("id", scanId).eq("user_id", user.id).maybeSingle<{ id: string; mailbox: string; services: Array<{ domain: string; name: string }> }>()
+    : { data: null };
+  const service = scan?.services.find((s) => s.domain === host);
+  if (!scan || !service) return new NextResponse(null, { status: 404 });
+
+  const { data: existing } = await supabase
+    .from("letters")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("mailbox_scan_id", scan.id)
+    .eq("host", host)
+    .maybeSingle<{ id: string }>();
+  if (existing) return NextResponse.redirect(absoluteUrl(`/cartas/${existing.id}`), { status: 303 });
+
+  const locale: Locale = isLocale(user.locale) ? user.locale : "es";
+  // Nombre: el de la ultima solicitud de la cuenta; si no hay, el correo.
+  const { data: last } = await supabase.from("requests").select("full_name, city").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1).maybeSingle<{ full_name: string; city: string | null }>();
+  const what = locale === "es" ? `una cuenta registrada con el correo ${scan.mailbox} (${service.name})` : `an account registered with the email ${scan.mailbox} (${service.name})`;
+
+  const [contact, letter] = await Promise.all([
+    findPrivacyContact(host, locale).catch(() => null),
+    Promise.resolve(buildLetter({ fullName: last?.full_name ?? scan.mailbox, email: scan.mailbox, city: last?.city ?? null, host, url: `https://${host}`, what, locale })),
+  ]);
+  const { data: created, error } = await supabase
+    .from("letters")
+    .insert({ user_id: user.id, mailbox_scan_id: scan.id, host, target_url: `https://${host}`, contact: contact?.contact ?? null, contact_source: contact?.source ?? null, subject: letter.subject, body: letter.body, locale })
+    .select("id")
+    .single<{ id: string }>();
+  if (error || !created) {
+    console.error("[/api/letters] insert (buzon) fallo:", error?.message);
     return new NextResponse(null, { status: 500 });
   }
   return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });
