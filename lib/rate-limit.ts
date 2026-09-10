@@ -2,19 +2,29 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { hashEmail, hashIp } from "@/lib/crypto";
 
 /**
- * Limites de CLAUDE.md s.4: 3 informes por correo y dia, 20 por IP y dia.
+ * Limites por uso. Informes: 3 por correo y dia, 20 por IP y dia (CLAUDE.md s.4).
+ * Entrar y soporte tienen su propio contador, mas holgado: pedir un codigo de
+ * acceso varias veces no debe bloquear a nadie por haber pedido informes.
  * La cuenta la lleva Postgres en una sola sentencia (bump_rate_limit), asi
  * dos peticiones simultaneas no pueden colarse. Solo se guardan hashes.
  */
 
-const DAY_SECONDS = 24 * 60 * 60;
-export const LIMITS = { email: 3, ip: 20 } as const;
+const HOUR = 60 * 60;
+const DAY = 24 * HOUR;
 
-async function bump(key: string, limit: number): Promise<boolean> {
+export type RateKind = "report" | "login" | "support";
+
+export const LIMITS: Record<RateKind, { email: number; ip: number; window: number }> = {
+  report: { email: 3, ip: 20, window: DAY },
+  login: { email: 10, ip: 60, window: HOUR },
+  support: { email: 5, ip: 30, window: DAY },
+};
+
+async function bump(key: string, limit: number, windowSeconds: number): Promise<boolean> {
   const { data, error } = await supabaseAdmin().rpc("bump_rate_limit", {
     p_key: key,
     p_limit: limit,
-    p_window_seconds: DAY_SECONDS,
+    p_window_seconds: windowSeconds,
   });
   if (error) {
     // Si el limite no se puede comprobar, mejor dejar pasar que bloquear a todos.
@@ -25,11 +35,14 @@ async function bump(key: string, limit: number): Promise<boolean> {
 }
 
 /** true si la peticion puede seguir; false si algun limite se ha superado. */
-export async function allowRequest(email: string, ip: string): Promise<boolean> {
+export async function allowRequest(email: string, ip: string, kind: RateKind = "report"): Promise<boolean> {
   if (process.env.RATE_LIMIT_DISABLED === "1" && process.env.NODE_ENV !== "production") return true;
 
+  const { email: emailLimit, ip: ipLimit, window } = LIMITS[kind];
+  // Los informes conservan las claves originales; el resto lleva prefijo propio.
+  const prefix = kind === "report" ? "" : `${kind}:`;
   // La IP primero: es el limite mas amplio y frena bots antes de tocar el de correo.
-  if (!(await bump(`ip:${hashIp(ip)}`, LIMITS.ip))) return false;
-  if (!(await bump(`email:${hashEmail(email)}`, LIMITS.email))) return false;
+  if (!(await bump(`${prefix}ip:${hashIp(ip)}`, ipLimit, window))) return false;
+  if (!(await bump(`${prefix}email:${hashEmail(email)}`, emailLimit, window))) return false;
   return true;
 }

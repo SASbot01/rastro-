@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
   const h = await headers();
   const ip = h.get("x-forwarded-for")?.split(",")[0].trim() ?? h.get("x-real-ip") ?? "0.0.0.0";
-  if (!(await allowRequest(email, ip))) return NextResponse.json({ ok: false, error: "formErrors.rateLimit" }, { status: 429 });
+  if (!(await allowRequest(email, ip, "support"))) return NextResponse.json({ ok: false, error: "formErrors.rateLimit" }, { status: 429 });
 
   // Si hay sesion, el remitente es la cuenta (evita suplantar a otro).
   const session = await getSession();

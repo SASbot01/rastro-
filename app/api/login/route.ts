@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
     const h = await headers();
     const ip = h.get("x-forwarded-for")?.split(",")[0].trim() ?? h.get("x-real-ip") ?? "0.0.0.0";
-    if (!(await allowRequest(email, ip))) {
+    if (!(await allowRequest(email, ip, "login"))) {
       return NextResponse.json({ ok: false, error: "formErrors.rateLimit" }, { status: 429 });
     }
 
