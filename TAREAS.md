@@ -46,6 +46,13 @@ Han pasado por el chat y por iCloud. Cuando toque, rotar y actualizar en `/home/
 - [ ] Probar con un buzón de prueba y ajustar heurísticas (dominios que salen mal agrupados, servicios que faltan).
 - [ ] Cuando funcione comercialmente: verificación OAuth de Google + auditoría CASA nivel 2 (500–1.500 €/año) para pasar de 100 usuarios. Entonces, plan **Pro Total** (34 €/mes · 199 €/año) con escáner + re-escaneo mensual; ahora va incluido en Pro durante la beta.
 
+## Hecho el 10-09-2026 (tarde)
+
+- [x] Rediseño oscuro con acento lima, barra inferior (móvil) / lateral (escritorio), 5 secciones: Inicio · Informe · Herramientas · Comunidad · Perfil.
+- [x] Registro/acceso: "Continuar con Google" o correo con código de 6 dígitos (sin contraseñas). Pendiente tuyo: añadir `https://rastropro.com/api/auth/google/callback` a las URIs de redirección del cliente OAuth.
+- [x] Informe en desplegables; IA con más espacio de salida y reintento (adiós "versión preliminar").
+- [x] Chat de la comunidad con alias.
+
 ## Siguiente bloque acordado (10-09-2026)
 
 - [ ] **Comprobación diaria + calendario semanal** en el perfil, al estilo de la referencia de UX (tira Lun–Dom con puntos): cada día se comprueba lo barato (HIBP: filtraciones y pastes nuevos; Gravatar) y una vez al mes lo caro (Brave + Perplexity + Anthropic). El calendario marca los días comprobados y los días con novedades; racha de días. Pro.
