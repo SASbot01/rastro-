@@ -11,14 +11,43 @@ import { revokeToken } from "@/lib/google";
 const GMAIL = "https://gmail.googleapis.com/gmail/v1/users/me";
 const PAGE = 500;
 const MAX_PER_QUERY = 1000;
-const CONCURRENCY = 8;
+const CONCURRENCY = 4;
 
-const QUERIES = [
-  // Altas y cuentas
-  `subject:(welcome OR bienvenido OR bienvenida OR "verify your" OR verifica OR "confirm your" OR confirma OR "your account" OR "tu cuenta" OR activate OR activa OR "sign up" OR registro OR "new account" OR "nueva cuenta" OR "verification code" OR "código de verificación" OR "reset your password" OR "restablecer" OR contraseña)`,
-  // Compras y facturas
-  `subject:(receipt OR recibo OR factura OR invoice OR "your order" OR "tu pedido" OR "order confirmation" OR "confirmación de pedido" OR suscripción OR subscription)`,
+/**
+ * Palabras clave (asunto) que delatan una relacion con un servicio.
+ * Anadir aqui lo que haga falta; se agrupan en consultas de Gmail.
+ */
+const KEYWORDS_ACCOUNT = [
+  // altas y registro
+  "welcome", "welcome to", "bienvenido", "bienvenida", "bienvenido a", "gracias por registrarte", "thanks for signing up",
+  "sign up", "signed up", "registro", "registrado", "alta", "cuenta creada", "account created", "new account", "nueva cuenta",
+  "your account", "tu cuenta", "activate", "activa tu cuenta", "activación",
+  // verificacion
+  "verify", "verifica", "verify your", "verifica tu", "confirm your", "confirma tu", "confirmación", "confirmation",
+  "verification code", "código de verificación", "codigo de verificacion", "código de acceso", "one-time", "otp",
+  // inicio de sesion y seguridad
+  "inicio de sesión", "inicio de sesion", "sign in", "sign-in", "signed in", "login", "log in", "new login", "nuevo inicio de sesión",
+  "security alert", "alerta de seguridad", "password", "contraseña", "reset your password", "restablecer", "cambio de contraseña",
+  // suscripciones y pruebas
+  "trial", "prueba gratuita", "membership", "membresía", "suscripción", "subscription", "renewal", "renovación", "plan",
 ];
+const KEYWORDS_RECEIPT = [
+  "receipt", "recibo", "factura", "invoice", "your order", "tu pedido", "order confirmation", "confirmación de pedido",
+  "payment", "pago", "pago recibido", "payment received", "purchase", "compra", "ticket", "booking", "reserva", "envío", "shipped",
+];
+
+function quote(k: string): string {
+  return /\s/.test(k) ? `"${k}"` : k;
+}
+/** Gmail admite OR largos, pero mejor en trozos de ~25 terminos. */
+function chunk<T>(arr: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+const QUERIES = [...KEYWORDS_ACCOUNT, ...KEYWORDS_RECEIPT].length
+  ? [...chunk(KEYWORDS_ACCOUNT, 25), ...chunk(KEYWORDS_RECEIPT, 25)].map((ks) => `subject:(${ks.map(quote).join(" OR ")})`)
+  : [];
 
 /** Proveedores de correo personal: son personas, no servicios. */
 const PERSONAL = new Set(["gmail.com", "googlemail.com", "hotmail.com", "hotmail.es", "outlook.com", "outlook.es", "live.com", "msn.com", "yahoo.com", "yahoo.es", "icloud.com", "me.com", "mac.com", "protonmail.com", "proton.me", "aol.com", "gmx.com", "gmx.es", "telefonica.net", "movistar.es"]);
@@ -60,14 +89,19 @@ function parseFrom(from: string): { name: string; domain: string } | null {
   return { name, domain: registrable(host) };
 }
 
-async function gmail<T>(token: string, path: string): Promise<T> {
+async function gmail<T>(token: string, path: string, attempt = 0): Promise<T> {
   const res = await fetch(`${GMAIL}/${path}`, { headers: { authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(20_000) });
-  if (res.status === 429) {
-    await new Promise((r) => setTimeout(r, 1500));
-    return gmail<T>(token, path);
+  if (res.ok) return (await res.json()) as T;
+
+  // Gmail avisa del limite de peticiones con 403 (userRateLimitExceeded), no solo con 429.
+  const body = await res.text().catch(() => "");
+  const retryable = res.status === 429 || res.status >= 500 || (res.status === 403 && /rate|quota|limit/i.test(body));
+  if (retryable && attempt < 6) {
+    await new Promise((r) => setTimeout(r, Math.min(15_000, 500 * 2 ** attempt) + Math.random() * 300));
+    return gmail<T>(token, path, attempt + 1);
   }
-  if (!res.ok) throw new Error(`gmail ${path.split("?")[0]}: HTTP ${res.status}`);
-  return (await res.json()) as T;
+  const reason = body.match(/"reason":\s*"([^"]+)"/)?.[1] ?? body.match(/"message":\s*"([^"]+)"/)?.[1] ?? "";
+  throw new Error(`gmail ${path.split("?")[0]}: HTTP ${res.status} ${reason}`.trim());
 }
 
 async function listIds(token: string, q: string): Promise<string[]> {
@@ -111,8 +145,16 @@ export async function runMailboxScan(scanId: string, accessToken: string): Promi
     const groups = new Map<string, { names: Map<string, number>; kinds: Set<string>; dates: number[]; count: number; sample: string | null; unsub: boolean }>();
     let seen = 0;
 
+    let failed = 0;
     await mapLimit(ids, CONCURRENCY, async (id) => {
-      const msg = await gmail<Msg>(accessToken, `messages/${id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date&metadataHeaders=List-Unsubscribe&fields=id,payload/headers`);
+      let msg: Msg;
+      try {
+        msg = await gmail<Msg>(accessToken, `messages/${id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date&metadataHeaders=List-Unsubscribe&fields=id,payload/headers`);
+      } catch (err) {
+        failed += 1;
+        if (failed > 50) throw err; // algo va mal de verdad
+        return;
+      }
       const h = Object.fromEntries((msg.payload?.headers ?? []).map((x) => [x.name.toLowerCase(), x.value])) as Record<string, string>;
       const from = h.from ? parseFrom(h.from) : null;
       seen += 1;
@@ -151,7 +193,7 @@ export async function runMailboxScan(scanId: string, accessToken: string): Promi
       .sort((a, b) => (b.last_seen ?? "").localeCompare(a.last_seen ?? ""));
 
     await progress({ status: "done", step: null, messages_seen: seen, services, finished_at: new Date().toISOString() });
-    console.log(`[mailbox] escaneo ${scanId}: ${seen} correos, ${services.length} servicios`);
+    console.log(`[mailbox] escaneo ${scanId}: ${seen} correos (${failed} fallidos), ${services.length} servicios`);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`[mailbox] escaneo ${scanId} fallo:`, message);
