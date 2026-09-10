@@ -662,6 +662,7 @@
       "google": "Google didn't respond. Try again in a moment.",
       "db": "Something failed on our side. Try again.",
       "config": "The scanner isn't configured on this server yet."
-    }
+    },
+    "seenOf": "{n} of {total} emails read"
   }
 }

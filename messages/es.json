@@ -662,6 +662,7 @@
       "google": "Google no ha respondido. Inténtalo de nuevo en un momento.",
       "db": "Algo ha fallado por nuestro lado. Inténtalo de nuevo.",
       "config": "El escáner aún no está configurado en este servidor."
-    }
+    },
+    "seenOf": "{n} de {total} correos leídos"
   }
 }

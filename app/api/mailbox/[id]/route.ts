@@ -15,10 +15,14 @@ export async function GET(_request: Request, ctx: RouteContext<"/api/mailbox/[id
 
   const { data } = await supabaseAdmin()
     .from("mailbox_scans")
-    .select("status, step, messages_seen, error")
+    .select("status, step, messages_seen, messages_total, error, started_at")
     .eq("id", id)
     .eq("user_id", user.id)
-    .maybeSingle<{ status: string; step: string | null; messages_seen: number; error: string | null }>();
+    .maybeSingle<{ status: string; step: string | null; messages_seen: number; messages_total: number | null; error: string | null; started_at: string }>();
   if (!data) return NextResponse.json({ status: "not_found" }, { status: 404 });
+  if (data.status === "processing" && data.started_at && Date.now() - new Date(data.started_at).getTime() > 15 * 60_000) {
+    await supabaseAdmin().from("mailbox_scans").update({ status: "error", error: "timeout", finished_at: new Date().toISOString() }).eq("id", id).eq("status", "processing");
+    return NextResponse.json({ ...data, status: "error", error: "timeout" });
+  }
   return NextResponse.json(data, { headers: { "cache-control": "no-store" } });
 }

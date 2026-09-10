@@ -13,6 +13,7 @@ interface Scan {
   status: "processing" | "done" | "error";
   step: string | null;
   messages_seen: number;
+  messages_total?: number | null;
   services: MailboxService[];
   started_at: string;
 }
@@ -22,7 +23,7 @@ const KIND_ORDER: MailboxService["kind"][] = ["account", "receipt", "newsletter"
 export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; locale: Locale; messages: Messages; pro: boolean }) {
   const tr = translator(messages);
   const router = useRouter();
-  const [live, setLive] = useState({ status: scan.status, step: scan.step, seen: scan.messages_seen });
+  const [live, setLive] = useState({ status: scan.status, step: scan.step, seen: scan.messages_seen, total: scan.messages_total ?? null });
   const [filter, setFilter] = useState<MailboxService["kind"] | "all">("all");
   const [q, setQ] = useState("");
 
@@ -31,8 +32,8 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
     const t = setInterval(async () => {
       try {
         const r = await fetch(`/api/mailbox/${scan.id}`, { cache: "no-store" });
-        const b = (await r.json()) as { status: Scan["status"]; step: string | null; messages_seen: number };
-        setLive({ status: b.status, step: b.step, seen: b.messages_seen });
+        const b = (await r.json()) as { status: Scan["status"]; step: string | null; messages_seen: number; messages_total: number | null };
+        setLive({ status: b.status, step: b.step, seen: b.messages_seen, total: b.messages_total });
         if (b.status !== "processing") {
           clearInterval(t);
           router.refresh();
@@ -56,7 +57,7 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
         <p className="mt-5 flex items-center gap-2 text-[14px] text-ink">
           <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
           {tr(`mailbox.step.${live.step ?? "listing"}`)}
-          {live.seen > 0 && <span className="text-faint">· {tr("mailbox.seen", { n: live.seen })}</span>}
+          {live.seen > 0 && <span className="text-faint">· {live.total ? tr("mailbox.seenOf", { n: live.seen, total: live.total }) : tr("mailbox.seen", { n: live.seen })}</span>}
         </p>
       </div>
     );

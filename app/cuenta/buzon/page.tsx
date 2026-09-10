@@ -21,6 +21,7 @@ interface ScanRow {
   status: "processing" | "done" | "error";
   step: string | null;
   messages_seen: number;
+  messages_total: number | null;
   services: MailboxService[];
   started_at: string;
 }
@@ -42,7 +43,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
   const supabase = supabaseAdmin();
   const { data: scans } = await supabase
     .from("mailbox_scans")
-    .select("id, mailbox, status, step, messages_seen, services, started_at")
+    .select("id, mailbox, status, step, messages_seen, messages_total, services, started_at")
     .eq("user_id", user.id)
     .order("started_at", { ascending: false })
     .limit(10)

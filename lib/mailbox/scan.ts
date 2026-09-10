@@ -10,8 +10,9 @@ import { revokeToken } from "@/lib/google";
 
 const GMAIL = "https://gmail.googleapis.com/gmail/v1/users/me";
 const PAGE = 500;
-const MAX_PER_QUERY = 1000;
-const CONCURRENCY = 4;
+const MAX_PER_QUERY = 400;
+const CONCURRENCY = 3; // lotes en paralelo
+const BATCH_SIZE = 50; // cabeceras por peticion (Gmail recomienda <= 50)
 
 /**
  * Palabras clave (asunto) que delatan una relacion con un servicio.
@@ -20,7 +21,7 @@ const CONCURRENCY = 4;
 const KEYWORDS_ACCOUNT = [
   // altas y registro
   "welcome", "welcome to", "bienvenido", "bienvenida", "bienvenido a", "gracias por registrarte", "thanks for signing up",
-  "sign up", "signed up", "registro", "registrado", "alta", "cuenta creada", "account created", "new account", "nueva cuenta",
+  "sign up", "signed up", "registro", "registrado", "cuenta creada", "account created", "new account", "nueva cuenta",
   "your account", "tu cuenta", "activate", "activa tu cuenta", "activación",
   // verificacion
   "verify", "verifica", "verify your", "verifica tu", "confirm your", "confirma tu", "confirmación", "confirmation",
@@ -33,7 +34,7 @@ const KEYWORDS_ACCOUNT = [
 ];
 const KEYWORDS_RECEIPT = [
   "receipt", "recibo", "factura", "invoice", "your order", "tu pedido", "order confirmation", "confirmación de pedido",
-  "payment", "pago", "pago recibido", "payment received", "purchase", "compra", "ticket", "booking", "reserva", "envío", "shipped",
+  "payment", "pago", "pago recibido", "payment received", "purchase", "compra", "booking", "reserva", "envío", "shipped",
 ];
 
 function quote(k: string): string {
@@ -104,6 +105,51 @@ async function gmail<T>(token: string, path: string, attempt = 0): Promise<T> {
   throw new Error(`gmail ${path.split("?")[0]}: HTTP ${res.status} ${reason}`.trim());
 }
 
+/**
+ * Lote de Gmail: hasta 50 messages.get en una sola peticion HTTP (multipart).
+ * Devuelve los mensajes que hayan respondido 200; los demas se ignoran.
+ */
+async function gmailBatch(token: string, ids: string[], attempt = 0): Promise<Msg[]> {
+  const boundary = `rastro_${Math.random().toString(36).slice(2)}`;
+  const fields = "format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date&metadataHeaders=List-Unsubscribe&fields=id,payload/headers";
+  const body =
+    ids.map((id, i) => `--${boundary}\r\nContent-Type: application/http\r\nContent-ID: <m${i}>\r\n\r\nGET /gmail/v1/users/me/messages/${id}?${fields}\r\n\r\n`).join("") +
+    `--${boundary}--\r\n`;
+  const res = await fetch("https://gmail.googleapis.com/batch/gmail/v1", {
+    method: "POST",
+    headers: { authorization: `Bearer ${token}`, "content-type": `multipart/mixed; boundary=${boundary}` },
+    body,
+    signal: AbortSignal.timeout(40_000),
+  });
+  const text = await res.text().catch(() => "");
+  const retryable = res.status === 429 || res.status >= 500 || (res.status === 403 && /rate|quota|limit/i.test(text));
+  if (!res.ok) {
+    if (retryable && attempt < 6) {
+      await new Promise((r) => setTimeout(r, Math.min(15_000, 700 * 2 ** attempt) + Math.random() * 400));
+      return gmailBatch(token, ids, attempt + 1);
+    }
+    throw new Error(`gmail batch: HTTP ${res.status}`);
+  }
+  // Cada parte trae una respuesta HTTP con un JSON; nos quedamos con los 200.
+  const out: Msg[] = [];
+  let limited = 0;
+  for (const part of text.split(/--[^\r\n]+(?:\r?\n|--)/)) {
+    const m = part.match(/HTTP\/1\.1 (\d{3})[^\n]*[\s\S]*?(\{[\s\S]*\})\s*$/);
+    if (!m) continue;
+    if (m[1] === "200") {
+      try { out.push(JSON.parse(m[2]) as Msg); } catch { /* parte corrupta: se ignora */ }
+    } else if (m[1] === "403" || m[1] === "429") limited += 1;
+  }
+  // Si Gmail limito muchas partes, reintentar solo las que faltan.
+  if (limited > 0 && attempt < 6) {
+    const got = new Set(out.map((x) => x.id));
+    const missing = ids.filter((id) => !got.has(id));
+    await new Promise((r) => setTimeout(r, Math.min(15_000, 700 * 2 ** attempt) + Math.random() * 400));
+    return [...out, ...(await gmailBatch(token, missing, attempt + 1))];
+  }
+  return out;
+}
+
 async function listIds(token: string, q: string): Promise<string[]> {
   const ids: string[] = [];
   let pageToken: string | undefined;
@@ -146,20 +192,22 @@ export async function runMailboxScan(scanId: string, accessToken: string): Promi
     let seen = 0;
 
     let failed = 0;
-    await mapLimit(ids, CONCURRENCY, async (id) => {
-      let msg: Msg;
+    const batches = chunk(ids, BATCH_SIZE);
+    await progress({ messages_total: ids.length });
+    await mapLimit(batches, CONCURRENCY, async (batchIds) => {
+      let msgs: Msg[];
       try {
-        msg = await gmail<Msg>(accessToken, `messages/${id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date&metadataHeaders=List-Unsubscribe&fields=id,payload/headers`);
+        msgs = await gmailBatch(accessToken, batchIds);
       } catch (err) {
-        failed += 1;
-        if (failed > 50) throw err; // algo va mal de verdad
+        failed += batchIds.length;
+        if (failed > 300) throw err; // algo va mal de verdad
         return;
       }
+      for (const msg of msgs) {
       const h = Object.fromEntries((msg.payload?.headers ?? []).map((x) => [x.name.toLowerCase(), x.value])) as Record<string, string>;
       const from = h.from ? parseFrom(h.from) : null;
       seen += 1;
-      if (seen % 200 === 0) await progress({ messages_seen: seen });
-      if (!from || PERSONAL.has(from.domain)) return;
+      if (!from || PERSONAL.has(from.domain)) continue;
 
       const g = groups.get(from.domain) ?? { names: new Map<string, number>(), kinds: new Set<string>(), dates: [] as number[], count: 0, sample: null as string | null, unsub: false };
       g.count += 1;
@@ -171,6 +219,8 @@ export async function runMailboxScan(scanId: string, accessToken: string): Promi
       else if (RECEIPT_RE.test(subject)) g.kinds.add("receipt");
       if (h["list-unsubscribe"]) g.unsub = true;
       groups.set(from.domain, g);
+      }
+      await progress({ messages_seen: seen });
     });
 
     await progress({ step: "grouping", messages_seen: seen });
