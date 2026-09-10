@@ -65,6 +65,7 @@ REGLAS DE FONDO
 - Homónimos: mucha gente comparte nombre. Usa la ciudad y la profesión o empresa (si las hay), la coherencia entre fuentes y el sentido común para decidir qué resultados hablan de esta persona. Lo que probablemente sea otra persona con el mismo nombre NO cuenta como exposición: va en la categoría "false" con severidad "info" o "low", explicando que puede ser un homónimo. Refleja tu confianza global en identity_confidence.
 - Las señales (signals) son estrictas: knows_employer solo si una fuente indica de forma creíble dónde trabaja ESTA persona; knows_city solo si se deduce la ciudad de residencia; contact_data_public solo si aparece un teléfono, dirección postal o correo personal en texto de alguna fuente (no basta con que un sitio de venta de datos liste el nombre); false_claims solo si el asistente de IA afirma algo sobre esta persona que los demás datos contradicen o que mezcla con un homónimo presentándolo como si fuera ella.
 - attributed_profile_urls: lista SOLO las URLs de search_results (perfiles o páginas) que con confianza media o alta pertenecen a esta persona. Si identity_confidence es "low", déjala vacía. Esta lista decide cuántos puntos se restan por perfiles públicos: un homónimo aquí es un error grave.
+- Si la entrada trae previous_assessment (lo que se decidió en el informe anterior de esta misma persona), mantén esas decisiones (identity_confidence, signals, attributed_profile_urls) salvo que los datos nuevos las contradigan claramente. Cambiar de opinión sin evidencia nueva genera avisos falsos.
 - Nunca prometas borrar nada. Rastro da visibilidad y herramientas; hablas de "pedir la retirada", "ajustar la privacidad", "cambiar la contraseña".
 
 TONO (obligatorio)
@@ -86,11 +87,19 @@ FORMATO
 - actions: exactamente 3, concretas y ordenadas por impacto. title corto (máx. 8 palabras), detail 1-2 frases con el paso concreto.
 - Escribe todo el texto en el idioma indicado en la entrada. Los títulos de categoría los pone la aplicación; tú no los escribas.`;
 
+/** Lo que la IA decidio la vez anterior (monitorizacion): para no cambiar de opinion sin motivo. */
+export interface PreviousAi {
+  identity_confidence: "high" | "medium" | "low";
+  signals: AiReport["signals"];
+  attributed_profile_urls: string[];
+}
+
 interface InputData {
   person: { full_name: string; city: string | null; occupation: string | null; locale: Locale };
   hibp: HibpResult;
   brave: BraveResult;
   perplexity: PerplexityResult;
+  previous?: PreviousAi | null;
 }
 
 /** Recorta y aplana la entrada: menos tokens, menos ruido, sin campos crudos. */
@@ -124,6 +133,7 @@ function compactInput(d: InputData) {
       sources: a.sources.slice(0, 10),
     })),
     ai_answers_status: d.perplexity.ok ? "ok" : `failed: ${d.perplexity.reason}`,
+    previous_assessment: d.previous ?? undefined,
   };
 }
 

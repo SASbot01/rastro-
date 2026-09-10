@@ -2,7 +2,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { getBreaches, type HibpResult } from "@/lib/hibp";
 import { searchName } from "@/lib/brave";
 import { askAboutPerson } from "@/lib/perplexity";
-import { writeReport } from "@/lib/ai/report";
+import { writeReport, type PreviousAi } from "@/lib/ai/report";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { normalizeEmail } from "@/lib/crypto";
 import { computeScore } from "@/lib/report/score";
@@ -88,6 +88,27 @@ async function findCached(row: RequestRow): Promise<{ request: RequestRow; repor
   return report ? { request: prev, report } : null;
 }
 
+/** Valoracion de la IA en el ultimo informe terminado de la misma persona (monitorizacion). */
+async function previousAssessment(row: RequestRow): Promise<PreviousAi | null> {
+  const { data: prev } = await supabaseAdmin()
+    .from("requests")
+    .select("id")
+    .ilike("email", normalizeEmail(row.email))
+    .eq("status", "done")
+    .neq("id", row.id)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle<{ id: string }>();
+  if (!prev) return null;
+  const { data: report } = await supabaseAdmin()
+    .from("reports")
+    .select("raw")
+    .eq("request_id", prev.id)
+    .maybeSingle<{ raw: { ai?: PreviousAi & { failed?: string } } | null }>();
+  const ai = report?.raw?.ai;
+  return ai && !ai.failed && ai.signals ? { identity_confidence: ai.identity_confidence, signals: ai.signals, attributed_profile_urls: ai.attributed_profile_urls ?? [] } : null;
+}
+
 export async function runReportJob(requestId: string): Promise<void> {
   const supabase = supabaseAdmin();
 
@@ -144,7 +165,8 @@ export async function runReportJob(requestId: string): Promise<void> {
 
     await setStep(row.id, "ai");
     const perplexity = await askAboutPerson({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale });
-    const ai = await writeReport({ person, hibp, brave, perplexity });
+    const previous = row.origin === "monitor" ? await previousAssessment(row) : null;
+    const ai = await writeReport({ person, hibp, brave, perplexity, previous });
     if (!ai.ok) console.warn(`[job] ${row.id}: Anthropic no disponible (${ai.reason} ${ai.detail ?? ""}); usando plantillas`);
 
     await setStep(row.id, "report");

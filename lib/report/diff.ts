@@ -74,7 +74,8 @@ export function diffReports(prev: ReportSnapshot, next: ReportSnapshot): ReportD
   d.changed =
     d.new_breaches.length + d.gone_breaches.length + d.new_profiles.length + d.gone_profiles.length +
       d.new_brokers.length + d.gone_brokers.length + d.signals_on.length + d.signals_off.length > 0 ||
-    Math.abs(d.score_after - d.score_before) >= 5;
+    // La redaccion de la IA introduce ruido: un cambio solo de score cuenta si es grande.
+    Math.abs(d.score_after - d.score_before) >= 15;
   return d;
 }
 
