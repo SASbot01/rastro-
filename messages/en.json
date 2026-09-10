@@ -413,5 +413,42 @@
     "mustLoginTitle": "This report is private",
     "mustLoginBody": "Only the person who requested it can view it. Sign in with that email to open it.",
     "mustLoginCta": "Sign in"
+  },
+  "monitor": {
+    "title": "Monthly monitoring",
+    "body": "Every month we regenerate your report and email you only if something changes: a new breach, a new profile, or a change in what AI knows about you.",
+    "on": "On",
+    "off": "Off",
+    "enable": "Turn on monitoring",
+    "disable": "Turn off",
+    "lastCheck": "Last check: {date}",
+    "nextCheck": "Next check: {date}",
+    "neverChecked": "First check in 30 days.",
+    "consent": "By turning it on you consent to us searching your name and email again each month and emailing you the result."
+  },
+  "monitorEmail": {
+    "subject": "Rastro: your exposure has changed ({score}/100)",
+    "preheader": "Your monthly report has changes.",
+    "greeting": "Hi {name},",
+    "intro": "We regenerated your report and there are changes since last month.",
+    "scoreChange": "Your score went from {before} to {after}.",
+    "scoreSame": "Your score is still {after}.",
+    "newBreach": "New breach: {name}",
+    "goneBreach": "No longer listed breach: {name}",
+    "newProfile": "New profile or page with your name: {url}",
+    "goneProfile": "No longer appears: {url}",
+    "newBroker": "A data-broker site now lists you: {host}",
+    "goneBroker": "No longer lists you: {host}",
+    "signalOn": "AI now knows: {what}",
+    "signalOff": "AI no longer shows: {what}",
+    "signals": {
+      "knows_employer": "where you work",
+      "knows_city": "where you live",
+      "contact_data_public": "a phone number or address of yours",
+      "false_claims": "data that is probably false"
+    },
+    "cta": "View the full report",
+    "footer": "You receive this because you turned on monthly monitoring in Rastro. You can turn it off in your account.",
+    "unsubscribe": "Turn off monitoring"
   }
 }

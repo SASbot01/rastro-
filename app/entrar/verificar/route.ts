@@ -36,7 +36,10 @@ export async function GET(request: Request) {
   const user = await ensureUser(row.email, isLocale(row.locale) ? row.locale : "es");
   if (!user) return fail();
 
-  const res = NextResponse.redirect(new URL("/cuenta", url.origin));
+  // Destino opcional (solo rutas internas): los correos de novedades enlazan al informe.
+  const next = url.searchParams.get("next") ?? "";
+  const dest = /^\/(?!\/)[\w\-/?=&.]*$/.test(next) ? next : "/cuenta";
+  const res = NextResponse.redirect(new URL(dest, url.origin));
   setSessionCookie(res, row.email);
   return res;
 }

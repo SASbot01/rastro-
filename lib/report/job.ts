@@ -42,6 +42,7 @@ interface RequestRow {
   locale: string;
   status: string;
   finished_at: string | null;
+  origin: "user" | "monitor";
 }
 
 interface CachedReport {
@@ -69,7 +70,7 @@ async function findCached(row: RequestRow): Promise<{ request: RequestRow; repor
   const since = new Date(Date.now() - CACHE_DAYS * 86_400_000).toISOString();
   const { data: prev } = await supabase
     .from("requests")
-    .select("id, email, full_name, city, occupation, locale, status, finished_at")
+    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin")
     .ilike("email", normalizeEmail(row.email))
     .eq("status", "done")
     .neq("id", row.id)
@@ -92,7 +93,7 @@ export async function runReportJob(requestId: string): Promise<void> {
 
   const { data: row, error } = await supabase
     .from("requests")
-    .select("id, email, full_name, city, occupation, locale, status, finished_at")
+    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin")
     .eq("id", requestId)
     .maybeSingle<RequestRow>();
 
@@ -108,7 +109,8 @@ export async function runReportJob(requestId: string): Promise<void> {
   const startedAt = Date.now();
 
   try {
-    const cached = await findCached(row);
+    // La monitorizacion mensual existe para refrescar: nunca usa la cache.
+    const cached = row.origin === "monitor" ? null : await findCached(row);
 
     // Cache completa: mismo correo, nombre, ciudad e idioma -> copia sin tocar APIs.
     if (

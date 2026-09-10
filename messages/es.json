@@ -413,5 +413,42 @@
     "mustLoginTitle": "Este informe es privado",
     "mustLoginBody": "Solo puede verlo la persona que lo pidió. Entra con ese correo para abrirlo.",
     "mustLoginCta": "Entrar"
+  },
+  "monitor": {
+    "title": "Vigilancia mensual",
+    "body": "Cada mes volvemos a generar tu informe y te avisamos por correo solo si algo cambia: una filtración nueva, un perfil nuevo o un cambio en lo que la IA sabe de ti.",
+    "on": "Activada",
+    "off": "Desactivada",
+    "enable": "Activar vigilancia",
+    "disable": "Desactivar",
+    "lastCheck": "Última comprobación: {date}",
+    "nextCheck": "Próxima comprobación: {date}",
+    "neverChecked": "Primera comprobación dentro de 30 días.",
+    "consent": "Al activarla consientes que cada mes busquemos de nuevo tu nombre y tu correo y te enviemos el resultado."
+  },
+  "monitorEmail": {
+    "subject": "Rastro: hay novedades en tu exposición ({score}/100)",
+    "preheader": "Tu informe mensual tiene cambios.",
+    "greeting": "Hola {name}:",
+    "intro": "Hemos vuelto a generar tu informe y hay cambios desde el mes pasado.",
+    "scoreChange": "Tu puntuación ha pasado de {before} a {after}.",
+    "scoreSame": "Tu puntuación sigue en {after}.",
+    "newBreach": "Nueva filtración: {name}",
+    "goneBreach": "Ya no aparece la filtración: {name}",
+    "newProfile": "Nuevo perfil o página con tu nombre: {url}",
+    "goneProfile": "Ya no aparece: {url}",
+    "newBroker": "Un sitio que vende datos personales te lista ahora: {host}",
+    "goneBroker": "Ya no te lista: {host}",
+    "signalOn": "La IA ahora sabe: {what}",
+    "signalOff": "La IA ya no muestra: {what}",
+    "signals": {
+      "knows_employer": "dónde trabajas",
+      "knows_city": "dónde vives",
+      "contact_data_public": "un teléfono o dirección tuyos",
+      "false_claims": "datos que probablemente son falsos"
+    },
+    "cta": "Ver el informe completo",
+    "footer": "Recibes esto porque activaste la vigilancia mensual en Rastro. Puedes desactivarla en tu cuenta.",
+    "unsubscribe": "Desactivar la vigilancia"
   }
 }

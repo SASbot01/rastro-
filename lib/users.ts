@@ -14,6 +14,8 @@ export interface UserRow {
   plan: "free" | "pro";
   plan_until: string | null;
   created_at: string;
+  monitoring: boolean;
+  monitor_last_at: string | null;
 }
 
 /** Crea la cuenta si no existe, actualiza last_seen_at y enlaza sus solicitudes antiguas. */
@@ -24,7 +26,7 @@ export async function ensureUser(email: string, locale: Locale): Promise<UserRow
   const { data: user, error } = await supabase
     .from("users")
     .upsert({ email: normalized, locale, last_seen_at: new Date().toISOString() }, { onConflict: "email" })
-    .select("id, email, locale, plan, plan_until, created_at")
+    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitor_last_at")
     .single<UserRow>();
   if (error || !user) {
     console.error("[users] upsert fallo:", error?.message);
@@ -39,7 +41,7 @@ export async function ensureUser(email: string, locale: Locale): Promise<UserRow
 export async function findUserByEmail(email: string): Promise<UserRow | null> {
   const { data } = await supabaseAdmin()
     .from("users")
-    .select("id, email, locale, plan, plan_until, created_at")
+    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitor_last_at")
     .eq("email", normalizeEmail(email))
     .maybeSingle<UserRow>();
   return data ?? null;

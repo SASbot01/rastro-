@@ -64,6 +64,38 @@ export default async function AccountPage() {
         </div>
         <p className="mt-4 text-[15px] leading-relaxed text-muted">{tr("account.subtitle")}</p>
 
+        {/* Vigilancia mensual */}
+        <section className="mt-8 rounded-card border border-line bg-surface p-5 sm:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-[15px] font-semibold text-ink">{tr("monitor.title")}</h2>
+            <span className={"rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide " + (user.monitoring ? "bg-accent text-white" : "bg-paper text-faint")}>
+              {user.monitoring ? tr("monitor.on") : tr("monitor.off")}
+            </span>
+          </div>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("monitor.body")}</p>
+          {user.monitoring && (
+            <p className="mt-2 text-[12.5px] text-faint">
+              {user.monitor_last_at
+                ? tr("monitor.nextCheck", { date: fmt.format(new Date(new Date(user.monitor_last_at).getTime() + 30 * 86_400_000)) })
+                : tr("monitor.neverChecked")}
+            </p>
+          )}
+          <form action="/api/monitor" method="post" className="mt-4 grid gap-2">
+            <input type="hidden" name="enabled" value={user.monitoring ? "0" : "1"} />
+            <button
+              type="submit"
+              className={
+                user.monitoring
+                  ? "w-fit text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink"
+                  : "w-fit rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90"
+              }
+            >
+              {user.monitoring ? tr("monitor.disable") : tr("monitor.enable")}
+            </button>
+            {!user.monitoring && <p className="text-[12px] leading-relaxed text-faint">{tr("monitor.consent")}</p>}
+          </form>
+        </section>
+
         <h2 className="mt-10 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("account.reports")}</h2>
 
         {list.length === 0 ? (
