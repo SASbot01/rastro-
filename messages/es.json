@@ -93,13 +93,6 @@
     "contact": "Contacto",
     "rights": "Rastro. Informes solo sobre uno mismo."
   },
-  "legalStub": {
-    "privacyTitle": "Política de privacidad",
-    "legalTitle": "Aviso legal",
-    "draft": "Borrador",
-    "body": "Este texto todavía no está redactado. Se publica en el Día 6, antes de abrir el servicio a nadie. Resumen de lo que dirá: la base legal es tu consentimiento, solo tratamos tu nombre, tu correo y opcionalmente tu ciudad, los datos se borran a los 30 días, y puedes ejercer tus derechos escribiendo al contacto que aparecerá aquí.",
-    "back": "Volver al inicio"
-  },
   "waiting": {
     "confirmed": "Correo confirmado",
     "title": "Preparando tu informe",
@@ -228,5 +221,143 @@
     "scoreLabel": "Puntuación de exposición",
     "outOf": "de 100",
     "cta": "rastro.app · Mira lo que la IA sabe de ti."
+  },
+  "legal": {
+    "reviewNote": "Texto base preparado para su revisión. Confírmalo con un profesional antes de abrir el servicio al público.",
+    "updated": "Última actualización: {date}",
+    "pending": "[pendiente]",
+    "privacy": {
+      "title": "Política de privacidad",
+      "intro": "Rastro te muestra qué información tuya es pública en internet y qué dicen de ti los asistentes de inteligencia artificial. Para hacerlo tratamos unos pocos datos personales. Aquí te explicamos cuáles, para qué, durante cuánto tiempo y qué derechos tienes, en lenguaje claro.",
+      "sections": [
+        {
+          "title": "1. Quién es el responsable",
+          "paragraphs": [
+            "Responsable del tratamiento: {owner}.",
+            "Contacto para cualquier cuestión de privacidad o para ejercer tus derechos: {email}.",
+            "Sitio web: {domain}."
+          ]
+        },
+        {
+          "title": "2. Qué datos tratamos",
+          "paragraphs": [
+            "Los que escribes en el formulario: nombre, apellidos, correo electrónico y, si quieres, tu ciudad.",
+            "La fecha y hora en que diste tu consentimiento y en que verificaste tu correo.",
+            "Tu dirección IP, guardada únicamente como un hash (una huella irreversible) para limitar el número de informes por persona y evitar abusos. No conservamos la IP en claro.",
+            "El informe generado: puntuación, hallazgos, acciones recomendadas y las respuestas técnicas de los servicios consultados, que guardamos para poder revisar errores."
+          ]
+        },
+        {
+          "title": "3. Para qué y con qué base legal",
+          "paragraphs": [
+            "Finalidad: generar y mostrarte tu informe de exposición, enviarte el enlace de verificación por correo y limitar el uso del servicio para evitar abusos.",
+            "Base legal: tu consentimiento (artículo 6.1.a del RGPD), que das marcando la casilla del formulario y confirmas abriendo el enlace que te enviamos por correo. Sin ese doble paso no buscamos nada.",
+            "Solo puedes pedir un informe sobre ti mismo. Pedirlo sobre otra persona incumple estas condiciones."
+          ]
+        },
+        {
+          "title": "4. Quién recibe tus datos",
+          "paragraphs": [
+            "Para elaborar el informe consultamos servicios de terceros, enviando a cada uno solo lo imprescindible:",
+            "Have I Been Pwned (Reino Unido): recibe tu correo electrónico para comprobar si aparece en filtraciones conocidas.",
+            "Brave Search (EE. UU.): recibe tu nombre y apellidos y, si la diste, tu ciudad, para buscar resultados públicos.",
+            "Perplexity (EE. UU.): recibe tu nombre y apellidos y, si la diste, tu ciudad, para preguntar qué dice la IA de ti.",
+            "Anthropic (EE. UU.): recibe los resultados anteriores (no tu correo) para redactar el informe en lenguaje llano.",
+            "Además usamos proveedores que alojan y hacen funcionar el servicio: Supabase (base de datos), Resend (envío de correos) y el proveedor de alojamiento web. Actúan como encargados del tratamiento bajo contrato.",
+            "Algunos de estos proveedores están fuera del Espacio Económico Europeo. Las transferencias se amparan en cláusulas contractuales tipo aprobadas por la Comisión Europea o en el Marco de Privacidad de Datos UE-EE. UU., según el proveedor.",
+            "No vendemos tus datos ni los cedemos a nadie más."
+          ]
+        },
+        {
+          "title": "5. Cuánto tiempo los guardamos",
+          "paragraphs": [
+            "30 días desde que pides el informe. Pasado ese plazo, la solicitud y el informe se borran automáticamente de nuestra base de datos.",
+            "Los hashes usados para limitar el uso se renuevan cada 24 horas.",
+            "Si quieres que borremos tu informe antes, escríbenos a {email} desde el mismo correo con el que lo pediste."
+          ]
+        },
+        {
+          "title": "6. Tus derechos",
+          "paragraphs": [
+            "Puedes acceder a tus datos, rectificarlos, pedir que los borremos, oponerte al tratamiento, pedir que lo limitemos y llevártelos (portabilidad). También puedes retirar tu consentimiento en cualquier momento, sin que eso afecte a lo hecho antes.",
+            "Para ejercerlos, escribe a {email} indicando qué derecho quieres ejercer y el correo con el que pediste el informe. Te responderemos en el plazo de un mes.",
+            "Si crees que no hemos atendido bien tu petición, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es)."
+          ]
+        },
+        {
+          "title": "7. Seguridad",
+          "paragraphs": [
+            "Los datos viajan cifrados (HTTPS) y se guardan en una base de datos con acceso restringido al servidor de la aplicación. Los enlaces de verificación son de un solo uso y caducan a las 24 horas.",
+            "Ningún sistema es infalible. Por eso guardamos lo mínimo y durante el menor tiempo posible."
+          ]
+        },
+        {
+          "title": "8. Lo que Rastro no hace",
+          "paragraphs": [
+            "Rastro no borra información de internet ni de los asistentes de IA, ni promete hacerlo. Te da visibilidad y te indica qué puedes hacer tú.",
+            "El informe se basa en fuentes públicas y en respuestas de sistemas automáticos que pueden equivocarse, especialmente si tu nombre es común. Puede que falten datos o que alguno se refiera a otra persona."
+          ]
+        },
+        {
+          "title": "9. Menores",
+          "paragraphs": [
+            "El servicio está dirigido a mayores de 14 años. Si eres menor, no lo uses sin permiso de tus padres o tutores."
+          ]
+        },
+        {
+          "title": "10. Cambios",
+          "paragraphs": [
+            "Si cambiamos esta política, publicaremos la nueva versión en esta misma página con la fecha actualizada."
+          ]
+        }
+      ]
+    },
+    "notice": {
+      "title": "Aviso legal",
+      "intro": "Condiciones de uso de Rastro. Son cortas, porque el servicio también lo es.",
+      "sections": [
+        {
+          "title": "1. Titular",
+          "paragraphs": [
+            "Este sitio web ({domain}) es titularidad de {owner}. Contacto: {email}."
+          ]
+        },
+        {
+          "title": "2. Qué es el servicio",
+          "paragraphs": [
+            "Rastro genera, de forma gratuita, un informe orientativo sobre la información pública que existe en internet y en asistentes de inteligencia artificial acerca de la persona que lo solicita."
+          ]
+        },
+        {
+          "title": "3. Condiciones de uso",
+          "paragraphs": [
+            "Solo puedes solicitar informes sobre ti mismo. Está prohibido usar el servicio para obtener información sobre terceros, para acosar, discriminar o tomar decisiones que afecten a otras personas.",
+            "Debes indicar un correo electrónico del que seas titular. Verificamos que es tuyo antes de generar nada.",
+            "Nos reservamos el derecho a limitar o bloquear el uso del servicio si detectamos abusos."
+          ]
+        },
+        {
+          "title": "4. Responsabilidad",
+          "paragraphs": [
+            "El informe es orientativo. Se elabora a partir de fuentes públicas y sistemas automáticos (buscadores, bases de datos de filtraciones y modelos de inteligencia artificial) que pueden contener errores, omisiones o datos de otras personas con tu mismo nombre.",
+            "No garantizamos que el informe sea completo ni exacto, y no nos hacemos responsables de las decisiones que tomes basándote en él. Las acciones recomendadas son sugerencias generales, no asesoramiento legal ni técnico personalizado.",
+            "Rastro no elimina información de terceros ni garantiza que puedas eliminarla."
+          ]
+        },
+        {
+          "title": "5. Propiedad intelectual",
+          "paragraphs": [
+            "El diseño, los textos y el código de Rastro son de su titular. Tu informe es tuyo: puedes guardarlo, compartirlo o borrarlo como quieras."
+          ]
+        },
+        {
+          "title": "6. Ley aplicable",
+          "paragraphs": [
+            "Estas condiciones se rigen por la legislación española. Para cualquier conflicto serán competentes los juzgados y tribunales que correspondan según la normativa de consumidores."
+          ]
+        }
+      ]
+    },
+    "back": "Volver al inicio"
   }
 }

@@ -93,13 +93,6 @@
     "contact": "Contact",
     "rights": "Rastro. Reports about yourself only."
   },
-  "legalStub": {
-    "privacyTitle": "Privacy policy",
-    "legalTitle": "Legal notice",
-    "draft": "Draft",
-    "body": "This text has not been written yet. It ships on Day 6, before the service opens to anyone. In short: the legal basis is your consent, we only process your name, your email and optionally your city, data is deleted after 30 days, and you can exercise your rights by writing to the contact that will appear here.",
-    "back": "Back to home"
-  },
   "waiting": {
     "confirmed": "Email confirmed",
     "title": "Preparing your report",
@@ -228,5 +221,143 @@
     "scoreLabel": "Exposure score",
     "outOf": "out of 100",
     "cta": "rastro.app · See what AI knows about you."
+  },
+  "legal": {
+    "reviewNote": "Base text prepared for review. Confirm it with a professional before opening the service to the public.",
+    "updated": "Last updated: {date}",
+    "pending": "[pending]",
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "Rastro shows you what information about you is public online and what AI assistants say about you. To do that we process a small amount of personal data. Here is what, why, for how long, and what rights you have, in plain language.",
+      "sections": [
+        {
+          "title": "1. Who is responsible",
+          "paragraphs": [
+            "Data controller: {owner}.",
+            "Contact for any privacy question or to exercise your rights: {email}.",
+            "Website: {domain}."
+          ]
+        },
+        {
+          "title": "2. What data we process",
+          "paragraphs": [
+            "What you type in the form: first name, last name, email address and, optionally, your city.",
+            "The date and time you gave consent and verified your email.",
+            "Your IP address, stored only as a hash (an irreversible fingerprint) to limit the number of reports per person and prevent abuse. We do not keep the IP in clear text.",
+            "The generated report: score, findings, recommended actions and the technical responses from the services consulted, kept so we can review errors."
+          ]
+        },
+        {
+          "title": "3. Why, and on what legal basis",
+          "paragraphs": [
+            "Purpose: to generate and show you your exposure report, to send you the verification link by email, and to limit use of the service to prevent abuse.",
+            "Legal basis: your consent (Article 6(1)(a) GDPR), which you give by ticking the box in the form and confirm by opening the link we email you. Without that double step we search nothing.",
+            "You may only request a report about yourself. Requesting one about someone else breaches these terms."
+          ]
+        },
+        {
+          "title": "4. Who receives your data",
+          "paragraphs": [
+            "To build the report we query third-party services, sending each only what is strictly necessary:",
+            "Have I Been Pwned (United Kingdom): receives your email address to check whether it appears in known breaches.",
+            "Brave Search (USA): receives your first and last name and, if given, your city, to search public results.",
+            "Perplexity (USA): receives your first and last name and, if given, your city, to ask what AI says about you.",
+            "Anthropic (USA): receives the results above (not your email) to write the report in plain language.",
+            "We also use providers that host and run the service: Supabase (database), Resend (email delivery) and the web hosting provider. They act as data processors under contract.",
+            "Some of these providers are outside the European Economic Area. Transfers rely on Standard Contractual Clauses approved by the European Commission or on the EU-US Data Privacy Framework, depending on the provider.",
+            "We do not sell your data or share it with anyone else."
+          ]
+        },
+        {
+          "title": "5. How long we keep it",
+          "paragraphs": [
+            "30 days from when you request the report. After that, the request and the report are automatically deleted from our database.",
+            "The hashes used for rate limiting are renewed every 24 hours.",
+            "If you want your report deleted sooner, write to {email} from the same address you used to request it."
+          ]
+        },
+        {
+          "title": "6. Your rights",
+          "paragraphs": [
+            "You can access your data, correct it, ask us to delete it, object to the processing, ask us to restrict it, and take it with you (portability). You can also withdraw your consent at any time, without affecting what was done before.",
+            "To exercise them, write to {email} stating which right you want to exercise and the email you used to request the report. We will reply within one month.",
+            "If you believe we have not handled your request properly, you can lodge a complaint with the Spanish Data Protection Agency (www.aepd.es) or your local supervisory authority."
+          ]
+        },
+        {
+          "title": "7. Security",
+          "paragraphs": [
+            "Data travels encrypted (HTTPS) and is stored in a database accessible only to the application server. Verification links are single-use and expire after 24 hours.",
+            "No system is infallible. That is why we keep the minimum, for the shortest time possible."
+          ]
+        },
+        {
+          "title": "8. What Rastro does not do",
+          "paragraphs": [
+            "Rastro does not delete information from the internet or from AI assistants, and does not promise to. It gives you visibility and tells you what you can do.",
+            "The report is based on public sources and on answers from automated systems that can be wrong, especially if your name is common. Data may be missing, or some may refer to another person."
+          ]
+        },
+        {
+          "title": "9. Minors",
+          "paragraphs": [
+            "The service is intended for people aged 14 and over. If you are younger, do not use it without your parents' or guardians' permission."
+          ]
+        },
+        {
+          "title": "10. Changes",
+          "paragraphs": [
+            "If we change this policy, we will publish the new version on this page with an updated date."
+          ]
+        }
+      ]
+    },
+    "notice": {
+      "title": "Legal notice",
+      "intro": "Terms of use for Rastro. They are short, because the service is too.",
+      "sections": [
+        {
+          "title": "1. Owner",
+          "paragraphs": [
+            "This website ({domain}) is owned by {owner}. Contact: {email}."
+          ]
+        },
+        {
+          "title": "2. What the service is",
+          "paragraphs": [
+            "Rastro generates, free of charge, an indicative report on the public information that exists online and in AI assistants about the person requesting it."
+          ]
+        },
+        {
+          "title": "3. Terms of use",
+          "paragraphs": [
+            "You may only request reports about yourself. Using the service to obtain information about third parties, to harass, discriminate or make decisions affecting other people is prohibited.",
+            "You must provide an email address you own. We verify it is yours before generating anything.",
+            "We reserve the right to limit or block use of the service if we detect abuse."
+          ]
+        },
+        {
+          "title": "4. Liability",
+          "paragraphs": [
+            "The report is indicative. It is built from public sources and automated systems (search engines, breach databases and AI models) that may contain errors, omissions or data about other people with your name.",
+            "We do not guarantee that the report is complete or accurate, and we are not responsible for decisions you make based on it. The recommended actions are general suggestions, not personalized legal or technical advice.",
+            "Rastro does not remove third-party information and does not guarantee that you can remove it."
+          ]
+        },
+        {
+          "title": "5. Intellectual property",
+          "paragraphs": [
+            "Rastro's design, texts and code belong to its owner. Your report is yours: you may save, share or delete it as you wish."
+          ]
+        },
+        {
+          "title": "6. Governing law",
+          "paragraphs": [
+            "These terms are governed by Spanish law. Any dispute will be heard by the courts with jurisdiction under consumer legislation."
+          ]
+        }
+      ]
+    },
+    "back": "Back to home"
   }
 }

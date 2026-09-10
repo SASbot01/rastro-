@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import { getLocale } from "@/lib/locale";
 import { getMessages, translator } from "@/lib/i18n";
@@ -33,9 +34,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
+  // Analitica sin cookies (Plausible). Solo se carga si hay dominio configurado.
+  const plausible = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
   return (
     <html lang={locale} className={`${inter.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        {plausible && <Script defer data-domain={plausible} src="https://plausible.io/js/script.js" strategy="afterInteractive" />}
+      </body>
     </html>
   );
 }

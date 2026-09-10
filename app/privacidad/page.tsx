@@ -1,5 +1,5 @@
-import { LegalStub } from "@/components/LegalStub";
+import { LegalPage } from "@/components/LegalStub";
 
 export default function PrivacyPage() {
-  return <LegalStub titleKey="privacyTitle" />;
+  return <LegalPage kind="privacy" />;
 }

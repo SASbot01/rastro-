@@ -1,5 +1,5 @@
-import { LegalStub } from "@/components/LegalStub";
+import { LegalPage } from "@/components/LegalStub";
 
-export default function LegalPage() {
-  return <LegalStub titleKey="legalTitle" />;
+export default function LegalNoticePage() {
+  return <LegalPage kind="notice" />;
 }
