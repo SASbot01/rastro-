@@ -179,3 +179,46 @@ export async function sendMonitorEmail(opts: {
     throw new Error(`Resend: ${error.message}`);
   }
 }
+
+/** Aviso de plazo vencido de una carta RGPD (cron diario). */
+export async function sendDeadlineEmail(opts: {
+  to: string;
+  name: string;
+  host: string;
+  sentAt: string;
+  deadlineAt: string;
+  letterUrl: string;
+  locale: Locale;
+}): Promise<void> {
+  const tr = translator(getMessages(opts.locale));
+  const fmt = new Intl.DateTimeFormat(opts.locale, { dateStyle: "long" });
+  const vars = { name: opts.name, host: opts.host, sent: fmt.format(new Date(opts.sentAt)), deadline: fmt.format(new Date(opts.deadlineAt)) };
+  const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif";
+  const html = `<!doctype html><html lang="${opts.locale}"><head><meta charset="utf-8"><title>Rastro</title></head>
+<body style="margin:0;padding:0;background:${PAPER};">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(tr("deadlineEmail.preheader"))}</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};padding:32px 16px;"><tr><td align="center">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#FFFFFF;border:1px solid ${LINE};border-radius:14px;">
+      <tr><td style="padding:32px 32px 8px;font:600 15px/1.4 ${font};color:${INK};">Rastro</td></tr>
+      <tr><td style="padding:8px 32px 0;font:400 16px/1.6 ${font};color:${INK};">
+        <p style="margin:0 0 12px;">${escapeHtml(tr("deadlineEmail.greeting", vars))}</p>
+        <p style="margin:0 0 12px;">${escapeHtml(tr("deadlineEmail.body", vars))}</p>
+        <p style="margin:0 0 24px;color:${MUTED};">${escapeHtml(tr("deadlineEmail.ask"))}</p>
+      </td></tr>
+      <tr><td style="padding:0 32px;"><a href="${escapeHtml(opts.letterUrl)}" style="display:block;text-align:center;background:${ACCENT};color:#FFFFFF;text-decoration:none;font:600 16px/1 ${font};padding:16px 20px;border-radius:10px;">${escapeHtml(tr("deadlineEmail.cta"))}</a></td></tr>
+      <tr><td style="padding:24px 32px 32px;font:400 12px/1.6 ${font};color:${MUTED};">${escapeHtml(tr("deadlineEmail.footer"))}</td></tr>
+    </table>
+  </td></tr></table></body></html>`;
+  const text = [tr("deadlineEmail.greeting", vars), "", tr("deadlineEmail.body", vars), "", tr("deadlineEmail.ask"), "", `${tr("deadlineEmail.cta")}: ${opts.letterUrl}`, "", tr("deadlineEmail.footer")].join("\n");
+
+  if (!serverEnv.isProduction) console.log(`\n[rastro] Aviso de plazo vencido para ${opts.to} (${opts.host})\n[rastro] ${opts.letterUrl}\n`);
+  if (!process.env.RESEND_API_KEY) {
+    if (!serverEnv.isProduction) return;
+    throw new Error("Falta RESEND_API_KEY");
+  }
+  const { error } = await resend().emails.send({ from: serverEnv.resendFrom, to: opts.to, subject: tr("deadlineEmail.subject", vars), html, text });
+  if (error) {
+    if (!serverEnv.isProduction) return console.warn(`[rastro] Resend no envio el aviso de plazo (${error.message})`);
+    throw new Error(`Resend: ${error.message}`);
+  }
+}

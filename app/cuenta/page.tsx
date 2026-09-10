@@ -150,6 +150,42 @@ export default async function AccountPage() {
           </ul>
         )}
 
+        {/* Proximos plazos (cartas enviadas, ordenadas por vencimiento) */}
+        {(() => {
+          const pending = letters
+            .filter((l) => l.status === "sent" && l.deadline_at)
+            .sort((a, b) => new Date(a.deadline_at!).getTime() - new Date(b.deadline_at!).getTime());
+          const today = new Date();
+          return (
+            <section className="mt-8 rounded-card border border-line bg-surface p-5 sm:p-6">
+              <h2 className="text-[15px] font-semibold text-ink">{tr("deadlines.title")}</h2>
+              {pending.length === 0 ? (
+                <p className="mt-2 text-[14px] text-muted">{tr("deadlines.none")}</p>
+              ) : (
+                <ul className="mt-3 grid gap-2">
+                  {pending.map((l) => {
+                    const d = new Date(l.deadline_at!);
+                    const days = Math.ceil((d.getTime() - today.getTime()) / 86_400_000);
+                    const late = days < 0;
+                    return (
+                      <li key={l.id} className="flex items-center justify-between gap-3 text-[14px]">
+                        <Link href={`/cartas/${l.id}`} className="truncate font-medium text-ink underline-offset-4 hover:underline">
+                          {l.host}
+                        </Link>
+                        <span className={"shrink-0 rounded-full px-2.5 py-0.5 text-[12px] font-semibold " + (late ? "bg-accent text-white" : days <= 3 ? "bg-accent-soft text-accent" : "bg-paper text-muted")}>
+                          {late ? tr("deadlines.overdueShort") : days === 0 ? tr("deadlines.today") : tr("deadlines.daysLeft", { n: days })}
+                          {" · "}
+                          {fmt.format(d)}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
+          );
+        })()}
+
         {/* Cartas RGPD */}
         <h2 className="mt-10 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.listTitle")}</h2>
         {letters.length === 0 ? (

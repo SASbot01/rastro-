@@ -494,5 +494,23 @@
     "p6": "Please confirm the erasure in writing to this email address: {email}",
     "closing": "Sincerely,",
     "date": "{city}{date}"
+  },
+  "deadlines": {
+    "title": "Upcoming deadlines",
+    "none": "You have no pending deadlines.",
+    "due": "Due {date}",
+    "overdue": "Expired {date}",
+    "daysLeft": "{n} days",
+    "today": "today",
+    "overdueShort": "expired"
+  },
+  "deadlineEmail": {
+    "subject": "Rastro: the deadline for your letter to {host} has passed",
+    "preheader": "One month without a reply: you can now escalate.",
+    "greeting": "Hi {name},",
+    "body": "You sent an erasure request to {host} on {sent}. The legal one-month deadline to reply expired on {deadline}.",
+    "ask": "If they replied, mark it on the letter. If not, the next step is a complaint to the data protection authority; we prepare it for you from the letter itself.",
+    "cta": "Open the letter",
+    "footer": "You receive this because you marked this letter as sent in Rastro."
   }
 }
