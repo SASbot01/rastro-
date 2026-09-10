@@ -229,3 +229,7 @@ grant execute on all functions in schema public to service_role;
 alter default privileges in schema public grant all on tables to service_role;
 alter default privileges in schema public grant all on sequences to service_role;
 alter default privileges in schema public grant execute on functions to service_role;
+-- Verificación por código de 6 dígitos (además del enlace): hash HMAC y contador de intentos.
+alter table public.requests
+  add column if not exists verify_code_hash text,
+  add column if not exists verify_attempts int not null default 0;

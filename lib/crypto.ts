@@ -1,4 +1,4 @@
-import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, randomBytes, randomInt, timingSafeEqual } from "node:crypto";
 import { serverEnv } from "@/lib/env";
 
 /** Hash estable y no reversible. Guardamos esto, nunca la IP ni el correo en claro en `rate_limits`. */
@@ -33,4 +33,14 @@ export function safeEqual(a: string, b: string): boolean {
   const bufB = Buffer.from(b);
   if (bufA.length !== bufB.length) return false;
   return timingSafeEqual(bufA, bufB);
+}
+
+/** Codigo de verificacion de 6 digitos. Se guarda su HMAC, nunca el codigo. */
+export function createVerifyCode(): { code: string; codeHash: string } {
+  const code = String(randomInt(0, 1_000_000)).padStart(6, "0");
+  return { code, codeHash: hashCode(code) };
+}
+
+export function hashCode(code: string): string {
+  return hmac(`code:${code.trim()}`);
 }

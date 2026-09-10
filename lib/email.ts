@@ -39,10 +39,17 @@ function copyFor(kind: MagicKind, locale: Locale, name: string) {
   };
 }
 
-function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; locale: Locale }): string {
+function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; locale: Locale; code?: string }): string {
   const c = copyFor(opts.kind, opts.locale, opts.name);
   const tr = (key: keyof typeof c) => c[key];
   const url = escapeHtml(opts.url);
+  const t = translator(getMessages(opts.locale));
+  const codeBlock = opts.code
+    ? `<tr><td style="padding:24px 32px 0;font:400 14px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:${MUTED};">
+          <p style="margin:0 0 8px;">${escapeHtml(t("email.codeIntro"))}</p>
+          <p style="margin:0;font:700 32px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;letter-spacing:0.18em;color:${INK};">${escapeHtml(opts.code)}</p>
+        </td></tr>`
+    : "";
 
   return `<!doctype html>
 <html lang="${opts.locale}">
@@ -62,6 +69,7 @@ function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; local
         <tr><td style="padding:0 32px;">
           <a href="${url}" style="display:block;text-align:center;background:${ACCENT};color:#FFFFFF;text-decoration:none;font:600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;padding:16px 20px;border-radius:10px;">${escapeHtml(tr("cta"))}</a>
         </td></tr>
+        ${codeBlock}
         <tr><td style="padding:24px 32px 0;font:400 13px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:${MUTED};">
           <p style="margin:0 0 6px;">${escapeHtml(tr("fallback"))}</p>
           <p style="margin:0 0 20px;word-break:break-all;"><a href="${url}" style="color:${ACCENT};">${url}</a></p>
@@ -78,12 +86,14 @@ function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; local
 </html>`;
 }
 
-function magicLinkText(opts: { kind: MagicKind; name: string; url: string; locale: Locale }): string {
+function magicLinkText(opts: { kind: MagicKind; name: string; url: string; locale: Locale; code?: string }): string {
   const c = copyFor(opts.kind, opts.locale, opts.name);
-  return [c.greeting, "", c.body, "", `${c.cta}: ${opts.url}`, "", c.expires, c.ignore, "", c.footer].join("\n");
+  const t = translator(getMessages(opts.locale));
+  const codeLines = opts.code ? ["", t("email.codeIntro"), opts.code] : [];
+  return [c.greeting, "", c.body, "", `${c.cta}: ${opts.url}`, ...codeLines, "", c.expires, c.ignore, "", c.footer].join("\n");
 }
 
-export function sendVerifyEmail(opts: { to: string; name: string; url: string; locale: Locale }): Promise<void> {
+export function sendVerifyEmail(opts: { to: string; name: string; url: string; locale: Locale; code?: string }): Promise<void> {
   return sendMagicLink({ kind: "verify", ...opts });
 }
 
@@ -97,6 +107,7 @@ async function sendMagicLink(opts: {
   name: string;
   url: string;
   locale: Locale;
+  code?: string;
 }): Promise<void> {
   const dev = !serverEnv.isProduction;
 
@@ -104,7 +115,7 @@ async function sendMagicLink(opts: {
   // Resend solo entrega a la direccion duena de la cuenta, y asi se puede
   // probar el flujo con cualquier correo.
   if (dev) {
-    console.log(`\n[rastro] Enlace (${opts.kind}) para ${opts.to}\n[rastro] ${opts.url}\n`);
+    console.log(`\n[rastro] Enlace (${opts.kind}) para ${opts.to}\n[rastro] ${opts.url}${opts.code ? `\n[rastro] codigo: ${opts.code}` : ""}\n`);
   }
   if (!process.env.RESEND_API_KEY) {
     if (dev) return;

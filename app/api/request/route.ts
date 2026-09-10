@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { requestSchema, fieldErrors } from "@/lib/validation";
 import { supabaseAdmin } from "@/lib/supabase";
-import { createVerifyToken, hashIp } from "@/lib/crypto";
+import { createVerifyCode, createVerifyToken, hashIp } from "@/lib/crypto";
 import { sendVerifyEmail } from "@/lib/email";
 import { serverEnv } from "@/lib/env";
 import { allowRequest } from "@/lib/rate-limit";
@@ -57,6 +57,7 @@ async function handleRequest(request: Request) {
     return NextResponse.json({ ok: false, error: "formErrors.rateLimit" }, { status: 429 });
   }
   const { token, tokenHash } = createVerifyToken();
+  const { code, codeHash } = createVerifyCode();
   const now = new Date();
   const supabase = supabaseAdmin();
 
@@ -72,6 +73,8 @@ async function handleRequest(request: Request) {
       status: "pending",
       ip_hash: hashIp(ip),
       verify_token: tokenHash,
+      verify_code_hash: codeHash,
+      verify_attempts: 0,
       verify_expires_at: new Date(now.getTime() + TOKEN_TTL_HOURS * 3600_000).toISOString(),
     })
     .select("id")
@@ -87,6 +90,7 @@ async function handleRequest(request: Request) {
       to: email,
       name: firstName,
       url: `${serverEnv.siteUrl}/verify?token=${token}`,
+      code,
       locale,
     });
   } catch (error) {

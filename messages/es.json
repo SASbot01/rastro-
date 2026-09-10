@@ -50,14 +50,22 @@
     "email": "Escribe un correo válido.",
     "consent": "Necesitamos tu consentimiento para continuar.",
     "rateLimit": "Has pedido demasiados informes hoy. Inténtalo mañana.",
-    "generic": "Algo ha fallado por nuestro lado. Vuelve a intentarlo en un momento."
+    "generic": "Algo ha fallado por nuestro lado. Vuelve a intentarlo en un momento.",
+    "code": "Ese código no es correcto.",
+    "codeExpired": "El código ha caducado o se ha usado. Pide un enlace nuevo.",
+    "codeLocked": "Demasiados intentos. Pide un enlace nuevo."
   },
   "sent": {
     "title": "Revisa tu correo",
     "body": "Hemos enviado un enlace a {email}. Ábrelo y empezamos a preparar tu informe.",
     "spam": "Si no aparece en unos minutos, mira en spam o promociones.",
     "expires": "El enlace caduca en 24 horas.",
-    "again": "Usar otro correo"
+    "again": "Usar otro correo",
+    "codeTitle": "¿Prefieres no abrir el enlace?",
+    "codeBody": "Escribe aquí el código de 6 dígitos que va en el correo.",
+    "codePlaceholder": "123456",
+    "codeSubmit": "Confirmar con el código",
+    "codeChecking": "Comprobando…"
   },
   "how": {
     "title": "Cómo funciona",
@@ -90,7 +98,9 @@
     "fallback": "Si el botón no funciona, copia esta dirección en tu navegador:",
     "expires": "El enlace caduca en 24 horas.",
     "ignore": "Si no has sido tú, ignora este mensaje. No haremos nada.",
-    "footer": "Rastro — Mira lo que la IA sabe de ti."
+    "footer": "Rastro — Mira lo que la IA sabe de ti.",
+    "codeIntro": "O escribe este código en la página donde pediste el informe:",
+    "codeLabel": "Tu código"
   },
   "footer": {
     "tagline": "Mira lo que la IA sabe de ti.",

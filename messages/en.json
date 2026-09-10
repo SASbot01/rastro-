@@ -50,14 +50,22 @@
     "email": "Enter a valid email address.",
     "consent": "We need your consent to continue.",
     "rateLimit": "You've requested too many reports today. Try again tomorrow.",
-    "generic": "Something went wrong on our side. Please try again in a moment."
+    "generic": "Something went wrong on our side. Please try again in a moment.",
+    "code": "That code isn't correct.",
+    "codeExpired": "The code has expired or was already used. Request a new link.",
+    "codeLocked": "Too many attempts. Request a new link."
   },
   "sent": {
     "title": "Check your email",
     "body": "We sent a link to {email}. Open it and we'll start preparing your report.",
     "spam": "If it doesn't arrive within a few minutes, check spam or promotions.",
     "expires": "The link expires in 24 hours.",
-    "again": "Use a different email"
+    "again": "Use a different email",
+    "codeTitle": "Rather not open the link?",
+    "codeBody": "Type here the 6-digit code from the email.",
+    "codePlaceholder": "123456",
+    "codeSubmit": "Confirm with the code",
+    "codeChecking": "Checking…"
   },
   "how": {
     "title": "How it works",
@@ -90,7 +98,9 @@
     "fallback": "If the button doesn't work, copy this address into your browser:",
     "expires": "The link expires in 24 hours.",
     "ignore": "If this wasn't you, ignore this message. We won't do anything.",
-    "footer": "Rastro — See what AI knows about you."
+    "footer": "Rastro — See what AI knows about you.",
+    "codeIntro": "Or type this code on the page where you requested the report:",
+    "codeLabel": "Your code"
   },
   "footer": {
     "tagline": "See what AI knows about you.",

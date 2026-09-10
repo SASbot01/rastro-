@@ -30,6 +30,37 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
+  const [codeState, setCodeState] = useState<"idle" | "busy">("idle");
+  const [codeError, setCodeError] = useState<string | null>(null);
+
+  /** Verificacion por codigo: mismo efecto que abrir el enlace, sin salir de esta pagina. */
+  async function onCode(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const code = String(new FormData(event.currentTarget).get("code") ?? "").replace(/\D/g, "");
+    if (code.length !== 6) {
+      setCodeError("formErrors.code");
+      return;
+    }
+    setCodeError(null);
+    setCodeState("busy");
+    try {
+      const res = await fetch("/api/verify-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code }),
+      });
+      const body = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; id?: string };
+      if (res.ok && body.ok && body.id) {
+        window.location.href = `/informe/${body.id}`;
+        return;
+      }
+      setCodeError(body.error ?? "formErrors.code");
+    } catch {
+      setCodeError("formErrors.generic");
+    } finally {
+      setCodeState("idle");
+    }
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -111,6 +142,37 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("sent.body", { email })}</p>
         <p className={HELP}>{tr("sent.spam")}</p>
         <p className={HELP}>{tr("sent.expires")}</p>
+
+        <form onSubmit={onCode} noValidate className="mt-6 rounded-[10px] bg-paper p-4">
+          <p className="text-[14px] font-semibold text-ink">{tr("sent.codeTitle")}</p>
+          <p className="mt-1 text-[13px] text-muted">{tr("sent.codeBody")}</p>
+          <div className="mt-3 flex gap-2">
+            <input
+              name="code"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              pattern="[0-9]*"
+              maxLength={6}
+              placeholder={tr("sent.codePlaceholder")}
+              disabled={codeState === "busy"}
+              aria-invalid={Boolean(codeError)}
+              className={FIELD + " max-w-[160px] text-center text-[20px] tracking-[0.2em]"}
+            />
+            <button
+              type="submit"
+              disabled={codeState === "busy"}
+              className="rounded-[10px] bg-accent px-4 py-3 text-[14px] font-semibold text-white hover:opacity-90 disabled:opacity-60"
+            >
+              {codeState === "busy" ? tr("sent.codeChecking") : tr("sent.codeSubmit")}
+            </button>
+          </div>
+          {codeError && (
+            <p role="alert" className={ERROR}>
+              {tr(codeError)}
+            </p>
+          )}
+        </form>
+
         <button
           type="button"
           onClick={() => setStatus("idle")}
