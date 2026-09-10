@@ -152,8 +152,8 @@ export function ReportView({
       </div>
 
       {/* Columna plegable: cuentas y hallazgos */}
-      <div className="grid gap-3">
-        <div className="flex items-baseline justify-between px-1">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
+        <div className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 px-1">
           <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">
             {report.findings.length === 1 ? tr("report.countOne") : tr("report.counts", { n: report.findings.length })}
           </h2>
@@ -161,7 +161,7 @@ export function ReportView({
         </div>
 
         {report.accounts && report.accounts.length > 0 && (
-          <details className={"group " + CARD}>
+          <details className={"group min-w-0 overflow-hidden " + CARD}>
             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
               <span className="flex items-center gap-2 text-[15px] font-semibold text-ink">
                 {tr("report.accountsTitle")}
@@ -205,7 +205,7 @@ export function ReportView({
                 ? "info"
                 : "low";
           return (
-            <details key={category} className={"group " + CARD} open={worst === "high"}>
+            <details key={category} className={"group min-w-0 overflow-hidden " + CARD} open={worst === "high"}>
               <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
                 <span className="flex items-center gap-2.5 text-[15px] font-semibold text-ink">
                   <span aria-hidden="true" className={"h-2 w-2 rounded-full " + SEVERITY_DOT[worst]} />
@@ -218,8 +218,8 @@ export function ReportView({
                 {items.map(({ f, index }) => {
                   const host = hostOf(f.source_url);
                   return (
-                    <li key={index}>
-                      <details className="group/item">
+                    <li key={index} className="min-w-0">
+                      <details className="group/item min-w-0 overflow-hidden">
                         <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-3.5 [&::-webkit-details-marker]:hidden">
                           <span aria-hidden="true" className={"h-2 w-2 shrink-0 rounded-full " + SEVERITY_DOT[f.severity]} />
                           <span className="min-w-0 flex-1">
