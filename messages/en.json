@@ -16,7 +16,8 @@
       "home": "Home",
       "report": "Report",
       "tools": "Tools",
-      "profile": "Profile"
+      "profile": "Profile",
+      "community": "Community"
     }
   },
   "hero": {
@@ -286,7 +287,8 @@
             "Legal basis: your consent (Article 6(1)(a) GDPR), which you give by ticking the box in the form and confirm by opening the link we email you. Without that double step we search nothing.",
             "You may only request a report about yourself. Requesting one about someone else breaches these terms.",
             "Monthly monitoring (only if you turn it on): every month we query the same sources again with your data and email you only if something changed. You can turn it off in your account or from the link in the email itself.",
-            "Inbox scanner (Pro plan only, and only if you connect it): with your authorisation in Google we read only the sender, subject and date of your emails to infer which services you have accounts with. We don't read content, we store no emails or access keys, and we revoke access when done. We keep only the resulting list of services, which you can delete from your account or by writing to us."
+            "Inbox scanner (Pro plan only, and only if you connect it): with your authorisation in Google we read only the sender, subject and date of your emails to infer which services you have accounts with. We don't read content, we store no emails or access keys, and we revoke access when done. We keep only the resulting list of services, which you can delete from your account or by writing to us.",
+            "Community chat (only if you write in it): your messages and alias are visible to other Rastro accounts and kept for 90 days. Don't write personal data."
           ]
         },
         {
@@ -708,5 +710,26 @@
     "reports": "Reports",
     "letters": "Letters",
     "noScore": "—"
+  },
+  "community": {
+    "title": "Community",
+    "subtitle": "People who have already looked at what AI knows about them. Tips, questions and experiences. No real names: here you are your alias.",
+    "placeholder": "Write a message…",
+    "send": "Send",
+    "empty": "No messages yet. Be the first to write.",
+    "loginTitle": "Sign in to take part",
+    "loginBody": "The chat is for Rastro accounts only. Anyone can read; to write you need an account and an alias.",
+    "rules": "No personal data, yours or anyone's (no emails, phone numbers or addresses). No insults. Messages are kept for 90 days.",
+    "you": "you",
+    "rateLimited": "Wait a few seconds between messages.",
+    "tooLong": "500 characters max.",
+    "aliasTitle": "Your alias in the community",
+    "aliasHelp": "It's what others see in the chat. Never your name or email.",
+    "aliasPlaceholder": "e.g. blue_wolf",
+    "aliasSave": "Save alias",
+    "aliasInvalid": "3 to 20 letters, numbers, dash or underscore.",
+    "aliasTaken": "That alias is already taken.",
+    "aliasNeeded": "Pick an alias before writing.",
+    "new": "New"
   }
 }

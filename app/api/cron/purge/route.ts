@@ -23,6 +23,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ ok: false }, { status: 500 });
   }
 
+  // Chat de la comunidad: 90 dias.
+  const since = new Date(Date.now() - 90 * 86_400_000).toISOString();
+  await supabaseAdmin().from("community_messages").delete().lt("created_at", since);
+
   console.log(`[cron/purge] borradas ${data} solicitudes caducadas`);
   return NextResponse.json({ ok: true, deleted: data });
 }

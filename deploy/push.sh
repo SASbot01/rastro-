@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 # Despliega el codigo local en el servidor (rastropro.com) por Tailscale.
 #   ./deploy/push.sh
-# Copia el codigo (sin node_modules, .next ni .env.local), instala si cambio
-# package.json, aplica migraciones nuevas, construye y reinicia la app.
+# Seguro por diseno: si los tipos fallan en local o el build falla en el
+# servidor, NO se reinicia la app (sigue la version anterior).
 set -euo pipefail
 HOST="${RASTRO_HOST:-100.114.169.107}"
 cd "$(dirname "$0")/.."
+
+echo "→ comprobando tipos en local"
+npx tsc --noEmit 2>&1 | grep -v '^\.next' | grep -E 'error TS' && { echo "✗ errores de tipos: no se despliega"; exit 1; } || true
 
 echo "→ copiando codigo a $HOST:~/rastro"
 rsync -az --delete \
@@ -13,10 +16,18 @@ rsync -az --delete \
   --exclude 'supabase/.temp' --exclude .git \
   ./ "$HOST:~/rastro/"
 
-ssh "$HOST" 'set -e; export PATH=$HOME/.npm-global/bin:$PATH; cd ~/rastro
+ssh "$HOST" 'set -euo pipefail; export PATH=$HOME/.npm-global/bin:$PATH; cd ~/rastro
   npm install --no-audit --no-fund 2>&1 | tail -1
   supabase migration up 2>&1 | grep -vE "new version|recommend" | tail -1 || true
   docker exec supabase_db_rastro psql -U postgres -d postgres -Atc "notify pgrst, '"'"'reload schema'"'"';" >/dev/null
-  NEXT_TELEMETRY_DISABLED=1 npm run build 2>&1 | grep -E "Compiled|TypeScript|rror" | head -3
-  pm2 restart rastro --update-env >/dev/null && sleep 3
-  echo "→ $(curl -s -o /dev/null -w "HTTP %{http_code}" http://localhost:3000/) en local, $(curl -s -o /dev/null -w "HTTP %{http_code}" --max-time 20 https://rastropro.com/) en rastropro.com"'
+  # Copia de seguridad de .next: si el build falla, se restaura y pm2 sigue con la version anterior.
+  rm -rf .next.bak; [ -d .next ] && cp -r .next .next.bak
+  if NEXT_TELEMETRY_DISABLED=1 npm run build > /tmp/rastro-build.log 2>&1; then
+    rm -rf .next.bak
+    grep -E "Compiled|TypeScript" /tmp/rastro-build.log | head -2
+    pm2 restart rastro --update-env >/dev/null && sleep 3
+    echo "→ $(curl -s -o /dev/null -w "HTTP %{http_code}" http://localhost:3000/) en local, $(curl -s -o /dev/null -w "HTTP %{http_code}" --max-time 20 https://rastropro.com/) en rastropro.com"
+  else
+    echo "✗ build fallido en el servidor: NO se reinicia la app"; grep -E "error|Error" /tmp/rastro-build.log | head -8
+    [ -d .next.bak ] && rm -rf .next && mv .next.bak .next; exit 1
+  fi'

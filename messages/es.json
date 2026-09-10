@@ -16,7 +16,8 @@
       "home": "Inicio",
       "report": "Informe",
       "tools": "Herramientas",
-      "profile": "Perfil"
+      "profile": "Perfil",
+      "community": "Comunidad"
     }
   },
   "hero": {
@@ -286,7 +287,8 @@
             "Base legal: tu consentimiento (artículo 6.1.a del RGPD), que das marcando la casilla del formulario y confirmas abriendo el enlace que te enviamos por correo. Sin ese doble paso no buscamos nada.",
             "Solo puedes pedir un informe sobre ti mismo. Pedirlo sobre otra persona incumple estas condiciones.",
             "Vigilancia mensual (solo si la activas): cada mes volvemos a consultar las mismas fuentes con tus datos y te enviamos un correo únicamente si hay cambios. Puedes desactivarla en tu cuenta o desde el enlace del propio correo.",
-            "Escáner de buzón (solo plan Pro y solo si lo conectas tú): con tu autorización en Google leemos únicamente el remitente, el asunto y la fecha de tus correos para deducir en qué servicios tienes cuenta. No leemos el contenido, no guardamos ningún correo ni claves de acceso, y revocamos el acceso al terminar. Solo conservamos la lista de servicios resultante, que puedes borrar desde tu cuenta o escribiéndonos."
+            "Escáner de buzón (solo plan Pro y solo si lo conectas tú): con tu autorización en Google leemos únicamente el remitente, el asunto y la fecha de tus correos para deducir en qué servicios tienes cuenta. No leemos el contenido, no guardamos ningún correo ni claves de acceso, y revocamos el acceso al terminar. Solo conservamos la lista de servicios resultante, que puedes borrar desde tu cuenta o escribiéndonos.",
+            "Chat de la comunidad (solo si escribes en él): tus mensajes y tu alias son públicos para el resto de cuentas de Rastro y se conservan 90 días. No escribas datos personales."
           ]
         },
         {
@@ -708,5 +710,26 @@
     "reports": "Informes",
     "letters": "Cartas",
     "noScore": "—"
+  },
+  "community": {
+    "title": "Comunidad",
+    "subtitle": "Gente que ya ha mirado lo que la IA sabe de ella. Consejos, dudas y experiencias. Sin nombres reales: aquí eres tu alias.",
+    "placeholder": "Escribe un mensaje…",
+    "send": "Enviar",
+    "empty": "Todavía no hay mensajes. Sé la primera persona en escribir.",
+    "loginTitle": "Entra para participar",
+    "loginBody": "El chat es solo para cuentas de Rastro. Se lee sin entrar; para escribir hace falta cuenta y un alias.",
+    "rules": "Nada de datos personales tuyos ni de otros (ni correos, ni teléfonos, ni direcciones). Nada de insultos. Los mensajes se guardan 90 días.",
+    "you": "tú",
+    "rateLimited": "Espera unos segundos entre mensajes.",
+    "tooLong": "Máximo 500 caracteres.",
+    "aliasTitle": "Tu alias en la comunidad",
+    "aliasHelp": "Es lo que ven los demás en el chat. Nunca tu nombre ni tu correo.",
+    "aliasPlaceholder": "p. ej. lobo_azul",
+    "aliasSave": "Guardar alias",
+    "aliasInvalid": "Entre 3 y 20 letras, números, guion o guion bajo.",
+    "aliasTaken": "Ese alias ya está en uso.",
+    "aliasNeeded": "Elige un alias antes de escribir.",
+    "new": "Nuevo"
   }
 }

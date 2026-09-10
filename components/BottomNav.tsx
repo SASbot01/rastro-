@@ -12,6 +12,7 @@ const TABS = [
   { key: "home", href: "/", match: (p: string) => p === "/" },
   { key: "report", href: "/informe", match: (p: string) => p.startsWith("/informe") },
   { key: "tools", href: "/herramientas", match: (p: string) => p.startsWith("/herramientas") || p.startsWith("/cartas") || p.startsWith("/cuenta/buzon") },
+  { key: "community", href: "/comunidad", match: (p: string) => p.startsWith("/comunidad") },
   { key: "profile", href: "/cuenta", match: (p: string) => p === "/cuenta" || p.startsWith("/entrar") || p.startsWith("/pro") },
 ] as const;
 
@@ -42,6 +43,13 @@ function Icon({ name, active }: { name: (typeof TABS)[number]["key"]; active: bo
           <path d="M4 8l8 5.5L20 8" {...common} />
         </svg>
       );
+    case "community":
+      return (
+        <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+          <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 3.5V16H6.5A2.5 2.5 0 0 1 4 13.5z" {...common} />
+          <path d="M8.5 9h7M8.5 12h4.5" {...common} />
+        </svg>
+      );
     case "profile":
       return (
         <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
@@ -61,7 +69,7 @@ export function BottomNav({ messages }: { messages: Messages }) {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper/95 backdrop-blur sm:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <ul className="mx-auto grid max-w-[640px] lg:max-w-[920px] grid-cols-4">
+      <ul className="mx-auto grid max-w-[640px] lg:max-w-[920px] grid-cols-5">
         {TABS.map((t) => {
           const active = t.match(pathname);
           return (
