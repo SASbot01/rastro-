@@ -142,7 +142,12 @@
     "actionsTitle": "What to do now",
     "source": "View source",
     "generated": "Generated on {date}. Automatically deleted after 30 days.",
-    "partial": "Preliminary version: the \"What AI says\" section is added in the next development step."
+    "partial": "Preliminary version: the \"What AI says\" section is added in the next development step.",
+    "scoreHint": "100 means we found nothing exposed.",
+    "again": "Check another email",
+    "counts": "{n} findings",
+    "countOne": "1 finding",
+    "whatYouSee": "What's visible, why it matters, and what to do."
   },
   "summary": {
     "breachesNone": "Your email does not appear in any known breach.",

@@ -142,7 +142,12 @@
     "actionsTitle": "Qué hacer ahora",
     "source": "Ver fuente",
     "generated": "Generado el {date}. Se borra automáticamente a los 30 días.",
-    "partial": "Versión preliminar: la parte de «Lo que dice la IA» se añade en el siguiente paso del desarrollo."
+    "partial": "Versión preliminar: la parte de «Lo que dice la IA» se añade en el siguiente paso del desarrollo.",
+    "scoreHint": "100 significa que no hemos encontrado nada expuesto.",
+    "again": "Comprobar otro correo",
+    "counts": "{n} hallazgos",
+    "countOne": "1 hallazgo",
+    "whatYouSee": "Qué se ve, por qué importa y qué hacer."
   },
   "summary": {
     "breachesNone": "Tu correo no aparece en ninguna filtración conocida.",

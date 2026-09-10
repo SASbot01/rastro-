@@ -1,10 +1,12 @@
+import Link from "next/link";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
-import { levelFor } from "@/lib/report/score";
+import { levelFor, type Level } from "@/lib/report/score";
 import type { Action, Category, Finding, Severity } from "@/lib/report/findings";
 
 /**
- * Visor del informe. Version funcional del Dia 2; el diseno final y el boton
- * de compartir llegan en los Dias 4 y 5.
+ * Visor del informe (Dia 4: diseno final). Estetica de informe medico:
+ * papel claro, un solo acento, jerarquia clara. Pensado para captura de
+ * pantalla en movil: la tarjeta del score es autosuficiente.
  */
 
 export interface ReportData {
@@ -18,18 +20,48 @@ export interface ReportData {
 
 const CATEGORY_ORDER: Category[] = ["breaches", "ai", "profiles", "false"];
 
-const LEVEL_CLASS = {
-  green: "text-ok",
-  orange: "text-accent",
-  red: "text-danger",
-} as const;
+const LEVEL_TEXT: Record<Level, string> = { green: "text-ok", orange: "text-accent", red: "text-danger" };
+const LEVEL_STROKE: Record<Level, string> = { green: "#2f8f5b", orange: "#e8590c", red: "#b4231a" };
 
 const SEVERITY_CLASS: Record<Severity, string> = {
-  high: "bg-accent-soft text-accent",
-  medium: "bg-accent-soft/60 text-accent",
+  high: "bg-accent text-white",
+  medium: "bg-accent-soft text-accent",
   low: "bg-paper text-muted",
   info: "bg-paper text-faint",
 };
+
+const CARD = "rounded-card border border-line bg-surface shadow-[0_1px_2px_rgba(26,26,25,0.04)]";
+
+/** Anillo de score: SVG puro, sin dependencias. */
+function ScoreRing({ score, level, label }: { score: number; level: Level; label: string }) {
+  const size = 148;
+  const stroke = 10;
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const offset = c * (1 - score / 100);
+  return (
+    <div className="relative h-[148px] w-[148px] shrink-0" role="img" aria-label={`${score}/100 — ${label}`}>
+      <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full -rotate-90">
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#efece6" strokeWidth={stroke} />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke={LEVEL_STROKE[level]}
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={offset}
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className={"text-[44px] leading-none font-semibold tracking-[-0.04em] " + LEVEL_TEXT[level]}>{score}</span>
+        <span className="mt-1 text-[11px] font-medium uppercase tracking-[0.08em] text-faint">/100</span>
+      </div>
+    </div>
+  );
+}
 
 export function ReportView({
   report,
@@ -42,12 +74,13 @@ export function ReportView({
   fullName: string;
   locale: Locale;
   messages: Messages;
-  /** Muestra el aviso de version preliminar (sin la parte de IA). */
+  /** Aviso de version sin IA (plantillas de respaldo). */
   partial?: boolean;
 }) {
   const tr = translator(messages);
   const level = levelFor(report.score);
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(report.created_at));
+  const total = report.findings.length;
 
   const grouped = CATEGORY_ORDER.map((category) => ({
     category,
@@ -55,57 +88,69 @@ export function ReportView({
   })).filter((g) => g.items.length > 0);
 
   return (
-    <article className="grid gap-5">
-      {/* Cabecera con el score */}
-      <section className="rounded-card border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(26,26,25,0.04)] sm:p-8">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("report.eyebrow")}</p>
-        <p className="mt-1 text-[14px] text-muted">{tr("report.for", { name: fullName })}</p>
-
-        <div className="mt-6 flex items-end gap-4">
-          <span className={"text-[72px] leading-none font-semibold tracking-[-0.04em] " + LEVEL_CLASS[level]}>
-            {report.score}
+    <article className="grid gap-4">
+      {/* Tarjeta principal: lo que la gente capturara y compartira */}
+      <section className={CARD + " p-6 sm:p-8"}>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("report.eyebrow")}</p>
+          <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-ink">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+            Rastro
           </span>
-          <div className="pb-2">
-            <p className="text-[13px] text-faint">{tr("report.outOf")}</p>
-            <p className={"text-[15px] font-semibold " + LEVEL_CLASS[level]}>{tr(`report.level.${level}`)}</p>
+        </div>
+
+        <div className="mt-6 flex items-center gap-6">
+          <ScoreRing score={report.score} level={level} label={tr(`report.level.${level}`)} />
+          <div className="min-w-0">
+            <p className={"text-[20px] leading-tight font-semibold tracking-[-0.02em] " + LEVEL_TEXT[level]}>
+              {tr(`report.level.${level}`)}
+            </p>
+            <p className="mt-1 text-[13px] text-faint">{tr("report.scoreLabel")}</p>
+            <p className="mt-3 truncate text-[14px] text-muted">{tr("report.for", { name: fullName })}</p>
+            <p className="text-[12.5px] text-faint">{date}</p>
           </div>
         </div>
 
-        <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-paper" aria-hidden="true">
-          <div
-            className={"h-full rounded-full " + (level === "green" ? "bg-ok" : level === "orange" ? "bg-accent" : "bg-danger")}
-            style={{ width: `${report.score}%` }}
-          />
-        </div>
-
-        <p className="mt-5 text-[15px] leading-relaxed text-ink">{report.summary}</p>
-        {partial && <p className="mt-3 text-[12.5px] leading-relaxed text-faint">{tr("report.partial")}</p>}
+        <p className="mt-6 text-[15.5px] leading-[1.65] text-ink">{report.summary}</p>
+        <p className="mt-3 text-[12.5px] text-faint">{tr("report.scoreHint")}</p>
+        {partial && <p className="mt-2 text-[12.5px] leading-relaxed text-faint">{tr("report.partial")}</p>}
       </section>
 
-      {/* Hallazgos por categoria */}
+      {/* Hallazgos */}
+      <div className="flex items-baseline justify-between px-1 pt-3">
+        <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">
+          {total === 1 ? tr("report.countOne") : tr("report.counts", { n: total })}
+        </h2>
+        <p className="text-[12.5px] text-faint">{tr("report.whatYouSee")}</p>
+      </div>
+
       {grouped.map(({ category, items }) => (
-        <section key={category} className="rounded-card border border-line bg-surface p-6 sm:p-8">
-          <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">
+        <section key={category} className={CARD + " p-5 sm:p-7"}>
+          <h3 className="flex items-center gap-2 text-[15px] font-semibold text-ink">
             {tr(`report.categories.${category}`)}
-          </h2>
-          <ul className="mt-4 grid gap-5">
+            <span className="rounded-full bg-paper px-2 py-0.5 text-[11px] font-semibold text-faint">{items.length}</span>
+          </h3>
+          <ul className="mt-4 divide-y divide-line">
             {items.map((f, i) => (
-              <li key={i} className="grid gap-1.5">
+              <li key={i} className="grid gap-1.5 py-4 first:pt-0 last:pb-0">
                 <div className="flex items-start gap-2.5">
-                  <span className={"mt-0.5 shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold " + SEVERITY_CLASS[f.severity]}>
+                  <span className={"mt-[3px] shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide " + SEVERITY_CLASS[f.severity]}>
                     {tr(`report.severity.${f.severity}`)}
                   </span>
-                  <h3 className="text-[15px] leading-snug font-semibold text-ink">{f.title}</h3>
+                  <h4 className="text-[15px] leading-snug font-semibold text-ink">{f.title}</h4>
                 </div>
-                <p className="text-[14px] leading-relaxed text-muted">{f.detail}</p>
+                <p className="text-[14px] leading-[1.6] text-muted">{f.detail}</p>
                 {f.source_url && (
                   <a
                     href={f.source_url}
                     target="_blank"
                     rel="noreferrer nofollow"
-                    className="text-[13px] font-medium text-accent underline underline-offset-4"
+                    className="inline-flex w-fit items-center gap-1 text-[13px] font-medium text-accent underline underline-offset-4"
                   >
                     {tr("report.source")}
+                    <svg viewBox="0 0 16 16" className="h-3 w-3" aria-hidden="true">
+                      <path d="M6 3h7v7M13 3 6.5 9.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </a>
                 )}
               </li>
@@ -116,20 +161,20 @@ export function ReportView({
 
       {/* Acciones */}
       {report.actions.length > 0 && (
-        <section className="rounded-card border border-line bg-surface p-6 sm:p-8">
-          <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("report.actionsTitle")}</h2>
+        <section className={CARD + " border-accent/30 p-5 sm:p-7"}>
+          <h3 className="text-[15px] font-semibold text-ink">{tr("report.actionsTitle")}</h3>
           <ol className="mt-4 grid gap-4">
             {report.actions.map((a, i) => (
               <li key={i} className="flex gap-3">
                 <span
                   aria-hidden="true"
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-[12px] font-semibold text-white"
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-semibold text-white"
                 >
                   {i + 1}
                 </span>
                 <div>
-                  <h3 className="text-[15px] font-semibold text-ink">{a.title}</h3>
-                  <p className="mt-0.5 text-[14px] leading-relaxed text-muted">{a.detail}</p>
+                  <h4 className="text-[15px] font-semibold text-ink">{a.title}</h4>
+                  <p className="mt-0.5 text-[14px] leading-[1.6] text-muted">{a.detail}</p>
                 </div>
               </li>
             ))}
@@ -137,7 +182,12 @@ export function ReportView({
         </section>
       )}
 
-      <p className="px-1 text-[12.5px] text-faint">{tr("report.generated", { date })}</p>
+      <footer className="grid gap-3 px-1 pt-2">
+        <p className="text-[12.5px] leading-relaxed text-faint">{tr("report.generated", { date })}</p>
+        <Link href="/#form" className="w-fit text-[14px] font-medium text-accent underline underline-offset-4">
+          {tr("report.again")}
+        </Link>
+      </footer>
     </article>
   );
 }
