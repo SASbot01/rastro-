@@ -770,5 +770,119 @@
     "offTitle": "Not monitoring",
     "offBody": "Turn on monthly monitoring and your check calendar will show here.",
     "offCta": "Turn on in Tools"
+  },
+  "landing": {
+    "ctaPrimary": "Get my free report",
+    "ctaSecondary": "See how it works",
+    "askBubble": "Questions? Ask me",
+    "sampleName": "Ana G.",
+    "showTitle": "What your report looks like",
+    "showBody": "No jargon. Every finding tells you what's visible, why it matters and what to do.",
+    "mock": {
+      "breachesTitle": "Breaches",
+      "breachesTag": "3 found",
+      "breach1": "LinkedIn · 2021",
+      "breach1Detail": "Email and password",
+      "breach2": "Canva · 2019",
+      "breach2Detail": "Email and name",
+      "breach3": "Adobe · 2013",
+      "breach3Detail": "Email and password hint",
+      "withPassword": "With password",
+      "noPassword": "No password",
+      "aiTitle": "What AI says about you",
+      "aiQuote": "“Ana García is a nurse at a hospital in Valencia and takes part in local races…”",
+      "signalWork": "Knows where you work",
+      "signalCity": "Knows your city",
+      "signalPhone": "Your phone number",
+      "signalFalse": "A false claim",
+      "yes": "Yes",
+      "no": "No",
+      "found": "Found",
+      "scoreTitle": "Your score",
+      "scoreLevel": "Medium exposure",
+      "actionsTitle": "What to do first",
+      "action1": "Change your LinkedIn password if you reuse it.",
+      "action2": "Set your Strava profile to private.",
+      "action3": "Ask Canva to delete your old account."
+    },
+    "whoTitle": "Who we are",
+    "whoBody": "Rastro is an independent project built in Spain. It felt unfair that anyone, and now any AI, could know more about you than you do. So we built the tool we wished we had: it shows you what's visible about you and gives you the means to reduce it.",
+    "doTitle": "What we do",
+    "do": [
+      "We search your name and email where a stranger would: search engines, known breaches and AI assistants.",
+      "We tell you in a clear report, with a 0–100 score and concrete steps.",
+      "If you want, we keep watching every month and help you demand deletion with GDPR letters."
+    ],
+    "dontTitle": "What we don't do",
+    "dont": [
+      "We never promise to delete anything: we give you visibility and tools.",
+      "We don't look up other people: only you, with your verified email.",
+      "We don't sell or share your data. Without an account it's deleted after 30 days."
+    ],
+    "checkTitle": "What we check",
+    "check": [
+      {
+        "t": "Breaches",
+        "b": "Whether your email shows up in known breaches and what leaked."
+      },
+      {
+        "t": "What AI says",
+        "b": "What AI assistants answer when someone asks about you."
+      },
+      {
+        "t": "Public profiles",
+        "b": "Social networks, directories and pages showing your personal data."
+      },
+      {
+        "t": "False claims",
+        "b": "Things AI states about you that aren't true."
+      }
+    ],
+    "proTitle": "And after the report?",
+    "proBody": "With Rastro Pro we watch your trail every month, generate GDPR deletion letters, track the deadlines and, if they don't reply, prepare the complaint to the data protection authority.",
+    "proCta": "See Rastro Pro",
+    "faqTitle": "Frequently asked questions",
+    "faq": [
+      {
+        "q": "Is it really free?",
+        "a": "Yes. The report with your score and findings is free and asks for no card. The paid part is the tools to act: monthly monitoring, GDPR letters and deadlines."
+      },
+      {
+        "q": "What data do you need?",
+        "a": "Your name, your email and, optionally, your city and occupation so we don't mix you up with someone with the same name. Nothing else."
+      },
+      {
+        "q": "Can I look up someone else?",
+        "a": "No. We only generate reports about the person who confirms the email. It's our rule and also the law."
+      },
+      {
+        "q": "How long does it take?",
+        "a": "One to two minutes after you confirm your email."
+      },
+      {
+        "q": "What happens to my data afterwards?",
+        "a": "Without an account, the report deletes itself after 30 days. With an account it's kept while you have one, and you can delete it any time."
+      }
+    ],
+    "formTitle": "Get your free report",
+    "formBody": "Two minutes. No card. Only about you."
+  },
+  "ask": {
+    "open": "Ask Rastro",
+    "title": "Ask me",
+    "subtitle": "I answer questions about Rastro: what we do, what data we use, what it costs.",
+    "placeholder": "Type your question…",
+    "send": "Send",
+    "thinking": "Thinking…",
+    "suggested": [
+      "What is Rastro?",
+      "What data do you use?",
+      "Can you delete my data?",
+      "How much does it cost?"
+    ],
+    "limit": "That's enough questions for today. If you need something, write to Support.",
+    "error": "I can't answer right now. Try again in a moment.",
+    "close": "Close",
+    "disclaimer": "I'm an automated assistant. For account matters, use Support."
   }
 }

@@ -770,5 +770,119 @@
     "offTitle": "Sin vigilancia",
     "offBody": "Activa la vigilancia mensual y aquí verás el calendario de comprobaciones.",
     "offCta": "Activar en Herramientas"
+  },
+  "landing": {
+    "ctaPrimary": "Pedir mi informe gratis",
+    "ctaSecondary": "Ver cómo funciona",
+    "askBubble": "¿Dudas? Pregúntame",
+    "sampleName": "Ana G.",
+    "showTitle": "Así se ve tu informe",
+    "showBody": "Sin jerga. Cada hallazgo te dice qué se ve, por qué importa y qué hacer.",
+    "mock": {
+      "breachesTitle": "Filtraciones",
+      "breachesTag": "3 encontradas",
+      "breach1": "LinkedIn · 2021",
+      "breach1Detail": "Correo y contraseña",
+      "breach2": "Canva · 2019",
+      "breach2Detail": "Correo y nombre",
+      "breach3": "Adobe · 2013",
+      "breach3Detail": "Correo y pista de contraseña",
+      "withPassword": "Con contraseña",
+      "noPassword": "Sin contraseña",
+      "aiTitle": "Lo que la IA dice de ti",
+      "aiQuote": "«Ana García es enfermera en un hospital de Valencia y participa en carreras populares…»",
+      "signalWork": "Sabe dónde trabajas",
+      "signalCity": "Sabe tu ciudad",
+      "signalPhone": "Tu teléfono",
+      "signalFalse": "Un dato falso",
+      "yes": "Sí",
+      "no": "No",
+      "found": "Detectado",
+      "scoreTitle": "Tu puntuación",
+      "scoreLevel": "Exposición media",
+      "actionsTitle": "Qué hacer primero",
+      "action1": "Cambia la contraseña de LinkedIn si la reutilizas.",
+      "action2": "Pon tu perfil de Strava en privado.",
+      "action3": "Pide a Canva que borre tu cuenta antigua."
+    },
+    "whoTitle": "Quiénes somos",
+    "whoBody": "Rastro es un proyecto independiente hecho en España. Nos parecía injusto que cualquiera, y ahora cualquier IA, pudiera saber más de ti que tú mismo. Así que construimos la herramienta que nos habría gustado tener: te enseña lo que se ve de ti y te da los medios para reducirlo.",
+    "doTitle": "Qué hacemos",
+    "do": [
+      "Buscamos tu nombre y tu correo donde lo haría un desconocido: buscadores, filtraciones conocidas y asistentes de IA.",
+      "Te lo contamos en un informe claro, con una puntuación de 0 a 100 y pasos concretos.",
+      "Si quieres, seguimos vigilando cada mes y te ayudamos a reclamar el borrado con cartas RGPD."
+    ],
+    "dontTitle": "Qué no hacemos",
+    "dont": [
+      "No prometemos borrar nada: te damos visibilidad y herramientas.",
+      "No buscamos a otras personas: solo sobre ti, con tu correo verificado.",
+      "No vendemos ni compartimos tus datos. Sin cuenta, se borran a los 30 días."
+    ],
+    "checkTitle": "Qué revisamos",
+    "check": [
+      {
+        "t": "Filtraciones",
+        "b": "Si tu correo aparece en brechas conocidas y qué datos se escaparon."
+      },
+      {
+        "t": "Lo que dice la IA",
+        "b": "Qué responden los asistentes de IA cuando alguien pregunta por ti."
+      },
+      {
+        "t": "Perfiles públicos",
+        "b": "Redes, directorios y páginas donde apareces con datos personales."
+      },
+      {
+        "t": "Datos falsos",
+        "b": "Cosas que la IA afirma sobre ti y no son ciertas."
+      }
+    ],
+    "proTitle": "¿Y después del informe?",
+    "proBody": "Con Rastro Pro vigilamos tu rastro cada mes, generamos las cartas de supresión RGPD, llevamos los plazos y, si no contestan, preparamos la reclamación a la AEPD.",
+    "proCta": "Ver Rastro Pro",
+    "faqTitle": "Preguntas frecuentes",
+    "faq": [
+      {
+        "q": "¿De verdad es gratis?",
+        "a": "Sí. El informe con tu puntuación y tus hallazgos es gratis y no pide tarjeta. Lo de pago son las herramientas para actuar: vigilancia mensual, cartas RGPD y plazos."
+      },
+      {
+        "q": "¿Qué datos necesitáis?",
+        "a": "Tu nombre, tu correo y, si quieres, tu ciudad y profesión para no confundirte con otra persona que se llame igual. Nada más."
+      },
+      {
+        "q": "¿Puedo mirar a otra persona?",
+        "a": "No. Solo generamos informes sobre quien confirma el correo. Es una regla nuestra y también la ley."
+      },
+      {
+        "q": "¿Cuánto tarda?",
+        "a": "Entre uno y dos minutos desde que confirmas el correo."
+      },
+      {
+        "q": "¿Qué pasa con mis datos después?",
+        "a": "Si no creas cuenta, el informe se borra solo a los 30 días. Si la creas, se guarda mientras la tengas y puedes borrarla cuando quieras."
+      }
+    ],
+    "formTitle": "Pide tu informe gratis",
+    "formBody": "Dos minutos. Sin tarjeta. Solo sobre ti."
+  },
+  "ask": {
+    "open": "Pregunta a Rastro",
+    "title": "Pregúntame",
+    "subtitle": "Respondo dudas sobre Rastro: qué hacemos, qué datos usamos, cuánto cuesta.",
+    "placeholder": "Escribe tu pregunta…",
+    "send": "Enviar",
+    "thinking": "Pensando…",
+    "suggested": [
+      "¿Qué es Rastro?",
+      "¿Qué datos usáis?",
+      "¿Podéis borrar mis datos?",
+      "¿Cuánto cuesta?"
+    ],
+    "limit": "Por hoy ya está bien de preguntas. Si necesitas algo, escríbenos en Soporte.",
+    "error": "Ahora mismo no puedo responder. Prueba de nuevo en un momento.",
+    "close": "Cerrar",
+    "disclaimer": "Soy un asistente automático. Para temas de tu cuenta, usa Soporte."
   }
 }

@@ -12,12 +12,13 @@ import { hashEmail, hashIp } from "@/lib/crypto";
 const HOUR = 60 * 60;
 const DAY = 24 * HOUR;
 
-export type RateKind = "report" | "login" | "support";
+export type RateKind = "report" | "login" | "support" | "ask";
 
 export const LIMITS: Record<RateKind, { email: number; ip: number; window: number }> = {
   report: { email: 3, ip: 20, window: DAY },
   login: { email: 10, ip: 60, window: HOUR },
   support: { email: 5, ip: 30, window: DAY },
+  ask: { email: 0, ip: 40, window: DAY }, // chat del muneco: solo por IP
 };
 
 async function bump(key: string, limit: number, windowSeconds: number): Promise<boolean> {
@@ -45,4 +46,11 @@ export async function allowRequest(email: string, ip: string, kind: RateKind = "
   if (!(await bump(`${prefix}ip:${hashIp(ip)}`, ipLimit, window))) return false;
   if (!(await bump(`${prefix}email:${hashEmail(email)}`, emailLimit, window))) return false;
   return true;
+}
+
+/** Limite solo por IP (peticiones sin correo, como el chat de la portada). */
+export async function allowByIp(ip: string, kind: RateKind): Promise<boolean> {
+  if (process.env.RATE_LIMIT_DISABLED === "1" && process.env.NODE_ENV !== "production") return true;
+  const { ip: ipLimit, window } = LIMITS[kind];
+  return bump(`${kind}:ip:${hashIp(ip)}`, ipLimit, window);
 }

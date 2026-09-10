@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { getLocale } from "@/lib/locale";
 import { getMessages, translator } from "@/lib/i18n";
 import { BottomNav, SideNav } from "@/components/BottomNav";
+import { AskRastro } from "@/components/AskRastro";
 import "./globals.css";
 
 const inter = Inter({
@@ -53,6 +54,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           <div className="flex min-h-screen min-w-0 flex-1 flex-col">{children}</div>
         </div>
         <BottomNav messages={getMessages(locale)} />
+        <AskRastro messages={getMessages(locale)} locale={locale} />
         {plausible && <Script defer data-domain={plausible} src="https://plausible.io/js/script.js" strategy="afterInteractive" />}
       </body>
     </html>
