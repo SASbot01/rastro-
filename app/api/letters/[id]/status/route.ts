@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { absoluteUrl } from "@/lib/env";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
@@ -12,14 +13,13 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const STATUSES = new Set(["draft", "sent", "answered", "no_answer"]);
 
 export async function POST(request: Request, ctx: RouteContext<"/api/letters/[id]/status">) {
-  const origin = new URL(request.url).origin;
   const { id } = await ctx.params;
   const session = await getSession();
-  if (!session) return NextResponse.redirect(new URL("/entrar", origin), { status: 303 });
+  if (!session) return NextResponse.redirect(absoluteUrl("/entrar"), { status: 303 });
   if (!UUID.test(id)) return new NextResponse(null, { status: 404 });
 
   const user = await findUserByEmail(session.email);
-  if (!user) return NextResponse.redirect(new URL("/entrar", origin), { status: 303 });
+  if (!user) return NextResponse.redirect(absoluteUrl("/entrar"), { status: 303 });
 
   const status = String((await request.formData()).get("status") ?? "");
   if (!STATUSES.has(status)) return new NextResponse(null, { status: 400 });
@@ -38,5 +38,5 @@ export async function POST(request: Request, ctx: RouteContext<"/api/letters/[id
 
   const { error } = await supabaseAdmin().from("letters").update(patch).eq("id", id).eq("user_id", user.id);
   if (error) console.error("[/api/letters/status] fallo:", error.message);
-  return NextResponse.redirect(new URL(`/cartas/${id}`, origin), { status: 303 });
+  return NextResponse.redirect(absoluteUrl(`/cartas/${id}`), { status: 303 });
 }

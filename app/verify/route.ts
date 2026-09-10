@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { absoluteUrl } from "@/lib/env";
 import { after } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { hashToken } from "@/lib/crypto";
@@ -29,7 +30,7 @@ interface Row {
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
-  const fail = (e: "invalid" | "expired") => NextResponse.redirect(new URL(`/verify/estado?e=${e}`, url.origin));
+  const fail = (e: "invalid" | "expired") => NextResponse.redirect(absoluteUrl(`/verify/estado?e=${e}`));
   if (!token) return fail("invalid");
 
   const supabase = supabaseAdmin();
@@ -46,7 +47,7 @@ export async function GET(request: Request) {
   // Enlace ya usado: sigue siendo del dueno del correo, asi que vuelve al informe con sesion.
   if (row.verified_at) {
     const user = await ensureUser(row.email, locale);
-    const res = NextResponse.redirect(new URL(`/informe/${row.id}`, url.origin));
+    const res = NextResponse.redirect(absoluteUrl(`/informe/${row.id}`));
     if (user) setSessionCookie(res, row.email);
     return res;
   }
@@ -75,7 +76,7 @@ export async function GET(request: Request) {
   const id = row.id;
   after(() => runReportJob(id));
 
-  const res = NextResponse.redirect(new URL(`/informe/${id}`, url.origin));
+  const res = NextResponse.redirect(absoluteUrl(`/informe/${id}`));
   if (user) setSessionCookie(res, row.email);
   return res;
 }

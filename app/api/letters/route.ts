@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { absoluteUrl } from "@/lib/env";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getSession, sessionOwns } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
@@ -18,9 +19,8 @@ export const maxDuration = 60; // busqueda del contacto en Perplexity
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function POST(request: Request) {
-  const origin = new URL(request.url).origin;
   const session = await getSession();
-  if (!session) return NextResponse.redirect(new URL("/entrar", origin), { status: 303 });
+  if (!session) return NextResponse.redirect(absoluteUrl("/entrar"), { status: 303 });
 
   const form = await request.formData();
   const requestId = String(form.get("request_id") ?? "");
@@ -36,8 +36,8 @@ export async function POST(request: Request) {
   if (!req || !sessionOwns(session, req.email)) return new NextResponse(null, { status: 403 });
 
   const user = await findUserByEmail(session.email);
-  if (!user) return NextResponse.redirect(new URL("/entrar", origin), { status: 303 });
-  if (!isPro(user)) return NextResponse.redirect(new URL("/pro", origin), { status: 303 });
+  if (!user) return NextResponse.redirect(absoluteUrl("/entrar"), { status: 303 });
+  if (!isPro(user)) return NextResponse.redirect(absoluteUrl("/pro"), { status: 303 });
 
   const { data: report } = await supabase
     .from("reports")
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     .eq("request_id", req.id)
     .eq("finding_index", index)
     .maybeSingle<{ id: string }>();
-  if (existing) return NextResponse.redirect(new URL(`/cartas/${existing.id}`, origin), { status: 303 });
+  if (existing) return NextResponse.redirect(absoluteUrl(`/cartas/${existing.id}`), { status: 303 });
 
   const locale: Locale = isLocale(req.locale) ? req.locale : "es";
   let host = "";
@@ -90,5 +90,5 @@ export async function POST(request: Request) {
     console.error("[/api/letters] insert fallo:", error?.message);
     return new NextResponse(null, { status: 500 });
   }
-  return NextResponse.redirect(new URL(`/cartas/${created.id}`, origin), { status: 303 });
+  return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });
 }

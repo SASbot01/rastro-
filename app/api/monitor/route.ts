@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { absoluteUrl } from "@/lib/env";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
@@ -9,16 +10,15 @@ import { isPro } from "@/lib/plan";
  * Formulario POST desde /cuenta (campo `enabled` = "1" | "0"); vuelve a /cuenta.
  */
 export async function POST(request: Request) {
-  const origin = new URL(request.url).origin;
   const session = await getSession();
-  if (!session) return NextResponse.redirect(new URL("/entrar", origin), { status: 303 });
+  if (!session) return NextResponse.redirect(absoluteUrl("/entrar"), { status: 303 });
 
   const form = await request.formData();
   const enabled = form.get("enabled") === "1";
 
   // Activar es Pro; desactivar siempre se puede.
   if (enabled && !isPro(await findUserByEmail(session.email))) {
-    return NextResponse.redirect(new URL("/pro", origin), { status: 303 });
+    return NextResponse.redirect(absoluteUrl("/pro"), { status: 303 });
   }
 
   const { error } = await supabaseAdmin()
@@ -32,5 +32,5 @@ export async function POST(request: Request) {
     .eq("email", session.email);
   if (error) console.error("[/api/monitor] fallo:", error.message);
 
-  return NextResponse.redirect(new URL("/cuenta", origin), { status: 303 });
+  return NextResponse.redirect(absoluteUrl("/cuenta"), { status: 303 });
 }

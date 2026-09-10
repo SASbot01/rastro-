@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { absoluteUrl } from "@/lib/env";
 import { supabaseAdmin } from "@/lib/supabase";
 import { hashToken } from "@/lib/crypto";
 import { isLocale } from "@/lib/i18n";
@@ -11,7 +12,7 @@ export const runtime = "nodejs";
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
-  const fail = () => NextResponse.redirect(new URL("/verify/estado?e=login", url.origin));
+  const fail = () => NextResponse.redirect(absoluteUrl("/verify/estado?e=login"));
   if (!token) return fail();
 
   const supabase = supabaseAdmin();
@@ -39,7 +40,7 @@ export async function GET(request: Request) {
   // Destino opcional (solo rutas internas): los correos de novedades enlazan al informe.
   const next = url.searchParams.get("next") ?? "";
   const dest = /^\/(?!\/)[\w\-/?=&.]*$/.test(next) ? next : "/cuenta";
-  const res = NextResponse.redirect(new URL(dest, url.origin));
+  const res = NextResponse.redirect(absoluteUrl(dest));
   setSessionCookie(res, row.email);
   return res;
 }

@@ -50,3 +50,11 @@ export const serverEnv = {
     return process.env.NODE_ENV === "production";
   },
 };
+
+/**
+ * URL absoluta para redirecciones. Nunca usar el origen de la peticion:
+ * detras del tunel de Cloudflare la app ve "localhost:3000".
+ */
+export function absoluteUrl(path: string): URL {
+  return new URL(path, serverEnv.siteUrl);
+}
