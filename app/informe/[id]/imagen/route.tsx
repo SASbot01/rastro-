@@ -19,8 +19,8 @@ const INK = "#f4f4f2";
 const MUTED = "#a3a39e";
 const FAINT = "#6f6f6a";
 const LINE = "#262626";
-const ACCENT = "#c8ff3d";
-const LEVEL_COLOR = { green: "#c8ff3d", orange: "#ffb020", red: "#ff5f5f" } as const;
+const ACCENT = "#4dfc5f";
+const LEVEL_COLOR = { green: "#4dfc5f", orange: "#ffb020", red: "#ff5f5f" } as const;
 
 export async function GET(request: Request, ctx: RouteContext<"/informe/[id]/imagen">) {
   const { id } = await ctx.params;

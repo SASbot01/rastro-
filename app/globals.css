@@ -2,7 +2,7 @@
 
 /* =====================================================================
    Rastro — sistema visual v2 (decisión del propietario, 10-09-2026):
-   oscuro, tarjetas con esquinas grandes, un solo acento vivo (lima) para
+   oscuro, tarjetas con esquinas grandes, un solo acento vivo (verde del logo) para
    lo importante. Mobile first con barra inferior.
    ===================================================================== */
 @theme {
@@ -13,11 +13,11 @@
   --color-muted: #a3a39e; /* texto secundario */
   --color-faint: #6f6f6a; /* pistas, notas al pie */
   --color-line: #262626; /* bordes */
-  --color-accent: #c8ff3d; /* acento único (lima) */
-  --color-accent-soft: rgba(200, 255, 61, 0.12); /* fondo del acento */
+  --color-accent: #4dfc5f; /* acento único (verde del logo) */
+  --color-accent-soft: rgba(77, 252, 95, 0.12); /* fondo del acento */
   --color-danger: #ff5f5f;
   --color-warn: #ffb020; /* semáforo: medio */
-  --color-ok: #c8ff3d; /* semáforo: bajo riesgo = lima */
+  --color-ok: #4dfc5f; /* semáforo: bajo riesgo = verde */
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
@@ -75,7 +75,7 @@ textarea {
   100% { transform: translateY(0); opacity: 1; }
 }
 .radar-ring {
-  background: conic-gradient(from 0deg, transparent 0 70%, rgba(200, 255, 61, 0.15) 85%, var(--color-accent) 100%);
+  background: conic-gradient(from 0deg, transparent 0 70%, rgba(77, 252, 95, 0.15) 85%, var(--color-accent) 100%);
   animation: rastro-sweep 3.2s linear infinite;
 }
 .radar-ping { animation: rastro-ping 2.4s ease-out infinite; }

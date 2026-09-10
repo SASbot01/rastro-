@@ -18,7 +18,7 @@ Lo construye una sola persona con Claude Code. Presupuesto de APIs: máximo 100 
 - Nombre provisional: **Rastro**. Eslogan: *"Mira lo que la IA sabe de ti."*
 - Solo se puede pedir el informe sobre uno mismo. Verificación por enlace enviado al correo antes de mostrar el informe.
 - Nunca prometemos "borrar". Prometemos visibilidad y herramientas.
-- Estética (cambiada por el propietario el 10-09-2026): **oscura**, tarjetas con esquinas grandes, una tipografía (Inter), un solo acento vivo **lima `#c8ff3d`** para lo importante; semáforo lima / ámbar / rojo. Barra inferior en móvil con Inicio · Informe · Herramientas · Perfil. Sigue sin calaveras ni jerga hacker: el tono es limpio.
+- Estética (cambiada por el propietario el 10-09-2026): **oscura**, tarjetas con esquinas grandes, una tipografía (Inter), un solo acento vivo **verde `#4dfc5f`** (el del logo) para lo importante; semáforo verde / ámbar / rojo. Barra inferior en móvil con Inicio · Informe · Herramientas · Perfil. Sigue sin calaveras ni jerga hacker: el tono es limpio.
 - Mobile first: el 90 % de tráfico vendrá de redes en móvil.
 - Idioma por defecto según navegador; selector ES/EN visible.
 

@@ -67,7 +67,7 @@ export default async function ProPage() {
           {features.map((f) => (
             <li key={f} className="flex gap-2.5 text-[15px] leading-relaxed text-ink">
               <svg viewBox="0 0 20 20" className="mt-1 h-4 w-4 shrink-0" aria-hidden="true">
-                <path d="m4.5 10.5 3.5 3.5 7.5-8" fill="none" stroke="#c8ff3d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="m4.5 10.5 3.5 3.5 7.5-8" fill="none" stroke="#4dfc5f" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               {f}
             </li>

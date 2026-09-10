@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import { serverEnv } from "@/lib/env";
 import { getMessages, translator, type Locale } from "@/lib/i18n";
 
-const ACCENT = "#c8ff3d";
+const ACCENT = "#4dfc5f";
 const INK = "#f4f4f2";
 const MUTED = "#a3a39e";
 const LINE = "#262626";

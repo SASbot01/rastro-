@@ -6,7 +6,7 @@ import { getLocale } from "@/lib/locale";
 function CheckIcon() {
   return (
     <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 shrink-0" aria-hidden="true">
-      <path d="m4.5 10.5 3.5 3.5 7.5-8" fill="none" stroke="#c8ff3d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="m4.5 10.5 3.5 3.5 7.5-8" fill="none" stroke="#4dfc5f" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -46,7 +46,7 @@ export default async function HomePage() {
             <div className="relative h-[72px] w-[72px] shrink-0">
               <svg viewBox="0 0 72 72" className="h-full w-full -rotate-90" aria-hidden="true">
                 <circle cx="36" cy="36" r="31" fill="none" stroke="#262626" strokeWidth="7" />
-                <circle cx="36" cy="36" r="31" fill="none" stroke="#c8ff3d" strokeWidth="7" strokeLinecap="round" strokeDasharray="194.8" strokeDashoffset="68" />
+                <circle cx="36" cy="36" r="31" fill="none" stroke="#4dfc5f" strokeWidth="7" strokeLinecap="round" strokeDasharray="194.8" strokeDashoffset="68" />
               </svg>
               <span className="absolute inset-0 flex items-center justify-center text-[22px] font-semibold tracking-[-0.03em] text-accent">65</span>
             </div>

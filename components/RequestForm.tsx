@@ -131,7 +131,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
             <path
               d="M3 7.5 12 13l9-5.5M4.5 5.5h15a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17V7a1.5 1.5 0 0 1 1.5-1.5Z"
               fill="none"
-              stroke="#c8ff3d"
+              stroke="#4dfc5f"
               strokeWidth="1.6"
               strokeLinecap="round"
               strokeLinejoin="round"

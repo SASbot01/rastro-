@@ -26,7 +26,7 @@ export interface ReportData {
 const CATEGORY_ORDER: Category[] = ["breaches", "ai", "profiles", "false"];
 
 const LEVEL_TEXT: Record<Level, string> = { green: "text-ok", orange: "text-warn", red: "text-danger" };
-const LEVEL_STROKE: Record<Level, string> = { green: "#c8ff3d", orange: "#ffb020", red: "#ff5f5f" };
+const LEVEL_STROKE: Record<Level, string> = { green: "#4dfc5f", orange: "#ffb020", red: "#ff5f5f" };
 
 const SEVERITY_DOT: Record<Severity, string> = {
   high: "bg-danger",

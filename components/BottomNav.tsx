@@ -16,7 +16,7 @@ const TABS = [
 ] as const;
 
 function Icon({ name, active }: { name: (typeof TABS)[number]["key"]; active: boolean }) {
-  const stroke = active ? "#c8ff3d" : "currentColor";
+  const stroke = active ? "#4dfc5f" : "currentColor";
   const common = { fill: "none", stroke, strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   switch (name) {
     case "home":
