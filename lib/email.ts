@@ -81,14 +81,17 @@ export async function sendVerifyEmail(opts: {
   url: string;
   locale: Locale;
 }): Promise<void> {
-  // Modo local sin Resend: el enlace se imprime en la terminal en vez de
-  // enviarse. Solo fuera de produccion y solo si no hay clave configurada.
-  if (!process.env.RESEND_API_KEY && process.env.NODE_ENV !== "production") {
-    console.log(
-      `\n[rastro] Sin RESEND_API_KEY: enlace de verificacion para ${opts.to}\n` +
-        `[rastro] ${opts.url}\n`,
-    );
-    return;
+  const dev = !serverEnv.isProduction;
+
+  // En desarrollo el enlace SIEMPRE sale por consola: sin dominio verificado,
+  // Resend solo entrega a la direccion duena de la cuenta, y asi se puede
+  // probar el flujo con cualquier correo.
+  if (dev) {
+    console.log(`\n[rastro] Enlace de verificacion para ${opts.to}\n[rastro] ${opts.url}\n`);
+  }
+  if (!process.env.RESEND_API_KEY) {
+    if (dev) return;
+    throw new Error("Falta RESEND_API_KEY");
   }
 
   const tr = translator(getMessages(opts.locale));
@@ -100,6 +103,12 @@ export async function sendVerifyEmail(opts: {
     text: verifyEmailText(opts),
   });
   if (error) {
+    // En desarrollo, un rechazo de Resend (p. ej. destinatario no permitido)
+    // no rompe el flujo: el enlace ya esta en consola. En produccion, si.
+    if (dev) {
+      console.warn(`[rastro] Resend no envio el correo (${error.message}); usa el enlace de consola.`);
+      return;
+    }
     throw new Error(`Resend: ${error.message}`);
   }
 }
