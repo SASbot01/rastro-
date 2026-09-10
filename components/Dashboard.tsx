@@ -19,7 +19,7 @@ interface ReportRow {
 }
 interface ScanRow { id: string; status: string; services: unknown[]; started_at: string }
 
-const CARD = "min-w-0 overflow-hidden rounded-card border border-line bg-surface";
+const CARD = "flex min-w-0 flex-col overflow-hidden rounded-card border border-line bg-surface";
 const LEVEL_TEXT: Record<Level, string> = { green: "text-ok", orange: "text-warn", red: "text-danger" };
 const LEVEL_HEX: Record<Level, string> = { green: "#4dfc5f", orange: "#ffb020", red: "#ff5f5f" };
 const RULE_COLOR: Record<string, string> = {
@@ -179,7 +179,7 @@ function DashboardBody({ locale, messages, user, latest, previous, list, scan, l
   const nextCheck = user.monitoring && user.monitor_last_at ? new Date(new Date(user.monitor_last_at).getTime() + 30 * 86_400_000) : null;
 
   return (
-    <div className="mt-5 grid gap-4 lg:grid-cols-2 lg:items-start">
+    <div className="mt-5 grid gap-4 lg:grid-cols-2">
       {/* Puntuacion */}
       <section className="relative min-w-0 overflow-hidden rounded-card border border-line bg-surface p-6 lg:col-span-2">
         <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full blur-3xl" style={{ background: LEVEL_HEX[level], opacity: 0.16 }} aria-hidden="true" />
@@ -209,7 +209,7 @@ function DashboardBody({ locale, messages, user, latest, previous, list, scan, l
       <section className={CARD + " p-6"}>
         <h2 className="text-[16px] font-semibold text-ink">{tr("dash.donutTitle")}</h2>
         <p className="mt-1 text-[13px] text-muted">{tr("dash.donutBody")}</p>
-        <div className="mt-5 flex flex-col items-center gap-5 sm:flex-row sm:items-center">
+        <div className="mt-5 flex flex-1 flex-col items-center gap-5 sm:flex-row sm:items-center">
           <Donut segments={segments} score={latest.score} />
           <ul className="grid w-full gap-2">
             {segments.length === 0 && <li className="text-[13.5px] text-muted">{tr("dash.clean")}</li>}
@@ -231,7 +231,7 @@ function DashboardBody({ locale, messages, user, latest, previous, list, scan, l
       <section className={CARD + " p-6"}>
         <h2 className="text-[16px] font-semibold text-ink">{tr("dash.historyTitle")}</h2>
         <p className="mt-1 text-[13px] text-muted">{tr("dash.historyBody")}</p>
-        <div className="mt-4"><Bars points={history} locale={locale} /></div>
+        <div className="mt-4 flex-1"><Bars points={history} locale={locale} /></div>
         <div className="mt-3 grid min-w-0 grid-cols-2 gap-2">
           <Link href="/herramientas" className="flex min-w-0 items-center justify-between gap-2 overflow-hidden rounded-[14px] border border-line bg-surface-2 px-3.5 py-3 hover:border-accent">
             <span className="min-w-0">
