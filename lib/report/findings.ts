@@ -213,13 +213,19 @@ export interface AiSignals {
 }
 
 /** Senales para el score: deterministas (HIBP/Brave) + las de la IA si las hay. */
-export function signalsFrom(hibp: HibpResult, brave: BraveResult, ai?: AiSignals): ScoreSignals {
+export function signalsFrom(
+  hibp: HibpResult,
+  brave: BraveResult,
+  ai?: AiSignals,
+  /** Perfiles que la IA atribuye a la persona. Si se conoce, manda sobre el recuento bruto de Brave. */
+  attributedProfiles?: number,
+): ScoreSignals {
   const breaches = hibp.checked ? hibp.breaches : [];
   const hits: SearchHit[] = brave.ok ? brave.hits : [];
   return {
     breachesWithPassword: breaches.filter((b) => b.hasPassword).length,
     breachesWithoutPassword: breaches.filter((b) => !b.hasPassword).length,
-    publicProfiles: hits.filter((h) => h.kind === "profile").length,
+    publicProfiles: attributedProfiles ?? hits.filter((h) => h.kind === "profile").length,
     aiKnowsEmployer: ai?.knows_employer ?? false,
     aiKnowsCity: ai?.knows_city ?? false,
     contactDataPublic: ai?.contact_data_public ?? false,

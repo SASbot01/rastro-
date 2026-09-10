@@ -5,6 +5,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { createVerifyToken, hashIp } from "@/lib/crypto";
 import { sendVerifyEmail } from "@/lib/email";
 import { serverEnv } from "@/lib/env";
+import { allowRequest } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -47,9 +48,14 @@ async function handleRequest(request: Request) {
   const { firstName, lastName, email, city, locale } = parsed.data;
   const fullName = `${firstName} ${lastName}`.replace(/\s+/g, " ").trim();
 
-  // TODO (Día 5): límite de 3 informes por correo/día y 20 por IP/día usando `rate_limits`.
-
   const h = await headers();
+  const ip = clientIp(h);
+
+  // 3 informes por correo y dia, 20 por IP (CLAUDE.md s.4). Se cuenta antes de
+  // insertar para que un abuso no llene la tabla ni dispare correos.
+  if (!(await allowRequest(email, ip))) {
+    return NextResponse.json({ ok: false, error: "formErrors.rateLimit" }, { status: 429 });
+  }
   const { token, tokenHash } = createVerifyToken();
   const now = new Date();
   const supabase = supabaseAdmin();
@@ -63,7 +69,7 @@ async function handleRequest(request: Request) {
       locale,
       consent_at: now.toISOString(),
       status: "pending",
-      ip_hash: hashIp(clientIp(h)),
+      ip_hash: hashIp(ip),
       verify_token: tokenHash,
       verify_expires_at: new Date(now.getTime() + TOKEN_TTL_HOURS * 3600_000).toISOString(),
     })

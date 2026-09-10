@@ -31,7 +31,7 @@
     "city": "City",
     "cityOptional": "optional",
     "cityPlaceholder": "Valencia",
-    "cityHelp": "Helps tell you apart from people with the same name.",
+    "cityHelp": "Recommended: with your city we can tell your results apart from people who share your name much better.",
     "consent": "I have read the {privacy} and I consent to Rastro searching public information about me and sending me the report.",
     "consentPrivacyLink": "privacy policy",
     "submit": "Send verification link",
@@ -215,5 +215,18 @@
     "Purchases": "purchases",
     "Credit cards": "credit cards",
     "Government issued IDs": "government IDs"
+  },
+  "share": {
+    "button": "Share my score",
+    "download": "Download image",
+    "text": "My exposure score on Rastro: {score}/100. See what AI knows about you.",
+    "title": "My Rastro report",
+    "sharing": "Preparing image…",
+    "note": "The image shows your score and your name partially hidden. Never the full report."
+  },
+  "og": {
+    "scoreLabel": "Exposure score",
+    "outOf": "out of 100",
+    "cta": "rastro.app · See what AI knows about you."
   }
 }

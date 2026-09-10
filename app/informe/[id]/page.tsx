@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { ReportWaiting } from "@/components/ReportWaiting";
@@ -59,6 +60,20 @@ function Panel({ title, body, cta, href }: { title: string; body: string; cta: s
   );
 }
 
+export async function generateMetadata({ params }: PageProps<"/informe/[id]">): Promise<Metadata> {
+  const { id } = await params;
+  const locale = await getLocale();
+  const tr = translator(getMessages(locale));
+  return {
+    title: `Rastro — ${tr("report.eyebrow")}`,
+    // El informe es personal: nunca indexado. La imagen OG solo lleva score y nombre tapado.
+    robots: { index: false, follow: false },
+    openGraph: UUID.test(id)
+      ? { title: `Rastro — ${tr("report.eyebrow")}`, images: [{ url: `/informe/${id}/imagen`, width: 1200, height: 630 }] }
+      : undefined,
+  };
+}
+
 export default async function ReportPage({ params }: PageProps<"/informe/[id]">) {
   const { id } = await params;
   const loaded = await loadRequest(id);
@@ -84,6 +99,7 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
     body = (
       <ReportView
         report={loaded.report}
+        requestId={loaded.request.id}
         fullName={loaded.request.full_name}
         locale={locale}
         messages={messages}

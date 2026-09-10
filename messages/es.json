@@ -31,7 +31,7 @@
     "city": "Ciudad",
     "cityOptional": "opcional",
     "cityPlaceholder": "Valencia",
-    "cityHelp": "Ayuda a distinguirte de personas con tu mismo nombre.",
+    "cityHelp": "Recomendada: con tu ciudad distinguimos mucho mejor tus resultados de los de personas que se llaman como tú.",
     "consent": "He leído la {privacy} y doy mi consentimiento para que Rastro busque información pública sobre mí y me envíe el informe.",
     "consentPrivacyLink": "política de privacidad",
     "submit": "Enviar enlace de verificación",
@@ -215,5 +215,18 @@
     "Purchases": "compras",
     "Credit cards": "tarjetas",
     "Government issued IDs": "documentos de identidad"
+  },
+  "share": {
+    "button": "Compartir mi puntuación",
+    "download": "Descargar imagen",
+    "text": "Mi puntuación de exposición en Rastro: {score}/100. Mira lo que la IA sabe de ti.",
+    "title": "Mi informe de Rastro",
+    "sharing": "Preparando imagen…",
+    "note": "La imagen muestra tu puntuación y tu nombre parcialmente tapado. Nunca el informe completo."
+  },
+  "og": {
+    "scoreLabel": "Puntuación de exposición",
+    "outOf": "de 100",
+    "cta": "rastro.app · Mira lo que la IA sabe de ti."
   }
 }

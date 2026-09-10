@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ShareButton } from "@/components/ShareButton";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { levelFor, type Level } from "@/lib/report/score";
 import type { Action, Category, Finding, Severity } from "@/lib/report/findings";
@@ -65,12 +66,14 @@ function ScoreRing({ score, level, label }: { score: number; level: Level; label
 
 export function ReportView({
   report,
+  requestId,
   fullName,
   locale,
   messages,
   partial,
 }: {
   report: ReportData;
+  requestId: string;
   fullName: string;
   locale: Locale;
   messages: Messages;
@@ -115,6 +118,8 @@ export function ReportView({
         <p className="mt-3 text-[12.5px] text-faint">{tr("report.scoreHint")}</p>
         {partial && <p className="mt-2 text-[12.5px] leading-relaxed text-faint">{tr("report.partial")}</p>}
       </section>
+
+      <ShareButton requestId={requestId} score={report.score} messages={messages} />
 
       {/* Hallazgos */}
       <div className="flex items-baseline justify-between px-1 pt-3">
