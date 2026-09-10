@@ -130,7 +130,18 @@ Coste de la vigilancia: ~0,05 $ por usuario y mes.
 
 > El plan Hobby de Vercel prohíbe uso comercial: en cuanto cobres (semana 2) necesitas Pro.
 
-### Servidor propio (Node 20+)
+### Servidor propio (Node 20+) — así está desplegado rastropro.com
+
+Servidor `blackwolfsec-server` (Ubuntu 24.04, Tailscale `100.114.169.107`, usuario `s4sf`), sin sudo:
+
+- Código en `~/rastro` (copiado con `rsync` desde el Mac; `npm install`, `npm run build`).
+- Supabase propio con la CLI (`supabase start`), `project_id = rastro`, puertos **55321-55323** (otro proyecto usa 54321). Claves en `.env.local` vía `scripts/use-local-supabase.sh`.
+- App con **pm2** (`~/.npm-global/bin/pm2`): `pm2 start deploy/ecosystem.config.cjs && pm2 save`; `pm2 startup` una vez con sudo.
+- **Cloudflare Tunnel** con nombre `rastro` (`deploy/cloudflared.yml`), sin abrir puertos; HTTPS por Cloudflare. Los otros túneles del servidor son de tipo token y no se tocan.
+- Cron: `deploy/crontab.txt` (líneas etiquetadas `# rastro`).
+- Copias de seguridad: `docker exec supabase_db_rastro pg_dump -U postgres postgres > backup.sql`.
+
+Receta genérica:
 
 ```bash
 npm ci && npm run build
