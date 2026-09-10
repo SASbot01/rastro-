@@ -33,7 +33,7 @@ function scoreOf(row: Row): number | null {
  * (vigilancia, escaner, cartas, plazos) vive en /herramientas.
  */
 export default async function AccountPage({ searchParams }: PageProps<"/cuenta">) {
-  const { pago, alias } = await searchParams;
+  const { pago } = await searchParams;
   const session = await getSession();
   if (!session) redirect("/entrar");
   const user = await findUserByEmail(session.email);
@@ -124,23 +124,13 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
             )}
           </section>
 
-          {/* Alias para la comunidad */}
-          <section className={CARD}>
-            <h2 className="text-[15px] font-semibold text-ink">{tr("community.aliasTitle")}</h2>
-            <p className="mt-1 text-[13px] leading-relaxed text-muted">{tr("community.aliasHelp")}</p>
-            <form action="/api/profile/alias" method="post" className="mt-3 flex flex-wrap gap-2">
-              <input
-                name="alias"
-                defaultValue={user.alias ?? ""}
-                placeholder={tr("community.aliasPlaceholder")}
-                maxLength={20}
-                pattern="[A-Za-z0-9_\-]{3,20}"
-                className="min-w-0 flex-1 rounded-[12px] border border-line bg-surface-2 px-3.5 py-2.5 text-[15px] text-ink placeholder:text-faint focus:border-accent focus:outline-none"
-              />
-              <button type="submit" className="rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("community.aliasSave")}</button>
-            </form>
-            {alias === "invalid" && <p className="mt-2 text-[12.5px] text-danger">{tr("community.aliasInvalid")}</p>}
-            {alias === "taken" && <p className="mt-2 text-[12.5px] text-danger">{tr("community.aliasTaken")}</p>}
+          {/* Soporte */}
+          <section className={CARD + " flex flex-wrap items-center justify-between gap-3"}>
+            <div className="min-w-0">
+              <h2 className="text-[15px] font-semibold text-ink">{tr("support.helpTitle")}</h2>
+              <p className="mt-1 text-[13px] leading-relaxed text-muted">{tr("support.helpBody")}</p>
+            </div>
+            <Link href="/soporte" className="shrink-0 rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("support.button")}</Link>
           </section>
 
           {/* Informes */}

@@ -273,3 +273,6 @@ create table if not exists public.community_messages (
 );
 create index if not exists community_messages_created_idx on public.community_messages (created_at desc);
 alter table public.community_messages enable row level security;
+-- Comunidad retirada (decision del propietario, 10-09-2026).
+drop table if exists public.community_messages;
+alter table public.users drop column if exists alias;

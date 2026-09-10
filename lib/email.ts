@@ -233,3 +233,36 @@ export async function sendDeadlineEmail(opts: {
     throw new Error(`Resend: ${error.message}`);
   }
 }
+
+/** Mensaje de soporte: llega al equipo y una copia de acuse al usuario. */
+export async function sendSupportEmail(opts: { from: string; subject: string; message: string; locale: Locale; page?: string | null }): Promise<void> {
+  const tr = translator(getMessages(opts.locale));
+  const to = process.env.SUPPORT_EMAIL || process.env.NEXT_PUBLIC_LEGAL_EMAIL;
+  const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif";
+  const body = escapeHtml(opts.message).replace(/\n/g, "<br>");
+  const text = `De: ${opts.from}\n${opts.page ? `Pantalla: ${opts.page}\n` : ""}\n${opts.message}`;
+
+  if (!serverEnv.isProduction) console.log(`\n[rastro] Soporte de ${opts.from}: ${opts.subject}\n${opts.message}\n`);
+  if (!process.env.RESEND_API_KEY) {
+    if (!serverEnv.isProduction) return;
+    throw new Error("Falta RESEND_API_KEY");
+  }
+  if (!to) throw new Error("Falta SUPPORT_EMAIL");
+
+  await resend().emails.send({
+    from: serverEnv.resendFrom,
+    to,
+    replyTo: opts.from,
+    subject: tr("supportEmail.subject", { subject: opts.subject }),
+    html: `<div style="font:400 15px/1.6 ${font};color:${INK};background:${PAPER};padding:24px;"><p style="margin:0 0 8px;color:${MUTED};">De: ${escapeHtml(opts.from)}${opts.page ? ` · ${escapeHtml(opts.page)}` : ""}</p><p style="margin:0;">${body}</p></div>`,
+    text,
+  });
+  const ack = await resend().emails.send({
+    from: serverEnv.resendFrom,
+    to: opts.from,
+    subject: tr("supportEmail.ackSubject"),
+    html: `<div style="font:400 15px/1.6 ${font};color:${INK};background:${PAPER};padding:24px;"><p style="margin:0 0 12px;">${escapeHtml(tr("supportEmail.ackBody"))}</p><p style="margin:0 0 4px;font-weight:600;">${escapeHtml(opts.subject)}</p><p style="margin:0;color:${MUTED};">${body}</p><p style="margin:24px 0 0;font-size:12px;color:${MUTED};">${escapeHtml(tr("supportEmail.footer"))}</p></div>`,
+    text: `${tr("supportEmail.ackBody")}\n\n${opts.subject}\n${opts.message}\n\n${tr("supportEmail.footer")}`,
+  });
+  if (ack.error && serverEnv.isProduction) console.warn("[soporte] acuse no enviado:", ack.error.message);
+}

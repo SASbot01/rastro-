@@ -20,6 +20,18 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
         <TopTabs messages={messages} />
         <div className="flex items-center gap-2">
           <Link
+            href="/soporte"
+            aria-label={tr("support.button")}
+            title={tr("support.button")}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-2 text-muted hover:text-ink"
+          >
+            <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" strokeWidth="1.7" />
+              <circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.7" />
+              <path d="M6 6l3.5 3.5M18 6l-3.5 3.5M6 18l3.5-3.5M18 18l-3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+            </svg>
+          </Link>
+          <Link
             href={session ? "/cuenta" : "/entrar"}
             aria-label={session ? tr("nav.account") : tr("nav.login")}
             className={"flex h-9 items-center justify-center rounded-full px-3 text-[13px] font-semibold " + (session ? "bg-surface-2 text-ink" : "bg-accent text-black")}
