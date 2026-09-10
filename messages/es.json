@@ -734,5 +734,13 @@
     "ackSubject": "Hemos recibido tu mensaje",
     "ackBody": "Gracias por escribir. Hemos recibido tu mensaje y te contestaremos a esta dirección. Copia de lo que nos has enviado:",
     "footer": "Rastro — Soporte"
+  },
+  "reports": {
+    "title": "Tus informes",
+    "latest": "Último informe",
+    "previous": "Anteriores",
+    "first": "Pedir mi informe gratis",
+    "loginTitle": "Aquí verás tus informes",
+    "loginBody": "Pide tu primer informe gratis desde Inicio; al confirmar el correo se crea tu cuenta y quedan guardados aquí. Si ya tienes cuenta, entra."
   }
 }
