@@ -10,7 +10,14 @@
     "legal": "Legal",
     "account": "My account",
     "login": "Sign in",
-    "logout": "Sign out"
+    "logout": "Sign out",
+    "sections": "Sections",
+    "tabs": {
+      "home": "Home",
+      "report": "Report",
+      "tools": "Tools",
+      "profile": "Profile"
+    }
   },
   "hero": {
     "eyebrow": "Free exposure report",
@@ -20,7 +27,9 @@
       "own": "About yourself only",
       "verify": "We verify your email before we search",
       "retention": "Everything is deleted after 30 days"
-    }
+    },
+    "demoTitle": "This is what your score looks like",
+    "demoBody": "From 0 to 100. Breaches, public profiles and what AI says about you, at a glance."
   },
   "form": {
     "title": "Get your report",
@@ -389,8 +398,8 @@
     "back": "Back to home"
   },
   "login": {
-    "title": "Sign in to your account",
-    "subtitle": "Enter the email you used to request your report. We'll send you a sign-in link; no passwords.",
+    "title": "Sign in or create your account",
+    "subtitle": "No passwords: with your Google account or with a code we email you.",
     "email": "Your email",
     "submit": "Send me the link",
     "submitting": "Sending…",
@@ -399,7 +408,24 @@
     "noAccount": "No report yet?",
     "noAccountCta": "Get your first one free",
     "invalidTitle": "This sign-in link isn't valid",
-    "invalidBody": "It may have been used already or expired. Request a new one."
+    "invalidBody": "It may have been used already or expired. Request a new one.",
+    "google": "Continue with Google",
+    "googleNote": "We only use your email to identify you. We don't access your inbox.",
+    "or": "or with your email",
+    "submitCode": "Send me a code",
+    "noPassword": "You get a 6-digit code (and a link, if you'd rather tap it). No passwords to leak.",
+    "codeEyebrow": "Check your email",
+    "codeTitle": "Enter the code",
+    "codeBody": "We sent it to {email}. It expires in 24 hours and works once.",
+    "codeSubmit": "Sign in",
+    "codeLink": "You can also tap the link in the email; it does the same.",
+    "errors": {
+      "denied": "You cancelled in Google.",
+      "state": "The Google session expired. Try again.",
+      "google": "Google didn't return a verified email.",
+      "db": "Something failed on our side.",
+      "config": "Google isn't configured on this server."
+    }
   },
   "loginEmail": {
     "subject": "Your link to sign in to Rastro",
@@ -409,7 +435,8 @@
     "cta": "Sign in to Rastro",
     "fallback": "If the button doesn't work, copy this address into your browser:",
     "expires": "The link expires in 24 hours and works only once.",
-    "ignore": "If this wasn't you, ignore this message. Nobody can sign in without this link."
+    "ignore": "If this wasn't you, ignore this message. Nobody can sign in without this link.",
+    "codeIntro": "Your sign-in code:"
   },
   "account": {
     "title": "My account",
@@ -664,5 +691,20 @@
       "config": "The scanner isn't configured on this server yet."
     },
     "seenOf": "{n} of {total} emails read"
+  },
+  "tools": {
+    "eyebrow": "Tools",
+    "title": "Tools",
+    "subtitle": "Monitor, clean up and escalate. What comes after the report.",
+    "open": "Open",
+    "scans": "{n} scans done",
+    "letters": "{n} letters",
+    "lettersBody": "Ready-to-send erasure letters, legal deadlines and a complaint to the authority if they don't reply."
+  },
+  "profile": {
+    "score": "Latest score",
+    "reports": "Reports",
+    "letters": "Letters",
+    "noScore": "—"
   }
 }

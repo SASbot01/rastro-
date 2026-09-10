@@ -115,7 +115,7 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
               <ol className="mt-4 grid gap-3">
                 {steps.map((s, i) => (
                   <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-muted">
-                    <span aria-hidden="true" className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-[12px] font-semibold text-white">
+                    <span aria-hidden="true" className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-[12px] font-semibold text-black">
                       {i + 1}
                     </span>
                     <span>{s}</span>

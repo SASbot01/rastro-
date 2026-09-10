@@ -44,7 +44,7 @@ export function ShareButton({ requestId, score, messages }: { requestId: string;
           type="button"
           onClick={share}
           disabled={state === "busy"}
-          className="inline-flex items-center gap-2 rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
             <path d="M10 3v9M6.5 6.5 10 3l3.5 3.5M4 11v4a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />

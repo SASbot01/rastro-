@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Inter } from "next/font/google";
 import { getLocale } from "@/lib/locale";
 import { getMessages, translator } from "@/lib/i18n";
+import { BottomNav } from "@/components/BottomNav";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,7 +13,7 @@ const inter = Inter({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#faf9f7",
+  themeColor: "#0a0a0a",
   width: "device-width",
   initialScale: 1,
 };
@@ -38,8 +39,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const plausible = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
   return (
     <html lang={locale} className={`${inter.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col pb-[76px] sm:pb-0">
         {children}
+        <BottomNav messages={getMessages(locale)} />
         {plausible && <Script defer data-domain={plausible} src="https://plausible.io/js/script.js" strategy="afterInteractive" />}
       </body>
     </html>

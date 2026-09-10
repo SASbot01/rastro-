@@ -28,7 +28,7 @@ interface Row {
   reports: { score: number } | { score: number }[] | null;
 }
 
-const LEVEL_TEXT = { green: "text-ok", orange: "text-accent", red: "text-danger" } as const;
+const LEVEL_TEXT = { green: "text-ok", orange: "text-warn", red: "text-danger" } as const;
 
 function scoreOf(row: Row): number | null {
   const r = Array.isArray(row.reports) ? row.reports[0] : row.reports;
@@ -68,21 +68,44 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
     .returns<LetterRow[]>();
   const letters = letterRows ?? [];
 
+
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
 
       <main className="mx-auto w-full max-w-[640px] px-5 py-10 sm:py-14">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h1 className="text-[28px] font-semibold tracking-[-0.025em] text-ink">{tr("account.title")}</h1>
-            <p className="mt-1 text-[13px] text-faint">{tr("account.signedInAs", { email: user.email })}</p>
-          </div>
-          <span className={"rounded-full px-3 py-1 text-[12px] font-semibold " + (pro ? "bg-accent text-white" : "bg-paper text-muted")}>
-            {tr(`account.plan.${pro ? "pro" : "free"}`)}
-          </span>
-        </div>
-        <p className="mt-4 text-[15px] leading-relaxed text-muted">{tr("account.subtitle")}</p>
+        {/* Cabecera de perfil */}
+        {(() => {
+          const lastScore = list.map(scoreOf).find((v) => v !== null) ?? null;
+          const name = list[0]?.full_name ?? user.email.split("@")[0];
+          const initial = name.slice(0, 1).toUpperCase();
+          return (
+            <section className="flex flex-col items-center text-center">
+              <div className="relative">
+                <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-accent text-[34px] font-semibold text-accent">
+                  {initial}
+                </div>
+                <span className={"absolute -right-1 -bottom-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide " + (pro ? "bg-accent text-black" : "bg-surface-2 text-muted")}>
+                  {tr(`account.plan.${pro ? "pro" : "free"}`)}
+                </span>
+              </div>
+              <h1 className="mt-4 text-[26px] font-semibold tracking-[-0.025em] text-ink">{name}</h1>
+              <p className="text-[14px] text-faint">{user.email}</p>
+              <ul className="mt-6 grid w-full grid-cols-3 divide-x divide-line rounded-card border border-line bg-surface">
+                {[
+                  { v: lastScore ?? tr("profile.noScore"), l: tr("profile.score"), cls: lastScore !== null ? LEVEL_TEXT[levelFor(lastScore)] : "text-faint" },
+                  { v: list.filter((r) => r.status === "done").length, l: tr("profile.reports"), cls: "text-ink" },
+                  { v: letters.length, l: tr("profile.letters"), cls: "text-ink" },
+                ].map((x) => (
+                  <li key={x.l} className="py-4">
+                    <p className={"text-[22px] font-semibold tracking-[-0.02em] " + x.cls}>{x.v}</p>
+                    <p className="mt-0.5 text-[12px] text-faint">{x.l}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })()}
 
         {pago === "ok" && !pro && (
           <p className="mt-4 rounded-[10px] bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-accent">
@@ -114,7 +137,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
             <>
               <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
               <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("pro.lockedBody")}</p>
-              <Link href="/pro" className="mt-3 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90">
+              <Link href="/pro" className="mt-3 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
                 {tr("pro.lockedCta")}
               </Link>
             </>
@@ -125,7 +148,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
         <section className="mt-8 rounded-card border border-line bg-surface p-5 sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-[15px] font-semibold text-ink">{tr("monitor.title")}</h2>
-            <span className={"rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide " + (user.monitoring ? "bg-accent text-white" : "bg-paper text-faint")}>
+            <span className={"rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide " + (user.monitoring ? "bg-accent text-black" : "bg-paper text-faint")}>
               {user.monitoring ? tr("monitor.on") : tr("monitor.off")}
             </span>
           </div>
@@ -149,7 +172,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
               className={
                 user.monitoring
                   ? "w-fit text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink"
-                  : "w-fit rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90"
+                  : "w-fit rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90"
               }
             >
               {user.monitoring ? tr("monitor.disable") : tr("monitor.enable")}
@@ -203,7 +226,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
             <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-accent">{tr("mailbox.beta")}</span>
           </div>
           <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("account.mailboxCardBody")}</p>
-          <Link href={pro ? "/cuenta/buzon" : "/pro"} className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90">
+          <Link href={pro ? "/cuenta/buzon" : "/pro"} className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
             {pro ? tr("account.mailboxCardCta") : tr("pro.lockedCta")}
           </Link>
         </section>
@@ -230,7 +253,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
                         <Link href={`/cartas/${l.id}`} className="truncate font-medium text-ink underline-offset-4 hover:underline">
                           {l.host}
                         </Link>
-                        <span className={"shrink-0 rounded-full px-2.5 py-0.5 text-[12px] font-semibold " + (late ? "bg-accent text-white" : days <= 3 ? "bg-accent-soft text-accent" : "bg-paper text-muted")}>
+                        <span className={"shrink-0 rounded-full px-2.5 py-0.5 text-[12px] font-semibold " + (late ? "bg-accent text-black" : days <= 3 ? "bg-accent-soft text-accent" : "bg-paper text-muted")}>
                           {late ? tr("deadlines.overdueShort") : days === 0 ? tr("deadlines.today") : tr("deadlines.daysLeft", { n: days })}
                           {" · "}
                           {fmt.format(d)}
@@ -268,7 +291,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
         )}
 
         <div className="mt-8 flex flex-wrap items-center gap-4">
-          <Link href="/#form" className="rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90">
+          <Link href="/#form" className="rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
             {tr("account.newReport")}
           </Link>
           <form action="/api/session/logout" method="post">

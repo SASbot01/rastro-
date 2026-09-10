@@ -1,30 +1,31 @@
 @import "tailwindcss";
 
 /* =====================================================================
-   Rastro — sistema visual
-   Informe médico / app de banco: papel claro, una tipografía, un acento.
-   El naranja (#E8590C) se reserva para lo expuesto y para la acción
-   principal. Nunca decorativo.
+   Rastro — sistema visual v2 (decisión del propietario, 10-09-2026):
+   oscuro, tarjetas con esquinas grandes, un solo acento vivo (lima) para
+   lo importante. Mobile first con barra inferior.
    ===================================================================== */
 @theme {
-  --color-paper: #faf9f7; /* fondo de página */
-  --color-surface: #ffffff; /* tarjetas */
-  --color-ink: #1a1a19; /* texto principal */
-  --color-muted: #6b6b66; /* texto secundario */
-  --color-faint: #9a9a93; /* pistas, notas al pie */
-  --color-line: #e7e4de; /* bordes */
-  --color-accent: #e8590c; /* acento único */
-  --color-accent-soft: #fdf1e8; /* fondo del acento */
-  --color-danger: #b4231a;
-  --color-ok: #2f8f5b; /* verde del semaforo (CLAUDE.md s.7); solo para el score */
+  --color-paper: #0a0a0a; /* fondo de página */
+  --color-surface: #151515; /* tarjetas */
+  --color-surface-2: #1d1d1d; /* tarjeta sobre tarjeta, campos */
+  --color-ink: #f4f4f2; /* texto principal */
+  --color-muted: #a3a39e; /* texto secundario */
+  --color-faint: #6f6f6a; /* pistas, notas al pie */
+  --color-line: #262626; /* bordes */
+  --color-accent: #c8ff3d; /* acento único (lima) */
+  --color-accent-soft: rgba(200, 255, 61, 0.12); /* fondo del acento */
+  --color-danger: #ff5f5f;
+  --color-warn: #ffb020; /* semáforo: medio */
+  --color-ok: #c8ff3d; /* semáforo: bajo riesgo = lima */
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-card: 14px;
+  --radius-card: 20px;
 }
 
 :root {
-  color-scheme: light; /* la estética es clara a propósito; sin tema oscuro */
+  color-scheme: dark;
 }
 
 body {
@@ -38,7 +39,13 @@ body {
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-  border-radius: 6px;
+  border-radius: 8px;
+}
+
+/* Campos de formulario sobre tarjeta oscura */
+input,
+textarea {
+  color-scheme: dark;
 }
 
 @media (prefers-reduced-motion: reduce) {

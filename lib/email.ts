@@ -2,11 +2,11 @@ import { Resend } from "resend";
 import { serverEnv } from "@/lib/env";
 import { getMessages, translator, type Locale } from "@/lib/i18n";
 
-const ACCENT = "#E8590C";
-const INK = "#1A1A19";
-const MUTED = "#6B6B66";
-const LINE = "#E7E4DE";
-const PAPER = "#FAF9F7";
+const ACCENT = "#c8ff3d";
+const INK = "#f4f4f2";
+const MUTED = "#a3a39e";
+const LINE = "#262626";
+const PAPER = "#0a0a0a";
 
 let client: Resend | null = null;
 function resend(): Resend {
@@ -46,7 +46,7 @@ function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; local
   const t = translator(getMessages(opts.locale));
   const codeBlock = opts.code
     ? `<tr><td style="padding:24px 32px 0;font:400 14px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:${MUTED};">
-          <p style="margin:0 0 8px;">${escapeHtml(t("email.codeIntro"))}</p>
+          <p style="margin:0 0 8px;">${escapeHtml(t(opts.kind === "login" ? "loginEmail.codeIntro" : "email.codeIntro"))}</p>
           <p style="margin:0;font:700 32px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;letter-spacing:0.18em;color:${INK};">${escapeHtml(opts.code)}</p>
         </td></tr>`
     : "";
@@ -58,7 +58,7 @@ function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; local
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(tr("preheader"))}</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};padding:32px 16px;">
     <tr><td align="center">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#FFFFFF;border:1px solid ${LINE};border-radius:14px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#151515;border:1px solid ${LINE};border-radius:20px;">
         <tr><td style="padding:32px 32px 8px;font:600 15px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;letter-spacing:-0.01em;color:${INK};">
           Rastro
         </td></tr>
@@ -67,7 +67,7 @@ function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; local
           <p style="margin:0 0 24px;color:${MUTED};">${escapeHtml(tr("body"))}</p>
         </td></tr>
         <tr><td style="padding:0 32px;">
-          <a href="${url}" style="display:block;text-align:center;background:${ACCENT};color:#FFFFFF;text-decoration:none;font:600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;padding:16px 20px;border-radius:10px;">${escapeHtml(tr("cta"))}</a>
+          <a href="${url}" style="display:block;text-align:center;background:${ACCENT};color:#0a0a0a;text-decoration:none;font:600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;padding:16px 20px;border-radius:10px;">${escapeHtml(tr("cta"))}</a>
         </td></tr>
         ${codeBlock}
         <tr><td style="padding:24px 32px 0;font:400 13px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:${MUTED};">
@@ -89,7 +89,7 @@ function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; local
 function magicLinkText(opts: { kind: MagicKind; name: string; url: string; locale: Locale; code?: string }): string {
   const c = copyFor(opts.kind, opts.locale, opts.name);
   const t = translator(getMessages(opts.locale));
-  const codeLines = opts.code ? ["", t("email.codeIntro"), opts.code] : [];
+  const codeLines = opts.code ? ["", t(opts.kind === "login" ? "loginEmail.codeIntro" : "email.codeIntro"), opts.code] : [];
   return [c.greeting, "", c.body, "", `${c.cta}: ${opts.url}`, ...codeLines, "", c.expires, c.ignore, "", c.footer].join("\n");
 }
 
@@ -97,7 +97,7 @@ export function sendVerifyEmail(opts: { to: string; name: string; url: string; l
   return sendMagicLink({ kind: "verify", ...opts });
 }
 
-export function sendLoginEmail(opts: { to: string; url: string; locale: Locale }): Promise<void> {
+export function sendLoginEmail(opts: { to: string; url: string; locale: Locale; code?: string }): Promise<void> {
   return sendMagicLink({ kind: "login", name: "", ...opts });
 }
 
@@ -157,14 +157,14 @@ export async function sendMonitorEmail(opts: {
 <body style="margin:0;padding:0;background:${PAPER};">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(tr("monitorEmail.preheader"))}</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};padding:32px 16px;"><tr><td align="center">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#FFFFFF;border:1px solid ${LINE};border-radius:14px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#151515;border:1px solid ${LINE};border-radius:20px;">
       <tr><td style="padding:32px 32px 8px;font:600 15px/1.4 ${font};color:${INK};">Rastro</td></tr>
       <tr><td style="padding:8px 32px 0;font:400 16px/1.6 ${font};color:${INK};">
         <p style="margin:0 0 12px;">${escapeHtml(tr("monitorEmail.greeting", { name: opts.name }))}</p>
         <p style="margin:0 0 16px;color:${MUTED};">${escapeHtml(tr("monitorEmail.intro"))}</p>
         <ul style="margin:0 0 24px;padding-left:20px;color:${INK};">${items}</ul>
       </td></tr>
-      <tr><td style="padding:0 32px;"><a href="${escapeHtml(opts.reportUrl)}" style="display:block;text-align:center;background:${ACCENT};color:#FFFFFF;text-decoration:none;font:600 16px/1 ${font};padding:16px 20px;border-radius:10px;">${escapeHtml(tr("monitorEmail.cta"))}</a></td></tr>
+      <tr><td style="padding:0 32px;"><a href="${escapeHtml(opts.reportUrl)}" style="display:block;text-align:center;background:${ACCENT};color:#0a0a0a;text-decoration:none;font:600 16px/1 ${font};padding:16px 20px;border-radius:10px;">${escapeHtml(tr("monitorEmail.cta"))}</a></td></tr>
       <tr><td style="padding:24px 32px 32px;font:400 12px/1.6 ${font};color:${MUTED};">
         <p style="margin:0 0 6px;">${escapeHtml(tr("monitorEmail.footer"))}</p>
         <p style="margin:0;"><a href="${escapeHtml(opts.unsubscribeUrl)}" style="color:${MUTED};">${escapeHtml(tr("monitorEmail.unsubscribe"))}</a></p>
@@ -209,14 +209,14 @@ export async function sendDeadlineEmail(opts: {
 <body style="margin:0;padding:0;background:${PAPER};">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(tr("deadlineEmail.preheader"))}</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};padding:32px 16px;"><tr><td align="center">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#FFFFFF;border:1px solid ${LINE};border-radius:14px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#151515;border:1px solid ${LINE};border-radius:20px;">
       <tr><td style="padding:32px 32px 8px;font:600 15px/1.4 ${font};color:${INK};">Rastro</td></tr>
       <tr><td style="padding:8px 32px 0;font:400 16px/1.6 ${font};color:${INK};">
         <p style="margin:0 0 12px;">${escapeHtml(tr("deadlineEmail.greeting", vars))}</p>
         <p style="margin:0 0 12px;">${escapeHtml(tr("deadlineEmail.body", vars))}</p>
         <p style="margin:0 0 24px;color:${MUTED};">${escapeHtml(tr("deadlineEmail.ask"))}</p>
       </td></tr>
-      <tr><td style="padding:0 32px;"><a href="${escapeHtml(opts.letterUrl)}" style="display:block;text-align:center;background:${ACCENT};color:#FFFFFF;text-decoration:none;font:600 16px/1 ${font};padding:16px 20px;border-radius:10px;">${escapeHtml(tr("deadlineEmail.cta"))}</a></td></tr>
+      <tr><td style="padding:0 32px;"><a href="${escapeHtml(opts.letterUrl)}" style="display:block;text-align:center;background:${ACCENT};color:#0a0a0a;text-decoration:none;font:600 16px/1 ${font};padding:16px 20px;border-radius:10px;">${escapeHtml(tr("deadlineEmail.cta"))}</a></td></tr>
       <tr><td style="padding:24px 32px 32px;font:400 12px/1.6 ${font};color:${MUTED};">${escapeHtml(tr("deadlineEmail.footer"))}</td></tr>
     </table>
   </td></tr></table></body></html>`;

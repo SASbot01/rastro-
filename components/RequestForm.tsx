@@ -131,7 +131,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
             <path
               d="M3 7.5 12 13l9-5.5M4.5 5.5h15a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17V7a1.5 1.5 0 0 1 1.5-1.5Z"
               fill="none"
-              stroke="#E8590C"
+              stroke="#c8ff3d"
               strokeWidth="1.6"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -161,7 +161,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
             <button
               type="submit"
               disabled={codeState === "busy"}
-              className="rounded-[10px] bg-accent px-4 py-3 text-[14px] font-semibold text-white hover:opacity-90 disabled:opacity-60"
+              className="rounded-[10px] bg-accent px-4 py-3 text-[14px] font-semibold text-black hover:opacity-90 disabled:opacity-60"
             >
               {codeState === "busy" ? tr("sent.codeChecking") : tr("sent.codeSubmit")}
             </button>
@@ -346,7 +346,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
       <button
         type="submit"
         disabled={busy}
-        className="mt-5 w-full rounded-[10px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-5 w-full rounded-[10px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {busy ? tr("form.submitting") : tr("form.submit")}
       </button>

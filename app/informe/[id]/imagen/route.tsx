@@ -14,13 +14,13 @@ export const runtime = "nodejs";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-const PAPER = "#faf9f7";
-const INK = "#1a1a19";
-const MUTED = "#6b6b66";
-const FAINT = "#9a9a93";
-const LINE = "#e7e4de";
-const ACCENT = "#e8590c";
-const LEVEL_COLOR = { green: "#2f8f5b", orange: ACCENT, red: "#b4231a" } as const;
+const PAPER = "#0a0a0a";
+const INK = "#f4f4f2";
+const MUTED = "#a3a39e";
+const FAINT = "#6f6f6a";
+const LINE = "#262626";
+const ACCENT = "#c8ff3d";
+const LEVEL_COLOR = { green: "#c8ff3d", orange: "#ffb020", red: "#ff5f5f" } as const;
 
 export async function GET(request: Request, ctx: RouteContext<"/informe/[id]/imagen">) {
   const { id } = await ctx.params;
@@ -60,7 +60,7 @@ export async function GET(request: Request, ctx: RouteContext<"/informe/[id]/ima
   const scoreBlock = (
     <div style={{ display: "flex", position: "relative", width: ring, height: ring }}>
       <svg width={ring} height={ring} viewBox={`0 0 ${ring} ${ring}`} style={{ display: "flex", transform: "rotate(-90deg)" }}>
-        <circle cx={ring / 2} cy={ring / 2} r={r} fill="none" stroke="#efece6" strokeWidth={stroke} />
+        <circle cx={ring / 2} cy={ring / 2} r={r} fill="none" stroke="#262626" strokeWidth={stroke} />
         <circle
           cx={ring / 2}
           cy={ring / 2}

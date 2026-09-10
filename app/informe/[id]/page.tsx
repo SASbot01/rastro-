@@ -56,7 +56,7 @@ function Panel({ title, body, cta, href }: { title: string; body: string; cta: s
       <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{body}</p>
       <Link
         href={href}
-        className="mt-6 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white transition-opacity hover:opacity-90"
+        className="mt-6 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black transition-opacity hover:opacity-90"
       >
         {cta}
       </Link>

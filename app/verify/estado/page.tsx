@@ -29,7 +29,7 @@ export default async function VerifyStatePage({ searchParams }: PageProps<"/veri
           <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{copy.body}</p>
           <Link
             href={copy.href}
-            className="mt-6 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white transition-opacity hover:opacity-90"
+            className="mt-6 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black transition-opacity hover:opacity-90"
           >
             {copy.cta}
           </Link>

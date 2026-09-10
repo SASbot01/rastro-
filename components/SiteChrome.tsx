@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { TopTabs } from "@/components/BottomNav";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { getSession } from "@/lib/session";
 
@@ -7,8 +8,8 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
   const tr = translator(messages);
   const session = await getSession();
   return (
-    <header className="border-b border-line">
-      <div className="mx-auto flex w-full max-w-[640px] items-center justify-between px-5 py-4">
+    <header className="sticky top-0 z-30 border-b border-line bg-paper/90 backdrop-blur">
+      <div className="mx-auto flex w-full max-w-[640px] items-center justify-between gap-4 px-5 py-3.5">
         <Link
           href="/"
           className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-ink"
@@ -16,12 +17,14 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
           <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
           {tr("nav.brand")}
         </Link>
-        <div className="flex items-center gap-3">
+        <TopTabs messages={messages} />
+        <div className="flex items-center gap-2">
           <Link
             href={session ? "/cuenta" : "/entrar"}
-            className="text-[13px] font-medium text-muted underline-offset-4 hover:text-ink hover:underline"
+            aria-label={session ? tr("nav.account") : tr("nav.login")}
+            className={"flex h-9 items-center justify-center rounded-full px-3 text-[13px] font-semibold " + (session ? "bg-surface-2 text-ink" : "bg-accent text-black")}
           >
-            {session ? tr("nav.account") : tr("nav.login")}
+            {session ? session.email.slice(0, 1).toUpperCase() : tr("nav.login")}
           </Link>
           <LocaleSwitcher current={locale} messages={messages} />
         </div>

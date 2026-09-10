@@ -9,7 +9,7 @@ function CheckIcon() {
       <path
         d="m4.5 10.5 3.5 3.5 7.5-8"
         fill="none"
-        stroke="#E8590C"
+        stroke="#c8ff3d"
         strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -36,7 +36,20 @@ export default async function HomePage() {
       <SiteHeader locale={locale} messages={messages} />
 
       <main className="mx-auto w-full max-w-[640px] px-5">
-        <section className="pt-12 pb-10 sm:pt-16">
+        <section className="pt-8 pb-8 sm:pt-14">
+          <div className="mb-6 flex items-center gap-4 rounded-card border border-line bg-surface p-4">
+            <div className="relative h-[72px] w-[72px] shrink-0">
+              <svg viewBox="0 0 72 72" className="h-full w-full -rotate-90" aria-hidden="true">
+                <circle cx="36" cy="36" r="31" fill="none" stroke="#262626" strokeWidth="7" />
+                <circle cx="36" cy="36" r="31" fill="none" stroke="#c8ff3d" strokeWidth="7" strokeLinecap="round" strokeDasharray="194.8" strokeDashoffset="68" />
+              </svg>
+              <span className="absolute inset-0 flex items-center justify-center text-[22px] font-semibold tracking-[-0.03em] text-accent">65</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-[13px] font-semibold text-ink">{tr("hero.demoTitle")}</p>
+              <p className="mt-0.5 text-[12.5px] leading-snug text-muted">{tr("hero.demoBody")}</p>
+            </div>
+          </div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">
             {tr("hero.eyebrow")}
           </p>

@@ -27,7 +27,7 @@ export function LocaleSwitcher({
     <div
       role="group"
       aria-label={tr("locale.switchTo")}
-      className="flex items-center rounded-full border border-line bg-surface p-0.5"
+      className="flex items-center rounded-full border border-line bg-surface-2 p-0.5"
       data-pending={pending || undefined}
     >
       {LOCALES.map((locale) => {
@@ -40,7 +40,7 @@ export function LocaleSwitcher({
             aria-current={active ? "true" : undefined}
             className={
               "rounded-full px-2.5 py-1 text-[12px] font-medium uppercase tracking-wide transition-colors " +
-              (active ? "bg-ink text-white" : "text-muted hover:text-ink")
+              (active ? "bg-accent text-black" : "text-muted hover:text-ink")
             }
           >
             {locale}

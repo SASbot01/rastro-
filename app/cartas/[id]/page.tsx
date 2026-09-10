@@ -31,7 +31,7 @@ const STATUS_CLASS: Record<Letter["status"], string> = {
   draft: "bg-paper text-muted",
   sent: "bg-accent-soft text-accent",
   answered: "bg-paper text-ok",
-  no_answer: "bg-accent text-white",
+  no_answer: "bg-accent text-black",
   closed: "bg-paper text-faint",
 };
 
@@ -43,7 +43,7 @@ function StatusButton({ id, status, label, primary }: { id: string; status: stri
         type="submit"
         className={
           primary
-            ? "rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90"
+            ? "rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90"
             : "rounded-[10px] border border-line bg-surface px-4 py-3 text-[14px] font-medium text-ink hover:border-faint"
         }
       >
@@ -170,7 +170,7 @@ export default async function LetterPage({ params }: PageProps<"/cartas/[id]">) 
           {(letter.status === "no_answer" || (letter.status === "sent" && letter.deadline_at && new Date(letter.deadline_at) < new Date())) && (
             <Link
               href={`/cartas/${letter.id}/reclamacion`}
-              className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90"
+              className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90"
             >
               {tr("aepd.cta")}
             </Link>

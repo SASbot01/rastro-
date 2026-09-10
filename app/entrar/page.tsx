@@ -4,6 +4,7 @@ import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { getMessages } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { getSession } from "@/lib/session";
+import { googleConfigured } from "@/lib/google";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export default async function LoginPage() {
     <>
       <SiteHeader locale={locale} messages={messages} />
       <main className="mx-auto w-full max-w-[640px] px-5 py-12 sm:py-16">
-        <LoginForm messages={messages} locale={locale} />
+        <LoginForm messages={messages} locale={locale} googleEnabled={googleConfigured()} />
       </main>
       <SiteFooter messages={messages} />
     </>

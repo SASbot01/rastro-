@@ -93,3 +93,40 @@ export async function revokeToken(accessToken: string): Promise<void> {
     signal: AbortSignal.timeout(10_000),
   }).catch(() => undefined);
 }
+
+/* ---------- "Continuar con Google": solo identidad (openid + email) ---------- */
+export const GOOGLE_LOGIN_SCOPES = ["openid", "email"];
+export function redirectUriLogin(): string {
+  return `${serverEnv.siteUrl}/api/auth/google/callback`;
+}
+export function authUrlLogin(state: string): string {
+  const params = new URLSearchParams({
+    client_id: clientId(),
+    redirect_uri: redirectUriLogin(),
+    response_type: "code",
+    scope: GOOGLE_LOGIN_SCOPES.join(" "),
+    access_type: "online",
+    prompt: "select_account",
+    state,
+  });
+  return `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+}
+export async function exchangeCodeLogin(code: string): Promise<{ accessToken: string }> {
+  const res = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ code, client_id: clientId(), client_secret: clientSecret(), redirect_uri: redirectUriLogin(), grant_type: "authorization_code" }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  const data = (await res.json().catch(() => ({}))) as { access_token?: string; error?: string; error_description?: string };
+  if (!res.ok || !data.access_token) throw new Error(`token: ${data.error ?? res.status} ${data.error_description ?? ""}`);
+  return { accessToken: data.access_token };
+}
+export async function googleUserInfo(accessToken: string): Promise<{ email: string | null; emailVerified: boolean }> {
+  const res = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
+    headers: { authorization: `Bearer ${accessToken}` },
+    signal: AbortSignal.timeout(15_000),
+  });
+  const data = (await res.json().catch(() => ({}))) as { email?: string; email_verified?: boolean };
+  return { email: data.email?.toLowerCase() ?? null, emailVerified: Boolean(data.email_verified) };
+}

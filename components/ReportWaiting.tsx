@@ -66,7 +66,7 @@ export function ReportWaiting({ id, steps, initialStep, messages }: Props) {
                 className={
                   "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold " +
                   (state === "done"
-                    ? "border-accent bg-accent text-white"
+                    ? "border-accent bg-accent text-black"
                     : state === "active"
                       ? "border-accent text-accent"
                       : "border-line text-faint")

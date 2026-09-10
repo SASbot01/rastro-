@@ -73,7 +73,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
           <div className="rounded-card border border-line bg-surface p-6">
             <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
             <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("mailbox.proBody")}</p>
-            <Link href="/pro" className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90">
+            <Link href="/pro" className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
               {tr("pro.lockedCta")}
             </Link>
           </div>
@@ -97,7 +97,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
                   <button
                     type="submit"
                     disabled={!googleConfigured()}
-                    className="rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:opacity-90 disabled:opacity-50"
+                    className="rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-50"
                   >
                     {tr("mailbox.connect")}
                   </button>

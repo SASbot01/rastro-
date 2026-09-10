@@ -18,7 +18,7 @@ export function CopyButton({ text, label, doneLabel }: { text: string; label: st
     <button
       type="button"
       onClick={copy}
-      className="inline-flex items-center gap-2 rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-white transition-opacity hover:opacity-90"
+      className="inline-flex items-center gap-2 rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black transition-opacity hover:opacity-90"
     >
       {done ? doneLabel : label}
     </button>

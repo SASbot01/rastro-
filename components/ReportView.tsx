@@ -23,11 +23,11 @@ export interface ReportData {
 
 const CATEGORY_ORDER: Category[] = ["breaches", "ai", "profiles", "false"];
 
-const LEVEL_TEXT: Record<Level, string> = { green: "text-ok", orange: "text-accent", red: "text-danger" };
-const LEVEL_STROKE: Record<Level, string> = { green: "#2f8f5b", orange: "#e8590c", red: "#b4231a" };
+const LEVEL_TEXT: Record<Level, string> = { green: "text-ok", orange: "text-warn", red: "text-danger" };
+const LEVEL_STROKE: Record<Level, string> = { green: "#c8ff3d", orange: "#ffb020", red: "#ff5f5f" };
 
 const SEVERITY_CLASS: Record<Severity, string> = {
-  high: "bg-accent text-white",
+  high: "bg-accent text-black",
   medium: "bg-accent-soft text-accent",
   low: "bg-paper text-muted",
   info: "bg-paper text-faint",
@@ -45,7 +45,7 @@ function ScoreRing({ score, level, label }: { score: number; level: Level; label
   return (
     <div className="relative h-[148px] w-[148px] shrink-0" role="img" aria-label={`${score}/100 — ${label}`}>
       <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full -rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#efece6" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#262626" strokeWidth={stroke} />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -232,7 +232,7 @@ export function ReportView({
               <li key={i} className="flex gap-3">
                 <span
                   aria-hidden="true"
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-semibold text-white"
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-semibold text-black"
                 >
                   {i + 1}
                 </span>

@@ -256,3 +256,7 @@ alter table public.mailbox_scans enable row level security;
 -- letters: una carta puede venir de un servicio del buzón (sin informe ni hallazgo)
 alter table public.letters add column if not exists mailbox_scan_id uuid references public.mailbox_scans(id) on delete set null;
 alter table public.mailbox_scans add column if not exists messages_total int;
+-- Codigo de 6 digitos en los enlaces de acceso (misma credencial que el enlace).
+alter table public.login_tokens
+  add column if not exists code_hash text,
+  add column if not exists attempts int not null default 0;

@@ -10,7 +10,14 @@
     "legal": "Aviso legal",
     "account": "Mi cuenta",
     "login": "Entrar",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "sections": "Secciones",
+    "tabs": {
+      "home": "Inicio",
+      "report": "Informe",
+      "tools": "Herramientas",
+      "profile": "Perfil"
+    }
   },
   "hero": {
     "eyebrow": "Informe gratuito de exposición",
@@ -20,7 +27,9 @@
       "own": "Solo sobre ti mismo",
       "verify": "Verificamos tu correo antes de buscar",
       "retention": "Todo se borra a los 30 días"
-    }
+    },
+    "demoTitle": "Así se ve tu puntuación",
+    "demoBody": "De 0 a 100. Filtraciones, perfiles públicos y lo que la IA dice de ti, en un vistazo."
   },
   "form": {
     "title": "Pide tu informe",
@@ -389,8 +398,8 @@
     "back": "Volver al inicio"
   },
   "login": {
-    "title": "Entra en tu cuenta",
-    "subtitle": "Escribe el correo con el que pediste tu informe. Te enviamos un enlace de acceso; sin contraseñas.",
+    "title": "Entra o crea tu cuenta",
+    "subtitle": "Sin contraseñas: con tu cuenta de Google o con un código que te enviamos al correo.",
     "email": "Tu correo",
     "submit": "Enviarme el enlace",
     "submitting": "Enviando…",
@@ -399,7 +408,24 @@
     "noAccount": "¿Todavía no tienes informe?",
     "noAccountCta": "Pide el primero gratis",
     "invalidTitle": "Este enlace de acceso no vale",
-    "invalidBody": "Puede que ya se haya usado o que haya caducado. Pide uno nuevo."
+    "invalidBody": "Puede que ya se haya usado o que haya caducado. Pide uno nuevo.",
+    "google": "Continuar con Google",
+    "googleNote": "Solo usamos tu correo para identificarte. No accedemos a tu buzón.",
+    "or": "o con tu correo",
+    "submitCode": "Enviarme un código",
+    "noPassword": "Te llega un código de 6 dígitos (y un enlace, por si prefieres pulsarlo). Sin contraseñas que filtrar.",
+    "codeEyebrow": "Revisa tu correo",
+    "codeTitle": "Escribe el código",
+    "codeBody": "Lo hemos enviado a {email}. Caduca en 24 horas y vale una vez.",
+    "codeSubmit": "Entrar",
+    "codeLink": "También puedes pulsar el enlace del correo; hace lo mismo.",
+    "errors": {
+      "denied": "Has cancelado en Google.",
+      "state": "La sesión de Google ha caducado. Vuelve a intentarlo.",
+      "google": "Google no ha devuelto un correo verificado.",
+      "db": "Algo ha fallado por nuestro lado.",
+      "config": "Google no está configurado en este servidor."
+    }
   },
   "loginEmail": {
     "subject": "Tu enlace para entrar en Rastro",
@@ -409,7 +435,8 @@
     "cta": "Entrar en Rastro",
     "fallback": "Si el botón no funciona, copia esta dirección en tu navegador:",
     "expires": "El enlace caduca en 24 horas y solo sirve una vez.",
-    "ignore": "Si no has sido tú, ignora este mensaje. Nadie puede entrar sin este enlace."
+    "ignore": "Si no has sido tú, ignora este mensaje. Nadie puede entrar sin este enlace.",
+    "codeIntro": "Tu código para entrar:"
   },
   "account": {
     "title": "Mi cuenta",
@@ -664,5 +691,20 @@
       "config": "El escáner aún no está configurado en este servidor."
     },
     "seenOf": "{n} de {total} correos leídos"
+  },
+  "tools": {
+    "eyebrow": "Herramientas",
+    "title": "Herramientas",
+    "subtitle": "Vigilar, limpiar y reclamar. Lo que va después del informe.",
+    "open": "Abrir",
+    "scans": "{n} escaneos hechos",
+    "letters": "{n} cartas",
+    "lettersBody": "Cartas de supresión listas para enviar, plazos legales y reclamación ante la AEPD si no contestan."
+  },
+  "profile": {
+    "score": "Última puntuación",
+    "reports": "Informes",
+    "letters": "Cartas",
+    "noScore": "—"
   }
 }

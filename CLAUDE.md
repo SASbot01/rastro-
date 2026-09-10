@@ -18,7 +18,7 @@ Lo construye una sola persona con Claude Code. Presupuesto de APIs: máximo 100 
 - Nombre provisional: **Rastro**. Eslogan: *"Mira lo que la IA sabe de ti."*
 - Solo se puede pedir el informe sobre uno mismo. Verificación por enlace enviado al correo antes de mostrar el informe.
 - Nunca prometemos "borrar". Prometemos visibilidad y herramientas.
-- Estética: limpia y calmada, tipo informe médico o app de banco. Fondo claro, una tipografía (Inter o similar), un solo color de acento (naranja suave `#E8590C`) reservado para lo expuesto. Nada de terminal verde, calaveras ni estética hacker.
+- Estética (cambiada por el propietario el 10-09-2026): **oscura**, tarjetas con esquinas grandes, una tipografía (Inter), un solo acento vivo **lima `#c8ff3d`** para lo importante; semáforo lima / ámbar / rojo. Barra inferior en móvil con Inicio · Informe · Herramientas · Perfil. Sigue sin calaveras ni jerga hacker: el tono es limpio.
 - Mobile first: el 90 % de tráfico vendrá de redes en móvil.
 - Idioma por defecto según navegador; selector ES/EN visible.
 
@@ -36,7 +36,7 @@ Lo construye una sola persona con Claude Code. Presupuesto de APIs: máximo 100 
   - Anthropic API (`ANTHROPIC_API_KEY`): redactar el informe en lenguaje llano y calcular el score.
 - Todas las claves en `.env.local`. Nunca en el código. Ver `.env.example`.
 
-> **Desviaciones registradas:** cuentas por enlace mágico propio (cookie firmada con `APP_SECRET`, 30 días) en vez de Supabase Auth: mismo mecanismo que la verificación, sin SMTP extra ni dependencias, funciona en cualquier servidor. modelo por defecto `claude-sonnet-5` (Opus 5 supera el coste objetivo de 0,05 €/informe; cambiable con `ANTHROPIC_MODEL`). Solo puntúan los perfiles que la IA atribuye a la persona, no todos los homónimos que devuelve Brave. Supabase local con la CLI para desarrollo. Datos del responsable legal por variables de entorno.
+> **Desviaciones registradas:** registro/acceso con "Continuar con Google" (solo identidad) o correo con código de 6 dígitos, sin contraseñas. Cuentas por enlace mágico propio (cookie firmada con `APP_SECRET`, 30 días) en vez de Supabase Auth: mismo mecanismo que la verificación, sin SMTP extra ni dependencias, funciona en cualquier servidor. modelo por defecto `claude-sonnet-5` (Opus 5 supera el coste objetivo de 0,05 €/informe; cambiable con `ANTHROPIC_MODEL`). Solo puntúan los perfiles que la IA atribuye a la persona, no todos los homónimos que devuelve Brave. Supabase local con la CLI para desarrollo. Datos del responsable legal por variables de entorno.
 >
 > **Desviación registrada (Día 1):** `create-next-app@latest` instaló **Next 16.3.4**, no 15. Mismo App Router, mismo destino Vercel. Se mantiene 16 por ser la estable actual. Revertir con `npm i next@15 eslint-config-next@15` si hace falta.
 

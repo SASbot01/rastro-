@@ -2,11 +2,10 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase";
-import { createVerifyToken, normalizeEmail } from "@/lib/crypto";
+import { createVerifyCode, createVerifyToken, normalizeEmail } from "@/lib/crypto";
 import { sendLoginEmail } from "@/lib/email";
 import { serverEnv } from "@/lib/env";
 import { LOCALES } from "@/lib/i18n";
-import { findUserByEmail } from "@/lib/users";
 import { allowRequest } from "@/lib/rate-limit";
 
 /**
@@ -30,19 +29,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, error: "formErrors.rateLimit" }, { status: 429 });
     }
 
-    const user = await findUserByEmail(email);
-    if (!user) return NextResponse.json({ ok: true }); // misma respuesta, sin correo
+    // Entrar y crear cuenta son lo mismo: el correo con codigo crea la cuenta al verificarse.
 
     const { token, tokenHash } = createVerifyToken();
+    const { code, codeHash } = createVerifyCode();
     const { error } = await supabaseAdmin().from("login_tokens").insert({
       token_hash: tokenHash,
+      code_hash: codeHash,
       email: normalizeEmail(email),
       locale,
       expires_at: new Date(Date.now() + TOKEN_TTL_HOURS * 3600_000).toISOString(),
     });
     if (error) throw new Error(error.message);
 
-    await sendLoginEmail({ to: email, url: `${serverEnv.siteUrl}/entrar/verificar?token=${token}`, locale });
+    await sendLoginEmail({ to: email, url: `${serverEnv.siteUrl}/entrar/verificar?token=${token}`, code, locale });
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[/api/login] fallo:", error);
