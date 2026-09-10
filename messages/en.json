@@ -156,7 +156,12 @@
     "again": "Check another email",
     "counts": "{n} findings",
     "countOne": "1 finding",
-    "whatYouSee": "What's visible, why it matters, and what to do."
+    "whatYouSee": "What's visible, why it matters, and what to do.",
+    "accountsTitle": "Known accounts with this email",
+    "accountsHint": "Services where this email is known to have had an account: from the breaches it appears in and, if it exists, from your public Gravatar profile. We don't probe websites with your email.",
+    "accountBreach": "Account detected from the {year} breach",
+    "accountGravatar": "Linked in your Gravatar profile",
+    "accountPassword": "Password leaked"
   },
   "summary": {
     "breachesNone": "Your email does not appear in any known breach.",
@@ -282,6 +287,7 @@
             "Brave Search (USA): receives your first and last name and, if given, your city and job or company, to search public results.",
             "Perplexity (USA): receives your first and last name and, if given, your city and job or company, to ask what AI says about you.",
             "Anthropic (USA): receives the results above (not your email) to write the report in plain language.",
+            "Gravatar (Automattic, USA): receives a hash (irreversible fingerprint) of your email to check whether a public profile is associated with it.",
             "We also use providers that host and run the service: Supabase (database), Resend (email delivery) and the web hosting provider. They act as data processors under contract.",
             "Some of these providers are outside the European Economic Area. Transfers rely on Standard Contractual Clauses approved by the European Commission or on the EU-US Data Privacy Framework, depending on the provider.",
             "We do not sell your data or share it with anyone else."

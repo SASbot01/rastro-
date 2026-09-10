@@ -156,7 +156,12 @@
     "again": "Comprobar otro correo",
     "counts": "{n} hallazgos",
     "countOne": "1 hallazgo",
-    "whatYouSee": "Qué se ve, por qué importa y qué hacer."
+    "whatYouSee": "Qué se ve, por qué importa y qué hacer.",
+    "accountsTitle": "Cuentas conocidas con este correo",
+    "accountsHint": "Servicios donde consta que este correo ha tenido cuenta: por las filtraciones en las que aparece y, si existe, por tu perfil público de Gravatar. No sondeamos webs con tu correo.",
+    "accountBreach": "Cuenta detectada por la filtración de {year}",
+    "accountGravatar": "Enlazada en tu perfil de Gravatar",
+    "accountPassword": "Con contraseña filtrada"
   },
   "summary": {
     "breachesNone": "Tu correo no aparece en ninguna filtración conocida.",
@@ -282,6 +287,7 @@
             "Brave Search (EE. UU.): recibe tu nombre y apellidos y, si los diste, tu ciudad y tu profesión o empresa, para buscar resultados públicos.",
             "Perplexity (EE. UU.): recibe tu nombre y apellidos y, si los diste, tu ciudad y tu profesión o empresa, para preguntar qué dice la IA de ti.",
             "Anthropic (EE. UU.): recibe los resultados anteriores (no tu correo) para redactar el informe en lenguaje llano.",
+            "Gravatar (Automattic, EE. UU.): recibe un hash (huella irreversible) de tu correo para comprobar si existe un perfil público asociado.",
             "Además usamos proveedores que alojan y hacen funcionar el servicio: Supabase (base de datos), Resend (envío de correos) y el proveedor de alojamiento web. Actúan como encargados del tratamiento bajo contrato.",
             "Algunos de estos proveedores están fuera del Espacio Económico Europeo. Las transferencias se amparan en cláusulas contractuales tipo aprobadas por la Comisión Europea o en el Marco de Privacidad de Datos UE-EE. UU., según el proveedor.",
             "No vendemos tus datos ni los cedemos a nadie más."

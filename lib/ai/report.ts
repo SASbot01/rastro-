@@ -6,6 +6,9 @@ import type { Locale } from "@/lib/i18n";
 import type { HibpResult } from "@/lib/hibp";
 import type { BraveResult } from "@/lib/brave";
 import type { PerplexityResult } from "@/lib/perplexity";
+import type { PastesResult } from "@/lib/hibp";
+import type { GravatarResult } from "@/lib/gravatar";
+import type { KnownAccount } from "@/lib/report/accounts";
 
 /**
  * Redaccion del informe con Anthropic (CLAUDE.md s.4 y s.8).
@@ -75,7 +78,9 @@ TONO (obligatorio)
 - Ejemplo del estilo buscado: "Tu correo apareció en la filtración de LinkedIn (2021) con contraseña. Si la sigues usando en algún sitio, cámbiala hoy."
 
 CATEGORÍAS
-- "breaches": filtraciones de datos donde aparece el correo. Una entrada por filtración. Severidad high si incluía contraseñas, medium si no.
+- "breaches": filtraciones de datos donde aparece el correo. Una entrada por filtración. Severidad high si incluía contraseñas, medium si no. Los "pastes" (volcados públicos con el correo) van aquí también, severidad medium, explicando que el correo circula en listas públicas.
+- known_accounts es la lista de servicios donde consta que el correo ha tenido cuenta (por las filtraciones) o que la persona enlazó en Gravatar: la aplicación la muestra aparte; no la repitas como hallazgos, pero úsala en el resumen si aporta ("tu correo ha tenido cuenta en al menos N servicios").
+- gravatar_profile, si existe, es un perfil público ligado al correo (nombre, foto, ubicación, enlaces): va en "profiles" con severidad medium (o high si expone ubicación o teléfono), y cuenta como perfil atribuido con confianza alta, porque está ligado al correo y no al nombre.
 - "ai": lo que el asistente de IA dice de la persona: dónde trabaja, dónde vive, a qué se dedica, datos de contacto. Una entrada por dato relevante que la IA acierta. Severidad high para teléfono/dirección, medium para empleo o ciudad, low para el resto.
 - "profiles": perfiles públicos (LinkedIn, Instagram, X...) y páginas que hablan de la persona. Los sitios que venden datos personales (spokeo, rocketreach, zabasearch, dateas...) van aquí con severidad high si probablemente es esta persona.
 - "false": cosas que la IA o los resultados dicen y que probablemente son falsas o de otra persona. Severidad info o low.
@@ -99,6 +104,9 @@ interface InputData {
   hibp: HibpResult;
   brave: BraveResult;
   perplexity: PerplexityResult;
+  pastes?: PastesResult;
+  gravatar?: GravatarResult;
+  accounts?: KnownAccount[];
   previous?: PreviousAi | null;
 }
 
@@ -133,6 +141,11 @@ function compactInput(d: InputData) {
       sources: a.sources.slice(0, 10),
     })),
     ai_answers_status: d.perplexity.ok ? "ok" : `failed: ${d.perplexity.reason}`,
+    pastes: d.pastes?.checked ? d.pastes.pastes.map((p) => ({ source: p.source, title: p.title, date: p.date, emails_in_dump: p.emailCount })) : undefined,
+    gravatar_profile: d.gravatar?.checked && d.gravatar.profile
+      ? { name: d.gravatar.profile.displayName, about: d.gravatar.profile.aboutMe, location: d.gravatar.profile.location, url: d.gravatar.profile.profileUrl, links: d.gravatar.profile.urls, accounts: d.gravatar.profile.accounts }
+      : null,
+    known_accounts: d.accounts,
     previous_assessment: d.previous ?? undefined,
   };
 }

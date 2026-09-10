@@ -219,12 +219,14 @@ export function signalsFrom(
   ai?: AiSignals,
   /** Perfiles que la IA atribuye a la persona. Si se conoce, manda sobre el recuento bruto de Brave. */
   attributedProfiles?: number,
+  /** Volcados publicos (pastes) con el correo: cuentan como filtracion sin contrasena. */
+  pastes = 0,
 ): ScoreSignals {
   const breaches = hibp.checked ? hibp.breaches : [];
   const hits: SearchHit[] = brave.ok ? brave.hits : [];
   return {
     breachesWithPassword: breaches.filter((b) => b.hasPassword).length,
-    breachesWithoutPassword: breaches.filter((b) => !b.hasPassword).length,
+    breachesWithoutPassword: breaches.filter((b) => !b.hasPassword).length + pastes,
     publicProfiles: attributedProfiles ?? hits.filter((h) => h.kind === "profile").length,
     aiKnowsEmployer: ai?.knows_employer ?? false,
     aiKnowsCity: ai?.knows_city ?? false,

@@ -40,7 +40,7 @@ async function loadRequest(id: string): Promise<{ request: RequestRow; report: R
   if (request.status === "done") {
     const { data } = await supabase
       .from("reports")
-      .select("score, summary, findings, actions, created_at, generator")
+      .select("score, summary, findings, actions, created_at, generator, accounts")
       .eq("request_id", id)
       .maybeSingle<ReportData>();
     report = data;

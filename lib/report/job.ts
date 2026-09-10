@@ -1,5 +1,7 @@
 import { supabaseAdmin } from "@/lib/supabase";
-import { getBreaches, type HibpResult } from "@/lib/hibp";
+import { getBreaches, getPastes, type HibpResult } from "@/lib/hibp";
+import { getGravatar } from "@/lib/gravatar";
+import { buildAccounts } from "@/lib/report/accounts";
 import { searchName } from "@/lib/brave";
 import { askAboutPerson } from "@/lib/perplexity";
 import { writeReport, type PreviousAi } from "@/lib/ai/report";
@@ -52,6 +54,7 @@ interface CachedReport {
   findings: unknown;
   actions: unknown;
   breakdown: unknown;
+  accounts: unknown;
   generator: string;
   raw: { hibp?: HibpResult } | null;
 }
@@ -82,7 +85,7 @@ async function findCached(row: RequestRow): Promise<{ request: RequestRow; repor
 
   const { data: report } = await supabase
     .from("reports")
-    .select("request_id, score, summary, findings, actions, breakdown, generator, raw")
+    .select("request_id, score, summary, findings, actions, breakdown, accounts, generator, raw")
     .eq("request_id", prev.id)
     .maybeSingle<CachedReport>();
   return report ? { request: prev, report } : null;
@@ -158,7 +161,12 @@ export async function runReportJob(requestId: string): Promise<void> {
 
     await setStep(row.id, "hibp");
     // Cache parcial: HIBP depende solo del correo, y sus resultados cambian poco.
-    const hibp = cached?.report.raw?.hibp?.checked ? cached.report.raw.hibp : await getBreaches(row.email);
+    const [hibp, pastes, gravatar] = await Promise.all([
+      cached?.report.raw?.hibp?.checked ? Promise.resolve(cached.report.raw.hibp) : getBreaches(row.email),
+      getPastes(row.email),
+      getGravatar(row.email),
+    ]);
+    const accounts = buildAccounts(hibp, gravatar);
 
     await setStep(row.id, "brave");
     const brave = await searchName({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale });
@@ -166,7 +174,7 @@ export async function runReportJob(requestId: string): Promise<void> {
     await setStep(row.id, "ai");
     const perplexity = await askAboutPerson({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale });
     const previous = row.origin === "monitor" ? await previousAssessment(row) : null;
-    const ai = await writeReport({ person, hibp, brave, perplexity, previous });
+    const ai = await writeReport({ person, hibp, brave, perplexity, pastes, gravatar, accounts, previous });
     if (!ai.ok) console.warn(`[job] ${row.id}: Anthropic no disponible (${ai.reason} ${ai.detail ?? ""}); usando plantillas`);
 
     await setStep(row.id, "report");
@@ -178,7 +186,8 @@ export async function runReportJob(requestId: string): Promise<void> {
         ? brave.hits.filter((h) => h.kind === "profile" && ai.report.attributed_profile_urls.includes(h.url)).length
         : 0
       : undefined;
-    const { score, breakdown } = computeScore(signalsFrom(hibp, brave, ai.ok ? ai.report.signals : undefined, attributed));
+    const pasteCount = pastes.checked ? pastes.pastes.length : 0;
+    const { score, breakdown } = computeScore(signalsFrom(hibp, brave, ai.ok ? ai.report.signals : undefined, attributed, pasteCount));
 
     const content = ai.ok
       ? { summary: ai.report.summary, findings: ai.report.findings, actions: ai.report.actions, generator: "ai" as const }
@@ -189,9 +198,12 @@ export async function runReportJob(requestId: string): Promise<void> {
         request_id: row.id,
         score,
         breakdown,
+        accounts,
         ...content,
         raw: {
           hibp,
+          pastes,
+          gravatar,
           brave,
           perplexity,
           ai: ai.ok

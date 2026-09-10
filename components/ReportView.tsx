@@ -3,6 +3,7 @@ import { ShareButton } from "@/components/ShareButton";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { levelFor, type Level } from "@/lib/report/score";
 import type { Action, Category, Finding, Severity } from "@/lib/report/findings";
+import type { KnownAccount } from "@/lib/report/accounts";
 
 /**
  * Visor del informe (Dia 4: diseno final). Estetica de informe medico:
@@ -17,6 +18,7 @@ export interface ReportData {
   actions: Action[];
   created_at: string;
   generator: "ai" | "template";
+  accounts?: KnownAccount[];
 }
 
 const CATEGORY_ORDER: Category[] = ["breaches", "ai", "profiles", "false"];
@@ -123,6 +125,42 @@ export function ReportView({
       </section>
 
       <ShareButton requestId={requestId} score={report.score} messages={messages} />
+
+      {/* Cuentas conocidas con este correo */}
+      {report.accounts && report.accounts.length > 0 && (
+        <section className={CARD + " p-5 sm:p-7"}>
+          <h3 className="flex items-center gap-2 text-[15px] font-semibold text-ink">
+            {tr("report.accountsTitle")}
+            <span className="rounded-full bg-paper px-2 py-0.5 text-[11px] font-semibold text-faint">{report.accounts.length}</span>
+          </h3>
+          <p className="mt-1 text-[13px] leading-relaxed text-muted">{tr("report.accountsHint")}</p>
+          <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+            {report.accounts.map((a) => (
+              <li key={(a.domain ?? a.name) + a.source} className="flex items-center justify-between gap-3 rounded-[10px] bg-paper px-3.5 py-2.5">
+                <div className="min-w-0">
+                  {a.url ? (
+                    <a href={a.url} target="_blank" rel="noreferrer nofollow" className="block truncate text-[14px] font-semibold text-ink underline-offset-4 hover:underline">
+                      {a.name}
+                    </a>
+                  ) : (
+                    <p className="truncate text-[14px] font-semibold text-ink">{a.name}</p>
+                  )}
+                  <p className="text-[12px] text-faint">
+                    {a.source === "breach"
+                      ? tr("report.accountBreach", { year: (a.date ?? "").slice(0, 4) })
+                      : tr("report.accountGravatar")}
+                  </p>
+                </div>
+                {a.hasPassword && (
+                  <span className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-accent">
+                    {tr("report.accountPassword")}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Hallazgos */}
       <div className="flex items-baseline justify-between px-1 pt-3">

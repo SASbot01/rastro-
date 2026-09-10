@@ -95,3 +95,41 @@ export async function getBreaches(email: string): Promise<HibpResult> {
 
   return { checked: true, breaches, raw };
 }
+
+export interface Paste {
+  source: string;
+  id: string;
+  title: string | null;
+  /** ISO, puede faltar */
+  date: string | null;
+  emailCount: number;
+}
+
+export type PastesResult =
+  | { checked: true; pastes: Paste[] }
+  | { checked: false; reason: "no_key" | "unauthorized" | "rate_limited" | "error"; detail?: string };
+
+/** Volcados publicos ("pastes") donde aparece el correo. 404 = ninguno. */
+export async function getPastes(email: string): Promise<PastesResult> {
+  const key = serverEnv.hibpApiKey;
+  if (!key) return { checked: false, reason: "no_key" };
+  let response: Response;
+  try {
+    response = await fetch(`${HIBP_BASE}/pasteaccount/${encodeURIComponent(email)}`, {
+      headers: { "hibp-api-key": key, "user-agent": USER_AGENT, accept: "application/json" },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      cache: "no-store",
+    });
+  } catch (error) {
+    return { checked: false, reason: "error", detail: String(error) };
+  }
+  if (response.status === 404) return { checked: true, pastes: [] };
+  if (response.status === 401) return { checked: false, reason: "unauthorized" };
+  if (response.status === 429) return { checked: false, reason: "rate_limited" };
+  if (!response.ok) return { checked: false, reason: "error", detail: `HTTP ${response.status}` };
+  const raw = (await response.json()) as Array<{ Source: string; Id: string; Title?: string | null; Date?: string | null; EmailCount: number }>;
+  return {
+    checked: true,
+    pastes: raw.map((p) => ({ source: p.Source, id: p.Id, title: p.Title ?? null, date: p.Date ?? null, emailCount: p.EmailCount })),
+  };
+}
