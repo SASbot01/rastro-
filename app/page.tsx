@@ -5,6 +5,25 @@ import { getLocale } from "@/lib/locale";
 
 function CheckIcon() {
   return (
+    <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 shrink-0" aria-hidden="true">
+      <path d="m4.5 10.5 3.5 3.5 7.5-8" fill="none" stroke="#c8ff3d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export default async function HomePage() {
+  const locale = await getLocale();
+  const messages = getMessages(locale);
+  const tr = translator(messages);
+
+  const trust = [tr("hero.trust.own"), tr("hero.trust.verify"), tr("hero.trust.retention")];
+  const steps = [
+    { title: tr("how.step1Title"), body: tr("how.step1Body") },
+    { title: tr("how.step2Title"), body: tr("how.step2Body") },
+    { title: tr("how.step3Title"), body: tr("how.step3Body") },
+  ];
+
+  return (
     <>
       <SiteHeader locale={locale} messages={messages} />
 
