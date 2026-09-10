@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
+import { getSession } from "@/lib/session";
 
-export function SiteHeader({ locale, messages }: { locale: Locale; messages: Messages }) {
+export async function SiteHeader({ locale, messages }: { locale: Locale; messages: Messages }) {
   const tr = translator(messages);
+  const session = await getSession();
   return (
     <header className="border-b border-line">
       <div className="mx-auto flex w-full max-w-[640px] items-center justify-between px-5 py-4">
@@ -14,7 +16,15 @@ export function SiteHeader({ locale, messages }: { locale: Locale; messages: Mes
           <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
           {tr("nav.brand")}
         </Link>
-        <LocaleSwitcher current={locale} messages={messages} />
+        <div className="flex items-center gap-3">
+          <Link
+            href={session ? "/cuenta" : "/entrar"}
+            className="text-[13px] font-medium text-muted underline-offset-4 hover:text-ink hover:underline"
+          >
+            {session ? tr("nav.account") : tr("nav.login")}
+          </Link>
+          <LocaleSwitcher current={locale} messages={messages} />
+        </div>
       </div>
     </header>
   );

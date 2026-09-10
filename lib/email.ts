@@ -20,16 +20,35 @@ function escapeHtml(value: string): string {
   );
 }
 
-function verifyEmailHtml(opts: { name: string; url: string; locale: Locale }): string {
-  const tr = translator(getMessages(opts.locale));
-  const name = escapeHtml(opts.name);
+type MagicKind = "verify" | "login";
+
+/** Copia del correo segun el tipo de enlace: email.* (verificacion) o loginEmail.* (acceso). */
+function copyFor(kind: MagicKind, locale: Locale, name: string) {
+  const tr = translator(getMessages(locale));
+  const ns = kind === "verify" ? "email" : "loginEmail";
+  return {
+    subject: tr(`${ns}.subject`),
+    preheader: tr(`${ns}.preheader`),
+    greeting: tr(`${ns}.greeting`, { name }),
+    body: tr(`${ns}.body`),
+    cta: tr(`${ns}.cta`),
+    fallback: tr(`${ns}.fallback`),
+    expires: tr(`${ns}.expires`),
+    ignore: tr(`${ns}.ignore`),
+    footer: tr("email.footer"),
+  };
+}
+
+function magicLinkHtml(opts: { kind: MagicKind; name: string; url: string; locale: Locale }): string {
+  const c = copyFor(opts.kind, opts.locale, opts.name);
+  const tr = (key: keyof typeof c) => c[key];
   const url = escapeHtml(opts.url);
 
   return `<!doctype html>
 <html lang="${opts.locale}">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Rastro</title></head>
 <body style="margin:0;padding:0;background:${PAPER};">
-  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(tr("email.preheader"))}</div>
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(tr("preheader"))}</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};padding:32px 16px;">
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#FFFFFF;border:1px solid ${LINE};border-radius:14px;">
@@ -37,20 +56,20 @@ function verifyEmailHtml(opts: { name: string; url: string; locale: Locale }): s
           Rastro
         </td></tr>
         <tr><td style="padding:8px 32px 0;font:400 16px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:${INK};">
-          <p style="margin:0 0 12px;">${escapeHtml(tr("email.greeting", { name }))}</p>
-          <p style="margin:0 0 24px;color:${MUTED};">${escapeHtml(tr("email.body"))}</p>
+          <p style="margin:0 0 12px;">${escapeHtml(tr("greeting"))}</p>
+          <p style="margin:0 0 24px;color:${MUTED};">${escapeHtml(tr("body"))}</p>
         </td></tr>
         <tr><td style="padding:0 32px;">
-          <a href="${url}" style="display:block;text-align:center;background:${ACCENT};color:#FFFFFF;text-decoration:none;font:600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;padding:16px 20px;border-radius:10px;">${escapeHtml(tr("email.cta"))}</a>
+          <a href="${url}" style="display:block;text-align:center;background:${ACCENT};color:#FFFFFF;text-decoration:none;font:600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;padding:16px 20px;border-radius:10px;">${escapeHtml(tr("cta"))}</a>
         </td></tr>
         <tr><td style="padding:24px 32px 0;font:400 13px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:${MUTED};">
-          <p style="margin:0 0 6px;">${escapeHtml(tr("email.fallback"))}</p>
+          <p style="margin:0 0 6px;">${escapeHtml(tr("fallback"))}</p>
           <p style="margin:0 0 20px;word-break:break-all;"><a href="${url}" style="color:${ACCENT};">${url}</a></p>
-          <p style="margin:0 0 6px;">${escapeHtml(tr("email.expires"))}</p>
-          <p style="margin:0;">${escapeHtml(tr("email.ignore"))}</p>
+          <p style="margin:0 0 6px;">${escapeHtml(tr("expires"))}</p>
+          <p style="margin:0;">${escapeHtml(tr("ignore"))}</p>
         </td></tr>
         <tr><td style="padding:24px 32px 32px;">
-          <div style="border-top:1px solid ${LINE};padding-top:16px;font:400 12px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:${MUTED};">${escapeHtml(tr("email.footer"))}</div>
+          <div style="border-top:1px solid ${LINE};padding-top:16px;font:400 12px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;color:${MUTED};">${escapeHtml(tr("footer"))}</div>
         </td></tr>
       </table>
     </td></tr>
@@ -59,23 +78,21 @@ function verifyEmailHtml(opts: { name: string; url: string; locale: Locale }): s
 </html>`;
 }
 
-function verifyEmailText(opts: { name: string; url: string; locale: Locale }): string {
-  const tr = translator(getMessages(opts.locale));
-  return [
-    tr("email.greeting", { name: opts.name }),
-    "",
-    tr("email.body"),
-    "",
-    `${tr("email.cta")}: ${opts.url}`,
-    "",
-    tr("email.expires"),
-    tr("email.ignore"),
-    "",
-    tr("email.footer"),
-  ].join("\n");
+function magicLinkText(opts: { kind: MagicKind; name: string; url: string; locale: Locale }): string {
+  const c = copyFor(opts.kind, opts.locale, opts.name);
+  return [c.greeting, "", c.body, "", `${c.cta}: ${opts.url}`, "", c.expires, c.ignore, "", c.footer].join("\n");
 }
 
-export async function sendVerifyEmail(opts: {
+export function sendVerifyEmail(opts: { to: string; name: string; url: string; locale: Locale }): Promise<void> {
+  return sendMagicLink({ kind: "verify", ...opts });
+}
+
+export function sendLoginEmail(opts: { to: string; url: string; locale: Locale }): Promise<void> {
+  return sendMagicLink({ kind: "login", name: "", ...opts });
+}
+
+async function sendMagicLink(opts: {
+  kind: MagicKind;
   to: string;
   name: string;
   url: string;
@@ -87,20 +104,19 @@ export async function sendVerifyEmail(opts: {
   // Resend solo entrega a la direccion duena de la cuenta, y asi se puede
   // probar el flujo con cualquier correo.
   if (dev) {
-    console.log(`\n[rastro] Enlace de verificacion para ${opts.to}\n[rastro] ${opts.url}\n`);
+    console.log(`\n[rastro] Enlace (${opts.kind}) para ${opts.to}\n[rastro] ${opts.url}\n`);
   }
   if (!process.env.RESEND_API_KEY) {
     if (dev) return;
     throw new Error("Falta RESEND_API_KEY");
   }
 
-  const tr = translator(getMessages(opts.locale));
   const { error } = await resend().emails.send({
     from: serverEnv.resendFrom,
     to: opts.to,
-    subject: tr("email.subject"),
-    html: verifyEmailHtml(opts),
-    text: verifyEmailText(opts),
+    subject: copyFor(opts.kind, opts.locale, opts.name).subject,
+    html: magicLinkHtml(opts),
+    text: magicLinkText(opts),
   });
   if (error) {
     // En desarrollo, un rechazo de Resend (p. ej. destinatario no permitido)

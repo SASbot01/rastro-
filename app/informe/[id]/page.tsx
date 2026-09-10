@@ -7,6 +7,7 @@ import { getMessages, isLocale, translator, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { supabaseAdmin } from "@/lib/supabase";
 import { REPORT_STEPS, type ReportStep } from "@/lib/report/job";
+import { getSession, sessionOwns } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 interface RequestRow {
   id: string;
+  email: string;
   full_name: string;
   locale: string;
   status: string;
@@ -27,7 +29,7 @@ async function loadRequest(id: string): Promise<{ request: RequestRow; report: R
 
   const { data: request } = await supabase
     .from("requests")
-    .select("id, full_name, locale, status, step, error")
+    .select("id, email, full_name, locale, status, step, error")
     .eq("id", id)
     .maybeSingle<RequestRow>();
   if (!request) return null;
@@ -86,6 +88,10 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
 
   let body: React.ReactNode;
 
+  // Privado: solo la sesion del correo que pidio el informe. El enlace del
+  // correo crea esa sesion; desde otro dispositivo se entra por /entrar.
+  const session = await getSession();
+
   if (!loaded) {
     body = (
       <Panel
@@ -93,6 +99,15 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
         body={tr("waiting.notFoundBody")}
         cta={tr("verify.retry")}
         href="/#form"
+      />
+    );
+  } else if (!sessionOwns(session, loaded.request.email)) {
+    body = (
+      <Panel
+        title={tr("account.mustLoginTitle")}
+        body={tr("account.mustLoginBody")}
+        cta={tr("account.mustLoginCta")}
+        href="/entrar"
       />
     );
   } else if (loaded.request.status === "done" && loaded.report) {

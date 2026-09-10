@@ -1,0 +1,46 @@
+import { supabaseAdmin } from "@/lib/supabase";
+import { normalizeEmail } from "@/lib/crypto";
+import type { Locale } from "@/lib/i18n";
+
+/**
+ * Cuentas persistentes. Una cuenta = un correo verificado. Se crea sola la
+ * primera vez que alguien verifica un enlace; no hay registro aparte.
+ */
+
+export interface UserRow {
+  id: string;
+  email: string;
+  locale: string;
+  plan: "free" | "pro";
+  plan_until: string | null;
+  created_at: string;
+}
+
+/** Crea la cuenta si no existe, actualiza last_seen_at y enlaza sus solicitudes antiguas. */
+export async function ensureUser(email: string, locale: Locale): Promise<UserRow | null> {
+  const supabase = supabaseAdmin();
+  const normalized = normalizeEmail(email);
+
+  const { data: user, error } = await supabase
+    .from("users")
+    .upsert({ email: normalized, locale, last_seen_at: new Date().toISOString() }, { onConflict: "email" })
+    .select("id, email, locale, plan, plan_until, created_at")
+    .single<UserRow>();
+  if (error || !user) {
+    console.error("[users] upsert fallo:", error?.message);
+    return null;
+  }
+
+  // Solicitudes hechas antes de tener cuenta (o desde otro dispositivo) pasan a ser suyas.
+  await supabase.from("requests").update({ user_id: user.id }).ilike("email", normalized).is("user_id", null);
+  return user;
+}
+
+export async function findUserByEmail(email: string): Promise<UserRow | null> {
+  const { data } = await supabaseAdmin()
+    .from("users")
+    .select("id, email, locale, plan, plan_until, created_at")
+    .eq("email", normalizeEmail(email))
+    .maybeSingle<UserRow>();
+  return data ?? null;
+}

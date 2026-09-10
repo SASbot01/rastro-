@@ -7,7 +7,10 @@
   "nav": {
     "brand": "Rastro",
     "privacy": "Privacidad",
-    "legal": "Aviso legal"
+    "legal": "Aviso legal",
+    "account": "Mi cuenta",
+    "login": "Entrar",
+    "logout": "Cerrar sesión"
   },
   "hero": {
     "eyebrow": "Informe gratuito de exposición",
@@ -363,5 +366,52 @@
       ]
     },
     "back": "Volver al inicio"
+  },
+  "login": {
+    "title": "Entra en tu cuenta",
+    "subtitle": "Escribe el correo con el que pediste tu informe. Te enviamos un enlace de acceso; sin contraseñas.",
+    "email": "Tu correo",
+    "submit": "Enviarme el enlace",
+    "submitting": "Enviando…",
+    "sentTitle": "Revisa tu correo",
+    "sentBody": "Si {email} tiene cuenta en Rastro, acabas de recibir un enlace para entrar. Caduca en 24 horas.",
+    "noAccount": "¿Todavía no tienes informe?",
+    "noAccountCta": "Pide el primero gratis",
+    "invalidTitle": "Este enlace de acceso no vale",
+    "invalidBody": "Puede que ya se haya usado o que haya caducado. Pide uno nuevo."
+  },
+  "loginEmail": {
+    "subject": "Tu enlace para entrar en Rastro",
+    "preheader": "Un clic y entras. Caduca en 24 horas.",
+    "greeting": "Hola:",
+    "body": "Has pedido entrar en tu cuenta de Rastro. Pulsa el botón y listo.",
+    "cta": "Entrar en Rastro",
+    "fallback": "Si el botón no funciona, copia esta dirección en tu navegador:",
+    "expires": "El enlace caduca en 24 horas y solo sirve una vez.",
+    "ignore": "Si no has sido tú, ignora este mensaje. Nadie puede entrar sin este enlace."
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "subtitle": "Tus informes se guardan mientras tengas cuenta. Los de visitantes sin cuenta se borran a los 30 días.",
+    "reports": "Tus informes",
+    "empty": "Todavía no tienes ningún informe terminado.",
+    "newReport": "Pedir un informe nuevo",
+    "score": "Puntuación",
+    "status": {
+      "pending": "Sin verificar",
+      "verified": "Verificado",
+      "processing": "Generándose",
+      "done": "Listo",
+      "error": "Error"
+    },
+    "view": "Ver informe",
+    "plan": {
+      "free": "Plan gratuito",
+      "pro": "Plan Pro"
+    },
+    "signedInAs": "Has entrado como {email}",
+    "mustLoginTitle": "Este informe es privado",
+    "mustLoginBody": "Solo puede verlo la persona que lo pidió. Entra con ese correo para abrirlo.",
+    "mustLoginCta": "Entrar"
   }
 }

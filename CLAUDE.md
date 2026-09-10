@@ -36,7 +36,7 @@ Lo construye una sola persona con Claude Code. Presupuesto de APIs: máximo 100 
   - Anthropic API (`ANTHROPIC_API_KEY`): redactar el informe en lenguaje llano y calcular el score.
 - Todas las claves en `.env.local`. Nunca en el código. Ver `.env.example`.
 
-> **Desviaciones registradas:** modelo por defecto `claude-sonnet-5` (Opus 5 supera el coste objetivo de 0,05 €/informe; cambiable con `ANTHROPIC_MODEL`). Solo puntúan los perfiles que la IA atribuye a la persona, no todos los homónimos que devuelve Brave. Supabase local con la CLI para desarrollo. Datos del responsable legal por variables de entorno.
+> **Desviaciones registradas:** cuentas por enlace mágico propio (cookie firmada con `APP_SECRET`, 30 días) en vez de Supabase Auth: mismo mecanismo que la verificación, sin SMTP extra ni dependencias, funciona en cualquier servidor. modelo por defecto `claude-sonnet-5` (Opus 5 supera el coste objetivo de 0,05 €/informe; cambiable con `ANTHROPIC_MODEL`). Solo puntúan los perfiles que la IA atribuye a la persona, no todos los homónimos que devuelve Brave. Supabase local con la CLI para desarrollo. Datos del responsable legal por variables de entorno.
 >
 > **Desviación registrada (Día 1):** `create-next-app@latest` instaló **Next 16.3.4**, no 15. Mismo App Router, mismo destino Vercel. Se mantiene 16 por ser la estable actual. Revertir con `npm i next@15 eslint-config-next@15` si hace falta.
 

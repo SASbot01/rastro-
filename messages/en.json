@@ -7,7 +7,10 @@
   "nav": {
     "brand": "Rastro",
     "privacy": "Privacy",
-    "legal": "Legal"
+    "legal": "Legal",
+    "account": "My account",
+    "login": "Sign in",
+    "logout": "Sign out"
   },
   "hero": {
     "eyebrow": "Free exposure report",
@@ -363,5 +366,52 @@
       ]
     },
     "back": "Back to home"
+  },
+  "login": {
+    "title": "Sign in to your account",
+    "subtitle": "Enter the email you used to request your report. We'll send you a sign-in link; no passwords.",
+    "email": "Your email",
+    "submit": "Send me the link",
+    "submitting": "Sending…",
+    "sentTitle": "Check your email",
+    "sentBody": "If {email} has a Rastro account, you've just received a sign-in link. It expires in 24 hours.",
+    "noAccount": "No report yet?",
+    "noAccountCta": "Get your first one free",
+    "invalidTitle": "This sign-in link isn't valid",
+    "invalidBody": "It may have been used already or expired. Request a new one."
+  },
+  "loginEmail": {
+    "subject": "Your link to sign in to Rastro",
+    "preheader": "One click and you're in. Expires in 24 hours.",
+    "greeting": "Hi,",
+    "body": "You asked to sign in to your Rastro account. Press the button and you're done.",
+    "cta": "Sign in to Rastro",
+    "fallback": "If the button doesn't work, copy this address into your browser:",
+    "expires": "The link expires in 24 hours and works only once.",
+    "ignore": "If this wasn't you, ignore this message. Nobody can sign in without this link."
+  },
+  "account": {
+    "title": "My account",
+    "subtitle": "Your reports are kept while you have an account. Reports from visitors without an account are deleted after 30 days.",
+    "reports": "Your reports",
+    "empty": "You don't have any finished report yet.",
+    "newReport": "Request a new report",
+    "score": "Score",
+    "status": {
+      "pending": "Unverified",
+      "verified": "Verified",
+      "processing": "Generating",
+      "done": "Ready",
+      "error": "Error"
+    },
+    "view": "View report",
+    "plan": {
+      "free": "Free plan",
+      "pro": "Pro plan"
+    },
+    "signedInAs": "Signed in as {email}",
+    "mustLoginTitle": "This report is private",
+    "mustLoginBody": "Only the person who requested it can view it. Sign in with that email to open it.",
+    "mustLoginCta": "Sign in"
   }
 }
