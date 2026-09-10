@@ -54,6 +54,17 @@ const QUERIES = [...KEYWORDS_ACCOUNT, ...KEYWORDS_RECEIPT].length
 const PERSONAL = new Set(["gmail.com", "googlemail.com", "hotmail.com", "hotmail.es", "outlook.com", "outlook.es", "live.com", "msn.com", "yahoo.com", "yahoo.es", "icloud.com", "me.com", "mac.com", "protonmail.com", "proton.me", "aol.com", "gmx.com", "gmx.es", "telefonica.net", "movistar.es"]);
 /** Subdominios de envio que no identifican al servicio. */
 const MAIL_SUBS = /^(mail|email|e|em|eml|m|mg|mailer|news|newsletter|noreply|no-reply|notify|notification|notifications|info|hello|hi|support|help|account|accounts|alerts?|updates?|team|contact|marketing|promo|cs|customer|service|info-|send|smtp|bounce|bounces|reply|do-not-reply|donotreply)\./i;
+/** Dominios de envio que pertenecen a otro servicio conocido. */
+const ALIASES: Record<string, string> = {
+  "facebookmail.com": "facebook.com", "instagram.com": "instagram.com", "fbmail.com": "facebook.com",
+  "linkedinmail.com": "linkedin.com", "amazon.es": "amazon.com", "amazon.co.uk": "amazon.com", "amazon.de": "amazon.com",
+  "accounts.google.com": "google.com", "youtube.com": "google.com", "microsoftonline.com": "microsoft.com", "azure.com": "microsoft.com",
+  "office.com": "microsoft.com", "live.com": "microsoft.com", "paypal.es": "paypal.com", "apple.com": "apple.com", "icloud.com": "apple.com",
+  "twitter.com": "x.com", "x.com": "x.com", "wallapop.com": "wallapop.com",
+};
+/** Infraestructura de envio o herramientas de desarrollo: no son "una cuenta" del usuario. */
+const INFRA = new Set(["resend.dev", "amazonses.com", "sendgrid.net", "mailgun.org", "mailchimp.com", "mcsv.net", "sparkpostmail.com", "postmarkapp.com", "mandrillapp.com", "hubspotemail.net", "list-manage.com"]);
+
 const TWO_LEVEL_TLDS = new Set(["co.uk", "com.ar", "com.mx", "com.br", "com.co", "com.au", "co.jp", "co.nz", "org.uk", "com.es"]);
 
 const ACCOUNT_RE = /welcome|bienvenid|verif|confirm|your account|tu cuenta|activat|activa|sign ?up|registro|new account|nueva cuenta|reset|restablec|contraseña|password|código|codigo|code/i;
@@ -87,7 +98,8 @@ function parseFrom(from: string): { name: string; domain: string } | null {
   if (at < 0) return null;
   let host = addr.slice(at + 1);
   host = host.replace(MAIL_SUBS, "");
-  return { name, domain: registrable(host) };
+  const reg = registrable(host);
+  return { name, domain: ALIASES[reg] ?? reg };
 }
 
 async function gmail<T>(token: string, path: string, attempt = 0): Promise<T> {
@@ -207,7 +219,7 @@ export async function runMailboxScan(scanId: string, accessToken: string): Promi
       const h = Object.fromEntries((msg.payload?.headers ?? []).map((x) => [x.name.toLowerCase(), x.value])) as Record<string, string>;
       const from = h.from ? parseFrom(h.from) : null;
       seen += 1;
-      if (!from || PERSONAL.has(from.domain)) continue;
+      if (!from || PERSONAL.has(from.domain) || INFRA.has(from.domain)) continue;
 
       const g = groups.get(from.domain) ?? { names: new Map<string, number>(), kinds: new Set<string>(), dates: [] as number[], count: 0, sample: null as string | null, unsub: false };
       g.count += 1;
