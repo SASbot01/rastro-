@@ -69,6 +69,8 @@ REGLAS DE FONDO
 - Homónimos: mucha gente comparte nombre. Usa la ciudad y la profesión o empresa (si las hay), la coherencia entre fuentes y el sentido común para decidir qué resultados hablan de esta persona. Lo que probablemente sea otra persona con el mismo nombre NO cuenta como exposición: va en la categoría "false" con severidad "info" o "low", explicando que puede ser un homónimo. Refleja tu confianza global en identity_confidence.
 - Las señales (signals) son estrictas: knows_employer solo si una fuente indica de forma creíble dónde trabaja ESTA persona; knows_city solo si se deduce la ciudad de residencia; contact_data_public solo si aparece un teléfono, dirección postal o correo personal en texto de alguna fuente (no basta con que un sitio de venta de datos liste el nombre); false_claims solo si el asistente de IA afirma algo sobre esta persona que los demás datos contradicen o que mezcla con un homónimo presentándolo como si fuera ella.
 - attributed_profile_urls: lista SOLO las URLs de search_results (perfiles o páginas) que con confianza media o alta pertenecen a esta persona. Si identity_confidence es "low", déjala vacía. Esta lista decide cuántos puntos se restan por perfiles públicos: un homónimo aquí es un error grave.
+- Sin repeticiones: un solo hallazgo por perfil o URL. Si el mismo perfil o sitio aparece varias veces en search_results, únelo en una entrada.
+- Si la persona dio ciudad y/o profesión, un perfil o página que no muestre ninguna señal compatible con ellas (misma ciudad o región, misma profesión o sector, contexto coherente) NO se le atribuye, aunque el nombre coincida exactamente. En ese caso va como posible homónimo.
 - Si la entrada trae previous_assessment (lo que se decidió en el informe anterior de esta misma persona), mantén esas decisiones (identity_confidence, signals, attributed_profile_urls) salvo que los datos nuevos las contradigan claramente. Cambiar de opinión sin evidencia nueva genera avisos falsos.
 - Nunca prometas borrar nada. Rastro da visibilidad y herramientas; hablas de "pedir la retirada", "ajustar la privacidad", "cambiar la contraseña".
 
@@ -100,7 +102,7 @@ export interface PreviousAi {
   attributed_profile_urls: string[];
 }
 
-interface InputData {
+export interface InputData {
   person: { full_name: string; city: string | null; occupation: string | null; locale: Locale };
   hibp: HibpResult;
   brave: BraveResult;
@@ -163,18 +165,88 @@ export function reportModel(): string {
 
 export async function writeReport(data: InputData): Promise<AiReportResult> {
   const first = await writeReportOnce(data, MAX_TOKENS);
-  // Si la salida se corto (JSON truncado o stop_reason max_tokens), un reintento con mas espacio.
-  if (!first.ok && first.reason === "parse") {
-    console.warn("[ai] salida truncada; reintento con mas tokens");
-    return writeReportOnce(data, MAX_TOKENS_RETRY);
+  if (first.ok || first.reason === "refusal") return first;
+  // Salida cortada o mal formada, o error transitorio: segundo intento con mas espacio.
+  console.warn(`[ai] intento 1 fallo (${first.reason} ${first.detail ?? ""}); reintento`);
+  const second = await writeReportOnce(data, MAX_TOKENS_RETRY);
+  if (second.ok || second.reason === "refusal") return second;
+  // Tercer y ultimo intento tras una pausa: un informe de plantilla es el ultimo recurso.
+  console.warn(`[ai] intento 2 fallo (${second.reason} ${second.detail ?? ""}); ultimo intento`);
+  await new Promise((r) => setTimeout(r, 2500));
+  return writeReportOnce(data, MAX_TOKENS_RETRY);
+}
+
+/** Escapa saltos de linea, tabuladores y otros caracteres de control que aparezcan crudos dentro de cadenas JSON. */
+function repairJson(text: string): string {
+  let out = "";
+  let inString = false;
+  let escaped = false;
+  for (const ch of text) {
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+        out += ch;
+        continue;
+      }
+      if (ch === "\\") {
+        escaped = true;
+        out += ch;
+        continue;
+      }
+      if (ch === '"') inString = false;
+      else if (ch === "\n") { out += "\\n"; continue; }
+      else if (ch === "\r") { out += "\\r"; continue; }
+      else if (ch === "\t") { out += "\\t"; continue; }
+      else if (ch.charCodeAt(0) < 0x20) { continue; }
+      out += ch;
+      continue;
+    }
+    if (ch === '"') inString = true;
+    out += ch;
   }
-  return first;
+  return out;
+}
+
+function parseReport(text: string): AiReport | null {
+  const candidates = [text, repairJson(text)];
+  // Si sobra texto alrededor del objeto, quedarse con el primer { ... } equilibrado.
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  if (start > 0 || end < text.length - 1) candidates.push(repairJson(text.slice(start, end + 1)));
+  for (const c of candidates) {
+    try {
+      const parsed = AiReportSchema.safeParse(JSON.parse(c));
+      if (parsed.success) return parsed.data;
+    } catch {
+      /* siguiente candidato */
+    }
+  }
+  return null;
+}
+
+/** Une hallazgos repetidos (misma URL o mismo titulo) conservando el de mayor severidad. */
+function dedupeFindings(findings: AiReport["findings"]): AiReport["findings"] {
+  const rank = { high: 0, medium: 1, low: 2, info: 3 } as const;
+  const seen = new Map<string, number>();
+  const out: AiReport["findings"] = [];
+  for (const f of findings) {
+    const url = f.source_url ? f.source_url.toLowerCase().replace(/^https?:\/\/(www\.)?/, "").replace(/[?#].*$/, "").replace(/\/+$/, "") : null;
+    const key = url ? `u:${url}` : `t:${f.category}:${f.title.trim().toLowerCase()}`;
+    const idx = seen.get(key);
+    if (idx === undefined) {
+      seen.set(key, out.length);
+      out.push(f);
+    } else if (rank[f.severity] < rank[out[idx].severity]) {
+      out[idx] = f;
+    }
+  }
+  return out;
 }
 
 async function writeReportOnce(data: InputData, maxTokens: number): Promise<AiReportResult> {
   const model = reportModel();
   try {
-    const response = await anthropic().messages.parse({
+    const response = await anthropic().messages.create({
       model,
       max_tokens: maxTokens,
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
@@ -192,17 +264,22 @@ async function writeReportOnce(data: InputData, maxTokens: number): Promise<AiRe
     if (response.stop_reason === "refusal") {
       return { ok: false, reason: "refusal", detail: response.stop_details?.explanation ?? undefined };
     }
-    const parsed = response.parsed_output;
-    if (!parsed || response.stop_reason === "max_tokens") return { ok: false, reason: "parse", detail: `stop_reason=${response.stop_reason}` };
+    if (response.stop_reason === "max_tokens") return { ok: false, reason: "parse", detail: "stop_reason=max_tokens" };
+
+    const text = response.content
+      .filter((b): b is Anthropic.TextBlock => b.type === "text")
+      .map((b) => b.text)
+      .join("");
+    // El parseo es propio (no messages.parse): asi un caracter de control suelto no tira el informe entero.
+    const parsed = parseReport(text);
+    if (!parsed) return { ok: false, reason: "parse", detail: `json invalido (${text.length} chars)` };
 
     // Cinturon y tirantes: limites que el esquema no impone.
-    parsed.findings = parsed.findings.slice(0, MAX_FINDINGS);
+    parsed.findings = dedupeFindings(parsed.findings).slice(0, MAX_FINDINGS);
     parsed.actions = parsed.actions.slice(0, 3);
 
     return { ok: true, report: parsed, model, usage: response.usage };
   } catch (error) {
-    // El SDK lanza al no poder parsear un JSON cortado: se trata como truncado (reintentable).
-    if (error instanceof Error && /parse structured output|Unterminated|JSON/i.test(error.message)) return { ok: false, reason: "parse", detail: error.message.slice(0, 120) };
     if (error instanceof Anthropic.AuthenticationError) return { ok: false, reason: "error", detail: "auth" };
     if (error instanceof Anthropic.RateLimitError) return { ok: false, reason: "error", detail: "rate_limited" };
     if (error instanceof Anthropic.APIError) return { ok: false, reason: "error", detail: `${error.status}: ${error.message}` };

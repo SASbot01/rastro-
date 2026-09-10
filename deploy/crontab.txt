@@ -2,3 +2,4 @@
 0 4 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/purge   >/dev/null 2>&1 # rastro
 0 5 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/monitor >/dev/null 2>&1 # rastro
 0 6 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/letters >/dev/null 2>&1 # rastro
+30 5 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/repair  >/dev/null 2>&1 # rastro

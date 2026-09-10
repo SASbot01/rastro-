@@ -46,6 +46,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
   // Analitica sin cookies (Plausible). Solo se carga si hay dominio configurado.
   const plausible = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
+  // Cloudflare Web Analytics (gratis, sin cookies): token del panel de Cloudflare.
+  const cfToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
   return (
     <html lang={locale} className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full pb-[76px] sm:pb-0">
@@ -56,6 +58,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <BottomNav messages={getMessages(locale)} />
         <AskRastro messages={getMessages(locale)} locale={locale} />
         {plausible && <Script defer data-domain={plausible} src="https://plausible.io/js/script.js" strategy="afterInteractive" />}
+        {cfToken && <Script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={`{"token": "${cfToken}"}`} strategy="afterInteractive" />}
       </body>
     </html>
   );
