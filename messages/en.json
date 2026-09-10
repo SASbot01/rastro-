@@ -22,11 +22,11 @@
   "hero": {
     "eyebrow": "Free exposure report",
     "title": "See what AI knows about you.",
-    "subtitle": "Enter your name and your email. We look up what's public about you — breaches, profiles, and what AI assistants say — and explain it plainly, in a report scored from 0 to 100.",
+    "subtitle": "Breaches, public profiles and what AI assistants say about you, in a clear report with a 0–100 score. Free.",
     "trust": {
-      "own": "About yourself only",
-      "verify": "We verify your email before we search",
-      "retention": "Everything is deleted after 30 days"
+      "own": "About you only",
+      "verify": "Verified email",
+      "retention": "Deleted after 30 days"
     },
     "demoTitle": "This is what your score looks like",
     "demoBody": "From 0 to 100. Breaches, public profiles and what AI says about you, at a glance."
@@ -79,11 +79,11 @@
   "how": {
     "title": "How it works",
     "step1Title": "You give us your name and email",
-    "step1Body": "That's all. No passwords, no documents, no access to your accounts.",
+    "step1Body": "No passwords, no documents.",
     "step2Title": "You confirm the email is yours",
-    "step2Body": "You get a link. Until you open it, we search nothing.",
+    "step2Body": "You get a code. Without it we search nothing.",
     "step3Title": "You get your report",
-    "step3Body": "A score from 0 to 100, what's visible about you, why it matters, and what you can do."
+    "step3Body": "Score, what's visible and what to do."
   },
   "verify": {
     "loading": "Checking the link…",
@@ -699,7 +699,9 @@
     "open": "Open",
     "scans": "{n} scans done",
     "letters": "{n} letters",
-    "lettersBody": "Ready-to-send erasure letters, legal deadlines and a complaint to the authority if they don't reply."
+    "lettersBody": "Ready-to-send erasure letters, legal deadlines and a complaint to the authority if they don't reply.",
+    "loginTitle": "Sign in to see your tools",
+    "loginBody": "Monitoring, inbox scanner, letters and deadlines belong to your account. Sign in or create one in a minute."
   },
   "profile": {
     "score": "Latest score",

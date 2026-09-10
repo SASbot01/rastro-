@@ -22,11 +22,11 @@
   "hero": {
     "eyebrow": "Informe gratuito de exposición",
     "title": "Mira lo que la IA sabe de ti.",
-    "subtitle": "Escribe tu nombre y tu correo. Buscamos lo que hay público sobre ti —filtraciones, perfiles y lo que responden los asistentes de IA— y te lo contamos claro, en un informe con una puntuación del 0 al 100.",
+    "subtitle": "Filtraciones, perfiles públicos y lo que los asistentes de IA dicen de ti, en un informe claro con una puntuación de 0 a 100. Gratis.",
     "trust": {
-      "own": "Solo sobre ti mismo",
-      "verify": "Verificamos tu correo antes de buscar",
-      "retention": "Todo se borra a los 30 días"
+      "own": "Solo sobre ti",
+      "verify": "Correo verificado",
+      "retention": "Se borra a los 30 días"
     },
     "demoTitle": "Así se ve tu puntuación",
     "demoBody": "De 0 a 100. Filtraciones, perfiles públicos y lo que la IA dice de ti, en un vistazo."
@@ -79,11 +79,11 @@
   "how": {
     "title": "Cómo funciona",
     "step1Title": "Nos das tu nombre y tu correo",
-    "step1Body": "Nada más. No pedimos contraseñas, ni documentos, ni acceso a tus cuentas.",
+    "step1Body": "Sin contraseñas ni documentos.",
     "step2Title": "Confirmas que el correo es tuyo",
-    "step2Body": "Te llega un enlace. Hasta que no lo abres, no buscamos nada.",
+    "step2Body": "Te llega un código. Sin él no buscamos nada.",
     "step3Title": "Recibes tu informe",
-    "step3Body": "Una puntuación del 0 al 100, qué se ve de ti, por qué importa y qué puedes hacer."
+    "step3Body": "Puntuación, qué se ve y qué hacer."
   },
   "verify": {
     "loading": "Comprobando el enlace…",
@@ -699,7 +699,9 @@
     "open": "Abrir",
     "scans": "{n} escaneos hechos",
     "letters": "{n} cartas",
-    "lettersBody": "Cartas de supresión listas para enviar, plazos legales y reclamación ante la AEPD si no contestan."
+    "lettersBody": "Cartas de supresión listas para enviar, plazos legales y reclamación ante la AEPD si no contestan.",
+    "loginTitle": "Entra para ver tus herramientas",
+    "loginBody": "Vigilancia, escáner de buzón, cartas y plazos son de tu cuenta. Entra o crea una en un minuto."
   },
   "profile": {
     "score": "Última puntuación",

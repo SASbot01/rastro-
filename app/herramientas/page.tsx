@@ -9,9 +9,28 @@ import { isPro } from "@/lib/plan";
 
 export const dynamic = "force-dynamic";
 
+interface LetterRow {
+  id: string;
+  host: string;
+  status: "draft" | "sent" | "answered" | "no_answer" | "closed";
+  deadline_at: string | null;
+  created_at: string;
+}
+interface ScanRow {
+  id: string;
+  mailbox: string;
+  status: string;
+  services: unknown[];
+  started_at: string;
+}
+
+const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
+const BTN = "inline-block rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90";
+const LINK = "text-[13px] font-medium text-accent underline underline-offset-4";
+
 /**
- * Pestana "Herramientas": vigilancia, escaner de buzon, cartas y plazos.
- * Sin sesion muestra las tarjetas con "Entrar"; sin Pro, con "Ver el plan Pro".
+ * Herramientas: todo lo que Rastro hace por ti y en que estado esta.
+ * Vigilancia, escaner de buzon, cartas y plazos. Perfil queda para la cuenta.
  */
 export default async function ToolsPage() {
   const locale = await getLocale();
@@ -22,30 +41,31 @@ export default async function ToolsPage() {
   const pro = isPro(user);
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
 
-  let letters: Array<{ id: string; host: string; status: string; deadline_at: string | null }> = [];
-  let scans = 0;
+  let letters: LetterRow[] = [];
+  let lastScan: ScanRow | null = null;
   if (user) {
     const supabase = supabaseAdmin();
-    const [{ data: l }, { count }] = await Promise.all([
-      supabase.from("letters").select("id, host, status, deadline_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
-      supabase.from("mailbox_scans").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+    const [{ data: l }, { data: s }] = await Promise.all([
+      supabase.from("letters").select("id, host, status, deadline_at, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50).returns<LetterRow[]>(),
+      supabase.from("mailbox_scans").select("id, mailbox, status, services, started_at").eq("user_id", user.id).eq("status", "done").order("started_at", { ascending: false }).limit(1).maybeSingle<ScanRow>(),
     ]);
     letters = l ?? [];
-    scans = count ?? 0;
+    lastScan = s ?? null;
   }
+  const pending = letters
+    .filter((l) => l.status === "sent" && l.deadline_at)
+    .sort((a, b) => new Date(a.deadline_at!).getTime() - new Date(b.deadline_at!).getTime());
+  const today = Date.now();
 
-  const cta = (href: string) => (!user ? "/entrar" : pro ? href : "/pro");
-  const ctaLabel = !user ? tr("nav.login") : pro ? tr("tools.open") : tr("pro.lockedCta");
-
-  const Card = ({ title, body, href, meta }: { title: string; body: string; href: string; meta?: string }) => (
-    <li className="rounded-card border border-line bg-surface p-5 sm:p-6">
-      <h2 className="text-[16px] font-semibold text-ink">{title}</h2>
-      <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{body}</p>
-      {meta && <p className="mt-2 text-[12.5px] text-faint">{meta}</p>}
-      <Link href={cta(href)} className="mt-4 inline-block rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">
-        {ctaLabel}
+  /** Aviso comun cuando no hay sesion o no hay Pro. */
+  const Gate = () => (
+    <div className={CARD}>
+      <p className="text-[15px] font-semibold text-ink">{!user ? tr("tools.loginTitle") : tr("pro.locked")}</p>
+      <p className="mt-1 text-[14px] leading-relaxed text-muted">{!user ? tr("tools.loginBody") : tr("pro.lockedBody")}</p>
+      <Link href={!user ? "/entrar" : "/pro"} className={"mt-4 " + BTN}>
+        {!user ? tr("nav.login") : tr("pro.lockedCta")}
       </Link>
-    </li>
+    </div>
   );
 
   return (
@@ -56,32 +76,112 @@ export default async function ToolsPage() {
         <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink">{tr("tools.title")}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("tools.subtitle")}</p>
 
-        <ul className="mt-6 grid gap-3">
-          <Card title={tr("monitor.title")} body={tr("monitor.body")} href="/cuenta" meta={user ? (user.monitoring ? tr("monitor.on") : tr("monitor.off")) : undefined} />
-          <Card title={tr("mailbox.title")} body={tr("account.mailboxCardBody")} href="/cuenta/buzon" meta={user && scans > 0 ? tr("tools.scans", { n: scans }) : undefined} />
-          <Card title={tr("letters.listTitle")} body={tr("tools.lettersBody")} href="/cuenta" meta={user && letters.length > 0 ? tr("tools.letters", { n: letters.length }) : undefined} />
-        </ul>
-
-        {letters.length > 0 && (
-          <section className="mt-8">
-            <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("deadlines.title")}</h2>
-            <ul className="mt-3 grid gap-2">
-              {letters.map((l) => (
-                <li key={l.id} className="flex items-center justify-between gap-3 rounded-card border border-line bg-surface px-4 py-3 text-[14px]">
-                  <div className="min-w-0">
-                    <p className="truncate font-semibold text-ink">{l.host}</p>
-                    <p className="text-[12.5px] text-faint">
-                      {tr(`letters.status.${l.status}`)}
-                      {l.deadline_at && ` · ${tr("letters.deadline", { date: fmt.format(new Date(l.deadline_at)) })}`}
-                    </p>
-                  </div>
-                  <Link href={`/cartas/${l.id}`} className="shrink-0 text-[13px] font-medium text-accent underline underline-offset-4">
-                    {tr("letters.open")}
-                  </Link>
+        {!user || !pro ? (
+          <div className="mt-6 grid gap-3">
+            <Gate />
+            <ul className="grid gap-3 sm:grid-cols-3">
+              {[
+                [tr("monitor.title"), tr("monitor.body")],
+                [tr("mailbox.title"), tr("account.mailboxCardBody")],
+                [tr("letters.listTitle"), tr("tools.lettersBody")],
+              ].map(([t, b]) => (
+                <li key={t} className={CARD + " opacity-80"}>
+                  <h2 className="text-[15px] font-semibold text-ink">{t}</h2>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{b}</p>
                 </li>
               ))}
             </ul>
-          </section>
+          </div>
+        ) : (
+          <div className="mt-6 grid gap-4 lg:grid-cols-2 lg:items-start">
+            {/* Vigilancia mensual */}
+            <section className={CARD}>
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-[16px] font-semibold text-ink">{tr("monitor.title")}</h2>
+                <span className={"rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide " + (user.monitoring ? "bg-accent text-black" : "bg-surface-2 text-faint")}>
+                  {user.monitoring ? tr("monitor.on") : tr("monitor.off")}
+                </span>
+              </div>
+              <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("monitor.body")}</p>
+              {user.monitoring && user.monitor_last_at && (
+                <p className="mt-2 text-[12.5px] text-faint">{tr("monitor.nextCheck", { date: fmt.format(new Date(new Date(user.monitor_last_at).getTime() + 30 * 86_400_000)) })}</p>
+              )}
+              <form action="/api/monitor" method="post" className="mt-4 grid gap-2">
+                <input type="hidden" name="enabled" value={user.monitoring ? "0" : "1"} />
+                <button type="submit" className={user.monitoring ? "w-fit text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink" : "w-fit " + BTN}>
+                  {user.monitoring ? tr("monitor.disable") : tr("monitor.enable")}
+                </button>
+                {!user.monitoring && <p className="text-[12px] leading-relaxed text-faint">{tr("monitor.consent")}</p>}
+              </form>
+            </section>
+
+            {/* Escaner de buzon */}
+            <section className={CARD}>
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-[16px] font-semibold text-ink">{tr("mailbox.title")}</h2>
+                <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-accent">{tr("mailbox.beta")}</span>
+              </div>
+              <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("account.mailboxCardBody")}</p>
+              {lastScan ? (
+                <div className="mt-3 flex items-center justify-between gap-3 rounded-[12px] bg-surface-2 px-3.5 py-2.5">
+                  <div className="min-w-0">
+                    <p className="truncate text-[14px] font-semibold text-ink">{tr("mailbox.doneTitle", { n: lastScan.services.length })}</p>
+                    <p className="truncate text-[12px] text-faint">{lastScan.mailbox} · {fmt.format(new Date(lastScan.started_at))}</p>
+                  </div>
+                  <Link href={`/cuenta/buzon?scan=${lastScan.id}`} className={"shrink-0 " + LINK}>{tr("letters.open")}</Link>
+                </div>
+              ) : null}
+              <Link href="/cuenta/buzon" className={"mt-4 " + BTN}>{lastScan ? tr("mailbox.rescan") : tr("mailbox.connect")}</Link>
+            </section>
+
+            {/* Proximos plazos */}
+            <section className={CARD}>
+              <h2 className="text-[16px] font-semibold text-ink">{tr("deadlines.title")}</h2>
+              {pending.length === 0 ? (
+                <p className="mt-2 text-[14px] text-muted">{tr("deadlines.none")}</p>
+              ) : (
+                <ul className="mt-3 grid gap-2">
+                  {pending.map((l) => {
+                    const d = new Date(l.deadline_at!);
+                    const days = Math.ceil((d.getTime() - today) / 86_400_000);
+                    const late = days < 0;
+                    return (
+                      <li key={l.id} className="flex items-center justify-between gap-3 text-[14px]">
+                        <Link href={`/cartas/${l.id}`} className="truncate font-medium text-ink underline-offset-4 hover:underline">{l.host}</Link>
+                        <span className={"shrink-0 rounded-full px-2.5 py-0.5 text-[12px] font-semibold " + (late ? "bg-danger text-black" : days <= 3 ? "bg-warn text-black" : "bg-surface-2 text-muted")}>
+                          {late ? tr("deadlines.overdueShort") : days === 0 ? tr("deadlines.today") : tr("deadlines.daysLeft", { n: days })} · {fmt.format(d)}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
+
+            {/* Cartas */}
+            <section className={CARD}>
+              <h2 className="text-[16px] font-semibold text-ink">{tr("letters.listTitle")}</h2>
+              <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{tr("tools.lettersBody")}</p>
+              {letters.length === 0 ? (
+                <p className="mt-3 text-[14px] text-muted">{tr("letters.listEmpty")}</p>
+              ) : (
+                <ul className="mt-3 grid gap-2">
+                  {letters.slice(0, 8).map((l) => (
+                    <li key={l.id} className="flex items-center justify-between gap-3 rounded-[12px] bg-surface-2 px-3.5 py-2.5">
+                      <div className="min-w-0">
+                        <p className="truncate text-[14px] font-semibold text-ink">{l.host}</p>
+                        <p className="text-[12px] text-faint">
+                          {tr(`letters.status.${l.status}`)}
+                          {l.status === "sent" && l.deadline_at && ` · ${tr("letters.deadline", { date: fmt.format(new Date(l.deadline_at)) })}`}
+                        </p>
+                      </div>
+                      <Link href={`/cartas/${l.id}`} className={"shrink-0 " + LINK}>{tr("letters.open")}</Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </div>
         )}
       </main>
       <SiteFooter messages={messages} />

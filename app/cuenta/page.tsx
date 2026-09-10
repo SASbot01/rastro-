@@ -11,14 +11,6 @@ import { isPro } from "@/lib/plan";
 
 export const dynamic = "force-dynamic";
 
-interface LetterRow {
-  id: string;
-  host: string;
-  status: "draft" | "sent" | "answered" | "no_answer" | "closed";
-  deadline_at: string | null;
-  created_at: string;
-}
-
 interface Row {
   id: string;
   full_name: string;
@@ -29,17 +21,21 @@ interface Row {
 }
 
 const LEVEL_TEXT = { green: "text-ok", orange: "text-warn", red: "text-danger" } as const;
+const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
 
 function scoreOf(row: Row): number | null {
   const r = Array.isArray(row.reports) ? row.reports[0] : row.reports;
   return r ? r.score : null;
 }
 
+/**
+ * Perfil: quien eres, tu plan y tus informes. Lo que Rastro hace por ti
+ * (vigilancia, escaner, cartas, plazos) vive en /herramientas.
+ */
 export default async function AccountPage({ searchParams }: PageProps<"/cuenta">) {
   const { pago } = await searchParams;
   const session = await getSession();
   if (!session) redirect("/entrar");
-
   const user = await findUserByEmail(session.email);
   if (!user) redirect("/entrar");
 
@@ -47,260 +43,135 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
   const messages = getMessages(locale);
   const tr = translator(messages);
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
-
-  const { data: rows } = await supabaseAdmin()
-    .from("requests")
-    .select("id, full_name, city, status, created_at, reports(score)")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .limit(50)
-    .returns<Row[]>();
-
-  const list = rows ?? [];
   const pro = isPro(user);
 
-  const { data: letterRows } = await supabaseAdmin()
-    .from("letters")
-    .select("id, host, status, deadline_at, created_at")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .limit(50)
-    .returns<LetterRow[]>();
-  const letters = letterRows ?? [];
-
+  const supabase = supabaseAdmin();
+  const [{ data: rows }, { count: lettersCount }] = await Promise.all([
+    supabase.from("requests").select("id, full_name, city, status, created_at, reports(score)").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50).returns<Row[]>(),
+    supabase.from("letters").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+  ]);
+  const list = rows ?? [];
+  const lastScore = list.map(scoreOf).find((v) => v !== null) ?? null;
+  const name = list[0]?.full_name ?? user.email.split("@")[0];
 
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
 
       <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14 lg:grid lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start lg:gap-8">
-        {/* Cabecera de perfil */}
-        {(() => {
-          const lastScore = list.map(scoreOf).find((v) => v !== null) ?? null;
-          const name = list[0]?.full_name ?? user.email.split("@")[0];
-          const initial = name.slice(0, 1).toUpperCase();
-          return (
-            <section className="flex flex-col items-center text-center lg:sticky lg:top-20">
-              <div className="relative">
-                <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-accent text-[34px] font-semibold text-accent">
-                  {initial}
-                </div>
-                <span className={"absolute -right-1 -bottom-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide " + (pro ? "bg-accent text-black" : "bg-surface-2 text-muted")}>
-                  {tr(`account.plan.${pro ? "pro" : "free"}`)}
-                </span>
-              </div>
-              <h1 className="mt-4 text-[26px] font-semibold tracking-[-0.025em] text-ink">{name}</h1>
-              <p className="text-[14px] text-faint">{user.email}</p>
-              <ul className="mt-6 grid w-full grid-cols-3 divide-x divide-line rounded-card border border-line bg-surface">
-                {[
-                  { v: lastScore ?? tr("profile.noScore"), l: tr("profile.score"), cls: lastScore !== null ? LEVEL_TEXT[levelFor(lastScore)] : "text-faint" },
-                  { v: list.filter((r) => r.status === "done").length, l: tr("profile.reports"), cls: "text-ink" },
-                  { v: letters.length, l: tr("profile.letters"), cls: "text-ink" },
-                ].map((x) => (
-                  <li key={x.l} className="py-4">
-                    <p className={"text-[22px] font-semibold tracking-[-0.02em] " + x.cls}>{x.v}</p>
-                    <p className="mt-0.5 text-[12px] text-faint">{x.l}</p>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })()}
-
-        <div className="min-w-0">
-        {pago === "ok" && !pro && (
-          <p className="mt-4 rounded-[10px] bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-accent">
-            {tr("pro.thanks")} {tr("pro.thanksPending")}
-          </p>
-        )}
-
-        {/* Plan */}
-        <section className="mt-6 rounded-card border border-line bg-surface p-5 sm:p-6">
-          {pro ? (
-            <>
-              <p className="text-[15px] font-semibold text-ink">{tr("pro.active")}</p>
-              {user.plan_until && (
-                <p className="mt-1 text-[13px] text-muted">
-                  {user.plan_status === "canceling"
-                    ? tr("pro.canceling", { date: fmt.format(new Date(user.plan_until)) })
-                    : tr("pro.until", { date: fmt.format(new Date(user.plan_until)) })}
-                </p>
-              )}
-              {user.stripe_customer_id && (
-                <form action="/api/stripe/portal" method="post" className="mt-3">
-                  <button type="submit" className="text-[14px] font-medium text-accent underline underline-offset-4">
-                    {tr("pro.manage")}
-                  </button>
-                </form>
-              )}
-            </>
-          ) : (
-            <>
-              <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
-              <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("pro.lockedBody")}</p>
-              <Link href="/pro" className="mt-3 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
-                {tr("pro.lockedCta")}
-              </Link>
-            </>
-          )}
-        </section>
-
-        {/* Vigilancia mensual */}
-        <section className="mt-8 rounded-card border border-line bg-surface p-5 sm:p-6">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-[15px] font-semibold text-ink">{tr("monitor.title")}</h2>
-            <span className={"rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide " + (user.monitoring ? "bg-accent text-black" : "bg-paper text-faint")}>
-              {user.monitoring ? tr("monitor.on") : tr("monitor.off")}
+        {/* Ficha */}
+        <section className="flex flex-col items-center text-center lg:sticky lg:top-20">
+          <div className="relative">
+            <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-accent text-[34px] font-semibold text-accent">
+              {name.slice(0, 1).toUpperCase()}
+            </div>
+            <span className={"absolute -right-1 -bottom-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide " + (pro ? "bg-accent text-black" : "bg-surface-2 text-muted")}>
+              {tr(`account.plan.${pro ? "pro" : "free"}`)}
             </span>
           </div>
-          <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("monitor.body")}</p>
-          {user.monitoring && (
-            <p className="mt-2 text-[12.5px] text-faint">
-              {user.monitor_last_at
-                ? tr("monitor.nextCheck", { date: fmt.format(new Date(new Date(user.monitor_last_at).getTime() + 30 * 86_400_000)) })
-                : tr("monitor.neverChecked")}
-            </p>
-          )}
-          {!pro && !user.monitoring ? (
-            <Link href="/pro" className="mt-4 inline-block text-[14px] font-medium text-accent underline underline-offset-4">
-              {tr("pro.lockedCta")}
-            </Link>
-          ) : (
-          <form action="/api/monitor" method="post" className="mt-4 grid gap-2">
-            <input type="hidden" name="enabled" value={user.monitoring ? "0" : "1"} />
-            <button
-              type="submit"
-              className={
-                user.monitoring
-                  ? "w-fit text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink"
-                  : "w-fit rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90"
-              }
-            >
-              {user.monitoring ? tr("monitor.disable") : tr("monitor.enable")}
-            </button>
-            {!user.monitoring && <p className="text-[12px] leading-relaxed text-faint">{tr("monitor.consent")}</p>}
-          </form>
-          )}
-        </section>
-
-        <h2 className="mt-10 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("account.reports")}</h2>
-
-        {list.length === 0 ? (
-          <p className="mt-4 text-[15px] text-muted">{tr("account.empty")}</p>
-        ) : (
-          <ul className="mt-4 grid gap-3">
-            {list.map((row) => {
-              const score = scoreOf(row);
-              return (
-                <li key={row.id} className="rounded-card border border-line bg-surface p-4 sm:p-5">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="min-w-0">
-                      <p className="truncate text-[15px] font-semibold text-ink">
-                        {row.full_name}
-                        {row.city && <span className="font-normal text-muted"> · {row.city}</span>}
-                      </p>
-                      <p className="mt-0.5 text-[12.5px] text-faint">
-                        {fmt.format(new Date(row.created_at))} · {tr(`account.status.${row.status}`)}
-                      </p>
-                    </div>
-                    {score !== null ? (
-                      <span className={"text-[28px] font-semibold tracking-[-0.03em] " + LEVEL_TEXT[levelFor(score)]}>{score}</span>
-                    ) : (
-                      <span className="text-[13px] text-faint">—</span>
-                    )}
-                  </div>
-                  {(row.status === "done" || row.status === "processing" || row.status === "verified") && (
-                    <Link href={`/informe/${row.id}`} className="mt-3 inline-block text-[13px] font-medium text-accent underline underline-offset-4">
-                      {tr("account.view")}
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        )}
-
-        {/* Escaner de buzon (Pro, beta) */}
-        <section className="mt-6 rounded-card border border-line bg-surface p-5 sm:p-6">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-[15px] font-semibold text-ink">{tr("account.mailboxCard")}</h2>
-            <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-accent">{tr("mailbox.beta")}</span>
-          </div>
-          <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("account.mailboxCardBody")}</p>
-          <Link href={pro ? "/cuenta/buzon" : "/pro"} className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
-            {pro ? tr("account.mailboxCardCta") : tr("pro.lockedCta")}
-          </Link>
-        </section>
-
-        {/* Proximos plazos (cartas enviadas, ordenadas por vencimiento) */}
-        {(() => {
-          const pending = letters
-            .filter((l) => l.status === "sent" && l.deadline_at)
-            .sort((a, b) => new Date(a.deadline_at!).getTime() - new Date(b.deadline_at!).getTime());
-          const today = new Date();
-          return (
-            <section className="mt-8 rounded-card border border-line bg-surface p-5 sm:p-6">
-              <h2 className="text-[15px] font-semibold text-ink">{tr("deadlines.title")}</h2>
-              {pending.length === 0 ? (
-                <p className="mt-2 text-[14px] text-muted">{tr("deadlines.none")}</p>
-              ) : (
-                <ul className="mt-3 grid gap-2">
-                  {pending.map((l) => {
-                    const d = new Date(l.deadline_at!);
-                    const days = Math.ceil((d.getTime() - today.getTime()) / 86_400_000);
-                    const late = days < 0;
-                    return (
-                      <li key={l.id} className="flex items-center justify-between gap-3 text-[14px]">
-                        <Link href={`/cartas/${l.id}`} className="truncate font-medium text-ink underline-offset-4 hover:underline">
-                          {l.host}
-                        </Link>
-                        <span className={"shrink-0 rounded-full px-2.5 py-0.5 text-[12px] font-semibold " + (late ? "bg-accent text-black" : days <= 3 ? "bg-accent-soft text-accent" : "bg-paper text-muted")}>
-                          {late ? tr("deadlines.overdueShort") : days === 0 ? tr("deadlines.today") : tr("deadlines.daysLeft", { n: days })}
-                          {" · "}
-                          {fmt.format(d)}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </section>
-          );
-        })()}
-
-        {/* Cartas RGPD */}
-        <h2 className="mt-10 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.listTitle")}</h2>
-        {letters.length === 0 ? (
-          <p className="mt-4 text-[14px] leading-relaxed text-muted">{tr("letters.listEmpty")}</p>
-        ) : (
-          <ul className="mt-4 grid gap-2">
-            {letters.map((l) => (
-              <li key={l.id} className="flex items-center justify-between gap-3 rounded-card border border-line bg-surface px-4 py-3">
-                <div className="min-w-0">
-                  <p className="truncate text-[14px] font-semibold text-ink">{l.host}</p>
-                  <p className="text-[12.5px] text-faint">
-                    {tr(`letters.status.${l.status}`)}
-                    {l.status === "sent" && l.deadline_at && ` · ${tr("letters.deadline", { date: fmt.format(new Date(l.deadline_at)) })}`}
-                  </p>
-                </div>
-                <Link href={`/cartas/${l.id}`} className="shrink-0 text-[13px] font-medium text-accent underline underline-offset-4">
-                  {tr("letters.open")}
-                </Link>
+          <h1 className="mt-4 text-[26px] font-semibold tracking-[-0.025em] text-ink">{name}</h1>
+          <p className="text-[14px] text-faint">{user.email}</p>
+          <ul className="mt-6 grid w-full grid-cols-3 divide-x divide-line rounded-card border border-line bg-surface">
+            {[
+              { v: lastScore ?? tr("profile.noScore"), l: tr("profile.score"), cls: lastScore !== null ? LEVEL_TEXT[levelFor(lastScore)] : "text-faint" },
+              { v: list.filter((r) => r.status === "done").length, l: tr("profile.reports"), cls: "text-ink" },
+              { v: lettersCount ?? 0, l: tr("profile.letters"), cls: "text-ink" },
+            ].map((x) => (
+              <li key={x.l} className="py-4">
+                <p className={"text-[22px] font-semibold tracking-[-0.02em] " + x.cls}>{x.v}</p>
+                <p className="mt-0.5 text-[12px] text-faint">{x.l}</p>
               </li>
             ))}
           </ul>
-        )}
-
-        <div className="mt-8 flex flex-wrap items-center gap-4">
-          <Link href="/#form" className="rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
-            {tr("account.newReport")}
+          <Link href="/herramientas" className="mt-4 text-[13px] font-medium text-accent underline underline-offset-4">
+            {tr("tools.title")} →
           </Link>
-          <form action="/api/session/logout" method="post">
-            <button type="submit" className="text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink">
-              {tr("nav.logout")}
-            </button>
-          </form>
-        </div>
+        </section>
+
+        <div className="mt-8 grid gap-4 lg:mt-0">
+          {pago === "ok" && !pro && (
+            <p className="rounded-[12px] bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-accent">
+              {tr("pro.thanks")} {tr("pro.thanksPending")}
+            </p>
+          )}
+
+          {/* Plan */}
+          <section className={CARD}>
+            {pro ? (
+              <>
+                <p className="text-[15px] font-semibold text-ink">{tr("pro.active")}</p>
+                {user.plan_until && (
+                  <p className="mt-1 text-[13px] text-muted">
+                    {user.plan_status === "canceling"
+                      ? tr("pro.canceling", { date: fmt.format(new Date(user.plan_until)) })
+                      : tr("pro.until", { date: fmt.format(new Date(user.plan_until)) })}
+                  </p>
+                )}
+                {user.stripe_customer_id && (
+                  <form action="/api/stripe/portal" method="post" className="mt-3">
+                    <button type="submit" className="text-[14px] font-medium text-accent underline underline-offset-4">{tr("pro.manage")}</button>
+                  </form>
+                )}
+              </>
+            ) : (
+              <>
+                <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
+                <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("pro.lockedBody")}</p>
+                <Link href="/pro" className="mt-3 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
+                  {tr("pro.lockedCta")}
+                </Link>
+              </>
+            )}
+          </section>
+
+          {/* Informes */}
+          <section>
+            <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("account.reports")}</h2>
+            {list.length === 0 ? (
+              <p className="mt-3 text-[15px] text-muted">{tr("account.empty")}</p>
+            ) : (
+              <ul className="mt-3 grid gap-2">
+                {list.map((row) => {
+                  const score = scoreOf(row);
+                  const open = row.status === "done" || row.status === "processing" || row.status === "verified";
+                  const inner = (
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="truncate text-[15px] font-semibold text-ink">
+                          {row.full_name}
+                          {row.city && <span className="font-normal text-muted"> · {row.city}</span>}
+                        </p>
+                        <p className="mt-0.5 text-[12.5px] text-faint">
+                          {fmt.format(new Date(row.created_at))} · {tr(`account.status.${row.status}`)}
+                        </p>
+                      </div>
+                      {score !== null ? (
+                        <span className={"text-[26px] font-semibold tracking-[-0.03em] " + LEVEL_TEXT[levelFor(score)]}>{score}</span>
+                      ) : (
+                        <span className="text-[13px] text-faint">—</span>
+                      )}
+                    </div>
+                  );
+                  return (
+                    <li key={row.id} className="rounded-card border border-line bg-surface px-4 py-3.5 sm:px-5">
+                      {open ? <Link href={`/informe/${row.id}`} className="block">{inner}</Link> : inner}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <Link href="/#form" className="rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
+              {tr("account.newReport")}
+            </Link>
+            <form action="/api/session/logout" method="post">
+              <button type="submit" className="text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+                {tr("nav.logout")}
+              </button>
+            </form>
+          </div>
         </div>
       </main>
 
