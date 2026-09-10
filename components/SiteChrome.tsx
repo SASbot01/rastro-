@@ -14,7 +14,7 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
           href="/"
           className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-ink lg:invisible"
         >
-          <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
+          <img src="/brand/icon-64.png" alt="" width={24} height={24} className="h-[24px] w-[24px] rounded-[7px]" />
           {tr("nav.brand")}
         </Link>
         <TopTabs messages={messages} />

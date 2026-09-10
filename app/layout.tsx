@@ -22,14 +22,22 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const tr = translator(getMessages(locale));
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
     title: `Rastro — ${tr("hero.title")}`,
     description: tr("hero.subtitle"),
+    manifest: "/manifest.webmanifest",
+    icons: {
+      icon: [{ url: "/brand/icon-32.png", sizes: "32x32" }, { url: "/brand/icon-192.png", sizes: "192x192" }],
+      apple: [{ url: "/brand/icon-180.png", sizes: "180x180" }],
+    },
     openGraph: {
       title: `Rastro — ${tr("hero.title")}`,
       description: tr("hero.subtitle"),
       locale,
       type: "website",
+      images: [{ url: "/brand/og.png", width: 1200, height: 630 }],
     },
+    twitter: { card: "summary_large_image", images: ["/brand/og.png"] },
   };
 }
 
