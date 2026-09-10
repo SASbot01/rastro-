@@ -27,8 +27,23 @@ function periodEnd(sub: Stripe.Subscription): string | null {
 
 const ACTIVE = new Set<Stripe.Subscription.Status>(["active", "trialing", "past_due"]);
 
+/**
+ * La cuenta de Stripe se comparte con otros productos: solo cuentan las
+ * suscripciones cuyo precio esta en STRIPE_PRICE_IDS (los dos de Rastro Pro).
+ * Sin la variable, se acepta todo (util en pruebas con cuenta propia).
+ */
+export function isRastroSubscription(sub: Stripe.Subscription): boolean {
+  const allowed = (process.env.STRIPE_PRICE_IDS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  if (allowed.length === 0) return true;
+  return (sub.items?.data ?? []).some((it) => allowed.includes(it.price?.id ?? ""));
+}
+
 /** Aplica el estado de una suscripcion a la cuenta (por id de usuario o por correo del cliente). */
 export async function syncSubscription(sub: Stripe.Subscription, hint: { userId?: string | null; email?: string | null; locale?: Locale }): Promise<void> {
+  if (!isRastroSubscription(sub)) {
+    console.log(`[stripe] ignorada suscripcion de otro producto: ${sub.id}`);
+    return;
+  }
   const supabase = supabaseAdmin();
   const customerId = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
 

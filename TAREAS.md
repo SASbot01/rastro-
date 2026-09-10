@@ -12,13 +12,15 @@ Estado a 10-09-2026. Producción: https://rastropro.com (servidor propio, ver RE
 
 ## Stripe (plan Pro)
 
-- [ ] **Rotar la `sk_live`** que se pegó en el chat (Stripe › Desarrolladores › Claves de API › Rotar) y ponerla en el servidor:
-      `sed -i 's|^STRIPE_SECRET_KEY=.*|STRIPE_SECRET_KEY=sk_live_XXXX|' /home/s4sf/rastro/.env.local && /home/s4sf/.npm-global/bin/pm2 restart rastro`
-      Sin ella el webhook no puede activar el plan Pro.
+- [x] `STRIPE_SECRET_KEY` puesta en el servidor (10-09-2026). Cobros y activación de Pro operativos.
+- [ ] **ESTA NOCHE: rotar la `sk_live`** (pasó por el chat). Stripe › Desarrolladores › Claves de API › Rotar, y en el servidor:
+      `sed -i 's|^STRIPE_SECRET_KEY=.*|STRIPE_SECRET_KEY=sk_live_NUEVA|' /home/s4sf/rastro/.env.local && /home/s4sf/.npm-global/bin/pm2 restart rastro`
+- [x] Webhook `https://rastropro.com/api/stripe/webhook` con los 3 eventos: existe y está activo.
+- [x] Enlaces: mensual = `…5kk0d` (19 €), anual = `…5kk0e` (99 €). Confirmado por la API.
+- [x] Solo activan Pro los dos precios de Rastro (`STRIPE_PRICE_IDS`): la cuenta de Stripe se comparte con `soc.blackwolfsec.io` y `ryoiki`, y sus pagos se ignoran.
 - [ ] **Rotar el `whsec`** (también pasó por el chat) y ponerlo con el mismo `sed` sobre `STRIPE_WEBHOOK_SECRET`. El destino de eventos debe apuntar a `https://rastropro.com/api/stripe/webhook`.
 - [ ] Redirección tras el pago en los dos Payment Links → `https://rastropro.com/cuenta?pago=ok`.
 - [ ] Portal del cliente activado en Stripe.
-- [ ] Confirmar que `STRIPE_LINK_MONTHLY` es el enlace de 19 €/mes y `STRIPE_LINK_YEARLY` el de 99 €/año (si es al revés, intercambiarlos en `.env.local`).
 - [ ] Probar un pago real (19 €, reembolsable) y comprobar que `/cuenta` pasa a "Plan Pro activo".
 
 ## Claves de API (decisión: rotar más adelante, todas a la vez)
