@@ -28,6 +28,16 @@ const PROFILE_HOSTS: Array<[RegExp, string]> = [
   [/(^|\.)xing\.com$/, "Xing"],
 ];
 
+/** Sitios que recopilan y venden datos personales (telefono, direccion). */
+const BROKER_HOSTS = [
+  /(^|\.)spokeo\.com$/, /(^|\.)rocketreach\.co$/, /(^|\.)zabasearch\.com$/, /(^|\.)whitepages\.com$/,
+  /(^|\.)beenverified\.com$/, /(^|\.)truepeoplesearch\.com$/, /(^|\.)fastpeoplesearch\.com$/,
+  /(^|\.)radaris\.com$/, /(^|\.)mylife\.com$/, /(^|\.)peoplefinders\.com$/, /(^|\.)intelius\.com$/,
+  /(^|\.)dateas\.com$/, /(^|\.)infobel\.com$/, /(^|\.)signalhire\.com$/, /(^|\.)contactout\.com$/,
+  /(^|\.)lusha\.com$/, /(^|\.)apollo\.io$/, /(^|\.)zoominfo\.com$/, /(^|\.)cylex[a-z.-]*$/,
+  /(^|\.)paginasamarillas\.[a-z.]+$/, /(^|\.)nuwber\.com$/, /(^|\.)clustrmaps\.com$/,
+];
+
 interface BraveWebResult {
   title: string;
   url: string;
@@ -48,8 +58,8 @@ export interface SearchHit {
   hostname: string;
   /** Descripcion + snippets extra, ya limpios de HTML. */
   snippet: string;
-  /** "profile" si el dominio es una red social/perfil conocido. */
-  kind: "profile" | "page";
+  /** "profile": red social/perfil conocido. "broker": sitio que vende datos personales. */
+  kind: "profile" | "broker" | "page";
   /** Nombre legible del sitio de perfil, p. ej. "LinkedIn". */
   platform?: string;
 }
@@ -67,6 +77,7 @@ function classify(hostname: string): { kind: SearchHit["kind"]; platform?: strin
   for (const [pattern, platform] of PROFILE_HOSTS) {
     if (pattern.test(host)) return { kind: "profile", platform };
   }
+  if (BROKER_HOSTS.some((pattern) => pattern.test(host))) return { kind: "broker" };
   return { kind: "page" };
 }
 

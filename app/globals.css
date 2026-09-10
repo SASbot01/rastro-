@@ -16,6 +16,7 @@
   --color-accent: #e8590c; /* acento único */
   --color-accent-soft: #fdf1e8; /* fondo del acento */
   --color-danger: #b4231a;
+  --color-ok: #2f8f5b; /* verde del semaforo (CLAUDE.md s.7); solo para el score */
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 

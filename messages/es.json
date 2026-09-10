@@ -1,8 +1,14 @@
 {
-  "locale": { "es": "Español", "en": "English", "switchTo": "Cambiar idioma" },
-
-  "nav": { "brand": "Rastro", "privacy": "Privacidad", "legal": "Aviso legal" },
-
+  "locale": {
+    "es": "Español",
+    "en": "English",
+    "switchTo": "Cambiar idioma"
+  },
+  "nav": {
+    "brand": "Rastro",
+    "privacy": "Privacidad",
+    "legal": "Aviso legal"
+  },
   "hero": {
     "eyebrow": "Informe gratuito de exposición",
     "title": "Mira lo que la IA sabe de ti.",
@@ -13,7 +19,6 @@
       "retention": "Todo se borra a los 30 días"
     }
   },
-
   "form": {
     "title": "Pide tu informe",
     "firstName": "Nombre",
@@ -33,7 +38,6 @@
     "submitting": "Enviando…",
     "onlyYourself": "Solo puedes pedir el informe sobre ti mismo."
   },
-
   "formErrors": {
     "firstName": "Escribe tu nombre.",
     "lastName": "Escribe tus apellidos.",
@@ -42,7 +46,6 @@
     "rateLimit": "Has pedido demasiados informes hoy. Inténtalo mañana.",
     "generic": "Algo ha fallado por nuestro lado. Vuelve a intentarlo en un momento."
   },
-
   "sent": {
     "title": "Revisa tu correo",
     "body": "Hemos enviado un enlace a {email}. Ábrelo y empezamos a preparar tu informe.",
@@ -50,7 +53,6 @@
     "expires": "El enlace caduca en 24 horas.",
     "again": "Usar otro correo"
   },
-
   "how": {
     "title": "Cómo funciona",
     "step1Title": "Nos das tu nombre y tu correo",
@@ -60,7 +62,6 @@
     "step3Title": "Recibes tu informe",
     "step3Body": "Una puntuación del 0 al 100, qué se ve de ti, por qué importa y qué puedes hacer."
   },
-
   "verify": {
     "loading": "Comprobando el enlace…",
     "okTitle": "Correo confirmado",
@@ -74,7 +75,6 @@
     "soonTitle": "Ya casi",
     "soonBody": "La generación del informe llega en los próximos días. Te avisaremos en este mismo correo."
   },
-
   "email": {
     "subject": "Confirma tu correo para ver tu informe de Rastro",
     "preheader": "Un clic y empezamos a preparar tu informe.",
@@ -86,7 +86,6 @@
     "ignore": "Si no has sido tú, ignora este mensaje. No haremos nada.",
     "footer": "Rastro — Mira lo que la IA sabe de ti."
   },
-
   "footer": {
     "tagline": "Mira lo que la IA sabe de ti.",
     "privacy": "Política de privacidad",
@@ -94,12 +93,122 @@
     "contact": "Contacto",
     "rights": "Rastro. Informes solo sobre uno mismo."
   },
-
   "legalStub": {
     "privacyTitle": "Política de privacidad",
     "legalTitle": "Aviso legal",
     "draft": "Borrador",
     "body": "Este texto todavía no está redactado. Se publica en el Día 6, antes de abrir el servicio a nadie. Resumen de lo que dirá: la base legal es tu consentimiento, solo tratamos tu nombre, tu correo y opcionalmente tu ciudad, los datos se borran a los 30 días, y puedes ejercer tus derechos escribiendo al contacto que aparecerá aquí.",
     "back": "Volver al inicio"
+  },
+  "waiting": {
+    "confirmed": "Correo confirmado",
+    "title": "Preparando tu informe",
+    "subtitle": "Suele tardar menos de un minuto. Puedes dejar esta página abierta.",
+    "step": {
+      "hibp": "Buscando tu correo en filtraciones conocidas",
+      "brave": "Buscando tu nombre en internet",
+      "ai": "Preguntando a la IA qué sabe de ti",
+      "report": "Redactando el informe"
+    },
+    "queued": "En cola",
+    "done": "Listo",
+    "errorTitle": "No hemos podido generar el informe",
+    "errorBody": "Algo ha fallado por nuestro lado. Vuelve a pedirlo desde el inicio; no te costará nada.",
+    "notFoundTitle": "Este informe no existe",
+    "notFoundBody": "Puede que haya caducado (los informes se borran a los 30 días) o que el enlace esté mal copiado."
+  },
+  "report": {
+    "eyebrow": "Informe de exposición",
+    "for": "Para {name}",
+    "scoreLabel": "Puntuación de exposición",
+    "outOf": "de 100",
+    "level": {
+      "green": "Exposición baja",
+      "orange": "Exposición media",
+      "red": "Exposición alta"
+    },
+    "categories": {
+      "breaches": "Filtraciones",
+      "ai": "Lo que dice la IA",
+      "profiles": "Perfiles y páginas públicas",
+      "false": "Datos posiblemente falsos"
+    },
+    "severity": {
+      "high": "Alta",
+      "medium": "Media",
+      "low": "Baja",
+      "info": "Info"
+    },
+    "actionsTitle": "Qué hacer ahora",
+    "source": "Ver fuente",
+    "generated": "Generado el {date}. Se borra automáticamente a los 30 días.",
+    "partial": "Versión preliminar: la parte de «Lo que dice la IA» se añade en el siguiente paso del desarrollo."
+  },
+  "summary": {
+    "breachesNone": "Tu correo no aparece en ninguna filtración conocida.",
+    "breachesOne": "Tu correo aparece en 1 filtración conocida{pw}.",
+    "breachesMany": "Tu correo aparece en {n} filtraciones conocidas{pw}.",
+    "withPassword": ", con contraseña incluida",
+    "withPasswordN": ", {n} de ellas con contraseña",
+    "breachesUnchecked": "No hemos podido comprobar las filtraciones esta vez.",
+    "profilesNone": "Al buscar tu nombre no aparece ningún perfil público reconocible.",
+    "profilesOne": "Al buscar tu nombre aparece 1 perfil público.",
+    "profilesMany": "Al buscar tu nombre aparecen {n} perfiles públicos.",
+    "brokers": " Además, {n} sitio(s) que venden datos personales listan tu nombre.",
+    "searchFailed": "La búsqueda por nombre no ha funcionado esta vez."
+  },
+  "findings": {
+    "breachPasswordTitle": "Tu correo apareció en la filtración de {name} ({year}) con contraseña",
+    "breachPasswordDetail": "Se filtraron: {data}. Si esa contraseña la usas todavía en algún sitio, cámbiala hoy y activa la verificación en dos pasos.",
+    "breachTitle": "Tu correo apareció en la filtración de {name} ({year})",
+    "breachDetail": "Se filtraron: {data}. Sin contraseña el riesgo es menor, pero tu correo circula en listas que se usan para spam y estafas dirigidas.",
+    "breachUncheckedTitle": "Filtraciones: no comprobadas",
+    "breachUncheckedDetail": "El servicio de filtraciones no ha respondido. Vuelve a pedir el informe más tarde.",
+    "noBreachesTitle": "Sin filtraciones conocidas",
+    "noBreachesDetail": "Tu correo no está en ninguna de las filtraciones públicas registradas hasta hoy. Buena señal; no significa que no pueda pasar mañana.",
+    "profileTitle": "Perfil público en {platform}",
+    "profileDetail": "Aparece al buscar tu nombre: «{title}». Revisa qué muestra a quien no te conoce (foto, ciudad, empleo) y ajusta la privacidad si sobra algo.",
+    "brokerTitle": "Un sitio que vende datos personales lista tu nombre ({host})",
+    "brokerDetail": "Estas webs recopilan teléfonos y direcciones de fuentes públicas y los venden. Puede ser otra persona con tu nombre; si eres tú, casi todas tienen un formulario para retirar tus datos.",
+    "pageTitle": "Resultado público: «{title}»",
+    "pageDetail": "En {host}. Mira si habla de ti o de otra persona con tu nombre.",
+    "noResultsTitle": "Tu nombre casi no aparece en internet",
+    "noResultsDetail": "La búsqueda no devuelve perfiles ni páginas reconocibles. Poca exposición pública por nombre.",
+    "searchFailedTitle": "Búsqueda por nombre: no disponible",
+    "searchFailedDetail": "El buscador no ha respondido. Vuelve a pedir el informe más tarde."
+  },
+  "actionsTpl": {
+    "changePasswordTitle": "Cambia las contraseñas filtradas",
+    "changePasswordDetail": "Empieza por {name}. Si reutilizabas esa contraseña, cámbiala también donde la usaras.",
+    "twoFactorTitle": "Activa la verificación en dos pasos",
+    "twoFactorDetail": "En tu correo y en tu banco como mínimo. Con ella, una contraseña filtrada no basta para entrar.",
+    "reviewProfilesTitle": "Revisa la privacidad de tus perfiles",
+    "reviewProfilesDetail": "Abre tus perfiles como si fueras un desconocido y quita lo que no quieras que vea cualquiera.",
+    "brokerOptOutTitle": "Pide la retirada en los sitios de datos",
+    "brokerOptOutDetail": "Busca «opt out» o «eliminar mis datos» en cada uno. Suele ser un formulario de dos minutos.",
+    "passwordManagerTitle": "Usa un gestor de contraseñas",
+    "passwordManagerDetail": "Una contraseña distinta por sitio sin tener que recordarlas. Es la medida que más reduce el daño de futuras filtraciones.",
+    "monitorTitle": "Vuelve a comprobarlo dentro de un tiempo",
+    "monitorDetail": "Las filtraciones nuevas aparecen cada semana. Repite el informe en unos meses."
+  },
+  "dataClasses": {
+    "Email addresses": "correos",
+    "Passwords": "contraseñas",
+    "Usernames": "nombres de usuario",
+    "Names": "nombres",
+    "Phone numbers": "teléfonos",
+    "Physical addresses": "direcciones postales",
+    "Dates of birth": "fechas de nacimiento",
+    "IP addresses": "direcciones IP",
+    "Password hints": "pistas de contraseña",
+    "Geographic locations": "ubicaciones",
+    "Genders": "género",
+    "Job titles": "cargos",
+    "Employers": "empresas",
+    "Social media profiles": "perfiles en redes",
+    "Website activity": "actividad web",
+    "Purchases": "compras",
+    "Credit cards": "tarjetas",
+    "Government issued IDs": "documentos de identidad"
   }
 }

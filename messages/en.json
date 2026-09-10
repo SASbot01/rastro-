@@ -1,8 +1,14 @@
 {
-  "locale": { "es": "Español", "en": "English", "switchTo": "Change language" },
-
-  "nav": { "brand": "Rastro", "privacy": "Privacy", "legal": "Legal" },
-
+  "locale": {
+    "es": "Español",
+    "en": "English",
+    "switchTo": "Change language"
+  },
+  "nav": {
+    "brand": "Rastro",
+    "privacy": "Privacy",
+    "legal": "Legal"
+  },
   "hero": {
     "eyebrow": "Free exposure report",
     "title": "See what AI knows about you.",
@@ -13,7 +19,6 @@
       "retention": "Everything is deleted after 30 days"
     }
   },
-
   "form": {
     "title": "Get your report",
     "firstName": "First name",
@@ -33,7 +38,6 @@
     "submitting": "Sending…",
     "onlyYourself": "You can only request a report about yourself."
   },
-
   "formErrors": {
     "firstName": "Enter your first name.",
     "lastName": "Enter your last name.",
@@ -42,7 +46,6 @@
     "rateLimit": "You've requested too many reports today. Try again tomorrow.",
     "generic": "Something went wrong on our side. Please try again in a moment."
   },
-
   "sent": {
     "title": "Check your email",
     "body": "We sent a link to {email}. Open it and we'll start preparing your report.",
@@ -50,7 +53,6 @@
     "expires": "The link expires in 24 hours.",
     "again": "Use a different email"
   },
-
   "how": {
     "title": "How it works",
     "step1Title": "You give us your name and email",
@@ -60,7 +62,6 @@
     "step3Title": "You get your report",
     "step3Body": "A score from 0 to 100, what's visible about you, why it matters, and what you can do."
   },
-
   "verify": {
     "loading": "Checking the link…",
     "okTitle": "Email confirmed",
@@ -74,7 +75,6 @@
     "soonTitle": "Almost there",
     "soonBody": "Report generation is coming in the next few days. We'll let you know at this same address."
   },
-
   "email": {
     "subject": "Confirm your email to see your Rastro report",
     "preheader": "One click and we start preparing your report.",
@@ -86,7 +86,6 @@
     "ignore": "If this wasn't you, ignore this message. We won't do anything.",
     "footer": "Rastro — See what AI knows about you."
   },
-
   "footer": {
     "tagline": "See what AI knows about you.",
     "privacy": "Privacy policy",
@@ -94,12 +93,122 @@
     "contact": "Contact",
     "rights": "Rastro. Reports about yourself only."
   },
-
   "legalStub": {
     "privacyTitle": "Privacy policy",
     "legalTitle": "Legal notice",
     "draft": "Draft",
     "body": "This text has not been written yet. It ships on Day 6, before the service opens to anyone. In short: the legal basis is your consent, we only process your name, your email and optionally your city, data is deleted after 30 days, and you can exercise your rights by writing to the contact that will appear here.",
     "back": "Back to home"
+  },
+  "waiting": {
+    "confirmed": "Email confirmed",
+    "title": "Preparing your report",
+    "subtitle": "This usually takes under a minute. You can keep this page open.",
+    "step": {
+      "hibp": "Checking your email against known breaches",
+      "brave": "Searching your name on the web",
+      "ai": "Asking AI what it knows about you",
+      "report": "Writing the report"
+    },
+    "queued": "Queued",
+    "done": "Done",
+    "errorTitle": "We couldn't generate the report",
+    "errorBody": "Something went wrong on our side. Request it again from the home page; it's free.",
+    "notFoundTitle": "This report doesn't exist",
+    "notFoundBody": "It may have expired (reports are deleted after 30 days) or the link may be copied incorrectly."
+  },
+  "report": {
+    "eyebrow": "Exposure report",
+    "for": "For {name}",
+    "scoreLabel": "Exposure score",
+    "outOf": "out of 100",
+    "level": {
+      "green": "Low exposure",
+      "orange": "Medium exposure",
+      "red": "High exposure"
+    },
+    "categories": {
+      "breaches": "Breaches",
+      "ai": "What AI says",
+      "profiles": "Public profiles and pages",
+      "false": "Possibly false data"
+    },
+    "severity": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "info": "Info"
+    },
+    "actionsTitle": "What to do now",
+    "source": "View source",
+    "generated": "Generated on {date}. Automatically deleted after 30 days.",
+    "partial": "Preliminary version: the \"What AI says\" section is added in the next development step."
+  },
+  "summary": {
+    "breachesNone": "Your email does not appear in any known breach.",
+    "breachesOne": "Your email appears in 1 known breach{pw}.",
+    "breachesMany": "Your email appears in {n} known breaches{pw}.",
+    "withPassword": ", password included",
+    "withPasswordN": ", {n} of them with passwords",
+    "breachesUnchecked": "We couldn't check breaches this time.",
+    "profilesNone": "Searching your name shows no recognizable public profile.",
+    "profilesOne": "Searching your name shows 1 public profile.",
+    "profilesMany": "Searching your name shows {n} public profiles.",
+    "brokers": " Also, {n} site(s) that sell personal data list your name.",
+    "searchFailed": "The name search didn't work this time."
+  },
+  "findings": {
+    "breachPasswordTitle": "Your email appeared in the {name} breach ({year}) with a password",
+    "breachPasswordDetail": "Leaked: {data}. If you still use that password anywhere, change it today and turn on two-step verification.",
+    "breachTitle": "Your email appeared in the {name} breach ({year})",
+    "breachDetail": "Leaked: {data}. Without a password the risk is lower, but your email circulates in lists used for spam and targeted scams.",
+    "breachUncheckedTitle": "Breaches: not checked",
+    "breachUncheckedDetail": "The breach service didn't respond. Request the report again later.",
+    "noBreachesTitle": "No known breaches",
+    "noBreachesDetail": "Your email is not in any public breach recorded to date. Good sign; it doesn't mean it can't happen tomorrow.",
+    "profileTitle": "Public profile on {platform}",
+    "profileDetail": "Shows up when searching your name: \"{title}\". Check what it shows to strangers (photo, city, job) and tighten privacy if needed.",
+    "brokerTitle": "A site that sells personal data lists your name ({host})",
+    "brokerDetail": "These sites collect phone numbers and addresses from public sources and sell them. It may be someone else with your name; if it's you, almost all have an opt-out form.",
+    "pageTitle": "Public result: \"{title}\"",
+    "pageDetail": "On {host}. Check whether it's about you or someone else with your name.",
+    "noResultsTitle": "Your name barely appears online",
+    "noResultsDetail": "The search returns no recognizable profiles or pages. Low public exposure by name.",
+    "searchFailedTitle": "Name search: unavailable",
+    "searchFailedDetail": "The search engine didn't respond. Request the report again later."
+  },
+  "actionsTpl": {
+    "changePasswordTitle": "Change the leaked passwords",
+    "changePasswordDetail": "Start with {name}. If you reused that password, change it everywhere you used it.",
+    "twoFactorTitle": "Turn on two-step verification",
+    "twoFactorDetail": "On your email and your bank at minimum. With it, a leaked password isn't enough to get in.",
+    "reviewProfilesTitle": "Review your profiles' privacy",
+    "reviewProfilesDetail": "Open your profiles as a stranger would and remove anything you don't want everyone to see.",
+    "brokerOptOutTitle": "Request removal from data-broker sites",
+    "brokerOptOutDetail": "Look for \"opt out\" or \"remove my data\" on each one. It's usually a two-minute form.",
+    "passwordManagerTitle": "Use a password manager",
+    "passwordManagerDetail": "A different password per site without memorizing them. It's the single measure that most reduces damage from future breaches.",
+    "monitorTitle": "Check again in a while",
+    "monitorDetail": "New breaches appear every week. Repeat the report in a few months."
+  },
+  "dataClasses": {
+    "Email addresses": "email addresses",
+    "Passwords": "passwords",
+    "Usernames": "usernames",
+    "Names": "names",
+    "Phone numbers": "phone numbers",
+    "Physical addresses": "physical addresses",
+    "Dates of birth": "dates of birth",
+    "IP addresses": "IP addresses",
+    "Password hints": "password hints",
+    "Geographic locations": "locations",
+    "Genders": "gender",
+    "Job titles": "job titles",
+    "Employers": "employers",
+    "Social media profiles": "social media profiles",
+    "Website activity": "website activity",
+    "Purchases": "purchases",
+    "Credit cards": "credit cards",
+    "Government issued IDs": "government IDs"
   }
 }
