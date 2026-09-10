@@ -73,14 +73,14 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
     <>
       <SiteHeader locale={locale} messages={messages} />
 
-      <main className="mx-auto w-full max-w-[640px] px-5 py-10 sm:py-14">
+      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14 lg:grid lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start lg:gap-8">
         {/* Cabecera de perfil */}
         {(() => {
           const lastScore = list.map(scoreOf).find((v) => v !== null) ?? null;
           const name = list[0]?.full_name ?? user.email.split("@")[0];
           const initial = name.slice(0, 1).toUpperCase();
           return (
-            <section className="flex flex-col items-center text-center">
+            <section className="flex flex-col items-center text-center lg:sticky lg:top-20">
               <div className="relative">
                 <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-accent text-[34px] font-semibold text-accent">
                   {initial}
@@ -107,6 +107,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
           );
         })()}
 
+        <div className="min-w-0">
         {pago === "ok" && !pro && (
           <p className="mt-4 rounded-[10px] bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-accent">
             {tr("pro.thanks")} {tr("pro.thanksPending")}
@@ -299,6 +300,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
               {tr("nav.logout")}
             </button>
           </form>
+        </div>
         </div>
       </main>
 

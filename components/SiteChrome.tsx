@@ -9,10 +9,10 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
   const session = await getSession();
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-paper/90 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-[640px] items-center justify-between gap-4 px-5 py-3.5">
+      <div className="mx-auto flex w-full max-w-[640px] lg:max-w-[920px] items-center justify-between gap-4 px-5 py-3.5">
         <Link
           href="/"
-          className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-ink"
+          className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-ink lg:invisible"
         >
           <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
           {tr("nav.brand")}
@@ -39,7 +39,7 @@ export function SiteFooter({ messages }: { messages: Messages }) {
 
   return (
     <footer className="mt-auto border-t border-line">
-      <div className="mx-auto w-full max-w-[640px] px-5 py-8">
+      <div className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8">
         <p className="text-[13px] text-muted">{tr("footer.tagline")}</p>
         <nav className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[13px]">
           <Link href="/privacidad" className="text-muted underline underline-offset-4 hover:text-ink">

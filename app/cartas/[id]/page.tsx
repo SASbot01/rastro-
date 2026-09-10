@@ -79,7 +79,7 @@ export default async function LetterPage({ params }: PageProps<"/cartas/[id]">) 
     return (
       <>
         <SiteHeader locale={locale} messages={messages} />
-        <main className="mx-auto w-full max-w-[640px] px-5 py-16">
+        <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-16">
           <h1 className="text-[24px] font-semibold text-ink">{tr("waiting.notFoundTitle")}</h1>
           <Link href="/cuenta" className="mt-6 inline-block text-[14px] font-medium text-accent underline underline-offset-4">
             {tr("nav.account")}
@@ -96,7 +96,7 @@ export default async function LetterPage({ params }: PageProps<"/cartas/[id]">) 
     <>
       <SiteHeader locale={locale} messages={messages} />
 
-      <main className="mx-auto w-full max-w-[640px] px-5 py-10 sm:py-14">
+      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <h1 className="text-[26px] font-semibold tracking-[-0.025em] text-ink">{tr("letters.title")}</h1>
           <span className={"rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide " + STATUS_CLASS[letter.status]}>

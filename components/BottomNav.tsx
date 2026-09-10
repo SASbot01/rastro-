@@ -61,7 +61,7 @@ export function BottomNav({ messages }: { messages: Messages }) {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper/95 backdrop-blur sm:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <ul className="mx-auto grid max-w-[640px] grid-cols-4">
+      <ul className="mx-auto grid max-w-[640px] lg:max-w-[920px] grid-cols-4">
         {TABS.map((t) => {
           const active = t.match(pathname);
           return (
@@ -88,7 +88,7 @@ export function TopTabs({ messages }: { messages: Messages }) {
   const tr = translator(messages);
   const pathname = usePathname() ?? "/";
   return (
-    <ul className="hidden items-center gap-1 sm:flex">
+    <ul className="hidden items-center gap-1 sm:flex lg:hidden">
       {TABS.map((t) => {
         const active = t.match(pathname);
         return (
@@ -103,5 +103,37 @@ export function TopTabs({ messages }: { messages: Messages }) {
         );
       })}
     </ul>
+  );
+}
+
+/** Barra lateral para pantallas grandes (lg+). */
+export function SideNav({ messages }: { messages: Messages }) {
+  const tr = translator(messages);
+  const pathname = usePathname() ?? "/";
+  return (
+    <aside className="sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col border-r border-line bg-paper px-4 py-6 lg:flex">
+      <Link href="/" className="flex items-center gap-2 px-2 text-[16px] font-semibold tracking-[-0.01em] text-ink">
+        <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-accent" />
+        {tr("nav.brand")}
+      </Link>
+      <ul className="mt-8 grid gap-1">
+        {TABS.map((t) => {
+          const active = t.match(pathname);
+          return (
+            <li key={t.key}>
+              <Link
+                href={t.href}
+                aria-current={active ? "page" : undefined}
+                className={"flex items-center gap-3 rounded-[12px] px-3 py-2.5 text-[14px] font-medium " + (active ? "bg-surface-2 text-ink" : "text-muted hover:bg-surface hover:text-ink")}
+              >
+                <Icon name={t.key} active={active} />
+                {tr(`nav.tabs.${t.key}`)}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+      <p className="mt-auto px-2 text-[12px] leading-relaxed text-faint">{tr("footer.tagline")}</p>
+    </aside>
   );
 }

@@ -149,7 +149,7 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] px-5 py-10 sm:py-14">{body}</main>
+      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">{body}</main>
       <SiteFooter messages={messages} />
     </>
   );

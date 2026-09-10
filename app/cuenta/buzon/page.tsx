@@ -56,7 +56,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] px-5 py-10 sm:py-14">
+      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-[26px] font-semibold tracking-[-0.025em] text-ink">{tr("mailbox.title")}</h1>

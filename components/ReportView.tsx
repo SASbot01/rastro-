@@ -96,7 +96,8 @@ export function ReportView({
   })).filter((g) => g.items.length > 0);
 
   return (
-    <article className="grid gap-4">
+    <article className="grid gap-4 lg:grid-cols-[360px_minmax(0,1fr)] lg:items-start lg:gap-8">
+      <div className="grid gap-4 lg:sticky lg:top-20">
       {/* Tarjeta principal: lo que la gente capturara y compartira */}
       <section className={CARD + " p-6 sm:p-8"}>
         <div className="flex items-center justify-between gap-3">
@@ -125,7 +126,9 @@ export function ReportView({
       </section>
 
       <ShareButton requestId={requestId} score={report.score} messages={messages} />
+      </div>
 
+      <div className="grid gap-4">
       {/* Cuentas conocidas con este correo */}
       {report.accounts && report.accounts.length > 0 && (
         <section className={CARD + " p-5 sm:p-7"}>
@@ -246,7 +249,8 @@ export function ReportView({
         </section>
       )}
 
-      <footer className="grid gap-3 px-1 pt-2">
+      </div>
+      <footer className="grid gap-3 px-1 pt-2 lg:col-span-2">
         <p className="text-[12.5px] leading-relaxed text-faint">{tr("report.generated", { date })}</p>
         <Link href="/#form" className="w-fit text-[14px] font-medium text-accent underline underline-offset-4">
           {tr("report.again")}

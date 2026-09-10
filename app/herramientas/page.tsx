@@ -51,7 +51,7 @@ export default async function ToolsPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] px-5 py-8 sm:py-12">
+      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-12">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{pro ? tr("pro.badge") : tr("tools.eyebrow")}</p>
         <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink">{tr("tools.title")}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("tools.subtitle")}</p>

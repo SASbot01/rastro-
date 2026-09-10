@@ -94,7 +94,7 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
     <>
       <SiteHeader locale={locale} messages={messages} />
 
-      <main className="mx-auto w-full max-w-[640px] px-5 py-10 sm:py-14">
+      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
         <h1 className="text-[26px] font-semibold tracking-[-0.025em] text-ink">{tr("aepd.title")}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("aepd.subtitle", { host: letter.host })}</p>
 
