@@ -957,5 +957,27 @@
     "saved": "Profile saved",
     "errName": "Name must be 2 to 60 characters.",
     "errPhoto": "Couldn't read the image. Try another one."
+  },
+  "dailyEmail": {
+    "subject": "Rastro: your email shows up in a new breach",
+    "preheader": "Daily check: there's news.",
+    "greeting": "Hi {name}:",
+    "intro": "In today's check your email shows up somewhere new that wasn't there yesterday:",
+    "newBreach": "New breach: {name}",
+    "newPastes": "{n} new public paste(s) with your email",
+    "cta": "View my report",
+    "footer": "We check your email every day against the known-breach database. We only write when something new appears.",
+    "unsubscribe": "Turn off monitoring"
+  },
+  "week": {
+    "title": "This week",
+    "ok": "All clear",
+    "alert": "Something new",
+    "none": "Not checked",
+    "streak": "{n} days in a row all clear",
+    "streakOne": "1 day all clear",
+    "streakZero": "Something new appeared today",
+    "pending": "The first daily check runs tomorrow morning.",
+    "body": "Every day we check whether your email appears in new breaches or pastes. Every month, the full report."
   }
 }

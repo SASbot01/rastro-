@@ -48,11 +48,13 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
   const pro = isPro(user);
 
   const supabase = supabaseAdmin();
-  const [{ data: rows }, { count: lettersCount }, { data: checkRows }] = await Promise.all([
+  const [{ data: rows }, { count: lettersCount }, { data: checkRows }, { data: dailyRows }] = await Promise.all([
     supabase.from("requests").select("id, full_name, city, status, created_at, reports(score)").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50).returns<Row[]>(),
     supabase.from("letters").select("id", { count: "exact", head: true }).eq("user_id", user.id),
     // Comprobaciones mensuales hechas (solicitudes creadas por el cron de vigilancia).
     supabase.from("requests").select("created_at").eq("user_id", user.id).eq("origin", "monitor").order("created_at", { ascending: false }).limit(24).returns<{ created_at: string }[]>(),
+    // Comprobaciones diarias de las ultimas dos semanas (tira semanal + racha).
+    supabase.from("daily_checks").select("day, status").eq("user_id", user.id).order("day", { ascending: false }).limit(14).returns<{ day: string; status: "ok" | "alert" | "error" }[]>(),
   ]);
   const checks = (checkRows ?? []).map((r) => r.created_at);
   const list = rows ?? [];
@@ -115,6 +117,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
             consentAt={user.monitoring_consent_at}
             lastAt={user.monitor_last_at}
             checks={checks}
+            daily={dailyRows ?? []}
             justEnabled={vigilancia === "on" && user.monitoring}
           />
 

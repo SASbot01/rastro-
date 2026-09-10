@@ -191,6 +191,56 @@ export async function sendMonitorEmail(opts: {
   }
 }
 
+/** Aviso de la comprobación diaria: brechas o pastes nuevos con el correo. */
+export async function sendDailyEmail(opts: {
+  to: string;
+  name: string;
+  lines: string[];
+  reportUrl: string;
+  unsubscribeUrl: string;
+  locale: Locale;
+}): Promise<void> {
+  const tr = translator(getMessages(opts.locale));
+  const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif";
+  const items = opts.lines.map((l) => `<li style="margin:0 0 8px;">${escapeHtml(l)}</li>`).join("");
+  const html = `<!doctype html><html lang="${opts.locale}"><head><meta charset="utf-8"><title>Rastro</title></head>
+<body style="margin:0;padding:0;background:${PAPER};">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(tr("dailyEmail.preheader"))}</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};padding:32px 16px;"><tr><td align="center">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#151515;border:1px solid ${LINE};border-radius:20px;">
+      <tr><td style="padding:32px 32px 8px;font:600 15px/1.4 ${font};color:${INK};">Rastro</td></tr>
+      <tr><td style="padding:8px 32px 0;font:400 16px/1.6 ${font};color:${INK};">
+        <p style="margin:0 0 12px;">${escapeHtml(tr("dailyEmail.greeting", { name: opts.name }))}</p>
+        <p style="margin:0 0 16px;color:${MUTED};">${escapeHtml(tr("dailyEmail.intro"))}</p>
+        <ul style="margin:0 0 24px;padding-left:20px;color:${INK};">${items}</ul>
+      </td></tr>
+      <tr><td style="padding:0 32px;"><a href="${escapeHtml(opts.reportUrl)}" style="display:block;text-align:center;background:${ACCENT};color:#0a0a0a;text-decoration:none;font:600 16px/1 ${font};padding:16px 20px;border-radius:10px;">${escapeHtml(tr("dailyEmail.cta"))}</a></td></tr>
+      <tr><td style="padding:24px 32px 32px;font:400 12px/1.6 ${font};color:${MUTED};">
+        <p style="margin:0 0 6px;">${escapeHtml(tr("dailyEmail.footer"))}</p>
+        <p style="margin:0;"><a href="${escapeHtml(opts.unsubscribeUrl)}" style="color:${MUTED};">${escapeHtml(tr("dailyEmail.unsubscribe"))}</a></p>
+      </td></tr>
+    </table>
+  </td></tr></table></body></html>`;
+  const text = [tr("dailyEmail.greeting", { name: opts.name }), "", tr("dailyEmail.intro"), "", ...opts.lines.map((l) => `- ${l}`), "", `${tr("dailyEmail.cta")}: ${opts.reportUrl}`, "", tr("dailyEmail.footer"), opts.unsubscribeUrl].join("\n");
+
+  if (!serverEnv.isProduction) console.log(`\n[rastro] Correo de comprobación diaria para ${opts.to}\n[rastro] ${opts.reportUrl}\n${opts.lines.map((l) => "[rastro]   - " + l).join("\n")}\n`);
+  if (!process.env.RESEND_API_KEY) {
+    if (!serverEnv.isProduction) return;
+    throw new Error("Falta RESEND_API_KEY");
+  }
+  const { error } = await resend().emails.send({
+    from: serverEnv.resendFrom,
+    to: opts.to,
+    subject: tr("dailyEmail.subject"),
+    html,
+    text,
+  });
+  if (error) {
+    if (!serverEnv.isProduction) return console.warn(`[rastro] Resend no envio el correo diario (${error.message})`);
+    throw new Error(`Resend: ${error.message}`);
+  }
+}
+
 /** Aviso de plazo vencido de una carta RGPD (cron diario). */
 export async function sendDeadlineEmail(opts: {
   to: string;

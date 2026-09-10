@@ -11,6 +11,7 @@ interface Props {
   consentAt: string | null;
   lastAt: string | null;
   checks: string[]; // fechas ISO de comprobaciones mensuales hechas
+  daily: Array<{ day: string; status: "ok" | "alert" | "error" }>; // comprobaciones diarias recientes (14 dias)
   justEnabled: boolean; // recien activada: entrada animada
 }
 
@@ -22,7 +23,7 @@ function dayKey(d: Date) {
  * Tarjeta "Vigilancia" del perfil: calendario del mes con las comprobaciones
  * hechas, hoy y la proxima; barra del ciclo de 30 dias. Solo CSS, sin JS.
  */
-export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt, checks, justEnabled }: Props) {
+export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt, checks, daily, justEnabled }: Props) {
   const tr = translator(messages);
   const card = "rounded-card border border-line bg-surface p-5 sm:p-6";
 
@@ -63,6 +64,23 @@ export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt,
   const dowFmt = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
   const dows = Array.from({ length: 7 }, (_, i) => dowFmt.format(new Date(2024, 0, 1 + i))); // 1-1-2024 fue lunes
   const cells: Array<number | null> = [...Array.from({ length: firstDow }, () => null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
+
+  // Tira semanal (lunes a domingo de esta semana) con la comprobacion diaria de cada dia.
+  const dailyByDay = new Map(daily.map((d) => [d.day, d.status]));
+  const monday = new Date(today.getTime() - ((today.getDay() + 6) % 7) * DAY);
+  const week = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(monday.getTime() + i * DAY);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    return { date: d, iso, status: dailyByDay.get(iso) ?? null, future: d > today, isToday: dayKey(d) === todayKey };
+  });
+  // Racha: dias seguidos "ok" contando hacia atras desde la ultima comprobacion.
+  let streak = 0;
+  for (const d of [...daily].sort((a, b) => (a.day < b.day ? 1 : -1))) {
+    if (d.status === "ok") streak += 1;
+    else if (d.status === "alert") break;
+  }
+  const hasDaily = daily.length > 0;
+  const lastAlertToday = dailyByDay.get(week.find((w) => w.isToday)?.iso ?? "") === "alert";
   const checksCount = checks.length;
 
   return (
@@ -83,6 +101,33 @@ export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt,
       <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <p className="text-[14px] font-semibold text-ink">{sinceDays === 0 ? tr("vigil.sinceToday") : tr("vigil.since", { n: sinceDays })}</p>
         <p className="text-[12.5px] text-faint">{checksCount === 1 ? tr("vigil.check_one") : tr("vigil.checks", { n: checksCount })}</p>
+      </div>
+
+      {/* Tira semanal: comprobacion diaria */}
+      <div className="mt-4 rounded-[14px] border border-line bg-surface-2 p-3.5">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("week.title")}</p>
+          <p className={"text-[12.5px] font-semibold " + (lastAlertToday ? "text-warn" : "text-accent")}>
+            {!hasDaily ? "" : lastAlertToday ? tr("week.streakZero") : streak === 1 ? tr("week.streakOne") : tr("week.streak", { n: streak })}
+          </p>
+        </div>
+        <ul className="mt-3 grid grid-cols-7 gap-1">
+          {week.map((w, i) => {
+            const cls =
+              w.status === "ok" ? "bg-accent" : w.status === "alert" ? "bg-warn" : w.status === "error" ? "bg-faint" : "bg-line";
+            const label = w.status === "ok" ? tr("week.ok") : w.status === "alert" ? tr("week.alert") : tr("week.none");
+            return (
+              <li key={w.iso} className="flex flex-col items-center gap-1.5" title={`${dateFmt.format(w.date)} · ${label}`}>
+                <span className={"text-[10.5px] font-medium uppercase " + (w.isToday ? "text-ink" : "text-faint")}>{dows[i]}</span>
+                <span className={"relative flex h-7 w-7 items-center justify-center rounded-full " + (w.isToday ? "ring-1 ring-accent" : "")}>
+                  <span className={"h-3 w-3 rounded-full " + cls + (w.future ? " opacity-30" : "") + (justEnabled ? " vigil-pop" : "")} style={justEnabled ? { animationDelay: `${120 + i * 40}ms` } : undefined} />
+                  {w.status === "alert" && <span className="vigil-pulse absolute inset-0 rounded-full bg-warn opacity-40" />}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+        <p className="mt-3 text-[11.5px] leading-relaxed text-faint">{hasDaily ? tr("week.body") : tr("week.pending")}</p>
       </div>
 
       {/* Calendario */}

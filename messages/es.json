@@ -957,5 +957,27 @@
     "saved": "Perfil guardado",
     "errName": "El nombre debe tener entre 2 y 60 caracteres.",
     "errPhoto": "No se pudo leer la imagen. Prueba con otra."
+  },
+  "dailyEmail": {
+    "subject": "Rastro: tu correo aparece en una filtración nueva",
+    "preheader": "Comprobación diaria: hay novedades.",
+    "greeting": "Hola {name}:",
+    "intro": "En la comprobación de hoy tu correo aparece en algo nuevo que ayer no estaba:",
+    "newBreach": "Nueva filtración: {name}",
+    "newPastes": "{n} volcado(s) público(s) nuevo(s) con tu correo",
+    "cta": "Ver mi informe",
+    "footer": "Comprobamos tu correo cada día contra la base de filtraciones conocidas. Solo escribimos si aparece algo nuevo.",
+    "unsubscribe": "Desactivar la vigilancia"
+  },
+  "week": {
+    "title": "Esta semana",
+    "ok": "Sin novedades",
+    "alert": "Novedad",
+    "none": "Sin comprobar",
+    "streak": "{n} días seguidos sin novedades",
+    "streakOne": "1 día sin novedades",
+    "streakZero": "Hoy ha aparecido algo nuevo",
+    "pending": "La primera comprobación diaria será mañana por la mañana.",
+    "body": "Cada día miramos si tu correo aparece en filtraciones o volcados nuevos. Cada mes, el informe completo."
   }
 }
