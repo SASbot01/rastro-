@@ -12,8 +12,9 @@ para levantar el proyecto.
 
 ## Estado
 
-**Día 1 de 7 completado.** Landing + formulario + verificación de correo por enlace.
-La generación del informe llega en los Días 2–4.
+**v1 completa (Días 1–7).** Formulario → verificación por correo → HIBP + Brave +
+Perplexity + Anthropic → informe con puntuación, hallazgos y acciones (ES/EN) →
+imagen para compartir. Límites de uso, caché de 30 días, borrado automático y textos legales.
 
 ## Requisitos
 
@@ -21,7 +22,7 @@ La generación del informe llega en los Días 2–4.
 - Una cuenta de [Supabase](https://supabase.com) (plan gratuito)
 - Una cuenta de [Resend](https://resend.com) (plan gratuito)
 
-## Puesta en marcha
+## Puesta en marcha (local)
 
 ```bash
 npm install
@@ -38,10 +39,20 @@ openssl rand -hex 32
 
 Pégalo en `APP_SECRET`. Después completa las claves de Supabase y Resend (ver abajo).
 
-### 2. Crea las tablas en Supabase
+### 2. Base de datos
 
-En el panel de Supabase: **SQL Editor → New query**, pega el contenido de
-[`supabase/schema.sql`](./supabase/schema.sql) y ejecútalo.
+**Opción A — Supabase local (sin cuenta, necesita Docker u OrbStack):**
+
+```bash
+supabase start && ./scripts/use-local-supabase.sh
+```
+
+Crea las tablas solo (migraciones en `supabase/migrations/`) y escribe las claves en `.env.local`.
+Panel local: <http://127.0.0.1:54323>.
+
+**Opción B — Supabase cloud:** en el panel, **SQL Editor → New query**, pega
+[`supabase/schema.sql`](./supabase/schema.sql), ejecútalo y copia las claves de
+*Project Settings → API* a `.env.local`.
 
 ### 3. Arranca
 
@@ -62,31 +73,88 @@ Abre <http://localhost:3000>.
 | `RESEND_FROM` | Un remitente de un dominio verificado en Resend |
 | `APP_SECRET` | `openssl rand -hex 32` |
 
-Las claves de HIBP, Brave, Perplexity y Anthropic no hacen falta todavía (Días 2–3).
+| `HIBP_API_KEY` | haveibeenpwned.com/API/Key (suscripción, ~4 $/mes) |
+| `BRAVE_API_KEY` | api-dashboard.search.brave.com |
+| `PERPLEXITY_API_KEY` | perplexity.ai/settings/api |
+| `ANTHROPIC_API_KEY` | console.anthropic.com/settings/keys |
+| `ANTHROPIC_MODEL` | `claude-sonnet-5` por defecto (~0,05 $/informe); `claude-opus-5` si prefieres calidad sobre coste |
+| `CRON_SECRET` | `openssl rand -hex 32` |
+| `NEXT_PUBLIC_LEGAL_OWNER` / `_LEGAL_EMAIL` / `_SITE_DOMAIN` | Responsable del tratamiento, contacto y dominio (aparecen en las páginas legales) |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | Opcional: dominio en Plausible para analítica sin cookies |
 
-> En desarrollo, sin dominio propio, Resend solo entrega correo a la dirección con la que te
-> registraste. Usa `RESEND_FROM="Rastro <onboarding@resend.dev>"` y prueba con ese correo.
+> **En desarrollo** el enlace de verificación siempre se imprime en la consola del servidor.
+> Sin dominio verificado, Resend solo entrega a la dirección dueña de la cuenta; para enviar a
+> cualquiera, verifica un dominio en resend.com/domains y pon `RESEND_FROM` con ese dominio.
+> `RATE_LIMIT_DISABLED=1` salta los límites (3/correo, 20/IP al día) solo fuera de producción.
+
+## Despliegue
+
+### Vercel
+
+1. Importa el repo en Vercel. Framework: Next.js (detección automática).
+2. Pega todas las variables de `.env.example` en *Settings → Environment Variables*
+   (con `NEXT_PUBLIC_SITE_URL=https://tudominio.com`).
+3. El cron de borrado a 30 días ya está en `vercel.json` (04:00 UTC). Vercel envía
+   `Authorization: Bearer $CRON_SECRET` automáticamente.
+4. Dominio → verifícalo también en Resend y pon `RESEND_FROM` con él.
+
+> El plan Hobby de Vercel prohíbe uso comercial: en cuanto cobres (semana 2) necesitas Pro.
+
+### Servidor propio (Node 20+)
+
+```bash
+npm ci && npm run build
+NODE_ENV=production PORT=3000 npm start
+```
+
+- Mantenlo vivo con `pm2` o un servicio `systemd`, detrás de un proxy con HTTPS (Caddy o nginx).
+- Base de datos: tu Supabase autoalojado o cloud; aplica `supabase/schema.sql` una vez.
+- Borrado a 30 días: un cron del sistema que llame al endpoint una vez al día:
+
+```bash
+0 4 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" https://tudominio.com/api/cron/purge
+```
+
+- `after()` (el job del informe) funciona en `next start` sin configuración extra.
+
+### Antes de abrir al público
+
+- [ ] `NEXT_PUBLIC_LEGAL_OWNER`, `NEXT_PUBLIC_LEGAL_EMAIL` y `NEXT_PUBLIC_SITE_DOMAIN` rellenos: las páginas legales muestran "[pendiente]" hasta entonces.
+- [ ] Textos legales revisados por un profesional.
+- [ ] Dominio verificado en Resend y `RESEND_FROM` actualizado.
+- [ ] `og.cta` en `messages/*.json` con tu dominio real (ahora dice `rastro.app`).
+- [ ] Claves de API rotadas (las de desarrollo han pasado por chats y por iCloud).
+- [ ] Prueba con 10 correos reales y revisa los informes uno a uno.
 
 ## Estructura
 
 ```
 app/
-  page.tsx              Landing con el formulario
-  verify/page.tsx       Consume el enlace del correo
-  api/request/route.ts  Guarda la solicitud y envía el enlace
-  privacidad/           Marcador de posición (Día 6)
-  aviso-legal/          Marcador de posición (Día 6)
-components/             Formulario, cabecera, pie, selector de idioma
+  page.tsx                    Landing con el formulario
+  verify/page.tsx             Consume el enlace, reclama la solicitud, lanza el job (after) y redirige
+  informe/[id]/page.tsx       Espera con progreso real o informe final
+  informe/[id]/imagen/        Imagen compartible (OG 1200x630, ?f=story 1080x1920)
+  api/request/route.ts        Valida, aplica límites, guarda y envía el enlace
+  api/report/[id]/route.ts    Estado del job para el polling
+  api/cron/purge/route.ts     Borrado a 30 días (Bearer CRON_SECRET)
+  api/dev/probe/route.ts      Solo desarrollo: prueba HIBP y Brave sin BD
+  privacidad/ aviso-legal/    Textos legales
+components/                   Formulario, espera, visor del informe, compartir, legal, cabecera/pie
 lib/
-  i18n.ts               Diccionarios y traductor
-  locale.ts             Idioma efectivo (cookie > navegador)
-  env.ts                Variables de entorno validadas
-  supabase.ts           Cliente de servidor (service_role)
-  crypto.ts             Hashes de IP/correo y tokens de un solo uso
-  email.ts              Plantilla y envío con Resend
-  validation.ts         Esquemas zod del formulario
-messages/               es.json / en.json — TODO el texto visible
-supabase/schema.sql     Esquema de la base de datos
+  hibp.ts brave.ts perplexity.ts   Clientes de datos (cada uno recibe solo lo imprescindible)
+  ai/report.ts                Anthropic: señales + redacción, salida validada con zod
+  report/job.ts               Pipeline hibp → brave → ai → report, caché 30 días, fallback a plantillas
+  report/score.ts             Reglas del score (CLAUDE.md §7), determinista y con desglose
+  report/findings.ts          Plantillas de respaldo y señales para el score
+  report/mask.ts              Nombre tapado para la imagen
+  rate-limit.ts               3/correo y 20/IP al día (RPC atómica)
+  i18n.ts locale.ts env.ts supabase.ts crypto.ts email.ts validation.ts
+messages/                     es.json / en.json — TODO el texto visible, mismas claves
+supabase/
+  schema.sql                  Esquema completo (para Supabase cloud)
+  migrations/                 Lo mismo, troceado (para `supabase start`)
+scripts/use-local-supabase.sh Vuelca las claves del Supabase local en .env.local
+vercel.json                   Cron diario de borrado
 ```
 
 ## Comandos

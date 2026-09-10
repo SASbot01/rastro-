@@ -36,6 +36,8 @@ Lo construye una sola persona con Claude Code. Presupuesto de APIs: máximo 100 
   - Anthropic API (`ANTHROPIC_API_KEY`): redactar el informe en lenguaje llano y calcular el score.
 - Todas las claves en `.env.local`. Nunca en el código. Ver `.env.example`.
 
+> **Desviaciones registradas:** modelo por defecto `claude-sonnet-5` (Opus 5 supera el coste objetivo de 0,05 €/informe; cambiable con `ANTHROPIC_MODEL`). Solo puntúan los perfiles que la IA atribuye a la persona, no todos los homónimos que devuelve Brave. Supabase local con la CLI para desarrollo. Datos del responsable legal por variables de entorno.
+>
 > **Desviación registrada (Día 1):** `create-next-app@latest` instaló **Next 16.3.4**, no 15. Mismo App Router, mismo destino Vercel. Se mantiene 16 por ser la estable actual. Revertir con `npm i next@15 eslint-config-next@15` si hace falta.
 
 ## 4. Alcance de la v1 (UNA semana, sin excepciones)
@@ -64,12 +66,12 @@ Pago, plan Pro, monitorización, cartas RGPD, panel de usuario, cuentas persiste
 ## 5. Plan día a día
 
 - **Día 1 ✅** — repo, Next.js + Tailwind + Supabase, `.env.example`, esquema de BD, landing estática con formulario funcionando (guarda en BD), magic link con Resend.
-- **Día 2** — integración HIBP y Brave. Página de espera. Job asíncrono con estado en BD.
-- **Día 3** — integración Perplexity y Anthropic. Prompt del informe y del score. Guardar el informe como JSON estructurado.
-- **Día 4** — página del informe, diseño final, i18n ES/EN.
-- **Día 5** — compartir (OG image), límites, caché, borrado automático a 30 días (cron de Vercel).
-- **Día 6** — legal, textos, errores, casos raros (nombre común, sin resultados, HIBP vacío), pruebas con 10 correos reales.
-- **Día 7** — despliegue en Vercel, dominio, analítica básica (Plausible o Vercel Analytics), revisión final.
+- **Día 2 ✅** — integración HIBP y Brave. Página de espera. Job asíncrono con estado en BD.
+- **Día 3 ✅** — integración Perplexity y Anthropic. Prompt del informe y del score. Guardar el informe como JSON estructurado.
+- **Día 4 ✅** — página del informe, diseño final, i18n ES/EN.
+- **Día 5 ✅** — compartir (OG image), límites, caché, borrado automático a 30 días (cron de Vercel).
+- **Día 6 ✅** — legal, textos, errores, casos raros (nombre común, sin resultados, HIBP vacío), pruebas con 10 correos reales.
+- **Día 7 ✅** — despliegue en Vercel, dominio, analítica básica (Plausible o Vercel Analytics), revisión final.
 
 ## 6. Modelo de datos (Supabase)
 
