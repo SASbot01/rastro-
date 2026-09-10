@@ -63,3 +63,18 @@ Han pasado por el chat y por iCloud. Cuando toque, rotar y actualizar en `/home/
 - [ ] Paso "¿cuál de estos eres tú?" antes del informe (desambiguación de homónimos, cambio de flujo).
 - [ ] Analítica: `NEXT_PUBLIC_PLAUSIBLE_DOMAIN=rastropro.com` si abres cuenta en Plausible.
 - [ ] v2 del roadmap: simulador de ataque personal.
+
+
+## Hecho 11-09-2026
+- [x] Informe: parseo propio con reparación de JSON, 3 intentos, sin hallazgos duplicados, ciudad/profesión mandan al atribuir perfiles. Cron `/api/cron/repair` (05:30) regenera con IA los informes que quedaron en plantilla (7 días), sin repetir búsquedas.
+- [x] Comprobación diaria (`/api/cron/daily`, 07:00): HIBP brechas + pastes por correo para Pro con vigilancia; correo solo si hay algo nuevo. Tira semanal + racha en Perfil.
+- [x] Analítica: soporte para Cloudflare Web Analytics (`NEXT_PUBLIC_CF_ANALYTICS_TOKEN`) además de Plausible. **Pendiente tuyo:** Cloudflare → Analytics & Logs → Web Analytics → añadir rastropro.com (automático al estar proxied) o pegar el token en el `.env.local` del servidor.
+
+## v2 — Simulador de ataque personal (plan)
+Objetivo: que la persona VEA cómo la atacarían con lo que ya es público de ella. Solo sobre uno mismo, con consentimiento explícito, sin enviar nada a terceros.
+1. **Phishing a medida** (1 semana): a partir del informe (servicios donde tiene cuenta, filtraciones, ciudad, empleo) la IA redacta 3 correos de estafa personalizados (p. ej. «tu pedido de Amazon», «Hacienda», «tu banco») marcados como SIMULACIÓN, con las pistas para detectarlos señaladas. Se muestran en la web y, si el usuario quiere, se los enviamos a SU correo para vivir la experiencia. Gratis 1 muestra; Pro las 3 + envío.
+2. **Guion de vishing** (3 días): guion de llamada telefónica que usaría un estafador con sus datos (nombre, empresa, ciudad, banco probable). Texto + audio con voz sintética neutra (TTS estándar, no clonada). Pro.
+3. **Muestra de voz clonada** (1 semana, solo si hay proveedor con verificación de consentimiento, p. ej. ElevenLabs con «voice captcha»): el usuario graba 30 s, se genera 1 frase clonada y se borra el modelo al instante. Solo Pro y con doble consentimiento. Si no hay proveedor que exija verificación, NO se hace (riesgo legal y de abuso).
+4. **Puntuación de «atacabilidad»** (2 días): 0–100 aparte del de exposición, con las 3 defensas que más la bajan (2FA, alias de correo, gestor de contraseñas).
+5. **Compartible**: imagen «así me engañarían» para redes (sin datos personales), que es el gancho de crecimiento de la v2.
+Coste estimado por usuario: < 0,10 € (IA) + TTS. No requiere APIs nuevas salvo el TTS/clonación.
