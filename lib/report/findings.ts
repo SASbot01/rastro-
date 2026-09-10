@@ -204,17 +204,25 @@ export function buildActions({ hibp, brave, locale }: ReportInputs): Action[] {
   return out.slice(0, 3);
 }
 
-/** Senales deterministas para el score (Dia 2). Las de IA llegan en el Dia 3. */
-export function signalsFrom(hibp: HibpResult, brave: BraveResult): ScoreSignals {
+/** Senales que extrae la IA (lib/ai/report.ts). Sin IA, todas a false. */
+export interface AiSignals {
+  knows_employer: boolean;
+  knows_city: boolean;
+  contact_data_public: boolean;
+  false_claims: boolean;
+}
+
+/** Senales para el score: deterministas (HIBP/Brave) + las de la IA si las hay. */
+export function signalsFrom(hibp: HibpResult, brave: BraveResult, ai?: AiSignals): ScoreSignals {
   const breaches = hibp.checked ? hibp.breaches : [];
   const hits: SearchHit[] = brave.ok ? brave.hits : [];
   return {
     breachesWithPassword: breaches.filter((b) => b.hasPassword).length,
     breachesWithoutPassword: breaches.filter((b) => !b.hasPassword).length,
     publicProfiles: hits.filter((h) => h.kind === "profile").length,
-    aiKnowsEmployer: false,
-    aiKnowsCity: false,
-    contactDataPublic: false,
-    aiFalseData: false,
+    aiKnowsEmployer: ai?.knows_employer ?? false,
+    aiKnowsCity: ai?.knows_city ?? false,
+    contactDataPublic: ai?.contact_data_public ?? false,
+    aiFalseData: ai?.false_claims ?? false,
   };
 }

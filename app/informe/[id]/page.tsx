@@ -35,7 +35,7 @@ async function loadRequest(id: string): Promise<{ request: RequestRow; report: R
   if (request.status === "done") {
     const { data } = await supabase
       .from("reports")
-      .select("score, summary, findings, actions, created_at")
+      .select("score, summary, findings, actions, created_at, generator")
       .eq("request_id", id)
       .maybeSingle<ReportData>();
     report = data;
@@ -87,7 +87,7 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
         fullName={loaded.request.full_name}
         locale={locale}
         messages={messages}
-        partial
+        partial={loaded.report.generator !== "ai"}
       />
     );
   } else if (loaded.request.status === "error" || loaded.request.status === "done") {

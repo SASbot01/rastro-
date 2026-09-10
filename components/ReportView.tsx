@@ -13,6 +13,7 @@ export interface ReportData {
   findings: Finding[];
   actions: Action[];
   created_at: string;
+  generator: "ai" | "template";
 }
 
 const CATEGORY_ORDER: Category[] = ["breaches", "ai", "profiles", "false"];
