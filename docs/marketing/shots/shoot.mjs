@@ -11,6 +11,8 @@ const PORT = 9333;
 const BASE = "http://localhost:3000";
 const cookie = process.argv[2];
 const REPORT = process.argv[3] || "";
+// ONLY=nombre1,nombre2 limita las capturas (p. ej. para repetir una sola con otro informe)
+const ONLY = process.env.ONLY ? process.env.ONLY.split(",") : null;
 
 const shots = [
   { name: "landing", path: "/", auth: false },
@@ -43,6 +45,7 @@ await s("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceS
 await s("Emulation.setUserAgentOverride", { userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1" });
 
 for (const shot of shots) {
+  if (ONLY && !ONLY.includes(shot.name)) continue;
   if (!shot.path.includes("undefined") && !(shot.name === "informe" && !REPORT)) {
     await s("Network.clearBrowserCookies");
     if (shot.auth && cookie) await s("Network.setCookie", { name: "rastro_session", value: cookie, url: BASE });
