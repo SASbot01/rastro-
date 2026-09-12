@@ -13,6 +13,8 @@ const cookie = process.argv[2];
 const REPORT = process.argv[3] || "";
 // ONLY=nombre1,nombre2 limita las capturas (p. ej. para repetir una sola con otro informe)
 const ONLY = process.env.ONLY ? process.env.ONLY.split(",") : null;
+// OUT_DIR: carpeta de salida (por defecto, esta misma)
+const OUT_DIR = process.env.OUT_DIR || here;
 
 const shots = [
   { name: "landing", path: "/", auth: false },
@@ -55,7 +57,7 @@ for (const shot of shots) {
     if (shot.prep) { await s("Runtime.evaluate", { expression: shot.prep }); await new Promise((r) => setTimeout(r, 800)); }
     await s("Runtime.evaluate", { expression: "document.querySelectorAll('nextjs-portal').forEach(e=>e.remove());" });
     const { result: { data } } = await s("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-    writeFileSync(join(here, `${shot.name}.png`), Buffer.from(data, "base64"));
+    writeFileSync(join(OUT_DIR, `${shot.name}.png`), Buffer.from(data, "base64"));
     console.log(shot.name + ".png");
   }
 }
