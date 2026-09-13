@@ -19,6 +19,8 @@ export interface UserRow {
   monitor_last_at: string | null;
   stripe_customer_id: string | null;
   plan_status: string | null;
+  plan_kind: "individual" | "family" | "member";
+  family_owner_id: string | null;
   display_name: string | null;
   avatar: string | null;
 }
@@ -31,7 +33,7 @@ export async function ensureUser(email: string, locale: Locale): Promise<UserRow
   const { data: user, error } = await supabase
     .from("users")
     .upsert({ email: normalized, locale, last_seen_at: new Date().toISOString() }, { onConflict: "email" })
-    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, display_name, avatar")
+    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, plan_kind, family_owner_id, display_name, avatar")
     .single<UserRow>();
   if (error || !user) {
     console.error("[users] upsert fallo:", error?.message);
@@ -46,7 +48,7 @@ export async function ensureUser(email: string, locale: Locale): Promise<UserRow
 export async function findUserByEmail(email: string): Promise<UserRow | null> {
   const { data } = await supabaseAdmin()
     .from("users")
-    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, display_name, avatar")
+    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, plan_kind, family_owner_id, display_name, avatar")
     .eq("email", normalizeEmail(email))
     .maybeSingle<UserRow>();
   return data ?? null;

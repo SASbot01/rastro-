@@ -4,7 +4,7 @@ import { getMessages, translator } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
-import { isPro, paymentLinks } from "@/lib/plan";
+import { FAMILY_SEATS, isPro, paymentLinks, prices } from "@/lib/plan";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +13,24 @@ export const dynamic = "force-dynamic";
  * correo y la cuenta ya rellenados; el webhook activa Pro al completarse.
  * Sin cuenta tambien se puede pagar: el webhook la crea con el correo del pago.
  */
+function Card({ name, price, per, save, href, cta }: { name: string; price: string; per: string; save?: string; href: string | null; cta: string }) {
+  return (
+    <div className="flex flex-col rounded-card border border-line bg-surface p-6">
+      <div className="flex items-baseline justify-between">
+        <h2 className="text-[15px] font-semibold text-ink">{name}</h2>
+        {save && <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-semibold text-accent">{save}</span>}
+      </div>
+      <p className="mt-4 text-[40px] leading-none font-semibold tracking-[-0.03em] text-ink">{price}</p>
+      <p className="mt-1 text-[13px] text-faint">{per}</p>
+      {href ? (
+        <a href={href} className="mt-6 rounded-[10px] bg-accent px-5 py-3 text-center text-[15px] font-semibold text-black hover:opacity-90">{cta}</a>
+      ) : (
+        <span className="mt-6 rounded-[10px] bg-paper px-5 py-3 text-center text-[14px] text-faint">—</span>
+      )}
+    </div>
+  );
+}
+
 export default async function ProPage() {
   const locale = await getLocale();
   const messages = getMessages(locale);
@@ -22,24 +40,9 @@ export default async function ProPage() {
   const pro = isPro(user);
   const links = paymentLinks(user?.email ?? session?.email, user?.id);
   const features = messages.pro.features as string[];
+  const price = prices();
+  const hasFamily = Boolean(links.familyMonthly || links.familyYearly);
 
-  const Card = ({ name, price, per, save, href }: { name: string; price: string; per: string; save?: string; href: string | null }) => (
-    <div className="flex flex-col rounded-card border border-line bg-surface p-6">
-      <div className="flex items-baseline justify-between">
-        <h2 className="text-[15px] font-semibold text-ink">{name}</h2>
-        {save && <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-semibold text-accent">{save}</span>}
-      </div>
-      <p className="mt-4 text-[40px] leading-none font-semibold tracking-[-0.03em] text-ink">{price}</p>
-      <p className="mt-1 text-[13px] text-faint">{per}</p>
-      {href ? (
-        <a href={href} className="mt-6 rounded-[10px] bg-accent px-5 py-3 text-center text-[15px] font-semibold text-black hover:opacity-90">
-          {tr("pro.cta")}
-        </a>
-      ) : (
-        <span className="mt-6 rounded-[10px] bg-paper px-5 py-3 text-center text-[14px] text-faint">—</span>
-      )}
-    </div>
-  );
 
   return (
     <>
@@ -57,9 +60,19 @@ export default async function ProPage() {
             </Link>
           </div>
         ) : (
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <Card name={tr("pro.monthly")} price={tr("pro.monthlyPrice")} per={tr("pro.monthlyPer")} href={links.monthly} />
-            <Card name={tr("pro.yearly")} price={tr("pro.yearlyPrice")} per={tr("pro.yearlyPer")} save={tr("pro.yearlySave")} href={links.yearly} />
+          <div className={"mt-8 grid gap-4 " + (hasFamily ? "sm:grid-cols-3" : "sm:grid-cols-2")}>
+            <Card cta={tr("pro.cta")} name={tr("pro.monthly")} price={price.monthly} per={tr("pro.monthlyPer")} href={links.monthly} />
+            <Card cta={tr("pro.cta")} name={tr("pro.yearly")} price={price.yearly} per={tr("pro.yearlyPer")} save={tr("pro.yearlySave")} href={links.yearly} />
+            {hasFamily && (
+              <Card
+                cta={tr("pro.cta")}
+                name={tr("pro.family")}
+                price={links.familyYearly && !links.familyMonthly ? price.familyYearly : price.familyMonthly}
+                per={links.familyYearly && !links.familyMonthly ? tr("pro.familyYearlyPer", { n: FAMILY_SEATS }) : tr("pro.familyPer", { n: FAMILY_SEATS })}
+                save={tr("pro.familyHint")}
+                href={links.familyMonthly ?? links.familyYearly}
+              />
+            )}
           </div>
         )}
 

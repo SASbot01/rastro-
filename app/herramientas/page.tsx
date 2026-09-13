@@ -5,7 +5,7 @@ import { getLocale } from "@/lib/locale";
 import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
-import { isPro } from "@/lib/plan";
+import { isPro, prices } from "@/lib/plan";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +61,7 @@ export default async function ToolsPage() {
   const Gate = () => (
     <div className={CARD}>
       <p className="text-[15px] font-semibold text-ink">{!user ? tr("tools.loginTitle") : tr("pro.locked")}</p>
-      <p className="mt-1 text-[14px] leading-relaxed text-muted">{!user ? tr("tools.loginBody") : tr("pro.lockedBody")}</p>
+      <p className="mt-1 text-[14px] leading-relaxed text-muted">{!user ? tr("tools.loginBody") : tr("pro.lockedBody", { monthly: prices().monthly, yearly: prices().yearly })}</p>
       <Link href={!user ? "/entrar" : "/pro"} className={"mt-4 " + BTN}>
         {!user ? tr("nav.login") : tr("pro.lockedCta")}
       </Link>

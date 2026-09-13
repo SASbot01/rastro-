@@ -688,14 +688,18 @@
     ],
     "note": "Pago seguro con Stripe. No guardamos tu tarjeta. Sin permanencia.",
     "locked": "Función del plan Pro",
-    "lockedBody": "Vigilancia mensual, cartas RGPD, plazos y reclamación AEPD son del plan Pro (19 €/mes o 99 €/año).",
+    "lockedBody": "Vigilancia diaria y mensual, cartas RGPD enviadas por Rastro, plazos y reclamación AEPD son del plan Pro ({monthly}/mes o {yearly}/año).",
     "lockedCta": "Ver el plan Pro",
     "active": "Plan Pro activo",
     "until": "Renovación: {date}",
     "canceling": "Cancelado: activo hasta el {date}",
     "manage": "Gestionar suscripción",
     "thanks": "¡Gracias! Tu plan Pro se activará en unos segundos.",
-    "thanksPending": "Si no aparece como activo en un minuto, recarga la página o escríbenos."
+    "thanksPending": "Si no aparece como activo en un minuto, recarga la página o escríbenos.",
+    "family": "Familiar",
+    "familyPer": "al mes · hasta {n} personas",
+    "familyYearlyPer": "al año · hasta {n} personas",
+    "familyHint": "Cada persona con su cuenta, su informe y su vigilancia."
   },
   "mailbox": {
     "title": "Escáner de buzón",
@@ -1080,5 +1084,30 @@
     "letterKnown": "Trámite conocido para {name}",
     "all": "Todos los sitios",
     "footerLink": "Guía de sitios"
+  },
+  "family": {
+    "title": "Plan familiar",
+    "seats": "{used} de {total} plazas",
+    "body": "Añade a las personas de tu casa: cada una tendrá su cuenta Pro con su propio informe, vigilancia y cartas.",
+    "add": "Añadir persona",
+    "emailPlaceholder": "correo@ejemplo.com",
+    "remove": "Quitar",
+    "you": "tú (titular)",
+    "pending": "invitación enviada",
+    "memberTitle": "Incluido en un plan familiar",
+    "memberBody": "Tu cuenta Pro la paga {owner}. Tienes todas las funciones Pro; si el titular cancela, tu plan termina en la misma fecha.",
+    "full": "No quedan plazas.",
+    "invalid": "Ese correo no vale.",
+    "self": "Ya eres tú.",
+    "exists": "Esa persona ya tiene Pro por su cuenta.",
+    "notOwner": "Solo el titular del plan familiar puede añadir personas.",
+    "inviteEmail": {
+      "subject": "{owner} te ha añadido a Rastro Pro",
+      "greeting": "Hola:",
+      "body": "{owner} te ha incluido en su plan familiar de Rastro. Ya tienes Rastro Pro: informe de exposición, vigilancia diaria y mensual, cartas RGPD enviadas por nosotros y escáner de Gmail.",
+      "ask": "Entra con este enlace (o con tu correo en rastropro.com) y pide tu primer informe.",
+      "cta": "Entrar en Rastro",
+      "footer": "Si no conoces a esta persona, ignora este correo."
+    }
   }
 }

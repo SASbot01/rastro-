@@ -38,6 +38,12 @@ export function isRastroSubscription(sub: Stripe.Subscription): boolean {
   return (sub.items?.data ?? []).some((it) => allowed.includes(it.price?.id ?? ""));
 }
 
+/** Precios del plan familiar (STRIPE_PRICE_IDS_FAMILY). Si la suscripcion lleva uno, el titular es 'family'. */
+function isFamilySubscription(sub: Stripe.Subscription): boolean {
+  const fam = (process.env.STRIPE_PRICE_IDS_FAMILY ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  return fam.length > 0 && (sub.items?.data ?? []).some((it) => fam.includes(it.price?.id ?? ""));
+}
+
 /** Aplica el estado de una suscripcion a la cuenta (por id de usuario o por correo del cliente). */
 export async function syncSubscription(sub: Stripe.Subscription, hint: { userId?: string | null; email?: string | null; locale?: Locale }): Promise<void> {
   if (!isRastroSubscription(sub)) {
@@ -64,18 +70,22 @@ export async function syncSubscription(sub: Stripe.Subscription, hint: { userId?
   }
 
   const active = ACTIVE.has(sub.status);
+  const family = isFamilySubscription(sub);
+  const patch = {
+    // 'canceling' = sigue activa hasta el fin del periodo, pero no renovara.
+    plan_status: sub.cancel_at_period_end && active ? "canceling" : sub.status,
+    plan: active ? "pro" : "free",
+    // Si cancela, Pro sigue hasta el fin del periodo pagado (isPro lo comprueba).
+    plan_until: active || sub.cancel_at_period_end ? periodEnd(sub) : null,
+  };
   const { error } = await supabase
     .from("users")
-    .update({
-      stripe_customer_id: customerId,
-      stripe_subscription_id: sub.id,
-      // 'canceling' = sigue activa hasta el fin del periodo, pero no renovara.
-      plan_status: sub.cancel_at_period_end && active ? "canceling" : sub.status,
-      plan: active ? "pro" : "free",
-      // Si cancela, Pro sigue hasta el fin del periodo pagado (isPro lo comprueba).
-      plan_until: active || sub.cancel_at_period_end ? periodEnd(sub) : null,
-    })
+    .update({ stripe_customer_id: customerId, stripe_subscription_id: sub.id, plan_kind: family ? "family" : "individual", ...patch })
     .eq("id", user.id);
   if (error) console.error("[stripe] users.update fallo:", error.message);
-  else console.log(`[stripe] usuario ${user.id}: ${sub.status} -> plan ${active ? "pro" : "free"}`);
+  else console.log(`[stripe] usuario ${user.id}: ${sub.status} -> plan ${active ? "pro" : "free"}${family ? " (familiar)" : ""}`);
+
+  // Los miembros del plan familiar siguen la suerte del titular (renovacion, cancelacion, impago).
+  const { error: memberError } = await supabase.from("users").update(patch).eq("family_owner_id", user.id).eq("plan_kind", "member");
+  if (memberError) console.error("[stripe] miembros.update fallo:", memberError.message);
 }

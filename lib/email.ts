@@ -384,3 +384,33 @@ export async function sendFollowUpNoticeEmail(opts: { to: string; name: string; 
     throw new Error(`Resend: ${error.message}`);
   }
 }
+
+
+/** Aviso generico con un boton: saludo, parrafos, CTA. Lo usan las invitaciones del plan familiar y avisos futuros. */
+export async function sendNoticeEmail(opts: { to: string; subject: string; greeting: string; paragraphs: string[]; cta: string; url: string; footer: string }): Promise<void> {
+  const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif";
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Rastro</title></head>
+<body style="margin:0;padding:0;background:${PAPER};">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};padding:32px 16px;"><tr><td align="center">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#151515;border:1px solid ${LINE};border-radius:20px;">
+      <tr><td style="padding:32px 32px 8px;font:600 15px/1.4 ${font};color:${INK};">Rastro</td></tr>
+      <tr><td style="padding:8px 32px 0;font:400 16px/1.6 ${font};color:${INK};">
+        <p style="margin:0 0 12px;">${escapeHtml(opts.greeting)}</p>
+        ${opts.paragraphs.map((t, i) => `<p style="margin:0 0 ${i === opts.paragraphs.length - 1 ? 24 : 12}px;${i > 0 ? `color:${MUTED};` : ""}">${escapeHtml(t)}</p>`).join("")}
+      </td></tr>
+      <tr><td style="padding:0 32px;"><a href="${escapeHtml(opts.url)}" style="display:block;text-align:center;background:${ACCENT};color:#0a0a0a;text-decoration:none;font:600 16px/1 ${font};padding:16px 20px;border-radius:10px;">${escapeHtml(opts.cta)}</a></td></tr>
+      <tr><td style="padding:24px 32px 32px;font:400 12px/1.6 ${font};color:${MUTED};">${escapeHtml(opts.footer)}</td></tr>
+    </table>
+  </td></tr></table></body></html>`;
+  const text = [opts.greeting, "", ...opts.paragraphs, "", `${opts.cta}: ${opts.url}`, "", opts.footer].join("\n");
+  if (!serverEnv.isProduction) console.log(`\n[rastro] Aviso para ${opts.to}: ${opts.subject}\n[rastro] ${opts.url}\n`);
+  if (!process.env.RESEND_API_KEY) {
+    if (!serverEnv.isProduction) return;
+    throw new Error("Falta RESEND_API_KEY");
+  }
+  const { error } = await resend().emails.send({ from: serverEnv.resendFrom, to: opts.to, subject: opts.subject, html, text });
+  if (error) {
+    if (!serverEnv.isProduction) return console.warn(`[rastro] Resend no envio el aviso (${error.message})`);
+    throw new Error(`Resend: ${error.message}`);
+  }
+}

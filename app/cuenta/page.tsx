@@ -7,7 +7,7 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import { levelFor } from "@/lib/report/score";
-import { isPro } from "@/lib/plan";
+import { FAMILY_SEATS, isPro, prices } from "@/lib/plan";
 import { VigilCalendar } from "@/components/VigilCalendar";
 import { ProfileEditor } from "@/components/ProfileEditor";
 
@@ -35,7 +35,7 @@ function scoreOf(row: Row): number | null {
  * (vigilancia, escaner, cartas, plazos) vive en /herramientas.
  */
 export default async function AccountPage({ searchParams }: PageProps<"/cuenta">) {
-  const { pago, vigilancia } = await searchParams;
+  const { pago, vigilancia, familia } = await searchParams;
   const session = await getSession();
   if (!session) redirect("/entrar");
   const user = await findUserByEmail(session.email);
@@ -57,6 +57,13 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
     supabase.from("daily_checks").select("day, status").eq("user_id", user.id).order("day", { ascending: false }).limit(14).returns<{ day: string; status: "ok" | "alert" | "error" }[]>(),
   ]);
   const checks = (checkRows ?? []).map((r) => r.created_at);
+  // Plan familiar: miembros del titular, o titular del miembro.
+  const { data: familyMembers } = user.plan_kind === "family"
+    ? await supabase.from("users").select("id, email, last_seen_at").eq("family_owner_id", user.id).eq("plan_kind", "member").order("created_at").returns<{ id: string; email: string; last_seen_at: string | null }[]>()
+    : { data: null };
+  const { data: familyOwner } = user.plan_kind === "member" && user.family_owner_id
+    ? await supabase.from("users").select("email").eq("id", user.family_owner_id).maybeSingle<{ email: string }>()
+    : { data: null };
   const list = rows ?? [];
   const lastScore = list.map(scoreOf).find((v) => v !== null) ?? null;
   const name = user.display_name ?? list[0]?.full_name ?? user.email.split("@")[0];
@@ -133,16 +140,45 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
                       : tr("pro.until", { date: fmt.format(new Date(user.plan_until)) })}
                   </p>
                 )}
-                {user.stripe_customer_id && (
+                {user.plan_kind === "member" && familyOwner && (
+                  <p className="mt-2 text-[13px] leading-relaxed text-muted">{tr("family.memberBody", { owner: familyOwner.email })}</p>
+                )}
+                {user.stripe_customer_id && user.plan_kind !== "member" && (
                   <form action="/api/stripe/portal" method="post" className="mt-3">
                     <button type="submit" className="text-[14px] font-medium text-accent underline underline-offset-4">{tr("pro.manage")}</button>
                   </form>
+                )}
+                {user.plan_kind === "family" && (
+                  <div className="mt-4 border-t border-line pt-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-[14px] font-semibold text-ink">{tr("family.title")}</p>
+                      <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-[11px] font-semibold text-muted">{tr("family.seats", { used: 1 + (familyMembers?.length ?? 0), total: FAMILY_SEATS })}</span>
+                    </div>
+                    <p className="mt-1 text-[13px] leading-relaxed text-muted">{tr("family.body")}</p>
+                    {familia && familia !== "added" && familia !== "removed" && <p role="alert" className="mt-2 text-[13px] font-medium text-danger">{tr(`family.${familia}`)}</p>}
+                    <ul className="mt-3 grid gap-1.5">
+                      <li className="flex items-center justify-between rounded-[12px] bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink">{user.email} <span className="text-[12px] text-faint">{tr("family.you")}</span></li>
+                      {(familyMembers ?? []).map((m) => (
+                        <li key={m.id} className="flex items-center justify-between gap-3 rounded-[12px] bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink">
+                          <span className="min-w-0 truncate">{m.email}{!m.last_seen_at && <span className="ml-2 text-[12px] text-faint">{tr("family.pending")}</span>}</span>
+                          <form action="/api/family" method="post"><input type="hidden" name="action" value="remove" /><input type="hidden" name="email" value={m.email} /><button type="submit" className="text-[12.5px] text-muted underline underline-offset-4 hover:text-ink">{tr("family.remove")}</button></form>
+                        </li>
+                      ))}
+                    </ul>
+                    {(familyMembers?.length ?? 0) < FAMILY_SEATS - 1 && (
+                      <form action="/api/family" method="post" className="mt-3 flex gap-2">
+                        <input type="hidden" name="action" value="add" />
+                        <input name="email" type="email" required placeholder={tr("family.emailPlaceholder")} className="min-w-0 flex-1 rounded-[12px] border border-line bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink placeholder:text-faint focus:border-accent focus:outline-none" />
+                        <button type="submit" className="shrink-0 rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("family.add")}</button>
+                      </form>
+                    )}
+                  </div>
                 )}
               </>
             ) : (
               <>
                 <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
-                <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("pro.lockedBody")}</p>
+                <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("pro.lockedBody", { monthly: prices().monthly, yearly: prices().yearly })}</p>
                 <Link href="/pro" className="mt-3 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
                   {tr("pro.lockedCta")}
                 </Link>

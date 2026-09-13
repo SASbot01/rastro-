@@ -305,3 +305,8 @@ alter table public.letters
   add column if not exists outcome           text check (outcome in ('deleted','refused','partial')),
   add column if not exists events            jsonb not null default '[]'::jsonb; -- cronología [{at,type,note,to}]
 create index if not exists letters_follow_up_idx on public.letters (sent_at) where status = 'sent' and sent_via = 'rastro' and follow_up_sent_at is null;
+-- Plan familiar: el titular (plan_kind='family') puede dar Pro a otras cuentas (plan_kind='member').
+alter table public.users
+  add column if not exists plan_kind text not null default 'individual' check (plan_kind in ('individual','family','member')),
+  add column if not exists family_owner_id uuid references public.users(id) on delete set null;
+create index if not exists users_family_owner_idx on public.users (family_owner_id) where family_owner_id is not null;

@@ -11,7 +11,20 @@ export function isPro(user: Pick<UserRow, "plan" | "plan_until"> | null | undefi
 }
 
 /** Enlaces de pago de Stripe con el correo (y la cuenta) ya rellenados. */
-export function paymentLinks(email?: string | null, userId?: string | null): { monthly: string | null; yearly: string | null } {
+/** Plazas del plan familiar (titular incluido). */
+export const FAMILY_SEATS = Number(process.env.NEXT_PUBLIC_FAMILY_SEATS || 3);
+
+/** Precios mostrados (texto). Se cambian por variables de entorno sin tocar codigo; deben coincidir con Stripe. */
+export function prices(): { monthly: string; yearly: string; familyMonthly: string; familyYearly: string } {
+  return {
+    monthly: process.env.NEXT_PUBLIC_PRICE_MONTHLY || "19 €",
+    yearly: process.env.NEXT_PUBLIC_PRICE_YEARLY || "99 €",
+    familyMonthly: process.env.NEXT_PUBLIC_PRICE_FAMILY_MONTHLY || "29 €",
+    familyYearly: process.env.NEXT_PUBLIC_PRICE_FAMILY_YEARLY || "149 €",
+  };
+}
+
+export function paymentLinks(email?: string | null, userId?: string | null): { monthly: string | null; yearly: string | null; familyMonthly: string | null; familyYearly: string | null } {
   const decorate = (base: string | undefined) => {
     if (!base) return null;
     const url = new URL(base);
@@ -19,5 +32,10 @@ export function paymentLinks(email?: string | null, userId?: string | null): { m
     if (userId) url.searchParams.set("client_reference_id", userId);
     return url.toString();
   };
-  return { monthly: decorate(process.env.STRIPE_LINK_MONTHLY), yearly: decorate(process.env.STRIPE_LINK_YEARLY) };
+  return {
+    monthly: decorate(process.env.STRIPE_LINK_MONTHLY),
+    yearly: decorate(process.env.STRIPE_LINK_YEARLY),
+    familyMonthly: decorate(process.env.STRIPE_LINK_FAMILY_MONTHLY),
+    familyYearly: decorate(process.env.STRIPE_LINK_FAMILY_YEARLY),
+  };
 }
