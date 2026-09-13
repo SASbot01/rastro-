@@ -414,3 +414,39 @@ export async function sendNoticeEmail(opts: { to: string; subject: string; greet
     throw new Error(`Resend: ${error.message}`);
   }
 }
+
+
+/**
+ * Mensaje de phishing SIMULADO enviado al propio usuario (v2). Va marcado en
+ * asunto, cabecera y pie, con las pistas al final. Solo se envia a la cuenta
+ * que lo pidio; el "remitente" simulado aparece en el cuerpo, no en el From.
+ */
+export async function sendSimulatedPhishingEmail(opts: { to: string; subject: string; fromName: string; body: string; clues: string[]; index: number; locale: Locale }): Promise<void> {
+  const tr = translator(getMessages(opts.locale));
+  const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif";
+  const html = `<!doctype html><html lang="${opts.locale}"><head><meta charset="utf-8"><title>${escapeHtml(opts.subject)}</title></head>
+<body style="margin:0;padding:0;background:#f4f4f2;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:24px 16px;"><tr><td align="center">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #e5e5e5;border-radius:12px;">
+      <tr><td style="padding:10px 24px;background:${ACCENT};color:#0a0a0a;font:600 12px/1.4 ${font};letter-spacing:.08em;border-radius:12px 12px 0 0;">${escapeHtml(tr("sim.emailBanner", { n: opts.index }))}</td></tr>
+      <tr><td style="padding:20px 24px 4px;font:600 13px/1.4 ${font};color:#666;">${escapeHtml(tr("sim.simulatedFrom", { name: opts.fromName }))}</td></tr>
+      <tr><td style="padding:8px 24px 20px;font:400 15px/1.6 ${font};color:#111;white-space:pre-wrap;">${escapeHtml(opts.body)}</td></tr>
+      <tr><td style="padding:16px 24px 24px;border-top:1px dashed #ddd;font:400 13px/1.6 ${font};color:#444;">
+        <p style="margin:0 0 6px;font-weight:600;">${escapeHtml(tr("sim.cluesTitle"))}</p>
+        <ul style="margin:0;padding-left:18px;">${opts.clues.map((c) => `<li>${escapeHtml(c)}</li>`).join("")}</ul>
+        <p style="margin:12px 0 0;color:#888;">${escapeHtml(tr("sim.emailFooter"))}</p>
+      </td></tr>
+    </table>
+  </td></tr></table></body></html>`;
+  const text = [tr("sim.emailBanner", { n: opts.index }), tr("sim.simulatedFrom", { name: opts.fromName }), "", opts.body, "", tr("sim.cluesTitle"), ...opts.clues.map((c) => `- ${c}`), "", tr("sim.emailFooter")].join("\n");
+  if (!serverEnv.isProduction) console.log(`\n[rastro] Phishing simulado #${opts.index} para ${opts.to}: ${opts.subject}\n`);
+  if (!process.env.RESEND_API_KEY) {
+    if (!serverEnv.isProduction) return;
+    throw new Error("Falta RESEND_API_KEY");
+  }
+  const { error } = await resend().emails.send({ from: serverEnv.resendFrom, to: opts.to, subject: opts.subject, html, text });
+  if (error) {
+    if (!serverEnv.isProduction) return console.warn(`[rastro] Resend no envio el phishing simulado (${error.message})`);
+    throw new Error(`Resend: ${error.message}`);
+  }
+}

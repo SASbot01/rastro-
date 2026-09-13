@@ -76,6 +76,12 @@ export default async function ToolsPage() {
         <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink">{tr("tools.title")}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("tools.subtitle")}</p>
 
+        {/* v2 y v3: para todos (gratis con limite; Pro completo) */}
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+          <li><Link href="/simulador" className={CARD + " block hover:border-accent"}><span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("sim.eyebrow")}</span><h2 className="mt-1 text-[16px] font-semibold text-ink">{tr("sim.title")}</h2><p className="mt-1.5 text-[13.5px] leading-relaxed text-muted">{tr("sim.hubBody")}</p></Link></li>
+          <li><Link href="/guardian" className={CARD + " block hover:border-accent"}><span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("guardian.eyebrow")}</span><h2 className="mt-1 text-[16px] font-semibold text-ink">{tr("guardian.title")}</h2><p className="mt-1.5 text-[13.5px] leading-relaxed text-muted">{tr("sim.guardianHubBody")}</p></Link></li>
+        </ul>
+
         {!user || !pro ? (
           <div className="mt-6 grid gap-3">
             <Gate />

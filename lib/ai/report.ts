@@ -1,7 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
-import { serverEnv } from "@/lib/env";
+import { anthropic, reportModel } from "@/lib/ai/client";
+export { reportModel };
 import type { Locale } from "@/lib/i18n";
 import type { HibpResult } from "@/lib/hibp";
 import type { BraveResult } from "@/lib/brave";
@@ -18,7 +19,6 @@ import type { KnownAccount } from "@/lib/report/accounts";
  * mas las deterministas de HIBP/Brave. Asi el score es auditable.
  */
 
-const DEFAULT_MODEL = "claude-sonnet-5";
 const TIMEOUT_MS = 60_000;
 const MAX_TOKENS = 8000;
 const MAX_TOKENS_RETRY = 14000;
@@ -158,16 +158,6 @@ function compactInput(d: InputData) {
   };
 }
 
-let client: Anthropic | null = null;
-function anthropic(): Anthropic {
-  if (!client) client = new Anthropic({ apiKey: serverEnv.anthropicApiKey, timeout: TIMEOUT_MS, maxRetries: 1 });
-  return client;
-}
-
-export function reportModel(): string {
-  return process.env.ANTHROPIC_MODEL || DEFAULT_MODEL;
-}
-
 export async function writeReport(data: InputData): Promise<AiReportResult> {
   const first = await writeReportOnce(data, MAX_TOKENS);
   if (first.ok || first.reason === "refusal") return first;
@@ -251,7 +241,7 @@ function dedupeFindings(findings: AiReport["findings"]): AiReport["findings"] {
 async function writeReportOnce(data: InputData, maxTokens: number): Promise<AiReportResult> {
   const model = reportModel();
   try {
-    const response = await anthropic().messages.create({
+    const response = await anthropic(TIMEOUT_MS).messages.create({
       model,
       max_tokens: maxTokens,
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],

@@ -12,13 +12,14 @@ import { hashEmail, hashIp } from "@/lib/crypto";
 const HOUR = 60 * 60;
 const DAY = 24 * HOUR;
 
-export type RateKind = "report" | "login" | "support" | "ask";
+export type RateKind = "report" | "login" | "support" | "ask" | "guardian";
 
 export const LIMITS: Record<RateKind, { email: number; ip: number; window: number }> = {
   report: { email: 3, ip: 20, window: DAY },
   login: { email: 10, ip: 60, window: HOUR },
   support: { email: 5, ip: 30, window: DAY },
   ask: { email: 0, ip: 40, window: DAY }, // chat del muneco: solo por IP
+  guardian: { email: 0, ip: 5, window: DAY }, // "¿es una estafa?" gratis: 5 al dia por IP (Pro sin limite)
 };
 
 async function bump(key: string, limit: number, windowSeconds: number): Promise<boolean> {

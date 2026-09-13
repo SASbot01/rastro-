@@ -1168,5 +1168,90 @@
       "cta": "Open Rastro",
       "footer": "If you don't know this person, ignore this email."
     }
+  },
+  "sim": {
+    "eyebrow": "Attack simulator",
+    "title": "This is how they'd scam you",
+    "subtitle": "Using what's already public about you, we show the messages and the call a scammer would use. It's a simulation: none of it is real and it's sent to nobody but you.",
+    "tag": "SIMULATION",
+    "attackability": "How easy you are to scam",
+    "attackabilityOutOf": "of 100",
+    "attackLevel": {
+      "low": "Hard",
+      "medium": "Possible",
+      "high": "Easy"
+    },
+    "defensesTitle": "The 3 defences that protect you most",
+    "phishingTitle": "Messages you'd receive",
+    "pretext": "Why it would work",
+    "clues": "How to spot it",
+    "channel": {
+      "email": "Email",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp"
+    },
+    "vishingTitle": "The call",
+    "callerClaims": "Who they claim to be",
+    "redFlags": "Red flags",
+    "hangUp": "What to say to hang up",
+    "who": {
+      "caller": "Scammer",
+      "you": "You"
+    },
+    "generate": "Generate my simulation",
+    "regenerate": "Generate again",
+    "generating": "Takes 20–40 seconds.",
+    "sendToMe": "Send them to my email",
+    "sendToMeHelp": "You'll get the 3 messages in your own inbox, marked as simulation, to live the experience. Only to your account.",
+    "sentOk": "Sent to your email. Check your inbox (and spam).",
+    "share": "Share “how they'd scam me”",
+    "shareHint": "The image only carries the score and your masked name.",
+    "lockedTitle": "See the other 2 messages and the call",
+    "lockedBody": "The full simulator, sending to your email and regenerating with each new report belong to Pro.",
+    "noReportTitle": "You need a report first",
+    "noReportBody": "The simulation is built from your exposure report. Get yours for free and come back.",
+    "failed": "Couldn't generate right now. Try again in a minute.",
+    "disclaimer": "Educational simulation about yourself. Links and numbers are fictional. Don't forward it to anyone.",
+    "emailBanner": "RASTRO SIMULATION · MESSAGE {n} OF 3 · NOT REAL",
+    "simulatedFrom": "Simulated sender: {name}",
+    "cluesTitle": "Clues to spot it:",
+    "emailFooter": "You requested this email from your Rastro account to learn to recognise scams. It contains no real links.",
+    "sentEmail": {
+      "subject": "Rastro: your 3 simulated messages are on the way",
+      "greeting": "Hi:",
+      "body": "We've sent you three simulated scam messages built from what's public about you. They're marked as simulation with the clues at the end. Look at them as if they were real: would you have fallen for it?",
+      "cta": "Open the simulator",
+      "footer": "You requested this from your Rastro account."
+    },
+    "hubBody": "See the messages and the call a scammer would use on you, and what protects you.",
+    "guardianHubBody": "Paste a suspicious SMS, email or WhatsApp and we tell you if it's a scam and which of your data it uses."
+  },
+  "guardian": {
+    "eyebrow": "Guardian",
+    "title": "Is it a scam?",
+    "subtitle": "Paste the SMS, email or WhatsApp you received and we tell you whether it's a scam, why, and which of your data it uses. We don't store the message.",
+    "sender": "Sender (optional)",
+    "senderPlaceholder": "Number, email or name shown",
+    "text": "The message",
+    "textPlaceholder": "Paste the text exactly as you received it…",
+    "analyze": "Analyse",
+    "analyzing": "Analysing…",
+    "personalized": "With your account we use your report as context: we know where you have accounts and what leaked, so we detect scams targeting you.",
+    "notPersonalized": "Without an account the analysis is generic (5 per day). With an account we cross it with your report.",
+    "verdict": {
+      "scam": "Scam",
+      "suspicious": "Suspicious",
+      "legit": "Looks legitimate"
+    },
+    "confidence": "Confidence {n}%",
+    "usesData": "Your data it exploits",
+    "actions": "What to do",
+    "verifyHow": "How to verify",
+    "disclaimer": "Automated guidance. When in doubt, don't tap anything and verify through the official app or phone.",
+    "errors": {
+      "text": "Paste the full message (at least a few words).",
+      "limit": "You've used today's 5 free analyses. Rastro Pro has no limit.",
+      "generic": "Couldn't analyse right now. Try again in a moment."
+    }
   }
 }

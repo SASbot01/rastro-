@@ -1168,5 +1168,90 @@
       "cta": "Entrar en Rastro",
       "footer": "Si no conoces a esta persona, ignora este correo."
     }
+  },
+  "sim": {
+    "eyebrow": "Simulador de ataque",
+    "title": "Así te engañarían",
+    "subtitle": "Con lo que ya es público de ti, te enseñamos los mensajes y la llamada que usaría un estafador. Es una simulación: nada de esto es real ni se envía a nadie más que a ti.",
+    "tag": "SIMULACIÓN",
+    "attackability": "Facilidad para engañarte",
+    "attackabilityOutOf": "de 100",
+    "attackLevel": {
+      "low": "Difícil",
+      "medium": "Posible",
+      "high": "Fácil"
+    },
+    "defensesTitle": "Las 3 defensas que más te protegen",
+    "phishingTitle": "Mensajes que recibirías",
+    "pretext": "Por qué colaría",
+    "clues": "Cómo descubrirlo",
+    "channel": {
+      "email": "Correo",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp"
+    },
+    "vishingTitle": "La llamada",
+    "callerClaims": "Quien dice ser",
+    "redFlags": "Señales de alarma",
+    "hangUp": "Qué decir para colgar",
+    "who": {
+      "caller": "Estafador",
+      "you": "Tú"
+    },
+    "generate": "Generar mi simulación",
+    "regenerate": "Volver a generar",
+    "generating": "Tarda entre 20 y 40 segundos.",
+    "sendToMe": "Enviármelos a mi correo",
+    "sendToMeHelp": "Recibirás los 3 mensajes en tu propio correo, marcados como simulación, para vivir la experiencia. Solo a tu cuenta.",
+    "sentOk": "Enviados a tu correo. Mira la bandeja de entrada (y el spam).",
+    "share": "Compartir «así me engañarían»",
+    "shareHint": "La imagen solo lleva la nota y tu nombre tapado.",
+    "lockedTitle": "Ver los otros 2 mensajes y la llamada",
+    "lockedBody": "El simulador completo, el envío a tu correo y regenerarlo con cada informe nuevo son del plan Pro.",
+    "noReportTitle": "Primero necesitas un informe",
+    "noReportBody": "La simulación se construye con tu informe de exposición. Pide el tuyo gratis y vuelve aquí.",
+    "failed": "No se pudo generar ahora mismo. Prueba en un minuto.",
+    "disclaimer": "Simulación educativa sobre ti mismo. Los enlaces y números son ficticios. No la reenvíes a nadie.",
+    "emailBanner": "SIMULACIÓN DE RASTRO · MENSAJE {n} DE 3 · NO ES REAL",
+    "simulatedFrom": "Remitente simulado: {name}",
+    "cluesTitle": "Pistas para descubrirlo:",
+    "emailFooter": "Este correo lo has pedido tú desde tu cuenta de Rastro para aprender a reconocer estafas. No contiene enlaces reales.",
+    "sentEmail": {
+      "subject": "Rastro: tus 3 mensajes simulados van de camino",
+      "greeting": "Hola:",
+      "body": "Te hemos enviado tres mensajes de estafa simulados, construidos con lo que es público de ti. Van marcados como simulación y con las pistas al final. Míralos como si fueran reales: ¿habrías picado?",
+      "cta": "Ver el simulador",
+      "footer": "Lo pediste desde tu cuenta de Rastro."
+    },
+    "hubBody": "Mira los mensajes y la llamada que usaría un estafador contigo, y qué te protege.",
+    "guardianHubBody": "Pega un SMS, correo o WhatsApp sospechoso y te decimos si es una estafa y qué datos tuyos usa."
+  },
+  "guardian": {
+    "eyebrow": "Guardián",
+    "title": "¿Es una estafa?",
+    "subtitle": "Pega el SMS, correo o WhatsApp que te ha llegado y te decimos si es una estafa, por qué, y qué datos tuyos está usando. No guardamos el mensaje.",
+    "sender": "Quién lo envía (opcional)",
+    "senderPlaceholder": "Número, correo o nombre que aparece",
+    "text": "El mensaje",
+    "textPlaceholder": "Pega aquí el texto tal cual te ha llegado…",
+    "analyze": "Analizar",
+    "analyzing": "Analizando…",
+    "personalized": "Con tu cuenta usamos tu informe como contexto: sabemos en qué sitios tienes cuenta y qué se ha filtrado, así detectamos estafas dirigidas a ti.",
+    "notPersonalized": "Sin cuenta, el análisis es genérico (5 al día). Con cuenta lo cruzamos con tu informe.",
+    "verdict": {
+      "scam": "Estafa",
+      "suspicious": "Sospechoso",
+      "legit": "Parece legítimo"
+    },
+    "confidence": "Confianza {n} %",
+    "usesData": "Datos tuyos que aprovecha",
+    "actions": "Qué hacer",
+    "verifyHow": "Cómo verificarlo",
+    "disclaimer": "Orientación automática. Ante la duda, no pulses nada y verifica por la app o el teléfono oficial.",
+    "errors": {
+      "text": "Pega el mensaje completo (al menos unas palabras).",
+      "limit": "Has usado los 5 análisis gratis de hoy. Con Rastro Pro no hay límite.",
+      "generic": "No se pudo analizar ahora. Prueba en un momento."
+    }
   }
 }

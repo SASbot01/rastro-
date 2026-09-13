@@ -314,3 +314,15 @@ create index if not exists users_family_owner_idx on public.users (family_owner_
 alter table public.letters
   add column if not exists last_check_at timestamptz,
   add column if not exists still_listed boolean;
+-- v2: simulador de ataque personal. Una simulacion por informe (se puede regenerar).
+create table if not exists public.simulations (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references public.users(id) on delete cascade,
+  request_id  uuid not null references public.requests(id) on delete cascade,
+  content     jsonb not null,          -- {attackability, defenses, phishing[], vishing}
+  model       text,
+  sent_at     timestamptz,             -- cuando se enviaron los correos simulados al propio usuario
+  created_at  timestamptz not null default now(),
+  unique (user_id, request_id)
+);
+alter table public.simulations enable row level security;
