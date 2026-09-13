@@ -7,6 +7,7 @@ import { getLocale } from "@/lib/locale";
 import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
+import type { LetterEvent } from "@/lib/letters";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,11 @@ interface Letter {
   status: "draft" | "sent" | "answered" | "no_answer" | "closed";
   sent_at: string | null;
   deadline_at: string | null;
+  sent_via: "user" | "rastro";
+  follow_up_sent_at: string | null;
+  reply_note: string | null;
+  outcome: "deleted" | "refused" | "partial" | null;
+  events: LetterEvent[] | null;
 }
 
 const STATUS_CLASS: Record<Letter["status"], string> = {
@@ -53,8 +59,9 @@ function StatusButton({ id, status, label, primary }: { id: string; status: stri
   );
 }
 
-export default async function LetterPage({ params }: PageProps<"/cartas/[id]">) {
+export default async function LetterPage({ params, searchParams }: PageProps<"/cartas/[id]">) {
   const { id } = await params;
+  const { e: errorCode, ok } = await searchParams;
   const session = await getSession();
   if (!session) redirect("/entrar");
   const user = await findUserByEmail(session.email);
@@ -63,7 +70,7 @@ export default async function LetterPage({ params }: PageProps<"/cartas/[id]">) 
   const { data: letter } = UUID.test(id)
     ? await supabaseAdmin()
         .from("letters")
-        .select("id, request_id, host, target_url, contact, contact_source, subject, body, locale, status, sent_at, deadline_at")
+        .select("id, request_id, host, target_url, contact, contact_source, subject, body, locale, status, sent_at, deadline_at, sent_via, follow_up_sent_at, reply_note, outcome, events")
         .eq("id", id)
         .eq("user_id", user.id)
         .maybeSingle<Letter>()
@@ -91,6 +98,11 @@ export default async function LetterPage({ params }: PageProps<"/cartas/[id]">) 
   }
 
   const isUrlContact = letter.contact?.startsWith("http");
+  const emailContact = letter.contact && !isUrlContact ? letter.contact : "";
+  const fmtShort = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" });
+  const expired = letter.status === "sent" && letter.deadline_at && new Date(letter.deadline_at) < new Date();
+  const canComplain = letter.status === "no_answer" || expired || (letter.status === "answered" && letter.outcome === "refused");
+  const FIELD = "w-full rounded-[12px] border border-line bg-surface-2 px-3.5 py-3 text-[15px] text-ink placeholder:text-faint focus:border-accent focus:outline-none";
 
   return (
     <>
@@ -146,41 +158,111 @@ export default async function LetterPage({ params }: PageProps<"/cartas/[id]">) 
           </div>
         </section>
 
-        {/* Estado y plazos */}
+        {/* Enviar / estado y plazos */}
         <section className="mt-4 rounded-card border border-line bg-surface p-5">
+          {ok === "sent" && <p className="mb-4 rounded-[12px] bg-accent-soft px-4 py-3 text-[14px] font-medium text-accent">{tr("letters.event.sent_by_rastro", { to: letter.contact ?? "" })}</p>}
+          {errorCode === "to" && <p role="alert" className="mb-4 text-[13px] font-medium text-danger">{tr("formErrors.email")}</p>}
+          {errorCode === "send" && <p role="alert" className="mb-4 text-[13px] font-medium text-danger">{tr("formErrors.generic")}</p>}
+
           {letter.status === "draft" && (
             <>
-              <StatusButton id={letter.id} status="sent" label={tr("letters.markSent")} primary />
-              <p className="mt-2 text-[12.5px] leading-relaxed text-faint">{tr("letters.markSentHelp")}</p>
+              {isUrlContact ? (
+                <p className="text-[14px] leading-relaxed text-muted">{tr("letters.formContact")}</p>
+              ) : (
+                <form action={`/api/letters/${letter.id}/send`} method="post" className="grid gap-3">
+                  <label className="text-[13px] font-medium text-ink" htmlFor="to">{tr("letters.toLabel")}</label>
+                  <input id="to" name="to" type="email" required defaultValue={emailContact} placeholder={tr("letters.toPlaceholder")} className={FIELD} />
+                  <p className="-mt-1 text-[12px] text-faint">{tr("letters.toHelp")}</p>
+                  <button type="submit" className="w-fit rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("letters.sendByRastro")}</button>
+                  <p className="text-[12.5px] leading-relaxed text-faint">{tr("letters.sendByRastroHelp")}</p>
+                </form>
+              )}
+              <div className="mt-5 border-t border-line pt-4">
+                <p className="mb-2 text-[13px] text-muted">{tr("letters.orManual")}</p>
+                <StatusButton id={letter.id} status="sent" label={tr("letters.markSent")} primary={Boolean(isUrlContact)} />
+                <p className="mt-2 text-[12.5px] leading-relaxed text-faint">{tr("letters.markSentHelp")}</p>
+              </div>
             </>
           )}
+
           {letter.status !== "draft" && letter.sent_at && (
             <p className="text-[14px] text-ink">
               {tr("letters.sentOn", { date: fmt.format(new Date(letter.sent_at)) })}
+              <span className="text-muted"> · {tr(letter.sent_via === "rastro" ? "letters.sentByRastro" : "letters.sentByUser")}</span>
               {letter.deadline_at && <span className="text-muted"> · {tr("letters.deadline", { date: fmt.format(new Date(letter.deadline_at)) })}</span>}
+              {letter.follow_up_sent_at && <span className="text-muted"> · {tr("letters.followUpOn", { date: fmt.format(new Date(letter.follow_up_sent_at)) })}</span>}
             </p>
           )}
+
           {letter.status === "sent" && (
-            <div className="mt-4 flex flex-wrap gap-2">
-              <StatusButton id={letter.id} status="answered" label={tr("letters.markAnswered")} primary />
-              <StatusButton id={letter.id} status="no_answer" label={tr("letters.markNoAnswer")} />
+            <details className="group mt-4 rounded-[14px] border border-line bg-surface-2 p-4">
+              <summary className="cursor-pointer list-none text-[15px] font-semibold text-ink [&::-webkit-details-marker]:hidden">{tr("letters.replyTitle")}</summary>
+              <p className="mt-1 text-[13px] text-muted">{tr("letters.replyBody")}</p>
+              <form action={`/api/letters/${letter.id}/status`} method="post" className="mt-3 grid gap-2">
+                <input type="hidden" name="status" value="answered" />
+                {(["deleted", "partial", "refused"] as const).map((o) => (
+                  <label key={o} className="flex items-center gap-2 text-[14px] text-ink">
+                    <input type="radio" name="outcome" value={o} required className="accent-[#4dfc5f]" />
+                    {tr(`letters.outcome.${o}`)}
+                  </label>
+                ))}
+                <textarea name="reply_note" rows={4} maxLength={4000} placeholder={tr("letters.replyNote")} className={FIELD + " mt-1"} />
+                <button type="submit" className="w-fit rounded-[12px] bg-accent px-5 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("letters.replySubmit")}</button>
+              </form>
+              <div className="mt-3 border-t border-line pt-3">
+                <StatusButton id={letter.id} status="no_answer" label={tr("letters.markNoAnswer")} />
+              </div>
+            </details>
+          )}
+
+          {letter.status === "closed" && (
+            <div className="mt-3 rounded-[14px] bg-accent-soft p-4">
+              <p className="text-[15px] font-semibold text-accent">{tr("letters.successTitle")}</p>
+              <p className="mt-1 text-[14px] leading-relaxed text-ink">{tr("letters.successBody", { host: letter.host })}</p>
             </div>
           )}
-          {/* Reclamacion AEPD: sin respuesta, o enviada con el plazo vencido */}
-          {(letter.status === "no_answer" || (letter.status === "sent" && letter.deadline_at && new Date(letter.deadline_at) < new Date())) && (
-            <Link
-              href={`/cartas/${letter.id}/reclamacion`}
-              className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90"
-            >
+          {letter.status === "answered" && letter.outcome && (
+            <div className="mt-3 rounded-[14px] border border-line bg-surface-2 p-4">
+              <p className="text-[14px] font-semibold text-ink">{tr(`letters.outcomeLabel.${letter.outcome}`)}</p>
+              {letter.reply_note && <p className="mt-1 whitespace-pre-wrap text-[13.5px] leading-relaxed text-muted">{letter.reply_note}</p>}
+              {letter.outcome === "refused" && <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{tr("letters.refusedBody")}</p>}
+            </div>
+          )}
+
+          {canComplain && (
+            <Link href={`/cartas/${letter.id}/reclamacion`} className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
               {tr("aepd.cta")}
             </Link>
           )}
-          {(letter.status === "answered" || letter.status === "no_answer") && (
+          {(letter.status === "answered" || letter.status === "no_answer" || letter.status === "closed") && (
             <div className="mt-4">
               <StatusButton id={letter.id} status="draft" label={tr("letters.reopen")} />
             </div>
           )}
         </section>
+
+        {/* Cronologia (pruebas) */}
+        {letter.events && letter.events.length > 0 && (
+          <section className="mt-4 rounded-card border border-line bg-surface p-5">
+            <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.timeline")}</h2>
+            <ol className="mt-3 grid gap-2.5">
+              {letter.events.map((ev, i) => (
+                <li key={i} className="flex gap-3 text-[14px]">
+                  <span className={"mt-1.5 h-2 w-2 shrink-0 rounded-full " + (ev.type === "closed" ? "bg-accent" : ev.type === "reminder" || ev.type === "no_answer" ? "bg-warn" : "bg-faint")} />
+                  <span className="min-w-0">
+                    <span className="block text-ink">{tr(`letters.event.${ev.type}`, { to: ev.to ?? "" })}</span>
+                    <span className="block text-[12px] text-faint">{fmtShort.format(new Date(ev.at))}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+            {letter.sent_at && (
+              <p className="mt-3 text-[12.5px] text-faint">
+                {tr("letters.evidence", { followUp: letter.follow_up_sent_at ? tr("letters.evidenceFollowUp") : "", reply: letter.reply_note ? tr("letters.evidenceReply") : "" })}
+              </p>
+            )}
+          </section>
+        )}
 
         <div className="mt-8 flex flex-wrap gap-5 text-[14px]">
           {letter.request_id && (

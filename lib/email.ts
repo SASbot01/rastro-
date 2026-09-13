@@ -316,3 +316,71 @@ export async function sendSupportEmail(opts: { from: string; subject: string; me
   });
   if (ack.error && serverEnv.isProduction) console.warn("[soporte] acuse no enviado:", ack.error.message);
 }
+
+
+/** Remitente de las cartas RGPD: cartas@<dominio verificado>, con el nombre "Rastro". */
+function lettersFrom(): string {
+  if (process.env.LETTERS_FROM) return process.env.LETTERS_FROM;
+  const m = serverEnv.resendFrom.match(/<([^>]+)>/);
+  const addr = m ? m[1] : serverEnv.resendFrom;
+  const domain = addr.split("@")[1] ?? "rastropro.com";
+  return `Rastro <cartas@${domain}>`;
+}
+
+/**
+ * Envia una carta RGPD al sitio en nombre del usuario: respuesta al usuario
+ * (reply-to) y copia para el (cc). Fuera de produccion NUNCA se envia: se
+ * registra y se devuelve un id ficticio (para no mandar cartas reales en pruebas).
+ */
+export async function sendLetterEmail(opts: { to: string; user: string; subject: string; body: string }): Promise<{ id: string }> {
+  if (!serverEnv.isProduction) {
+    console.log(`\n[rastro] (no enviado: entorno de pruebas) Carta a ${opts.to}, copia a ${opts.user}\n[rastro] ${opts.subject}\n`);
+    return { id: `dev-${Date.now()}` };
+  }
+  if (!process.env.RESEND_API_KEY) throw new Error("Falta RESEND_API_KEY");
+  const html = `<pre style="font:15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;white-space:pre-wrap;color:#111;">${escapeHtml(opts.body)}</pre>`;
+  const { data, error } = await resend().emails.send({
+    from: lettersFrom(),
+    to: opts.to,
+    cc: opts.user,
+    replyTo: opts.user,
+    subject: opts.subject,
+    text: opts.body,
+    html,
+  });
+  if (error) throw new Error(`Resend: ${error.message}`);
+  return { id: data?.id ?? "" };
+}
+
+/** Aviso al usuario: Rastro ha reenviado su carta como recordatorio. */
+export async function sendFollowUpNoticeEmail(opts: { to: string; name: string; host: string; deadlineAt: string; letterUrl: string; locale: Locale }): Promise<void> {
+  const tr = translator(getMessages(opts.locale));
+  const fmt = new Intl.DateTimeFormat(opts.locale, { dateStyle: "long" });
+  const vars = { name: opts.name, host: opts.host, deadline: fmt.format(new Date(opts.deadlineAt)) };
+  const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif";
+  const html = `<!doctype html><html lang="${opts.locale}"><head><meta charset="utf-8"><title>Rastro</title></head>
+<body style="margin:0;padding:0;background:${PAPER};">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};padding:32px 16px;"><tr><td align="center">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#151515;border:1px solid ${LINE};border-radius:20px;">
+      <tr><td style="padding:32px 32px 8px;font:600 15px/1.4 ${font};color:${INK};">Rastro</td></tr>
+      <tr><td style="padding:8px 32px 0;font:400 16px/1.6 ${font};color:${INK};">
+        <p style="margin:0 0 12px;">${escapeHtml(tr("followUpEmail.greeting", vars))}</p>
+        <p style="margin:0 0 12px;">${escapeHtml(tr("followUpEmail.body", vars))}</p>
+        <p style="margin:0 0 24px;color:${MUTED};">${escapeHtml(tr("followUpEmail.ask", vars))}</p>
+      </td></tr>
+      <tr><td style="padding:0 32px;"><a href="${escapeHtml(opts.letterUrl)}" style="display:block;text-align:center;background:${ACCENT};color:#0a0a0a;text-decoration:none;font:600 16px/1 ${font};padding:16px 20px;border-radius:10px;">${escapeHtml(tr("followUpEmail.cta"))}</a></td></tr>
+      <tr><td style="padding:24px 32px 32px;font:400 12px/1.6 ${font};color:${MUTED};">${escapeHtml(tr("followUpEmail.footer"))}</td></tr>
+    </table>
+  </td></tr></table></body></html>`;
+  const text = [tr("followUpEmail.greeting", vars), "", tr("followUpEmail.body", vars), "", tr("followUpEmail.ask", vars), "", `${tr("followUpEmail.cta")}: ${opts.letterUrl}`].join("\n");
+  if (!serverEnv.isProduction) console.log(`\n[rastro] Aviso de recordatorio para ${opts.to}: ${opts.letterUrl}\n`);
+  if (!process.env.RESEND_API_KEY) {
+    if (!serverEnv.isProduction) return;
+    throw new Error("Falta RESEND_API_KEY");
+  }
+  const { error } = await resend().emails.send({ from: serverEnv.resendFrom, to: opts.to, subject: tr("followUpEmail.subject", vars), html, text });
+  if (error) {
+    if (!serverEnv.isProduction) return console.warn(`[rastro] Resend no envio el aviso de recordatorio (${error.message})`);
+    throw new Error(`Resend: ${error.message}`);
+  }
+}

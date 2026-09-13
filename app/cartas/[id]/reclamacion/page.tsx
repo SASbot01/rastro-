@@ -25,6 +25,9 @@ interface Letter {
   status: string;
   sent_at: string | null;
   deadline_at: string | null;
+  follow_up_sent_at: string | null;
+  reply_note: string | null;
+  outcome: "deleted" | "refused" | "partial" | null;
   requests: { email: string; full_name: string; city: string | null } | { email: string; full_name: string; city: string | null }[] | null;
 }
 
@@ -48,7 +51,7 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
   const supabase = supabaseAdmin();
   const { data: letter } = await supabase
     .from("letters")
-    .select("id, request_id, finding_index, host, target_url, contact, locale, status, sent_at, deadline_at, requests(email, full_name, city)")
+    .select("id, request_id, finding_index, host, target_url, contact, locale, status, sent_at, deadline_at, follow_up_sent_at, reply_note, outcome, requests(email, full_name, city)")
     .eq("id", id)
     .eq("user_id", user.id)
     .maybeSingle<Letter>();
@@ -61,7 +64,9 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
 
   const ready =
     Boolean(letter.sent_at && letter.deadline_at) &&
-    (letter.status === "no_answer" || (letter.status === "sent" && new Date(letter.deadline_at!) < new Date()));
+    (letter.status === "no_answer" ||
+      (letter.status === "answered" && letter.outcome === "refused") ||
+      (letter.status === "sent" && new Date(letter.deadline_at!) < new Date()));
 
   const req = one(letter.requests);
   let what = letter.host;
@@ -83,6 +88,9 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
           contact: letter.contact,
           sentAt: letter.sent_at!,
           deadlineAt: letter.deadline_at!,
+          followUpAt: letter.follow_up_sent_at,
+          replyNote: letter.reply_note,
+          outcome: letter.outcome,
         })
       : null;
 

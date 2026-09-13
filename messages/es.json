@@ -505,7 +505,7 @@
   "letters": {
     "generate": "Generar carta de supresión",
     "title": "Carta de supresión de datos",
-    "subtitle": "Solicitud de supresión (artículo 17 del RGPD) dirigida a {host}. Cópiala y envíala tú desde tu correo; nosotros no la enviamos.",
+    "subtitle": "Solicitud de supresión (artículo 17 del RGPD) dirigida a {host}. Rastro puede enviarla por ti y llevar el seguimiento.",
     "recipient": "Destinatario",
     "contactFound": "Contacto de privacidad encontrado",
     "contactNotFound": "No hemos encontrado un contacto de privacidad. Busca en el sitio «política de privacidad», «contacto» o «opt out» y envíala por ahí.",
@@ -532,7 +532,48 @@
     "listEmpty": "Todavía no has generado ninguna carta. Desde tu informe puedes generar una por cada sitio que muestre tus datos.",
     "open": "Abrir",
     "back": "Volver al informe",
-    "onlyOwner": "Solo puedes generar cartas desde tus propios informes."
+    "onlyOwner": "Solo puedes generar cartas desde tus propios informes.",
+    "sendByRastro": "Enviar por mí ahora",
+    "sendByRastroHelp": "La enviamos desde cartas@rastropro.com en tu nombre, con tu correo como dirección de respuesta y con copia para ti. Empieza el plazo legal de un mes; a los 20 días, si no contestan, reenviamos un recordatorio; al vencer, te preparamos la reclamación a la AEPD.",
+    "toLabel": "Enviar a",
+    "toPlaceholder": "privacidad@sitio.com",
+    "toHelp": "Puedes corregir el correo si conoces uno mejor.",
+    "orManual": "O la envías tú: cópiala y márcala como enviada.",
+    "formContact": "Este sitio usa un formulario en vez de correo: ábrelo, pega la carta y márcala como enviada. Nosotros llevamos el plazo.",
+    "sentByRastro": "Enviada por Rastro",
+    "sentByUser": "Enviada por ti",
+    "followUpOn": "Recordatorio enviado el {date}",
+    "timeline": "Seguimiento",
+    "event": {
+      "sent": "Marcaste la carta como enviada",
+      "sent_by_rastro": "Rastro envió la carta a {to}",
+      "follow_up": "Rastro reenvió un recordatorio a {to}",
+      "reminder": "Venció el plazo de un mes: aviso enviado",
+      "answered": "Han contestado",
+      "closed": "Cerrada: datos suprimidos",
+      "no_answer": "Marcada como sin respuesta",
+      "reopened": "Vuelta a borrador"
+    },
+    "replyTitle": "¿Te han contestado?",
+    "replyBody": "Cuéntanos qué han dicho: lo guardamos como prueba para la reclamación si hace falta.",
+    "outcome": {
+      "deleted": "Han borrado mis datos",
+      "partial": "Han borrado solo una parte",
+      "refused": "Se niegan o piden más cosas"
+    },
+    "replyNote": "Qué te han contestado (pega el correo o resume)",
+    "replySubmit": "Guardar respuesta",
+    "outcomeLabel": {
+      "deleted": "Datos suprimidos",
+      "partial": "Supresión parcial",
+      "refused": "Se niegan"
+    },
+    "successTitle": "Conseguido",
+    "successBody": "{host} ha suprimido tus datos. En tu próximo informe deberías ver subir la puntuación.",
+    "refusedBody": "Si la negativa no está justificada, puedes reclamar ante la AEPD: te preparamos el escrito con la carta, el recordatorio y su respuesta como pruebas.",
+    "evidence": "Pruebas guardadas: carta, fecha de envío{followUp}{reply}.",
+    "evidenceFollowUp": ", recordatorio",
+    "evidenceReply": ", respuesta del sitio"
   },
   "letterTpl": {
     "subject": "Solicitud de supresión de datos personales (artículo 17 RGPD) — {name}",
@@ -544,7 +585,9 @@
     "p5": "Les recuerdo que deben atender esta solicitud sin dilación y, en todo caso, en el plazo máximo de un mes desde su recepción (artículo 12.3). Si no obtengo respuesta o esta no es satisfactoria, presentaré una reclamación ante la Agencia Española de Protección de Datos.",
     "p6": "Les ruego que me confirmen por escrito la supresión en esta misma dirección de correo electrónico: {email}",
     "closing": "Atentamente,",
-    "date": "{city}{date}"
+    "date": "{city}{date}",
+    "followUpSubject": "Recordatorio: solicitud de supresión de datos personales (art. 17 RGPD) — {name}",
+    "followUpIntro": "El {sent} les remití la solicitud de supresión que reproduzco a continuación y no he recibido respuesta. Les recuerdo que el plazo legal de un mes (artículo 12.3 RGPD) vence el {deadline}. Transcurrido ese plazo sin respuesta presentaré reclamación ante la Agencia Española de Protección de Datos."
   },
   "deadlines": {
     "title": "Próximos plazos",
@@ -603,7 +646,11 @@
     "d1": "1. Copia de la solicitud de supresión enviada el {sent}.",
     "d2": "2. Prueba del envío y de la fecha.",
     "signoff": "{city2}{date}",
-    "signature": "Fdo.: {name}"
+    "signature": "Fdo.: {name}",
+    "f3refused": "3. El reclamado respondió negándose a atender la solicitud o condicionándola indebidamente. Se adjunta copia de su respuesta.",
+    "f2b": "Ante la falta de respuesta, el {followUp} se remitió un recordatorio de la solicitud.",
+    "d3": "3. Copia del recordatorio enviado el {followUp}.",
+    "d4": "4. Copia de la respuesta del reclamado."
   },
   "pro": {
     "badge": "Pro",
@@ -979,5 +1026,13 @@
     "streakZero": "Hoy ha aparecido algo nuevo",
     "pending": "La primera comprobación diaria será mañana por la mañana.",
     "body": "Cada día miramos si tu correo aparece en filtraciones o volcados nuevos. Cada mes, el informe completo."
+  },
+  "followUpEmail": {
+    "subject": "Rastro: hemos reenviado tu carta a {host}",
+    "greeting": "Hola {name}:",
+    "body": "Pasaron 20 días sin respuesta de {host}, así que les hemos reenviado tu solicitud de supresión como recordatorio, con copia para ti. El plazo legal vence el {deadline}.",
+    "ask": "Si te contestan, márcalo en la carta. Si no, al vencer el plazo te prepararemos la reclamación a la AEPD con todas las pruebas.",
+    "cta": "Ver la carta",
+    "footer": "Recibes esto porque Rastro envió esta carta en tu nombre."
   }
 }

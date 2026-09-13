@@ -505,7 +505,7 @@
   "letters": {
     "generate": "Generate deletion letter",
     "title": "Data deletion letter",
-    "subtitle": "Erasure request (Article 17 GDPR) addressed to {host}. Copy it and send it yourself from your email; we don't send it.",
+    "subtitle": "Erasure request (Article 17 GDPR) addressed to {host}. Rastro can send it for you and track it.",
     "recipient": "Recipient",
     "contactFound": "Privacy contact found",
     "contactNotFound": "We couldn't find a privacy contact. Look on the site for \"privacy policy\", \"contact\" or \"opt out\" and send it there.",
@@ -532,7 +532,48 @@
     "listEmpty": "You haven't generated any letter yet. From your report you can generate one for each site showing your data.",
     "open": "Open",
     "back": "Back to report",
-    "onlyOwner": "You can only generate letters from your own reports."
+    "onlyOwner": "You can only generate letters from your own reports.",
+    "sendByRastro": "Send it for me now",
+    "sendByRastroHelp": "We send it from cartas@rastropro.com on your behalf, with your email as reply address and a copy to you. The one-month legal deadline starts; after 20 days without reply we resend a reminder; when it expires we prepare the complaint to the data protection authority.",
+    "toLabel": "Send to",
+    "toPlaceholder": "privacy@site.com",
+    "toHelp": "You can correct the address if you know a better one.",
+    "orManual": "Or send it yourself: copy it and mark it as sent.",
+    "formContact": "This site uses a form instead of email: open it, paste the letter and mark it as sent. We track the deadline.",
+    "sentByRastro": "Sent by Rastro",
+    "sentByUser": "Sent by you",
+    "followUpOn": "Reminder sent on {date}",
+    "timeline": "Tracking",
+    "event": {
+      "sent": "You marked the letter as sent",
+      "sent_by_rastro": "Rastro sent the letter to {to}",
+      "follow_up": "Rastro resent a reminder to {to}",
+      "reminder": "One-month deadline expired: notice sent",
+      "answered": "They replied",
+      "closed": "Closed: data erased",
+      "no_answer": "Marked as no reply",
+      "reopened": "Back to draft"
+    },
+    "replyTitle": "Did they reply?",
+    "replyBody": "Tell us what they said: we keep it as evidence for the complaint if needed.",
+    "outcome": {
+      "deleted": "They erased my data",
+      "partial": "They erased only part",
+      "refused": "They refuse or ask for more"
+    },
+    "replyNote": "What they replied (paste the email or summarise)",
+    "replySubmit": "Save reply",
+    "outcomeLabel": {
+      "deleted": "Data erased",
+      "partial": "Partial erasure",
+      "refused": "Refused"
+    },
+    "successTitle": "Done",
+    "successBody": "{host} has erased your data. Your score should rise in your next report.",
+    "refusedBody": "If the refusal isn't justified you can complain to the authority: we prepare the filing with the letter, the reminder and their reply as evidence.",
+    "evidence": "Evidence saved: letter, sending date{followUp}{reply}.",
+    "evidenceFollowUp": ", reminder",
+    "evidenceReply": ", the site's reply"
   },
   "letterTpl": {
     "subject": "Request for erasure of personal data (Article 17 GDPR) — {name}",
@@ -544,7 +585,9 @@
     "p5": "I remind you that you must act on this request without undue delay and in any event within one month of receipt (Article 12(3)). If I receive no reply, or an unsatisfactory one, I will lodge a complaint with the competent supervisory authority.",
     "p6": "Please confirm the erasure in writing to this email address: {email}",
     "closing": "Sincerely,",
-    "date": "{city}{date}"
+    "date": "{city}{date}",
+    "followUpSubject": "Reminder: personal data erasure request (Art. 17 GDPR) — {name}",
+    "followUpIntro": "On {sent} I sent you the erasure request reproduced below and have received no reply. I remind you that the one-month legal deadline (Article 12.3 GDPR) expires on {deadline}. After that date without a reply I will lodge a complaint with the supervisory authority."
   },
   "deadlines": {
     "title": "Upcoming deadlines",
@@ -603,7 +646,11 @@
     "d1": "1. Copy of the erasure request sent on {sent}.",
     "d2": "2. Proof of sending and date.",
     "signoff": "{city2}{date}",
-    "signature": "Signed: {name}"
+    "signature": "Signed: {name}",
+    "f3refused": "3. The respondent replied refusing to comply or imposing undue conditions. A copy of the reply is attached.",
+    "f2b": "Given the lack of reply, on {followUp} a reminder of the request was sent.",
+    "d3": "3. Copy of the reminder sent on {followUp}.",
+    "d4": "4. Copy of the respondent's reply."
   },
   "pro": {
     "badge": "Pro",
@@ -979,5 +1026,13 @@
     "streakZero": "Something new appeared today",
     "pending": "The first daily check runs tomorrow morning.",
     "body": "Every day we check whether your email appears in new breaches or pastes. Every month, the full report."
+  },
+  "followUpEmail": {
+    "subject": "Rastro: we resent your letter to {host}",
+    "greeting": "Hi {name}:",
+    "body": "20 days passed without a reply from {host}, so we resent your erasure request as a reminder, with a copy to you. The legal deadline expires on {deadline}.",
+    "ask": "If they reply, mark it on the letter. If not, when the deadline expires we'll prepare the complaint with all the evidence.",
+    "cta": "View the letter",
+    "footer": "You get this because Rastro sent this letter on your behalf."
   }
 }

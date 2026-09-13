@@ -81,10 +81,39 @@ export async function findPrivacyContact(
   return optOut ? { contact: optOut.url, source: optOut.url } : null;
 }
 
+export type LetterEventType = "sent" | "sent_by_rastro" | "follow_up" | "reminder" | "answered" | "closed" | "no_answer" | "reopened";
+export interface LetterEvent {
+  at: string;
+  type: LetterEventType;
+  to?: string;
+  note?: string;
+}
+
+/** Anade un evento a la cronologia de la carta (inmutable: devuelve la lista nueva). */
+export function withEvent(events: LetterEvent[] | null | undefined, event: Omit<LetterEvent, "at">): LetterEvent[] {
+  return [...(events ?? []), { at: new Date().toISOString(), ...event }];
+}
+
+/** Recordatorio (segunda solicitud): intro con fechas + la carta original. */
+export function buildFollowUp(input: { fullName: string; locale: Locale; sentAt: string; deadlineAt: string; subject: string; body: string }): { subject: string; body: string } {
+  const tr = translator(getMessages(input.locale));
+  const fmt = new Intl.DateTimeFormat(input.locale, { dateStyle: "long" });
+  const vars = { name: input.fullName, sent: fmt.format(new Date(input.sentAt)), deadline: fmt.format(new Date(input.deadlineAt)) };
+  return {
+    subject: tr("letterTpl.followUpSubject", vars),
+    body: [tr("letterTpl.followUpIntro", vars), "", "----------", "", input.body].join("\n"),
+  };
+}
+
 export interface ComplaintInput extends LetterInput {
   contact: string | null;
   sentAt: string;
   deadlineAt: string;
+  /** Fecha del recordatorio enviado por Rastro, si lo hubo. */
+  followUpAt?: string | null;
+  /** Respuesta del sitio (si se negaron) y su resultado. */
+  replyNote?: string | null;
+  outcome?: "deleted" | "refused" | "partial" | null;
 }
 
 /** Escrito de reclamacion ante la AEPD (art. 77 RGPD) a partir de una carta sin respuesta. */
@@ -102,16 +131,21 @@ export function buildComplaint(input: ComplaintInput): string {
     contact: input.contact ? ` (${input.contact})` : "",
     sent: fmt.format(new Date(input.sentAt)),
     deadline: fmt.format(new Date(input.deadlineAt)),
+    followUp: input.followUpAt ? fmt.format(new Date(input.followUpAt)) : "",
     date: fmt.format(new Date()),
   };
   const t = (k: string) => tr(`aepdTpl.${k}`, vars);
+  const refused = input.outcome === "refused" && input.replyNote;
+  const facts = [t("f1"), t("f2") + (input.followUpAt ? " " + t("f2b") : ""), refused ? t("f3refused") : t("f3")];
+  const docs = [t("d1"), t("d2"), ...(input.followUpAt ? [t("d3")] : []), ...(refused ? [t("d4")] : [])];
   return [
     t("title"), "",
     t("claimant"), t("respondent"), "",
-    t("factsTitle"), t("f1"), t("f2"), t("f3"), "",
+    t("factsTitle"), ...facts, "",
     t("lawTitle"), t("l1"), "",
     t("requestTitle"), t("r1"), "",
-    t("docsTitle"), t("d1"), t("d2"), "",
+    t("docsTitle"), ...docs, "",
+    ...(refused ? [tr("letters.replyNote") + ":", input.replyNote!, ""] : []),
     t("signoff"), t("signature"),
   ].join("\n");
 }
