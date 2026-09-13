@@ -7,6 +7,7 @@ import { isLocale, type Locale } from "@/lib/i18n";
 import { buildLetter, findPrivacyContact } from "@/lib/letters";
 import type { Finding } from "@/lib/report/findings";
 import { isPro } from "@/lib/plan";
+import { brokerForHost } from "@/lib/brokers/catalog";
 
 /**
  * Genera una carta de supresion para un hallazgo del informe (formulario
@@ -71,8 +72,12 @@ export async function POST(request: Request) {
     return new NextResponse(null, { status: 400 });
   }
 
+  // Sitio del catalogo: contacto conocido, sin preguntar a Perplexity.
+  const known = brokerForHost(host);
   const [contact, letter] = await Promise.all([
-    findPrivacyContact(host, locale).catch(() => null),
+    known && (known.email || known.optOutUrl)
+      ? Promise.resolve({ contact: known.email ?? known.optOutUrl!, source: known.privacyUrl ?? known.optOutUrl })
+      : findPrivacyContact(host, locale).catch(() => null),
     Promise.resolve(buildLetter({ fullName: req.full_name, email: req.email, city: req.city, host, url: finding.source_url, what: finding.title, locale })),
   ]);
 
@@ -126,8 +131,11 @@ async function lettersFromMailbox(sessionEmail: string, host: string, scanId: st
   const { data: last } = await supabase.from("requests").select("full_name, city").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1).maybeSingle<{ full_name: string; city: string | null }>();
   const what = locale === "es" ? `una cuenta registrada con el correo ${scan.mailbox} (${service.name})` : `an account registered with the email ${scan.mailbox} (${service.name})`;
 
+  const knownSite = brokerForHost(host);
   const [contact, letter] = await Promise.all([
-    findPrivacyContact(host, locale).catch(() => null),
+    knownSite && (knownSite.email || knownSite.optOutUrl)
+      ? Promise.resolve({ contact: knownSite.email ?? knownSite.optOutUrl!, source: knownSite.privacyUrl ?? knownSite.optOutUrl })
+      : findPrivacyContact(host, locale).catch(() => null),
     Promise.resolve(buildLetter({ fullName: last?.full_name ?? scan.mailbox, email: scan.mailbox, city: last?.city ?? null, host, url: `https://${host}`, what, locale })),
   ]);
   const { data: created, error } = await supabase

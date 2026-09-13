@@ -1034,5 +1034,37 @@
     "ask": "If they reply, mark it on the letter. If not, when the deadline expires we'll prepare the complaint with all the evidence.",
     "cta": "View the letter",
     "footer": "You get this because Rastro sent this letter on your behalf."
+  },
+  "sites": {
+    "eyebrow": "Site guide",
+    "title": "How to delete your data from each site",
+    "subtitle": "The sites that show up most in Rastro reports, with the privacy contact and the exact steps to request removal. Free, no account needed.",
+    "pageTitle": "How to delete my data from {name}",
+    "shows": "What it shows about you",
+    "how": "How to ask for removal",
+    "contact": "Privacy contact",
+    "optOut": "Form / rights page",
+    "typical": "They usually reply within {n} days",
+    "typicalInstant": "You fix it yourself in two minutes, no letter needed",
+    "verified": "Contact checked on {date}",
+    "likely": "Contact according to their policy; verify before sending",
+    "notes": "Good to know",
+    "ctaTitle": "Do you show up on {name}?",
+    "ctaBody": "Get your free report: we tell you which sites list you and, with Pro, we send the letter for you and track the deadline.",
+    "cta": "Get my free report",
+    "kinds": {
+      "broker": "Sells data",
+      "people-search": "People search",
+      "business-registry": "Business registry",
+      "directory": "Social network / directory",
+      "phonebook": "Phone book",
+      "results": "Public results"
+    },
+    "known": "Known site",
+    "knownHint": "We have the removal procedure for this site",
+    "seeGuide": "See how to opt out",
+    "letterKnown": "Known procedure for {name}",
+    "all": "All sites",
+    "footerLink": "Site guide"
   }
 }

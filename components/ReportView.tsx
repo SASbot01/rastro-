@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { brokerForHost } from "@/lib/brokers/catalog";
 import { ShareButton } from "@/components/ShareButton";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { levelFor, type Level } from "@/lib/report/score";
@@ -217,6 +218,7 @@ export function ReportView({
               <ul className="divide-y divide-line border-t border-line">
                 {items.map(({ f, index }) => {
                   const host = hostOf(f.source_url);
+                  const known = host ? brokerForHost(host) : null;
                   return (
                     <li key={index} className="min-w-0">
                       <details className="group/item min-w-0 overflow-hidden">
@@ -231,6 +233,12 @@ export function ReportView({
                         </summary>
                         <div className="grid gap-2.5 bg-surface-2/60 px-5 pt-1 pb-4 pl-10">
                           <p className="text-[14px] leading-[1.6] text-muted">{f.detail}</p>
+                          {known && (
+                            <Link href={`/sitios/${known.slug}`} className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/40 bg-accent-soft px-3 py-1 text-[12.5px] font-medium text-accent" title={tr("sites.knownHint")}>
+                              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                              {tr("sites.known")} · {known.typicalDays === 0 ? tr("sites.typicalInstant") : known.typicalDays ? tr("sites.typical", { n: known.typicalDays }) : known.name}
+                            </Link>
+                          )}
                           {f.source_url && (
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                               <a href={f.source_url} target="_blank" rel="noreferrer nofollow" className="inline-flex items-center gap-1 text-[13px] font-medium text-accent underline underline-offset-4">

@@ -1034,5 +1034,37 @@
     "ask": "Si te contestan, márcalo en la carta. Si no, al vencer el plazo te prepararemos la reclamación a la AEPD con todas las pruebas.",
     "cta": "Ver la carta",
     "footer": "Recibes esto porque Rastro envió esta carta en tu nombre."
+  },
+  "sites": {
+    "eyebrow": "Guía de sitios",
+    "title": "Cómo borrar tus datos de cada sitio",
+    "subtitle": "Los sitios que más aparecen en los informes de Rastro, con el contacto de privacidad y los pasos exactos para pedir la baja. Gratis, sin cuenta.",
+    "pageTitle": "Cómo borrar mis datos de {name}",
+    "shows": "Qué muestra de ti",
+    "how": "Cómo pedir que lo quiten",
+    "contact": "Contacto de privacidad",
+    "optOut": "Formulario / página de derechos",
+    "typical": "Suelen contestar en unos {n} días",
+    "typicalInstant": "Lo arreglas tú en dos minutos, sin carta",
+    "verified": "Contacto comprobado el {date}",
+    "likely": "Contacto según su política; compruébalo antes de enviar",
+    "notes": "Bueno saber",
+    "ctaTitle": "¿Apareces en {name}?",
+    "ctaBody": "Pide tu informe gratis: te decimos en qué sitios estás y, con Pro, enviamos la carta por ti y llevamos el plazo.",
+    "cta": "Pedir mi informe gratis",
+    "kinds": {
+      "broker": "Vende datos",
+      "people-search": "Buscador de personas",
+      "business-registry": "Registro mercantil",
+      "directory": "Red social / directorio",
+      "phonebook": "Guía telefónica",
+      "results": "Resultados públicos"
+    },
+    "known": "Sitio conocido",
+    "knownHint": "Tenemos el trámite de baja de este sitio",
+    "seeGuide": "Ver cómo darse de baja",
+    "letterKnown": "Trámite conocido para {name}",
+    "all": "Todos los sitios",
+    "footerLink": "Guía de sitios"
   }
 }

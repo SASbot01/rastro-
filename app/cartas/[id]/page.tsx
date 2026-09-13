@@ -8,6 +8,7 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { LetterEvent } from "@/lib/letters";
+import { brokerForHost } from "@/lib/brokers/catalog";
 
 export const dynamic = "force-dynamic";
 
@@ -97,6 +98,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
     );
   }
 
+  const known = brokerForHost(letter.host);
   const isUrlContact = letter.contact?.startsWith("http");
   const emailContact = letter.contact && !isUrlContact ? letter.contact : "";
   const fmtShort = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" });
@@ -146,6 +148,26 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
             <p className="mt-4 text-[13px] leading-relaxed text-muted">{tr("letters.contactNotFound")}</p>
           )}
         </section>
+
+        {/* Tramite conocido (catalogo) */}
+        {known && (
+          <section className="mt-4 rounded-card border border-accent/40 bg-accent-soft p-5">
+            <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("sites.letterKnown", { name: known.name })}</h2>
+            <ol className="mt-3 grid gap-2">
+              {known.steps.map((st, i) => (
+                <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-ink">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-[12px] font-semibold text-black">{i + 1}</span>
+                  {st}
+                </li>
+              ))}
+            </ol>
+            <p className="mt-3 text-[12.5px] text-muted">
+              {known.typicalDays === 0 ? tr("sites.typicalInstant") : known.typicalDays ? tr("sites.typical", { n: known.typicalDays }) : ""}
+              {" · "}
+              <Link href={`/sitios/${known.slug}`} className="text-accent underline underline-offset-4">{tr("sites.seeGuide")}</Link>
+            </p>
+          </section>
+        )}
 
         {/* Carta */}
         <section className="mt-4 rounded-card border border-line bg-surface p-5">
