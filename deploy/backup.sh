@@ -8,6 +8,6 @@ C=$(docker ps --format '{{.Names}}' | grep supabase_db_rastro | head -1)
 F="$DIR/rastro-$(date +%Y%m%d-%H%M).sql.gz"
 docker exec "$C" pg_dump -U postgres -d postgres --no-owner --no-privileges --schema=public | gzip -9 > "$F"
 # Comprobacion minima: el volcado debe contener las tablas principales.
-gzip -dc "$F" | grep -q "CREATE TABLE public.reports" || { echo "volcado sospechoso: $F"; exit 1; }
+[ "$(gzip -dc "$F" | grep -c "CREATE TABLE public.reports")" -ge 1 ] || { echo "volcado sospechoso: $F"; exit 1; }
 find "$DIR" -name 'rastro-*.sql.gz' -mtime +14 -delete
 echo "ok $F $(du -h "$F" | cut -f1)"
