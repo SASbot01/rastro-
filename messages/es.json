@@ -85,7 +85,60 @@
     "step2Title": "Confirmas que el correo es tuyo",
     "step2Body": "Te llega un código. Sin él no buscamos nada.",
     "step3Title": "Recibes tu informe",
-    "step3Body": "Puntuación, qué se ve y qué hacer."
+    "step3Body": "Puntuación, qué se ve y qué hacer.",
+    "pageTitle": "Cómo lo hacemos",
+    "pageSubtitle": "Qué buscamos, dónde, qué guardamos y durante cuánto tiempo. Sin letra pequeña.",
+    "sections": [
+      {
+        "t": "Qué buscamos y dónde",
+        "items": [
+          "Filtraciones: consultamos tu correo en Have I Been Pwned, la base de datos de referencia de brechas conocidas. Solo enviamos el correo, nada más.",
+          "Buscadores: buscamos tu nombre (con tu ciudad y profesión, si las das) en un buscador web para ver perfiles, directorios y sitios que venden datos.",
+          "Asistentes de IA: preguntamos por ti a Perplexity y, cuando están configurados, a ChatGPT y Gemini, y te enseñamos la respuesta literal.",
+          "Avatar público: comprobamos si tu correo tiene un perfil público en Gravatar con cuentas enlazadas.",
+          "Redacción: una IA (Claude, de Anthropic) ordena todo eso en lenguaje llano y extrae señales; la puntuación la calcula una regla fija y auditable, no la IA."
+        ]
+      },
+      {
+        "t": "Qué guardamos y cuánto tiempo",
+        "items": [
+          "Tu nombre, correo, ciudad y profesión (si la das), el informe y las respuestas de las fuentes.",
+          "Sin cuenta: todo se borra a los 30 días de forma automática.",
+          "Con cuenta: se conserva mientras la tengas; puedes borrarla cuando quieras desde Soporte y se elimina todo, informes incluidos.",
+          "Escáner de Gmail: solo remitente, asunto y fecha; no guardamos correos ni el acceso, que se revoca al terminar."
+        ]
+      },
+      {
+        "t": "Qué no hacemos",
+        "items": [
+          "No vendemos ni cedemos datos a nadie. No hay publicidad.",
+          "No buscamos a otras personas: solo a quien confirma su correo.",
+          "No prometemos borrar: te enseñamos lo que se ve y reclamamos por ti con la ley en la mano (art. 17 RGPD y AEPD).",
+          "No guardamos contraseñas: se entra con un código de un solo uso o con Google."
+        ]
+      },
+      {
+        "t": "Cómo se calcula la puntuación",
+        "items": [
+          "Empiezas en 100 y se resta: cada filtración con contraseña −15 (máx. −45); sin contraseña −5 (máx. −15).",
+          "La IA acierta dónde trabajas −10; tu ciudad −5; teléfono o dirección públicos −15.",
+          "Cada perfil público que la IA atribuye a ti −3 (máx. −15); datos falsos sobre ti en la IA −5.",
+          "Verde de 70 a 100, ámbar de 40 a 69, rojo de 0 a 39. La regla es fija: mismos datos, misma nota."
+        ]
+      },
+      {
+        "t": "Seguridad",
+        "items": [
+          "Todo va cifrado (HTTPS). Las claves de las fuentes viven solo en nuestro servidor.",
+          "Los enlaces y códigos de acceso caducan y se usan una sola vez.",
+          "Copia de seguridad diaria de la base de datos y vigilancia del servicio.",
+          "Servidores en la Unión Europea; responsable del tratamiento en España (ver Aviso legal)."
+        ]
+      }
+    ],
+    "ownerTitle": "Quién está detrás",
+    "ownerBody": "Rastro es un proyecto independiente hecho en España por {owner}. Puedes escribirnos a {email} o desde Soporte.",
+    "footerLink": "Cómo lo hacemos"
   },
   "verify": {
     "loading": "Comprobando el enlace…",
@@ -587,7 +640,13 @@
     "refusedBody": "Si la negativa no está justificada, puedes reclamar ante la AEPD: te preparamos el escrito con la carta, el recordatorio y su respuesta como pruebas.",
     "evidence": "Pruebas guardadas: carta, fecha de envío{followUp}{reply}.",
     "evidenceFollowUp": ", recordatorio",
-    "evidenceReply": ", respuesta del sitio"
+    "evidenceReply": ", respuesta del sitio",
+    "checkTitle": "¿Sigue ahí?",
+    "checkBody": "Miramos la página de la carta y comprobamos si tu nombre sigue apareciendo. Guardamos la fecha y el resultado como prueba.",
+    "checkNow": "Comprobar ahora",
+    "checkGone": "Ya no apareces en esa página",
+    "checkStill": "Tu nombre sigue apareciendo",
+    "checkUnknown": "No se pudo comprobar automáticamente (la página bloquea robots o exige acceso). Míralo tú y marca el resultado."
   },
   "letterTpl": {
     "subject": "Solicitud de supresión de datos personales (artículo 17 RGPD) — {name}",

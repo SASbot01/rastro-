@@ -149,3 +149,35 @@ export function buildComplaint(input: ComplaintInput): string {
     t("signoff"), t("signature"),
   ].join("\n");
 }
+
+
+/** Quita acentos y pasa a minusculas para comparar nombres con el texto de una pagina. */
+function fold(text: string): string {
+  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+/**
+ * Descarga la URL y busca el nombre. true = sigue apareciendo; false = ya no;
+ * null = no se pudo comprobar (bloqueo, error, pagina que exige JS/pago).
+ */
+export async function checkStillListed(url: string, fullName: string): Promise<boolean | null> {
+  const parts = fold(fullName).split(/\s+/).filter((p) => p.length > 2);
+  if (parts.length === 0) return null;
+  try {
+    const res = await fetch(url, {
+      headers: { "user-agent": "Mozilla/5.0 (compatible; RastroBot/1.0; +https://rastropro.com)", accept: "text/html,*/*" },
+      signal: AbortSignal.timeout(12_000),
+      redirect: "follow",
+      cache: "no-store",
+    });
+    if (res.status === 404 || res.status === 410) return false;
+    if (!res.ok) return null;
+    const html = await res.text();
+    const text = fold(html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " "));
+    if (text.length < 200) return null;
+    // Apellidos + nombre: todos los trozos del nombre deben aparecer.
+    return parts.every((p) => text.includes(p));
+  } catch {
+    return null;
+  }
+}

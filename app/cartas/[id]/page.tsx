@@ -32,6 +32,8 @@ interface Letter {
   reply_note: string | null;
   outcome: "deleted" | "refused" | "partial" | null;
   events: LetterEvent[] | null;
+  last_check_at: string | null;
+  still_listed: boolean | null;
 }
 
 const STATUS_CLASS: Record<Letter["status"], string> = {
@@ -71,7 +73,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
   const { data: letter } = UUID.test(id)
     ? await supabaseAdmin()
         .from("letters")
-        .select("id, request_id, host, target_url, contact, contact_source, subject, body, locale, status, sent_at, deadline_at, sent_via, follow_up_sent_at, reply_note, outcome, events")
+        .select("id, request_id, host, target_url, contact, contact_source, subject, body, locale, status, sent_at, deadline_at, sent_via, follow_up_sent_at, reply_note, outcome, events, last_check_at, still_listed")
         .eq("id", id)
         .eq("user_id", user.id)
         .maybeSingle<Letter>()
@@ -262,6 +264,28 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
             </div>
           )}
         </section>
+
+        {/* Comprobacion de resultado */}
+        {letter.status !== "draft" && (
+          <section className="mt-4 rounded-card border border-line bg-surface p-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="min-w-0">
+                <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.checkTitle")}</h2>
+                {letter.last_check_at ? (
+                  <p className={"mt-1.5 text-[14px] font-semibold " + (letter.still_listed === false ? "text-accent" : letter.still_listed ? "text-warn" : "text-muted")}>
+                    {letter.still_listed === false ? tr("letters.checkGone") : letter.still_listed ? tr("letters.checkStill") : tr("letters.checkUnknown")}
+                    <span className="ml-2 text-[12px] font-normal text-faint">{fmtShort.format(new Date(letter.last_check_at))}</span>
+                  </p>
+                ) : (
+                  <p className="mt-1.5 text-[13px] text-muted">{tr("letters.checkBody")}</p>
+                )}
+              </div>
+              <form action={`/api/letters/${letter.id}/check`} method="post">
+                <button type="submit" className="rounded-[10px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-medium text-ink hover:border-faint">{tr("letters.checkNow")}</button>
+              </form>
+            </div>
+          </section>
+        )}
 
         {/* Cronologia (pruebas) */}
         {letter.events && letter.events.length > 0 && (

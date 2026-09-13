@@ -85,7 +85,60 @@
     "step2Title": "You confirm the email is yours",
     "step2Body": "You get a code. Without it we search nothing.",
     "step3Title": "You get your report",
-    "step3Body": "Score, what's visible and what to do."
+    "step3Body": "Score, what's visible and what to do.",
+    "pageTitle": "How we do it",
+    "pageSubtitle": "What we look for, where, what we keep and for how long. No fine print.",
+    "sections": [
+      {
+        "t": "What we look for and where",
+        "items": [
+          "Breaches: we check your email against Have I Been Pwned, the reference database of known breaches. We send only the email.",
+          "Search engines: we search your name (with your city and occupation, if given) to find profiles, directories and data-selling sites.",
+          "AI assistants: we ask Perplexity about you and, when configured, ChatGPT and Gemini, and show you the literal answer.",
+          "Public avatar: we check whether your email has a public Gravatar profile with linked accounts.",
+          "Writing: an AI (Claude, by Anthropic) organises all that in plain language and extracts signals; the score comes from a fixed, auditable rule, not from the AI."
+        ]
+      },
+      {
+        "t": "What we keep and for how long",
+        "items": [
+          "Your name, email, city and occupation (if given), the report and the sources' answers.",
+          "Without an account: everything is deleted automatically after 30 days.",
+          "With an account: kept while you have it; you can delete it any time via Support and everything goes, reports included.",
+          "Gmail scanner: only sender, subject and date; we don't store emails or the access, which is revoked when it finishes."
+        ]
+      },
+      {
+        "t": "What we don't do",
+        "items": [
+          "We don't sell or share data with anyone. No ads.",
+          "We don't look up other people: only whoever confirms their email.",
+          "We don't promise deletion: we show you what's visible and claim on your behalf with the law in hand (Art. 17 GDPR and the authority).",
+          "We don't store passwords: you sign in with a one-time code or with Google."
+        ]
+      },
+      {
+        "t": "How the score is calculated",
+        "items": [
+          "You start at 100 and we subtract: each breach with password −15 (max −45); without password −5 (max −15).",
+          "AI knows where you work −10; your city −5; public phone or address −15.",
+          "Each public profile the AI attributes to you −3 (max −15); false claims about you in AI −5.",
+          "Green 70–100, amber 40–69, red 0–39. The rule is fixed: same data, same score."
+        ]
+      },
+      {
+        "t": "Security",
+        "items": [
+          "Everything is encrypted (HTTPS). Source API keys live only on our server.",
+          "Access links and codes expire and are single-use.",
+          "Daily database backup and service monitoring.",
+          "Servers in the European Union; data controller in Spain (see Legal notice)."
+        ]
+      }
+    ],
+    "ownerTitle": "Who is behind it",
+    "ownerBody": "Rastro is an independent project made in Spain by {owner}. Write to us at {email} or via Support.",
+    "footerLink": "How we do it"
   },
   "verify": {
     "loading": "Checking the link…",
@@ -587,7 +640,13 @@
     "refusedBody": "If the refusal isn't justified you can complain to the authority: we prepare the filing with the letter, the reminder and their reply as evidence.",
     "evidence": "Evidence saved: letter, sending date{followUp}{reply}.",
     "evidenceFollowUp": ", reminder",
-    "evidenceReply": ", the site's reply"
+    "evidenceReply": ", the site's reply",
+    "checkTitle": "Still there?",
+    "checkBody": "We load the letter's page and check whether your name still appears. We save the date and result as evidence.",
+    "checkNow": "Check now",
+    "checkGone": "You no longer appear on that page",
+    "checkStill": "Your name still appears",
+    "checkUnknown": "Couldn't check automatically (the page blocks robots or requires access). Check it yourself and mark the result."
   },
   "letterTpl": {
     "subject": "Request for erasure of personal data (Article 17 GDPR) — {name}",
