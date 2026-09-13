@@ -43,7 +43,7 @@
     "city": "Ciudad",
     "cityOptional": "opcional",
     "cityPlaceholder": "Valencia",
-    "cityHelp": "Recomendada: con tu ciudad distinguimos mucho mejor tus resultados de los de personas que se llaman como tú.",
+    "cityHelp": "Obligatoria: con tu ciudad no te confundimos con otras personas que se llaman como tú. Sin ella el informe pierde fiabilidad.",
     "consent": "He leído la {privacy} y doy mi consentimiento para que Rastro busque información pública sobre mí y me envíe el informe.",
     "consentPrivacyLink": "política de privacidad",
     "submit": "Enviar enlace de verificación",
@@ -51,7 +51,8 @@
     "onlyYourself": "Solo puedes pedir el informe sobre ti mismo.",
     "occupation": "Profesión o empresa",
     "occupationPlaceholder": "Enfermera en el Hospital La Fe",
-    "occupationHelp": "Opcional. Con esto la IA distingue tus resultados de los de otras personas con tu nombre."
+    "occupationHelp": "Opcional. Con esto la IA distingue tus resultados de los de otras personas con tu nombre.",
+    "cityRequired": "obligatoria"
   },
   "formErrors": {
     "firstName": "Escribe tu nombre.",
@@ -62,7 +63,8 @@
     "generic": "Algo ha fallado por nuestro lado. Vuelve a intentarlo en un momento.",
     "code": "Ese código no es correcto.",
     "codeExpired": "El código ha caducado o se ha usado. Pide un enlace nuevo.",
-    "codeLocked": "Demasiados intentos. Pide un enlace nuevo."
+    "codeLocked": "Demasiados intentos. Pide un enlace nuevo.",
+    "city": "Dinos tu ciudad (nos hace falta para no confundirte con otra persona)."
   },
   "sent": {
     "title": "Revisa tu correo",
@@ -170,7 +172,19 @@
     "accountsHint": "Servicios donde consta que este correo ha tenido cuenta: por las filtraciones en las que aparece y, si existe, por tu perfil público de Gravatar. No sondeamos webs con tu correo.",
     "accountBreach": "Cuenta detectada por la filtración de {year}",
     "accountGravatar": "Enlazada en tu perfil de Gravatar",
-    "accountPassword": "Con contraseña filtrada"
+    "accountPassword": "Con contraseña filtrada",
+    "assistantsTitle": "Lo que responde cada IA",
+    "assistantsBody": "Respuesta literal de cada asistente a «¿quién es {name}?». Así ves exactamente lo que le cuentan a quien pregunte por ti.",
+    "assistantSources": "Fuentes que citó",
+    "rectify": "Pedir rectificación o supresión a {name}",
+    "rectifyHint": "Cada proveedor tiene su vía. Ten a mano la respuesta que te ha dado y las URL de origen.",
+    "assistantSkipped": "No consultado en este informe.",
+    "assistantFailed": "No respondió esta vez; se volverá a consultar en el próximo informe.",
+    "assistantNames": {
+      "perplexity": "Perplexity",
+      "openai": "ChatGPT (OpenAI)",
+      "gemini": "Gemini (Google)"
+    }
   },
   "summary": {
     "breachesNone": "Tu correo no aparece en ninguna filtración conocida.",

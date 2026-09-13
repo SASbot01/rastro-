@@ -4,6 +4,7 @@ import { getGravatar } from "@/lib/gravatar";
 import { buildAccounts } from "@/lib/report/accounts";
 import { searchName } from "@/lib/brave";
 import { askAboutPerson } from "@/lib/perplexity";
+import { askAssistants } from "@/lib/assistants";
 import { writeReport, type PreviousAi } from "@/lib/ai/report";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { normalizeEmail } from "@/lib/crypto";
@@ -173,9 +174,13 @@ export async function runReportJob(requestId: string): Promise<void> {
     const brave = await searchName({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale });
 
     await setStep(row.id, "ai");
-    const perplexity = await askAboutPerson({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale });
+    // Perplexity (3 preguntas) y los demas asistentes configurados (1 pregunta cada uno), en paralelo.
+    const [perplexity, assistants] = await Promise.all([
+      askAboutPerson({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale }),
+      askAssistants({ fullName: row.full_name, city: row.city, occupation: row.occupation, locale }),
+    ]);
     const previous = row.origin === "monitor" ? await previousAssessment(row) : null;
-    const ai = await writeReport({ person, hibp, brave, perplexity, pastes, gravatar, accounts, previous });
+    const ai = await writeReport({ person, hibp, brave, perplexity, assistants: assistants.answers, pastes, gravatar, accounts, previous });
     if (!ai.ok) console.warn(`[job] ${row.id}: Anthropic no disponible (${ai.reason} ${ai.detail ?? ""}); usando plantillas`);
 
     await setStep(row.id, "report");
@@ -207,6 +212,7 @@ export async function runReportJob(requestId: string): Promise<void> {
           gravatar,
           brave,
           perplexity,
+          assistants,
           ai: ai.ok
             ? {
                 model: ai.model,

@@ -43,7 +43,7 @@
     "city": "City",
     "cityOptional": "optional",
     "cityPlaceholder": "Valencia",
-    "cityHelp": "Recommended: with your city we can tell your results apart from people who share your name much better.",
+    "cityHelp": "Required: with your city we don't mix you up with other people with your name. Without it the report is less reliable.",
     "consent": "I have read the {privacy} and I consent to Rastro searching public information about me and sending me the report.",
     "consentPrivacyLink": "privacy policy",
     "submit": "Send verification link",
@@ -51,7 +51,8 @@
     "onlyYourself": "You can only request a report about yourself.",
     "occupation": "Job or company",
     "occupationPlaceholder": "Nurse at La Fe Hospital",
-    "occupationHelp": "Optional. It helps the AI tell your results apart from other people with your name."
+    "occupationHelp": "Optional. It helps the AI tell your results apart from other people with your name.",
+    "cityRequired": "required"
   },
   "formErrors": {
     "firstName": "Enter your first name.",
@@ -62,7 +63,8 @@
     "generic": "Something went wrong on our side. Please try again in a moment.",
     "code": "That code isn't correct.",
     "codeExpired": "The code has expired or was already used. Request a new link.",
-    "codeLocked": "Too many attempts. Request a new link."
+    "codeLocked": "Too many attempts. Request a new link.",
+    "city": "Tell us your city (we need it to avoid confusing you with someone else)."
   },
   "sent": {
     "title": "Check your email",
@@ -170,7 +172,19 @@
     "accountsHint": "Services where this email is known to have had an account: from the breaches it appears in and, if it exists, from your public Gravatar profile. We don't probe websites with your email.",
     "accountBreach": "Account detected from the {year} breach",
     "accountGravatar": "Linked in your Gravatar profile",
-    "accountPassword": "Password leaked"
+    "accountPassword": "Password leaked",
+    "assistantsTitle": "What each AI answers",
+    "assistantsBody": "Literal answer from each assistant to “who is {name}?”. So you see exactly what they tell anyone who asks about you.",
+    "assistantSources": "Sources it cited",
+    "rectify": "Request rectification or erasure from {name}",
+    "rectifyHint": "Each provider has its own channel. Keep the answer it gave you and the source URLs at hand.",
+    "assistantSkipped": "Not queried in this report.",
+    "assistantFailed": "Did not reply this time; it will be queried again in the next report.",
+    "assistantNames": {
+      "perplexity": "Perplexity",
+      "openai": "ChatGPT (OpenAI)",
+      "gemini": "Gemini (Google)"
+    }
   },
   "summary": {
     "breachesNone": "Your email does not appear in any known breach.",

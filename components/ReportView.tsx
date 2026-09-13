@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { brokerForHost } from "@/lib/brokers/catalog";
+import { AI_RECTIFY } from "@/lib/assistants";
 import { ShareButton } from "@/components/ShareButton";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { levelFor, type Level } from "@/lib/report/score";
@@ -22,6 +23,14 @@ export interface ReportData {
   created_at: string;
   generator: "ai" | "template";
   accounts?: KnownAccount[];
+  assistants?: AssistantView[];
+}
+
+export interface AssistantView {
+  provider: "perplexity" | "openai" | "gemini";
+  answer: string;
+  sources: Array<{ title: string; url: string }>;
+  status: "ok" | "failed" | "skipped";
 }
 
 const CATEGORY_ORDER: Category[] = ["breaches", "ai", "profiles", "false"];
@@ -193,6 +202,55 @@ export function ReportView({
                   </li>
                 ))}
               </ul>
+            </div>
+          </details>
+        )}
+
+        {/* Respuesta literal de cada asistente de IA */}
+        {report.assistants && report.assistants.some((a) => a.status === "ok") && (
+          <details className={"group min-w-0 overflow-hidden " + CARD}>
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
+              <span className="flex items-center gap-2 text-[15px] font-semibold text-ink">
+                {tr("report.assistantsTitle")}
+                <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-semibold text-muted">{report.assistants.filter((a) => a.status === "ok").length}</span>
+              </span>
+              <Chevron cls="group-open:rotate-180" />
+            </summary>
+            <div className="border-t border-line px-5 pt-3 pb-4">
+              <p className="text-[13px] leading-relaxed text-muted">{tr("report.assistantsBody", { name: fullName })}</p>
+              <ul className="mt-3 grid gap-3">
+                {report.assistants.map((a) => (
+                  <li key={a.provider} className="rounded-[14px] bg-surface-2 p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p className="text-[14px] font-semibold text-ink">{tr(`report.assistantNames.${a.provider}`)}</p>
+                      {a.status === "ok" && (
+                        <a href={AI_RECTIFY[a.provider].url} target="_blank" rel="noreferrer nofollow" className="text-[12.5px] font-medium text-accent underline underline-offset-4">
+                          {tr("report.rectify", { name: AI_RECTIFY[a.provider].name })}
+                        </a>
+                      )}
+                    </div>
+                    {a.status === "ok" ? (
+                      <>
+                        <blockquote className="mt-2 whitespace-pre-line border-l-2 border-accent pl-3 text-[13.5px] leading-relaxed text-muted">{a.answer}</blockquote>
+                        {a.sources.length > 0 && (
+                          <p className="mt-2 text-[12px] text-faint">
+                            {tr("report.assistantSources")}:{" "}
+                            {a.sources.slice(0, 5).map((s, i) => (
+                              <span key={s.url}>
+                                {i > 0 && " · "}
+                                <a href={s.url} target="_blank" rel="noreferrer nofollow" className="underline underline-offset-4 hover:text-ink">{hostOf(s.url) ?? s.url}</a>
+                              </span>
+                            ))}
+                          </p>
+                        )}
+                      </>
+                    ) : (
+                      <p className="mt-1 text-[13px] text-faint">{tr(a.status === "failed" ? "report.assistantFailed" : "report.assistantSkipped")}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-[12px] text-faint">{tr("report.rectifyHint")}</p>
             </div>
           </details>
         )}

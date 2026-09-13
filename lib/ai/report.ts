@@ -6,6 +6,7 @@ import type { Locale } from "@/lib/i18n";
 import type { HibpResult } from "@/lib/hibp";
 import type { BraveResult } from "@/lib/brave";
 import type { PerplexityResult } from "@/lib/perplexity";
+import type { AssistantAnswer } from "@/lib/assistants";
 import type { PastesResult } from "@/lib/hibp";
 import type { GravatarResult } from "@/lib/gravatar";
 import type { KnownAccount } from "@/lib/report/accounts";
@@ -69,6 +70,7 @@ REGLAS DE FONDO
 - Homónimos: mucha gente comparte nombre. Usa la ciudad y la profesión o empresa (si las hay), la coherencia entre fuentes y el sentido común para decidir qué resultados hablan de esta persona. Lo que probablemente sea otra persona con el mismo nombre NO cuenta como exposición: va en la categoría "false" con severidad "info" o "low", explicando que puede ser un homónimo. Refleja tu confianza global en identity_confidence.
 - Las señales (signals) son estrictas: knows_employer solo si una fuente indica de forma creíble dónde trabaja ESTA persona; knows_city solo si se deduce la ciudad de residencia; contact_data_public solo si aparece un teléfono, dirección postal o correo personal en texto de alguna fuente (no basta con que un sitio de venta de datos liste el nombre); false_claims solo si el asistente de IA afirma algo sobre esta persona que los demás datos contradicen o que mezcla con un homónimo presentándolo como si fuera ella.
 - attributed_profile_urls: lista SOLO las URLs de search_results (perfiles o páginas) que con confianza media o alta pertenecen a esta persona. Si identity_confidence es "low", déjala vacía. Esta lista decide cuántos puntos se restan por perfiles públicos: un homónimo aquí es un error grave.
+- other_assistants trae lo que responden otros asistentes de IA (ChatGPT, Gemini) a "quién es esta persona". Trátalos igual que ai_answers: sirven para las señales (empleo, ciudad, contacto), para detectar datos falsos y para los hallazgos de la categoría "ai". Cuando un hallazgo venga de un asistente concreto, nómbralo en el título o el detalle ("ChatGPT afirma que...").
 - Sin repeticiones: un solo hallazgo por perfil o URL. Si el mismo perfil o sitio aparece varias veces en search_results, únelo en una entrada.
 - Si la persona dio ciudad y/o profesión, un perfil o página que no muestre ninguna señal compatible con ellas (misma ciudad o región, misma profesión o sector, contexto coherente) NO se le atribuye, aunque el nombre coincida exactamente. En ese caso va como posible homónimo.
 - Si la entrada trae previous_assessment (lo que se decidió en el informe anterior de esta misma persona), mantén esas decisiones (identity_confidence, signals, attributed_profile_urls) salvo que los datos nuevos las contradigan claramente. Cambiar de opinión sin evidencia nueva genera avisos falsos.
@@ -107,6 +109,8 @@ export interface InputData {
   hibp: HibpResult;
   brave: BraveResult;
   perplexity: PerplexityResult;
+  /** Respuestas de otros asistentes (OpenAI, Gemini) a "quien es X", si estan configurados. */
+  assistants?: AssistantAnswer[];
   pastes?: PastesResult;
   gravatar?: GravatarResult;
   accounts?: KnownAccount[];
@@ -144,6 +148,7 @@ function compactInput(d: InputData) {
       sources: a.sources.slice(0, 10),
     })),
     ai_answers_status: d.perplexity.ok ? "ok" : `failed: ${d.perplexity.reason}`,
+    other_assistants: (d.assistants ?? []).map((a) => ({ provider: a.provider, answer: a.answer.slice(0, 1500), sources: a.sources.slice(0, 5).map((s) => s.url) })),
     pastes: d.pastes?.checked ? d.pastes.pastes.map((p) => ({ source: p.source, title: p.title, date: p.date, emails_in_dump: p.emailCount })) : undefined,
     gravatar_profile: d.gravatar?.checked && d.gravatar.profile
       ? { name: d.gravatar.profile.displayName, about: d.gravatar.profile.aboutMe, location: d.gravatar.profile.location, url: d.gravatar.profile.profileUrl, links: d.gravatar.profile.urls, accounts: d.gravatar.profile.accounts }

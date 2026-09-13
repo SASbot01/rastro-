@@ -270,8 +270,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
 
       <div className="mt-4">
         <label className={LABEL} htmlFor="city">
-          {tr("form.city")}{" "}
-          <span className="font-normal text-faint">({tr("form.cityOptional")})</span>
+          {tr("form.city")}
         </label>
         <input
           id="city"
@@ -279,6 +278,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
           type="text"
           autoComplete="address-level2"
           placeholder={tr("form.cityPlaceholder")}
+          required
           disabled={busy}
           aria-describedby="city-help"
           className={`mt-1.5 ${FIELD}`}

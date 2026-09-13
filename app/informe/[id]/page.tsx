@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { ReportWaiting } from "@/components/ReportWaiting";
-import { ReportView, type ReportData } from "@/components/ReportView";
+import { ReportView, type ReportData, type AssistantView } from "@/components/ReportView";
 import { getMessages, isLocale, translator, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { supabaseAdmin } from "@/lib/supabase";
@@ -25,6 +25,22 @@ interface RequestRow {
   error: string | null;
 }
 
+interface RawAi {
+  perplexity?: { answers?: Array<{ key: string; answer: string; sources: Array<{ title: string; url: string }> }> };
+  assistants?: { answers?: Array<{ provider: "openai" | "gemini"; answer: string; sources: Array<{ title: string; url: string }> }>; failed?: Array<{ provider: "openai" | "gemini" }>; skipped?: Array<"openai" | "gemini"> };
+}
+
+/** Respuestas literales de cada asistente para la seccion "Lo que responde cada IA". */
+function assistantsFrom(raw: RawAi | null | undefined): AssistantView[] {
+  const out: AssistantView[] = [];
+  const who = raw?.perplexity?.answers?.find((a) => a.key === "who");
+  if (who) out.push({ provider: "perplexity", answer: who.answer, sources: who.sources ?? [], status: "ok" });
+  for (const a of raw?.assistants?.answers ?? []) out.push({ provider: a.provider, answer: a.answer, sources: a.sources ?? [], status: "ok" });
+  for (const f of raw?.assistants?.failed ?? []) out.push({ provider: f.provider, answer: "", sources: [], status: "failed" });
+  for (const p of raw?.assistants?.skipped ?? []) out.push({ provider: p, answer: "", sources: [], status: "skipped" });
+  return out;
+}
+
 async function loadRequest(id: string): Promise<{ request: RequestRow; report: ReportData | null } | null> {
   if (!UUID.test(id)) return null;
   const supabase = supabaseAdmin();
@@ -40,10 +56,13 @@ async function loadRequest(id: string): Promise<{ request: RequestRow; report: R
   if (request.status === "done") {
     const { data } = await supabase
       .from("reports")
-      .select("score, summary, findings, actions, created_at, generator, accounts")
+      .select("score, summary, findings, actions, created_at, generator, accounts, raw")
       .eq("request_id", id)
-      .maybeSingle<ReportData>();
-    report = data;
+      .maybeSingle<ReportData & { raw: RawAi | null }>();
+    if (data) {
+      const { raw, ...rest } = data;
+      report = { ...rest, assistants: assistantsFrom(raw) };
+    }
   }
   return { request, report };
 }

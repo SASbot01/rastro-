@@ -19,7 +19,7 @@ const MAX_AGE_DAYS = 7;
 
 interface Row {
   request_id: string;
-  raw: Partial<Pick<InputData, "hibp" | "brave" | "perplexity" | "pastes" | "gravatar" | "accounts">> & Record<string, unknown>;
+  raw: Partial<Pick<InputData, "hibp" | "brave" | "perplexity" | "pastes" | "gravatar" | "accounts">> & { assistants?: { answers?: InputData["assistants"] } } & Record<string, unknown>;
   requests: { full_name: string; city: string | null; occupation: string | null; locale: string; status: string } | Array<{ full_name: string; city: string | null; occupation: string | null; locale: string; status: string }> | null;
 }
 
@@ -56,6 +56,7 @@ export async function GET(request: Request) {
       hibp: raw.hibp,
       brave: raw.brave,
       perplexity: raw.perplexity,
+      assistants: raw.assistants?.answers,
       pastes: raw.pastes,
       gravatar: raw.gravatar,
       accounts: raw.accounts,
