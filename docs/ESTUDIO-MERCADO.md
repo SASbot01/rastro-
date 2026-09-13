@@ -59,3 +59,17 @@ Por orden de impacto / esfuerzo:
 - Fact.MR, [Personal Data Removal Services Market 2036](https://www.factmr.com/report/personal-data-removal-services-market) · Muuver, [Incogni (ingresos estimados)](https://muuver.com/acquisition/incogni/) · Cybernews, [Incogni review 2026](https://cybernews.com/privacy-tools/incogni-review/)
 - Infobae, [Google permite eliminar datos privados de los resultados](https://www.infobae.com/tecno/2026/02/11/google-ahora-permite-a-los-usuarios-eliminar-datos-privados-de-si-mismos-en-los-resultados-de-busqueda/) · Infobae, [La herramienta de Google que avisa si tu información ha sido expuesta](https://www.infobae.com/tecno/2026/07/30/la-herramienta-de-google-que-te-avisa-si-tu-informacion-personal-ha-sido-expuesta-en-internet-y-como-eliminarla/) · WeLiveSecurity, [Cómo eliminar tus datos de Google](https://www.welivesecurity.com/es/privacidad/como-eliminar-datos-personales-resultados-busqueda-google/)
 - Digital Perito, [Estafas online +125 % en España](https://digitalperito.es/blog/estafas-online-espana-125-por-ciento-aumento-ciberfraude-2026/) · Moncloa.com, [INCIBE y la estafa que usa tu nombre y DNI](https://www.moncloa.com/2026/03/06/incibe-phishing-suplantacion-3364525/) · La Moncloa, [Medidas contra estafas por teléfono y SMS](https://www.lamoncloa.gob.es/serviciosdeprensa/notasprensa/transformacion-digital-y-funcion-publica/paginas/2025/estafas-telefonicas-y-sms.aspx)
+
+
+## Actualización 13-09-2026 (tras el bloque "de 6,5 a 9")
+
+| Dimensión | Antes | Ahora | Qué cambió |
+|---|---|---|---|
+| Solución tal como está | 6 | **8,5** | Rastro envía y persigue las cartas (recordatorio, respuesta, pruebas, AEPD), comprueba si sigues ahí; catálogo español con trámites; v2 simulador y v3 guardián ya en producción. |
+| Calidad del dato | 6 | **7,5** (9 con claves) | Ciudad obligatoria; ChatGPT y Gemini además de Perplexity (falta poner las claves); respuesta literal de cada IA. |
+| Monetización | 5 | **7** | Plan familiar y precios configurables listos; falta decidir precio y crear los enlaces en Stripe. |
+| Distribución | 4 | **6** | 26 páginas SEO "cómo borrar mis datos de X", sitemap/robots, guardián gratis como puerta de entrada. Falta tráfico real y analítica activada. |
+| Confianza / legal | 6 | **7,5** | /como-funciona con fuentes y regla de puntuación; falta el nombre legal y la verificación de Google. |
+| Robustez | 7,5 | **9** | Copias diarias, health, watchdog, deploy que arranca pm2. Falta `pm2 startup` (sudo) y copia fuera del servidor. |
+
+**Media: 6,5 → 8.** Lo que separa del 9 está en manos del propietario (claves, Stripe, `pm2 startup`, nombre legal, analítica) y del mercado (tráfico).

@@ -81,7 +81,17 @@ Pago, plan Pro, monitorización, cartas RGPD, panel de usuario, cuentas persiste
 - **Día 11 ✅** calendario de plazos y aviso de vencimiento.
 - **Día 12 ✅** reclamación AEPD (escrito + guía).
 - **Día 13 ✅** plan Pro con Stripe: Payment Links + webhook firmado e idempotente + portal; vigilancia, cartas y cron exigen Pro. Falta solo configurar en Stripe (clave rotada, webhook con dominio).
-- Campo opcional "profesión o empresa" añadido para distinguir homónimos.
+- Campo opcional "profesión o empresa" añadido para distinguir homónimos. **Ciudad obligatoria** desde el 13-09-2026 (homónimos).
+
+### Bloque "de 6,5 a 9" (13-09-2026) — estado
+
+- ✅ Cartas RGPD **enviadas por Rastro** (`cartas@rastropro.com`, reply-to y copia al usuario), recordatorio automático al día 20, respuesta del sitio con resultado, cronología como prueba, comprobación "¿sigue ahí?" y reclamación AEPD con todas las pruebas. Fuera de producción nunca se envían.
+- ✅ **Catálogo de sitios** (`lib/brokers/catalog.ts`, 26 entradas: brokers españoles, guías, buscadores de personas de EE. UU., redes) con contacto y pasos; páginas públicas SEO `/sitios/[slug]`, sitemap y robots. Las cartas usan el catálogo antes que Perplexity.
+- ✅ **IA en profundidad**: `lib/assistants.ts` (OpenAI y Gemini opcionales por clave), respuesta literal de cada IA en el informe con enlace de rectificación.
+- ✅ **Plan familiar** (`plan_kind` family/member, `/api/family`, propagación desde Stripe) y precios por variables `NEXT_PUBLIC_PRICE_*`; enlaces `STRIPE_LINK_FAMILY_*` y `STRIPE_PRICE_IDS_FAMILY`.
+- ✅ Robustez: `/api/health`, `deploy/backup.sh` (pg_dump diario, 14 días), `deploy/watchdog.sh` (pm2 cada 5 min), `push.sh` arranca pm2 si falta.
+- ✅ Confianza: `/como-funciona`.
+- ✅ **v2 simulador** (`/simulador`, `lib/ai/simulate.ts`, tabla `simulations`) y **v3 guardián** (`/guardian`, `lib/ai/guardian.ts`, Haiku 4.5, 5/día gratis por IP).
 
 ## 6. Modelo de datos (Supabase)
 

@@ -78,3 +78,16 @@ Objetivo: que la persona VEA cómo la atacarían con lo que ya es público de el
 4. **Puntuación de «atacabilidad»** (2 días): 0–100 aparte del de exposición, con las 3 defensas que más la bajan (2FA, alias de correo, gestor de contraseñas).
 5. **Compartible**: imagen «así me engañarían» para redes (sin datos personales), que es el gancho de crecimiento de la v2.
 Coste estimado por usuario: < 0,10 € (IA) + TTS. No requiere APIs nuevas salvo el TTS/clonación.
+
+
+## Bloque "de 6,5 a 9" (13-09-2026) — hecho y lo que queda de tu parte
+Hecho: cartas enviadas por Rastro con seguimiento; catálogo de 26 sitios + páginas /sitios; ChatGPT/Gemini opcionales + respuesta literal; ciudad obligatoria; plan familiar; precios por env; health + backup diario + watchdog; /como-funciona; v2 simulador; v3 guardián.
+
+Pendiente tuyo:
+- [ ] **Claves de OpenAI y Gemini** (`OPENAI_API_KEY`, `GEMINI_API_KEY` en `/home/s4sf/rastro/.env.local` + `pm2 restart rastro`): sin ellas el informe solo consulta Perplexity (y lo dice).
+- [ ] **Plan familiar en Stripe**: crea dos Payment Links (mensual/anual) y pon `STRIPE_LINK_FAMILY_MONTHLY`, `STRIPE_LINK_FAMILY_YEARLY`, `STRIPE_PRICE_IDS_FAMILY` (ids `price_...`) y los textos `NEXT_PUBLIC_PRICE_FAMILY_*`. Hasta entonces la tarjeta familiar no se muestra.
+- [ ] **Precio Pro**: si bajas a 9,99/79 €, cambia los Payment Links en Stripe y `NEXT_PUBLIC_PRICE_MONTHLY/YEARLY`.
+- [ ] **`sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u s4sf --hp /home/s4sf`** y luego `pm2 save`: el 11-09 el servidor se reinició y Rastro quedó fuera de pm2 (lo arrancó otro script); ahora está en pm2 y con watchdog, pero sin `startup` no vuelve solo tras un reinicio.
+- [ ] Copias de seguridad fuera del servidor: `rsync -a 100.114.169.107:~/backups/rastro/ ~/backups-rastro/` desde tu Mac (o un cron).
+- [ ] Cloudflare Web Analytics (Analytics & Logs → Web Analytics → añadir rastropro.com).
+- [ ] Nombre del responsable legal (`NEXT_PUBLIC_LEGAL_OWNER/EMAIL`).

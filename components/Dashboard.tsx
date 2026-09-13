@@ -132,7 +132,7 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
   const quick = [
     { href: "/#form", label: tr("dash.quick.report"), icon: "M12 5v14M5 12h14" },
     { href: "/cuenta/buzon", label: tr("dash.quick.scan"), icon: "M4 6h16v12H4zM4 7l8 6 8-6" },
-    { href: "/herramientas", label: tr("dash.quick.tools"), icon: "M12 3l2 4 4 .5-3 3 1 4.5-4-2.5-4 2.5 1-4.5-3-3 4-.5z" },
+    { href: "/guardian", label: tr("guardian.title"), icon: "M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z" },
   ];
 
   return (

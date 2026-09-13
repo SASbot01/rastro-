@@ -55,10 +55,11 @@ export default async function ToolsPage() {
   const pending = letters
     .filter((l) => l.status === "sent" && l.deadline_at)
     .sort((a, b) => new Date(a.deadline_at!).getTime() - new Date(b.deadline_at!).getTime());
+  // eslint-disable-next-line react-hooks/purity -- fecha de referencia para los plazos
   const today = Date.now();
 
   /** Aviso comun cuando no hay sesion o no hay Pro. */
-  const Gate = () => (
+  const gate = (
     <div className={CARD}>
       <p className="text-[15px] font-semibold text-ink">{!user ? tr("tools.loginTitle") : tr("pro.locked")}</p>
       <p className="mt-1 text-[14px] leading-relaxed text-muted">{!user ? tr("tools.loginBody") : tr("pro.lockedBody", { monthly: prices().monthly, yearly: prices().yearly })}</p>
@@ -84,7 +85,7 @@ export default async function ToolsPage() {
 
         {!user || !pro ? (
           <div className="mt-6 grid gap-3">
-            <Gate />
+            {gate}
             <ul className="grid gap-3 sm:grid-cols-3">
               {[
                 [tr("monitor.title"), tr("monitor.body")],
