@@ -1253,5 +1253,105 @@
       "limit": "Has usado los 5 análisis gratis de hoy. Con Rastro Pro no hay límite.",
       "generic": "No se pudo analizar ahora. Prueba en un momento."
     }
+  },
+  "aiTpl": {
+    "subject": "Solicitud de rectificación y supresión de datos personales generados por IA (arts. 16 y 17 RGPD) — {name}",
+    "date": "{city}{date}",
+    "salutation": "A la atención del responsable de protección de datos de {provider}:",
+    "p1": "Me llamo {name}. Al preguntar a su asistente de inteligencia artificial por mi persona, genera información sobre mí que es inexacta, está desactualizada o carece de base legal para ser tratada y difundida.",
+    "p2": "Reproduzco literalmente la respuesta obtenida:",
+    "noAnswer": "(respuesta no disponible en este momento; adjuntaré captura)",
+    "p3": "En concreto, los siguientes datos son falsos o no deben generarse:",
+    "p4": "Con base en los artículos 16 y 17 del Reglamento (UE) 2016/679 solicito: (1) la rectificación o supresión de esos datos en los sistemas y modelos que los generan o recuperan; (2) que su asistente deje de generar información sobre mi persona a partir de fuentes que no tengan base legal; y (3) confirmación por escrito de las medidas adoptadas. Me opongo expresamente al tratamiento de mis datos con fines de entrenamiento o recuperación (artículo 21).",
+    "p5": "Les recuerdo el plazo máximo de un mes del artículo 12.3. Transcurrido sin respuesta satisfactoria, presentaré reclamación ante la Agencia Española de Protección de Datos.",
+    "p6": "Pueden responderme en esta dirección: {email}",
+    "closing": "Atentamente,"
+  },
+  "aiReq": {
+    "withRastro": "Pedir rectificación con Rastro",
+    "title": "Solicitud a {provider}",
+    "steps": "Cómo se tramita con {provider}"
+  },
+  "images": {
+    "eyebrow": "Tu cara en internet",
+    "title": "Imágenes con tu nombre",
+    "subtitle": "Lo que devuelve un buscador de imágenes al poner tu nombre y tu ciudad. Marca las que seas tú y pide su retirada; las que no, ignóralas.",
+    "none": "No hemos encontrado imágenes asociadas a tu nombre. Buena señal.",
+    "unavailable": "La búsqueda de imágenes no está disponible ahora mismo.",
+    "source": "Ver página",
+    "remove": "Pedir retirada",
+    "removeHint": "Creamos una carta al sitio que aloja la página (derecho de supresión y derecho a la propia imagen). Para quitarla también de Google, usa el formulario de retirada de imágenes.",
+    "google": "Quitar de Google Imágenes",
+    "noReport": "Necesitas un informe (con tu ciudad) para buscar imágenes.",
+    "count": "{n} imágenes",
+    "proOnly": "La búsqueda de imágenes y las cartas de retirada son del plan Pro.",
+    "hubBody": "Fotos que salen al buscar tu nombre, con carta de retirada para cada sitio."
+  },
+  "imageTpl": {
+    "what": "una imagen en la que aparezco, publicada en {url}",
+    "extra": "Además del artículo 17 del RGPD, invoco mi derecho a la propia imagen (artículo 18 de la Constitución y Ley Orgánica 1/1982), pues no he consentido su captación ni su difusión."
+  },
+  "team": {
+    "eyebrow": "Rastro Equipos",
+    "title": "Tu equipo, sin ser el eslabón débil",
+    "subtitle": "El 88 % de los ciberdelitos son estafas, y casi todas empiezan por una persona. Rastro Equipos da a cada empleado su informe, vigilancia, cartas y el guardián, y a ti un panel con el riesgo humano de tu empresa: sin ver sus datos, solo su puntuación si la comparten.",
+    "smallName": "Pyme",
+    "largeName": "Empresa",
+    "per": "al mes · hasta {n} personas",
+    "cta": "Contratar",
+    "contact": "Hablar con nosotros",
+    "features": [
+      "Cada persona tiene su cuenta Pro completa: informe, vigilancia diaria y mensual, cartas RGPD enviadas por Rastro, escáner de Gmail, simulador y guardián.",
+      "Panel de empresa: quién tiene el informe hecho, puntuación media, cuántos tienen contraseñas filtradas, quién activó la vigilancia.",
+      "Privacidad por diseño: el empleado decide si comparte su puntuación; la empresa nunca ve hallazgos ni datos.",
+      "Invitaciones por correo, altas y bajas en un clic, exportación a CSV.",
+      "Formación real: cada empleado ve cómo le engañarían a él con sus propios datos."
+    ],
+    "dashTitle": "Panel de equipo",
+    "seats": "{used} de {total} plazas",
+    "invite": "Invitar",
+    "emailPlaceholder": "persona@tuempresa.com",
+    "remove": "Quitar",
+    "export": "Exportar CSV",
+    "col": {
+      "person": "Persona",
+      "status": "Estado",
+      "score": "Puntuación",
+      "passwords": "Contraseñas filtradas",
+      "monitoring": "Vigilancia",
+      "updated": "Último informe"
+    },
+    "status": {
+      "invited": "Invitado",
+      "active": "Activo",
+      "noreport": "Sin informe"
+    },
+    "notShared": "No compartida",
+    "shared": "Compartida",
+    "on": "Activa",
+    "off": "No",
+    "avg": "Puntuación media",
+    "withPasswords": "Con contraseñas filtradas",
+    "withReport": "Con informe",
+    "withMonitoring": "Con vigilancia",
+    "shareTitle": "Compartir con mi empresa",
+    "shareBody": "{org} te ha incluido en Rastro Equipos. Si lo activas, tu empresa verá solo tu puntuación, si tienes contraseñas filtradas y si tienes la vigilancia activa. Nunca tus hallazgos, tu informe ni tus datos. Puedes desactivarlo cuando quieras.",
+    "shareOn": "Compartir mi puntuación",
+    "shareOff": "Dejar de compartir",
+    "notOwner": "Solo el titular del equipo puede gestionarlo.",
+    "full": "No quedan plazas.",
+    "invalid": "Ese correo no vale.",
+    "exists": "Esa persona ya está en otro equipo o paga su propio Pro.",
+    "inviteEmail": {
+      "subject": "{org} te ha dado Rastro Pro",
+      "greeting": "Hola:",
+      "body": "{org} te ha incluido en Rastro Equipos. Ya tienes Rastro Pro: informe de exposición, vigilancia, cartas RGPD enviadas por nosotros, escáner de Gmail, simulador de estafas y guardián. Tu empresa no ve tus datos ni tus hallazgos; solo tu puntuación, y solo si tú decides compartirla.",
+      "ask": "Entra con este enlace y pide tu primer informe.",
+      "cta": "Entrar en Rastro",
+      "footer": "Si no conoces a esta empresa, ignora este correo."
+    },
+    "nameLabel": "Nombre de la empresa",
+    "rename": "Guardar",
+    "hubBody": "Gestiona las personas de tu equipo y su riesgo."
   }
 }

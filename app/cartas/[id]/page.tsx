@@ -9,6 +9,7 @@ import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { LetterEvent } from "@/lib/letters";
 import { brokerForHost } from "@/lib/brokers/catalog";
+import { AI_PROVIDERS, type AiProviderKey } from "@/lib/ai-providers";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,8 @@ interface Letter {
   events: LetterEvent[] | null;
   last_check_at: string | null;
   still_listed: boolean | null;
+  kind: "site" | "ai" | "image";
+  provider: string | null;
 }
 
 const STATUS_CLASS: Record<Letter["status"], string> = {
@@ -73,7 +76,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
   const { data: letter } = UUID.test(id)
     ? await supabaseAdmin()
         .from("letters")
-        .select("id, request_id, host, target_url, contact, contact_source, subject, body, locale, status, sent_at, deadline_at, sent_via, follow_up_sent_at, reply_note, outcome, events, last_check_at, still_listed")
+        .select("id, request_id, host, target_url, contact, contact_source, subject, body, locale, status, sent_at, deadline_at, sent_via, follow_up_sent_at, reply_note, outcome, events, last_check_at, still_listed, kind, provider")
         .eq("id", id)
         .eq("user_id", user.id)
         .maybeSingle<Letter>()
@@ -100,7 +103,8 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
     );
   }
 
-  const known = brokerForHost(letter.host);
+  const aiProvider = letter.kind === "ai" && letter.provider && letter.provider in AI_PROVIDERS ? AI_PROVIDERS[letter.provider as AiProviderKey] : null;
+  const known = aiProvider ? null : brokerForHost(letter.host);
   const isUrlContact = letter.contact?.startsWith("http");
   const emailContact = letter.contact && !isUrlContact ? letter.contact : "";
   const fmtShort = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" });
@@ -150,6 +154,22 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
             <p className="mt-4 text-[13px] leading-relaxed text-muted">{tr("letters.contactNotFound")}</p>
           )}
         </section>
+
+        {/* Proveedor de IA: pasos del portal de derechos */}
+        {aiProvider && (
+          <section className="mt-4 rounded-card border border-accent/40 bg-accent-soft p-5">
+            <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("aiReq.steps", { provider: aiProvider.name })}</h2>
+            <ol className="mt-3 grid gap-2">
+              {aiProvider.steps.map((st, i) => (
+                <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-ink">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-[12px] font-semibold text-black">{i + 1}</span>
+                  {st}
+                </li>
+              ))}
+            </ol>
+            <a href={aiProvider.url} target="_blank" rel="noreferrer nofollow" className="mt-3 inline-block text-[13px] font-medium text-accent underline underline-offset-4">{aiProvider.url}</a>
+          </section>
+        )}
 
         {/* Tramite conocido (catalogo) */}
         {known && (

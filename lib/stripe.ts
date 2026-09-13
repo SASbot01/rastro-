@@ -44,6 +44,16 @@ function isFamilySubscription(sub: Stripe.Subscription): boolean {
   return fam.length > 0 && (sub.items?.data ?? []).some((it) => fam.includes(it.price?.id ?? ""));
 }
 
+/** Precios de Rastro Equipos: STRIPE_PRICE_IDS_TEAM (pequeno) y STRIPE_PRICE_IDS_TEAM_LARGE. Devuelve las plazas. */
+function teamSeatsFor(sub: Stripe.Subscription): number | null {
+  const ids = (sub.items?.data ?? []).map((it) => it.price?.id ?? "");
+  const small = (process.env.STRIPE_PRICE_IDS_TEAM ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  const large = (process.env.STRIPE_PRICE_IDS_TEAM_LARGE ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  if (ids.some((id) => large.includes(id))) return Number(process.env.NEXT_PUBLIC_TEAM_SEATS_LARGE || 25);
+  if (ids.some((id) => small.includes(id))) return Number(process.env.NEXT_PUBLIC_TEAM_SEATS || 10);
+  return null;
+}
+
 /** Aplica el estado de una suscripcion a la cuenta (por id de usuario o por correo del cliente). */
 export async function syncSubscription(sub: Stripe.Subscription, hint: { userId?: string | null; email?: string | null; locale?: Locale }): Promise<void> {
   if (!isRastroSubscription(sub)) {
@@ -71,6 +81,7 @@ export async function syncSubscription(sub: Stripe.Subscription, hint: { userId?
 
   const active = ACTIVE.has(sub.status);
   const family = isFamilySubscription(sub);
+  const teamSeats = teamSeatsFor(sub);
   const patch = {
     // 'canceling' = sigue activa hasta el fin del periodo, pero no renovara.
     plan_status: sub.cancel_at_period_end && active ? "canceling" : sub.status,
@@ -80,8 +91,19 @@ export async function syncSubscription(sub: Stripe.Subscription, hint: { userId?
   };
   const { error } = await supabase
     .from("users")
-    .update({ stripe_customer_id: customerId, stripe_subscription_id: sub.id, plan_kind: family ? "family" : "individual", ...patch })
+    .update({ stripe_customer_id: customerId, stripe_subscription_id: sub.id, plan_kind: teamSeats ? "team" : family ? "family" : "individual", ...patch })
     .eq("id", user.id);
+  // Equipos: crear la organizacion la primera vez y ajustar plazas; los miembros siguen al titular.
+  if (teamSeats) {
+    const { data: org } = await supabase.from("orgs").select("id").eq("owner_user_id", user.id).maybeSingle<{ id: string }>();
+    if (org) await supabase.from("orgs").update({ seats: teamSeats }).eq("id", org.id);
+    else {
+      const { data: created } = await supabase.from("orgs").insert({ name: hint.email?.split("@")[1] ?? "Equipo", owner_user_id: user.id, seats: teamSeats }).select("id").single<{ id: string }>();
+      if (created) await supabase.from("users").update({ org_id: created.id, org_role: "owner" }).eq("id", user.id);
+    }
+    const { data: org2 } = await supabase.from("orgs").select("id").eq("owner_user_id", user.id).maybeSingle<{ id: string }>();
+    if (org2) await supabase.from("users").update(patch).eq("org_id", org2.id).eq("org_role", "member");
+  }
   if (error) console.error("[stripe] users.update fallo:", error.message);
   else console.log(`[stripe] usuario ${user.id}: ${sub.status} -> plan ${active ? "pro" : "free"}${family ? " (familiar)" : ""}`);
 

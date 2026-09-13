@@ -39,3 +39,25 @@ export function paymentLinks(email?: string | null, userId?: string | null): { m
     familyYearly: decorate(process.env.STRIPE_LINK_FAMILY_YEARLY),
   };
 }
+
+
+/** Rastro Equipos (v5): plazas y precios por variables de entorno. */
+export const TEAM_SEATS = Number(process.env.NEXT_PUBLIC_TEAM_SEATS || 10);
+export function teamPrices(): { small: string; smallSeats: number; large: string; largeSeats: number } {
+  return {
+    small: process.env.NEXT_PUBLIC_PRICE_TEAM_SMALL || "149 €",
+    smallSeats: Number(process.env.NEXT_PUBLIC_TEAM_SEATS || 10),
+    large: process.env.NEXT_PUBLIC_PRICE_TEAM_LARGE || "299 €",
+    largeSeats: Number(process.env.NEXT_PUBLIC_TEAM_SEATS_LARGE || 25),
+  };
+}
+export function teamLinks(email?: string | null, userId?: string | null): { small: string | null; large: string | null } {
+  const decorate = (base: string | undefined) => {
+    if (!base) return null;
+    const url = new URL(base);
+    if (email) url.searchParams.set("prefilled_email", email);
+    if (userId) url.searchParams.set("client_reference_id", userId);
+    return url.toString();
+  };
+  return { small: decorate(process.env.STRIPE_LINK_TEAM_SMALL), large: decorate(process.env.STRIPE_LINK_TEAM_LARGE) };
+}

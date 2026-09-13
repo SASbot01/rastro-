@@ -91,3 +91,9 @@ Pendiente tuyo:
 - [ ] Copias de seguridad fuera del servidor: `rsync -a 100.114.169.107:~/backups/rastro/ ~/backups-rastro/` desde tu Mac (o un cron).
 - [ ] Cloudflare Web Analytics (Analytics & Logs → Web Analytics → añadir rastropro.com).
 - [ ] Nombre del responsable legal (`NEXT_PUBLIC_LEGAL_OWNER/EMAIL`).
+
+## v4 y v5 (13-09-2026) — hecho
+- v4: solicitudes de rectificación a ChatGPT/Gemini/Perplexity/Meta/Copilot desde el informe (cartas kind='ai'); imágenes con tu nombre + carta de retirada.
+- v5: Rastro Equipos (landing /equipos, panel /equipo, invitaciones, consentimiento del empleado, CSV, Stripe).
+- [ ] **Stripe Equipos**: Payment Links y price ids → `STRIPE_LINK_TEAM_SMALL/LARGE`, `STRIPE_PRICE_IDS_TEAM[_LARGE]`. Sin ellos, la landing muestra "Hablar con nosotros" (soporte).
+- [ ] Para probar un equipo sin Stripe: `update users set plan='pro', plan_until=now()+interval '1 year', plan_kind='team' where email='...'` y luego /equipo.

@@ -92,6 +92,8 @@ Pago, plan Pro, monitorización, cartas RGPD, panel de usuario, cuentas persiste
 - ✅ Robustez: `/api/health`, `deploy/backup.sh` (pg_dump diario, 14 días), `deploy/watchdog.sh` (pm2 cada 5 min), `push.sh` arranca pm2 si falta.
 - ✅ Confianza: `/como-funciona`.
 - ✅ **v2 simulador** (`/simulador`, `lib/ai/simulate.ts`, tabla `simulations`) y **v3 guardián** (`/guardian`, `lib/ai/guardian.ts`, Haiku 4.5, 5/día gratis por IP).
+- ✅ **v4 identidad frente a la IA**: `lib/ai-providers.ts` (OpenAI, Gemini, Perplexity, Meta, Microsoft), `/api/ai-requests` (carta `kind='ai'` con la respuesta literal), `/imagenes` (Brave Images) con carta `kind='image'` (derecho a la propia imagen). Cara/voz clonadas: NO (sin proveedor con consentimiento verificado).
+- ✅ **v5 Rastro Equipos**: tabla `orgs`, `users.org_id/org_role/org_share_at`, `plan_kind='team'`; `/equipos` (landing, precios `NEXT_PUBLIC_PRICE_TEAM_*`), `/equipo` (panel del titular), `/api/org*`; Stripe `STRIPE_PRICE_IDS_TEAM[_LARGE]` crea la org y propaga a miembros. La empresa solo ve puntuación/contraseñas filtradas/vigilancia si el empleado activa "compartir".
 
 ## 6. Modelo de datos (Supabase)
 

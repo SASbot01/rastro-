@@ -137,3 +137,42 @@ export async function searchName(opts: {
   const hits = (raw.web?.results ?? []).slice(0, RESULT_COUNT).map(toHit);
   return { ok: true, query, hits, raw };
 }
+
+
+export interface ImageHit {
+  title: string;
+  /** Pagina donde esta la imagen. */
+  pageUrl: string;
+  hostname: string;
+  thumbnail: string;
+  /** URL de la imagen original, si Brave la da. */
+  imageUrl: string | null;
+}
+
+/**
+ * v4 — imagenes publicas asociadas al nombre (Brave Images). Solo nombre y
+ * ciudad, safesearch estricto. Si el plan no incluye imagenes, devuelve ok:false.
+ */
+export async function searchImages(opts: { fullName: string; city?: string | null; count?: number }): Promise<{ ok: true; hits: ImageHit[] } | { ok: false; reason: string }> {
+  const q = [`"${opts.fullName}"`, opts.city ?? ""].filter(Boolean).join(" ");
+  const params = new URLSearchParams({ q, count: String(opts.count ?? 24), safesearch: "strict" });
+  try {
+    const res = await fetch(`https://api.search.brave.com/res/v1/images/search?${params}`, {
+      headers: { accept: "application/json", "x-subscription-token": serverEnv.braveApiKey },
+      signal: AbortSignal.timeout(15_000),
+      cache: "no-store",
+    });
+    if (!res.ok) return { ok: false, reason: `HTTP ${res.status}` };
+    const data = (await res.json()) as { results?: Array<{ title?: string; url?: string; thumbnail?: { src?: string }; properties?: { url?: string } }> };
+    const hits: ImageHit[] = [];
+    for (const r of data.results ?? []) {
+      if (!r.url || !r.thumbnail?.src) continue;
+      let hostname = "";
+      try { hostname = new URL(r.url).hostname.replace(/^www\./, ""); } catch { continue; }
+      hits.push({ title: r.title ?? "", pageUrl: r.url, hostname, thumbnail: r.thumbnail.src, imageUrl: r.properties?.url ?? null });
+    }
+    return { ok: true, hits };
+  } catch (e) {
+    return { ok: false, reason: String(e).slice(0, 120) };
+  }
+}

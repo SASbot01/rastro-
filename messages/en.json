@@ -1253,5 +1253,105 @@
       "limit": "You've used today's 5 free analyses. Rastro Pro has no limit.",
       "generic": "Couldn't analyse right now. Try again in a moment."
     }
+  },
+  "aiTpl": {
+    "subject": "Request for rectification and erasure of AI-generated personal data (Arts. 16 and 17 GDPR) — {name}",
+    "date": "{city}{date}",
+    "salutation": "To the data protection officer of {provider}:",
+    "p1": "My name is {name}. When your AI assistant is asked about me, it generates information that is inaccurate, outdated or has no legal basis to be processed and disseminated.",
+    "p2": "I reproduce the answer obtained verbatim:",
+    "noAnswer": "(answer not available right now; I will attach a screenshot)",
+    "p3": "Specifically, the following data are false or must not be generated:",
+    "p4": "Under Articles 16 and 17 of Regulation (EU) 2016/679 I request: (1) the rectification or erasure of that data in the systems and models that generate or retrieve it; (2) that your assistant stop generating information about me from sources without a legal basis; and (3) written confirmation of the measures taken. I expressly object to the processing of my data for training or retrieval purposes (Article 21).",
+    "p5": "I remind you of the one-month deadline in Article 12.3. Without a satisfactory reply I will lodge a complaint with the supervisory authority.",
+    "p6": "You can reply to me at: {email}",
+    "closing": "Sincerely,"
+  },
+  "aiReq": {
+    "withRastro": "Request rectification with Rastro",
+    "title": "Request to {provider}",
+    "steps": "How it works with {provider}"
+  },
+  "images": {
+    "eyebrow": "Your face online",
+    "title": "Images with your name",
+    "subtitle": "What an image search returns for your name and city. Mark the ones that are you and request removal; ignore the rest.",
+    "none": "We found no images linked to your name. Good sign.",
+    "unavailable": "Image search is not available right now.",
+    "source": "View page",
+    "remove": "Request removal",
+    "removeHint": "We create a letter to the site hosting the page (right to erasure and right to one's own image). To remove it from Google too, use the image removal form.",
+    "google": "Remove from Google Images",
+    "noReport": "You need a report (with your city) to search images.",
+    "count": "{n} images",
+    "proOnly": "Image search and removal letters belong to Pro.",
+    "hubBody": "Photos that show up when searching your name, with a removal letter for each site."
+  },
+  "imageTpl": {
+    "what": "an image in which I appear, published at {url}",
+    "extra": "Besides Article 17 GDPR, I invoke my right to my own image (Article 18 of the Spanish Constitution and Organic Law 1/1982), as I have not consented to its capture or dissemination."
+  },
+  "team": {
+    "eyebrow": "Rastro Teams",
+    "title": "Your team, without being the weak link",
+    "subtitle": "88% of cybercrime is fraud, and almost all of it starts with a person. Rastro Teams gives every employee their report, monitoring, letters and the guardian, and gives you a dashboard with your company's human risk: without seeing their data, only their score if they share it.",
+    "smallName": "Small business",
+    "largeName": "Company",
+    "per": "per month · up to {n} people",
+    "cta": "Subscribe",
+    "contact": "Talk to us",
+    "features": [
+      "Each person gets a full Pro account: report, daily and monthly monitoring, GDPR letters sent by Rastro, Gmail scanner, simulator and guardian.",
+      "Company dashboard: who has a report, average score, how many have leaked passwords, who enabled monitoring.",
+      "Privacy by design: the employee decides whether to share their score; the company never sees findings or data.",
+      "Email invitations, add and remove in one click, CSV export.",
+      "Real training: each employee sees how they'd be scammed with their own data."
+    ],
+    "dashTitle": "Team dashboard",
+    "seats": "{used} of {total} seats",
+    "invite": "Invite",
+    "emailPlaceholder": "person@yourcompany.com",
+    "remove": "Remove",
+    "export": "Export CSV",
+    "col": {
+      "person": "Person",
+      "status": "Status",
+      "score": "Score",
+      "passwords": "Leaked passwords",
+      "monitoring": "Monitoring",
+      "updated": "Last report"
+    },
+    "status": {
+      "invited": "Invited",
+      "active": "Active",
+      "noreport": "No report"
+    },
+    "notShared": "Not shared",
+    "shared": "Shared",
+    "on": "On",
+    "off": "No",
+    "avg": "Average score",
+    "withPasswords": "With leaked passwords",
+    "withReport": "With report",
+    "withMonitoring": "With monitoring",
+    "shareTitle": "Share with my company",
+    "shareBody": "{org} included you in Rastro Teams. If you enable it, your company sees only your score, whether you have leaked passwords and whether monitoring is on. Never your findings, report or data. You can turn it off any time.",
+    "shareOn": "Share my score",
+    "shareOff": "Stop sharing",
+    "notOwner": "Only the team owner can manage it.",
+    "full": "No seats left.",
+    "invalid": "That email isn't valid.",
+    "exists": "That person is already in another team or pays their own Pro.",
+    "inviteEmail": {
+      "subject": "{org} gave you Rastro Pro",
+      "greeting": "Hi:",
+      "body": "{org} included you in Rastro Teams. You now have Rastro Pro: exposure report, monitoring, GDPR letters sent by us, Gmail scanner, scam simulator and guardian. Your company doesn't see your data or findings; only your score, and only if you decide to share it.",
+      "ask": "Sign in with this link and request your first report.",
+      "cta": "Open Rastro",
+      "footer": "If you don't know this company, ignore this email."
+    },
+    "nameLabel": "Company name",
+    "rename": "Save",
+    "hubBody": "Manage the people in your team and their risk."
   }
 }

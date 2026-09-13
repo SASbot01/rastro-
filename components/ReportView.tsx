@@ -224,9 +224,20 @@ export function ReportView({
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-[14px] font-semibold text-ink">{tr(`report.assistantNames.${a.provider}`)}</p>
                       {a.status === "ok" && (
-                        <a href={AI_RECTIFY[a.provider].url} target="_blank" rel="noreferrer nofollow" className="text-[12.5px] font-medium text-accent underline underline-offset-4">
-                          {tr("report.rectify", { name: AI_RECTIFY[a.provider].name })}
-                        </a>
+                        <span className="flex flex-wrap items-center gap-3">
+                          {pro ? (
+                            <form action="/api/ai-requests" method="post">
+                              <input type="hidden" name="request_id" value={requestId} />
+                              <input type="hidden" name="provider" value={a.provider} />
+                              <button type="submit" className="text-[12.5px] font-medium text-accent underline underline-offset-4">{tr("aiReq.withRastro")}</button>
+                            </form>
+                          ) : (
+                            <Link href="/pro" className="text-[12.5px] font-medium text-muted underline underline-offset-4">{tr("aiReq.withRastro")} · {tr("pro.badge")}</Link>
+                          )}
+                          <a href={AI_RECTIFY[a.provider].url} target="_blank" rel="noreferrer nofollow" className="text-[12.5px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+                            {tr("report.rectify", { name: AI_RECTIFY[a.provider].name })}
+                          </a>
+                        </span>
                       )}
                     </div>
                     {a.status === "ok" ? (

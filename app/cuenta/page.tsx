@@ -61,6 +61,8 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
   const { data: familyMembers } = user.plan_kind === "family"
     ? await supabase.from("users").select("id, email, last_seen_at").eq("family_owner_id", user.id).eq("plan_kind", "member").order("created_at").returns<{ id: string; email: string; last_seen_at: string | null }[]>()
     : { data: null };
+  const { data: orgRow } = user.org_id ? await supabase.from("orgs").select("name").eq("id", user.org_id).maybeSingle<{ name: string }>() : { data: null };
+  const orgName = orgRow?.name ?? null;
   const { data: familyOwner } = user.plan_kind === "member" && user.family_owner_id
     ? await supabase.from("users").select("email").eq("id", user.family_owner_id).maybeSingle<{ email: string }>()
     : { data: null };
@@ -127,6 +129,21 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
             daily={dailyRows ?? []}
             justEnabled={vigilancia === "on" && user.monitoring}
           />
+
+          {/* Rastro Equipos: consentimiento del miembro / acceso del titular */}
+          {user.org_role === "member" && orgName && (
+            <section className={CARD}>
+              <p className="text-[15px] font-semibold text-ink">{tr("team.shareTitle")}</p>
+              <p className="mt-1 text-[13.5px] leading-relaxed text-muted">{tr("team.shareBody", { org: orgName })}</p>
+              <form action="/api/org/share" method="post" className="mt-3">
+                <input type="hidden" name="share" value={user.org_share_at ? "0" : "1"} />
+                <button type="submit" className={user.org_share_at ? "text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink" : "rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90"}>{tr(user.org_share_at ? "team.shareOff" : "team.shareOn")}</button>
+              </form>
+            </section>
+          )}
+          {user.plan_kind === "team" && (
+            <Link href="/equipo" className={CARD + " block hover:border-accent"}><p className="text-[15px] font-semibold text-ink">{tr("team.dashTitle")} →</p><p className="mt-1 text-[13.5px] text-muted">{tr("team.hubBody")}</p></Link>
+          )}
 
           {/* Plan */}
           <section className={CARD}>

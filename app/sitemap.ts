@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/sitios`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/como-funciona`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/guardian`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/equipos`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     ...BROKERS.map((b) => ({ url: `${BASE}/sitios/${b.slug}`, lastModified: new Date(b.checked), changeFrequency: "monthly" as const, priority: 0.7 })),
     { url: `${BASE}/privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE}/aviso-legal`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
