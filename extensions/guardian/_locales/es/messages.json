@@ -1,0 +1,17 @@
+{
+  "name": { "message": "Rastro Guardián · revisión voluntaria" },
+  "description": { "message": "Selecciona un mensaje sospechoso y llévalo a Guardián. Tú decides qué revisar y cuándo enviarlo." },
+  "title": { "message": "¿Te suena raro?" },
+  "intro": { "message": "Revisa el texto antes de llevarlo a Guardián." },
+  "selected": { "message": "Mensaje que quieres comprobar" },
+  "read": { "message": "Usar el texto seleccionado" },
+  "open": { "message": "Copiar y abrir Guardián" },
+  "clear": { "message": "Vaciar" },
+  "note": { "message": "No leemos tu buzón. Solo se toma el texto que seleccionas al pulsar el botón. No se guarda ni se envía automáticamente." },
+  "copied": { "message": "Texto copiado. Pégalo en Guardián y pulsa Analizar cuando estés listo." },
+  "empty": { "message": "Selecciona texto en la página o pégalo aquí primero." },
+  "error": { "message": "No pudimos leer esta página. Copia el mensaje y pégalo aquí." },
+  "copyError": { "message": "No pudimos copiarlo. Copia el texto manualmente y abre rastropro.com/guardian." },
+  "truncated": { "message": "Se han tomado los primeros 4.000 caracteres. Revisa el texto." },
+  "limit": { "message": "Máximo 4.000 caracteres. Elimina códigos, contraseñas o datos bancarios antes de continuar." }
+}

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { AskBubble } from "@/components/AskBubble";
 import { GuideChecklist } from "@/components/GuideChecklist";
+import { ScoreRing } from "@/components/experience/ScoreRing";
+import { EmptyState } from "@/components/experience/EmptyState";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { levelFor, type Level } from "@/lib/report/score";
 import { supabaseAdmin } from "@/lib/supabase";
@@ -25,11 +27,11 @@ const LEVEL_HEX: Record<Level, string> = { green: "#4dfc5f", orange: "#ffb020", 
 const RULE_COLOR: Record<string, string> = {
   breachWithPassword: "#ff5f5f",
   breachWithoutPassword: "#ffb020",
-  publicProfile: "#7aa2ff",
-  aiKnowsEmployer: "#c58bff",
-  aiKnowsCity: "#e0b0ff",
-  contactDataPublic: "#ff8a5f",
-  aiFalseData: "#ffd166",
+  publicProfile: "#a3a39e",
+  aiKnowsEmployer: "#8c988b",
+  aiKnowsCity: "#b8c4b4",
+  contactDataPublic: "#ffb020",
+  aiFalseData: "#d0b87a",
 };
 const SEVERITY_RANK = { high: 0, medium: 1, low: 2, info: 3 } as const;
 const SEVERITY_CLS = { high: "bg-danger/15 text-danger", medium: "bg-warn/15 text-warn", low: "bg-accent-soft text-accent", info: "bg-surface-2 text-muted" } as const;
@@ -42,12 +44,14 @@ function Donut({ segments, score, size = 168 }: { segments: Array<{ key: string;
   const c = 2 * Math.PI * r;
   let offset = 0;
   const parts = [...segments.map((s) => ({ ...s, value: Math.abs(s.points) })), { key: "remaining", points: score, color: "#4dfc5f", value: score }];
+  // Penalties can total more than 100 when the score is clamped at zero.
+  const total = Math.max(100, parts.reduce((sum, part) => sum + part.value, 0));
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>
       <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full -rotate-90" aria-hidden="true">
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#1d1d1d" strokeWidth={stroke} />
         {parts.map((p) => {
-          const len = (p.value / 100) * c;
+          const len = (p.value / total) * c;
           const el = len > 0 && (
             <circle key={p.key} cx={size / 2} cy={size / 2} r={r} fill="none" stroke={p.color} strokeWidth={stroke} strokeLinecap="butt" strokeDasharray={`${Math.max(0, len - 2)} ${c - Math.max(0, len - 2)}`} strokeDashoffset={-offset} />
           );
@@ -73,7 +77,7 @@ function Bars({ points, locale }: { points: Array<{ score: number; date: Date }>
   const slot = (w - pad) / n;
   const bw = Math.min(34, slot * 0.55);
   return (
-    <svg viewBox={`0 0 ${w} ${h + 22}`} className="h-auto w-full" role="img" aria-label="history">
+    <svg viewBox={`0 0 ${w} ${h + 22}`} className="h-auto w-full" role="img" aria-label={points.map((p) => `${fmt.format(p.date)}: ${p.score}/100`).join("; ")}>
       {[0, 50, 100].map((v) => {
         const y = h - (v / 100) * h;
         return (
@@ -138,12 +142,11 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
   return (
     <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-10">
       <h1 className="text-[24px] font-semibold tracking-[-0.025em] text-ink">{tr("dash.hello", { name })}</h1>
+      <p className="mt-2 text-sm text-muted">{tr("experience.dashboardBody")}</p>
 
       {!latest ? (
         <section className={CARD + " mt-5 p-6"}>
-          <p className="text-[16px] font-semibold text-ink">{tr("dash.noReportTitle")}</p>
-          <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("dash.noReportBody")}</p>
-          <Link href="/#form" className="mt-4 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("dash.noReportCta")}</Link>
+          <EmptyState title={tr("dash.noReportTitle")} body={tr("dash.noReportBody")} href="/#form" cta={tr("dash.noReportCta")}/>
         </section>
       ) : (
         <DashboardBody locale={locale} messages={messages} user={user} latest={latest} previous={previous} list={list} scan={scan ?? null} letters={letters ?? 0} quick={quick} dateFmt={dateFmt} />
@@ -183,11 +186,7 @@ function DashboardBody({ locale, messages, user, latest, previous, list, scan, l
       {/* Puntuacion */}
       <section className="relative min-w-0 overflow-hidden rounded-card border border-line bg-surface p-6 lg:col-span-2">
         <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full blur-3xl" style={{ background: LEVEL_HEX[level], opacity: 0.16 }} aria-hidden="true" />
-        <p className="text-[13px] text-muted">{tr("dash.exposure")}</p>
-        <p className="mt-1 flex items-baseline gap-2">
-          <span className={"text-[56px] font-semibold leading-none tracking-[-0.05em] " + LEVEL_TEXT[level]}>{latest.score}</span>
-          <span className="text-[18px] text-faint">{tr("dash.outOf")}</span>
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-6"><div><p className="ex-eyebrow">{tr("experience.label")}</p><h2 className="mt-3 max-w-[16ch] text-3xl font-medium tracking-[-.04em]">{tr("experience.dashboardTitle")}</h2><p className="ex-note mt-3">{tr("experience.highScore")}</p><Link className="ex-button mt-5" href={`/informe/${latest.request_id}`}>{tr("experience.viewReport")} ↗</Link></div><ScoreRing score={latest.score} label={tr("experience.score")} size={180}/></div>
         <div className="mt-3 flex flex-wrap gap-2">
           <span className={"rounded-full px-3 py-1 text-[12.5px] font-semibold " + SEVERITY_CLS[level === "green" ? "low" : level === "orange" ? "medium" : "high"]}>{tr(`report.level.${level}`)}</span>
           <span className="rounded-full border border-line bg-surface-2 px-3 py-1 text-[12.5px] text-muted">
@@ -277,7 +276,7 @@ function DashboardBody({ locale, messages, user, latest, previous, list, scan, l
       {/* Guia */}
       <section className={CARD + " p-6"}>
         <h2 className="text-[16px] font-semibold text-ink">{tr("dash.guideTitle")}</h2>
-        <p className="mt-1 text-[13px] text-muted">{actions.length ? tr("dash.guideBody") : tr("dash.guideEmpty")}</p>
+        <p className="mt-1 text-[13px] text-muted">{actions.length ? tr("experience.missionHint") : tr("dash.guideEmpty")}</p>
         {actions.length > 0 && (
           <div className="mt-4">
             <GuideChecklist reportId={latest.request_id} items={actions} doneTemplate={tr("dash.guideDone")} />

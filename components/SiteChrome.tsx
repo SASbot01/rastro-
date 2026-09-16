@@ -21,6 +21,7 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
         </Link>
         <TopTabs messages={messages} />
         <div className="flex items-center gap-2">
+          <Link href="/ayuda-urgente" aria-label={tr("experience.emergency")} title={tr("experience.emergency")} className="flex h-9 w-9 items-center justify-center rounded-full border border-danger/40 text-danger font-semibold">!</Link>
           <Link
             href="/soporte"
             aria-label={tr("support.button")}

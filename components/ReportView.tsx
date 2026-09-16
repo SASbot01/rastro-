@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ReportExperience } from "@/components/experience/ReportExperience";
 import { brokerForHost } from "@/lib/brokers/catalog";
 import { AI_RECTIFY } from "@/lib/assistants";
 import { ShareButton } from "@/components/ShareButton";
@@ -93,6 +94,7 @@ export function ReportView({
   messages,
   partial,
   pro,
+  reveal,
 }: {
   report: ReportData;
   requestId: string;
@@ -103,6 +105,7 @@ export function ReportView({
   partial?: boolean;
   /** Plan Pro activo: habilita las cartas de supresion. */
   pro?: boolean;
+  reveal?: boolean;
 }) {
   const tr = translator(messages);
   const level = levelFor(report.score);
@@ -114,6 +117,7 @@ export function ReportView({
   })).filter((g) => g.items.length > 0);
 
   return (
+    <ReportExperience report={report} requestId={requestId} fullName={fullName} locale={locale} messages={messages} pro={pro} reveal={reveal}>
     <article className="grid gap-4 lg:grid-cols-[360px_minmax(0,1fr)] lg:items-start lg:gap-8">
       {/* Columna fija: puntuacion + compartir + acciones */}
       <div className="grid gap-4 lg:sticky lg:top-20">
@@ -351,5 +355,6 @@ export function ReportView({
         </footer>
       </div>
     </article>
+    </ReportExperience>
   );
 }
