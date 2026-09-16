@@ -1,0 +1,7 @@
+{
+  "crons": [
+    { "path": "/api/cron/purge", "schedule": "0 4 * * *" },
+    { "path": "/api/cron/monitor", "schedule": "0 5 * * *" },
+    { "path": "/api/cron/letters", "schedule": "0 6 * * *" }
+  ]
+}

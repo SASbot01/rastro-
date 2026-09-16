@@ -1,0 +1,1357 @@
+{
+  "locale": {
+    "es": "Español",
+    "en": "English",
+    "switchTo": "Change language"
+  },
+  "nav": {
+    "brand": "Rastro",
+    "privacy": "Privacy",
+    "legal": "Legal",
+    "account": "My account",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "sections": "Sections",
+    "tabs": {
+      "home": "Home",
+      "report": "Report",
+      "tools": "Tools",
+      "profile": "Profile"
+    }
+  },
+  "hero": {
+    "eyebrow": "Free exposure report",
+    "title": "See what AI knows about you.",
+    "subtitle": "Breaches, public profiles and what AI assistants say about you, in a clear report with a 0–100 score. Free.",
+    "trust": {
+      "own": "About you only",
+      "verify": "Verified email",
+      "retention": "Deleted after 30 days"
+    },
+    "demoTitle": "This is what your score looks like",
+    "demoBody": "From 0 to 100. Breaches, public profiles and what AI says about you, at a glance."
+  },
+  "form": {
+    "title": "Get your report",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Ana",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "García Ruiz",
+    "email": "Your email",
+    "emailPlaceholder": "ana@example.com",
+    "emailHelp": "We send a link to confirm it's yours. Without that step we generate nothing.",
+    "city": "City",
+    "cityOptional": "optional",
+    "cityPlaceholder": "Valencia",
+    "cityHelp": "Required: with your city we don't mix you up with other people with your name. Without it the report is less reliable.",
+    "consent": "I have read the {privacy} and I consent to Rastro searching public information about me and sending me the report.",
+    "consentPrivacyLink": "privacy policy",
+    "submit": "Send verification link",
+    "submitting": "Sending…",
+    "onlyYourself": "You can only request a report about yourself.",
+    "occupation": "Job or company",
+    "occupationPlaceholder": "Nurse at La Fe Hospital",
+    "occupationHelp": "Optional. It helps the AI tell your results apart from other people with your name.",
+    "cityRequired": "required"
+  },
+  "formErrors": {
+    "firstName": "Enter your first name.",
+    "lastName": "Enter your last name.",
+    "email": "Enter a valid email address.",
+    "consent": "We need your consent to continue.",
+    "rateLimit": "You've requested too many reports today. Try again tomorrow.",
+    "generic": "Something went wrong on our side. Please try again in a moment.",
+    "code": "That code isn't correct.",
+    "codeExpired": "The code has expired or was already used. Request a new link.",
+    "codeLocked": "Too many attempts. Request a new link.",
+    "city": "Tell us your city (we need it to avoid confusing you with someone else)."
+  },
+  "sent": {
+    "title": "Check your email",
+    "body": "We sent a link to {email}. Open it and we'll start preparing your report.",
+    "spam": "If it doesn't arrive within a few minutes, check spam or promotions.",
+    "expires": "The link expires in 24 hours.",
+    "again": "Use a different email",
+    "codeTitle": "Rather not open the link?",
+    "codeBody": "Type here the 6-digit code from the email.",
+    "codePlaceholder": "123456",
+    "codeSubmit": "Confirm with the code",
+    "codeChecking": "Checking…"
+  },
+  "how": {
+    "title": "How it works",
+    "step1Title": "You give us your name and email",
+    "step1Body": "No passwords, no documents.",
+    "step2Title": "You confirm the email is yours",
+    "step2Body": "You get a code. Without it we search nothing.",
+    "step3Title": "You get your report",
+    "step3Body": "Score, what's visible and what to do.",
+    "pageTitle": "How we do it",
+    "pageSubtitle": "What we look for, where, what we keep and for how long. No fine print.",
+    "sections": [
+      {
+        "t": "What we look for and where",
+        "items": [
+          "Breaches: we check your email against Have I Been Pwned, the reference database of known breaches. We send only the email.",
+          "Search engines: we search your name (with your city and occupation, if given) to find profiles, directories and data-selling sites.",
+          "AI assistants: we ask Perplexity about you and, when configured, ChatGPT and Gemini, and show you the literal answer.",
+          "Public avatar: we check whether your email has a public Gravatar profile with linked accounts.",
+          "Writing: an AI (Claude, by Anthropic) organises all that in plain language and extracts signals; the score comes from a fixed, auditable rule, not from the AI."
+        ]
+      },
+      {
+        "t": "What we keep and for how long",
+        "items": [
+          "Your name, email, city and occupation (if given), the report and the sources' answers.",
+          "Without an account: everything is deleted automatically after 30 days.",
+          "With an account: kept while you have it; you can delete it any time via Support and everything goes, reports included.",
+          "Gmail scanner: only sender, subject and date; we don't store emails or the access, which is revoked when it finishes."
+        ]
+      },
+      {
+        "t": "What we don't do",
+        "items": [
+          "We don't sell or share data with anyone. No ads.",
+          "We don't look up other people: only whoever confirms their email.",
+          "We don't promise deletion: we show you what's visible and claim on your behalf with the law in hand (Art. 17 GDPR and the authority).",
+          "We don't store passwords: you sign in with a one-time code or with Google."
+        ]
+      },
+      {
+        "t": "How the score is calculated",
+        "items": [
+          "You start at 100 and we subtract: each breach with password −15 (max −45); without password −5 (max −15).",
+          "AI knows where you work −10; your city −5; public phone or address −15.",
+          "Each public profile the AI attributes to you −3 (max −15); false claims about you in AI −5.",
+          "Green 70–100, amber 40–69, red 0–39. The rule is fixed: same data, same score."
+        ]
+      },
+      {
+        "t": "Security",
+        "items": [
+          "Everything is encrypted (HTTPS). Source API keys live only on our server.",
+          "Access links and codes expire and are single-use.",
+          "Daily database backup and service monitoring.",
+          "Servers in the European Union; data controller in Spain (see Legal notice)."
+        ]
+      }
+    ],
+    "ownerTitle": "Who is behind it",
+    "ownerBody": "Rastro is an independent project made in Spain by {owner}. Write to us at {email} or via Support.",
+    "footerLink": "How we do it"
+  },
+  "verify": {
+    "loading": "Checking the link…",
+    "okTitle": "Email confirmed",
+    "okBody": "We can now prepare your report.",
+    "continue": "Continue",
+    "invalidTitle": "This link isn't valid",
+    "invalidBody": "It may have been used already, or copied incorrectly. Request a new one.",
+    "expiredTitle": "The link has expired",
+    "expiredBody": "Links last 24 hours. Request a new one and it'll be in your inbox.",
+    "retry": "Request a new link",
+    "soonTitle": "Almost there",
+    "soonBody": "Report generation is coming in the next few days. We'll let you know at this same address."
+  },
+  "email": {
+    "subject": "Confirm your email to see your Rastro report",
+    "preheader": "One click and we start preparing your report.",
+    "greeting": "Hi {name},",
+    "body": "You requested an exposure report from Rastro. Confirm this email is yours and we'll get started.",
+    "cta": "Confirm my email",
+    "fallback": "If the button doesn't work, copy this address into your browser:",
+    "expires": "The link expires in 24 hours.",
+    "ignore": "If this wasn't you, ignore this message. We won't do anything.",
+    "footer": "Rastro — See what AI knows about you.",
+    "codeIntro": "Or type this code on the page where you requested the report:",
+    "codeLabel": "Your code"
+  },
+  "footer": {
+    "tagline": "See what AI knows about you.",
+    "privacy": "Privacy policy",
+    "legal": "Legal notice",
+    "contact": "Contact",
+    "rights": "Rastro. Reports about yourself only."
+  },
+  "waiting": {
+    "confirmed": "Email confirmed",
+    "title": "Preparing your report",
+    "subtitle": "This usually takes under a minute. You can keep this page open.",
+    "step": {
+      "hibp": "Checking your email against known breaches",
+      "brave": "Searching your name on the web",
+      "ai": "Asking AI what it knows about you",
+      "report": "Writing the report"
+    },
+    "queued": "Queued",
+    "done": "Done",
+    "errorTitle": "We couldn't generate the report",
+    "errorBody": "Something went wrong on our side. Request it again from the home page; it's free.",
+    "notFoundTitle": "This report doesn't exist",
+    "notFoundBody": "It may have expired (reports are deleted after 30 days) or the link may be copied incorrectly."
+  },
+  "report": {
+    "eyebrow": "Exposure report",
+    "for": "For {name}",
+    "scoreLabel": "Exposure score",
+    "outOf": "out of 100",
+    "level": {
+      "green": "Low exposure",
+      "orange": "Medium exposure",
+      "red": "High exposure"
+    },
+    "categories": {
+      "breaches": "Breaches",
+      "ai": "What AI says",
+      "profiles": "Public profiles and pages",
+      "false": "Possibly false data"
+    },
+    "severity": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "info": "Info"
+    },
+    "actionsTitle": "What to do now",
+    "source": "View source",
+    "generated": "Generated on {date}. Automatically deleted after 30 days.",
+    "partial": "Preliminary version: the \"What AI says\" section is added in the next development step.",
+    "scoreHint": "100 means we found nothing exposed.",
+    "again": "Check another email",
+    "counts": "{n} findings",
+    "countOne": "1 finding",
+    "whatYouSee": "What's visible, why it matters, and what to do.",
+    "accountsTitle": "Known accounts with this email",
+    "accountsHint": "Services where this email is known to have had an account: from the breaches it appears in and, if it exists, from your public Gravatar profile. We don't probe websites with your email.",
+    "accountBreach": "Account detected from the {year} breach",
+    "accountGravatar": "Linked in your Gravatar profile",
+    "accountPassword": "Password leaked",
+    "assistantsTitle": "What each AI answers",
+    "assistantsBody": "Literal answer from each assistant to “who is {name}?”. So you see exactly what they tell anyone who asks about you.",
+    "assistantSources": "Sources it cited",
+    "rectify": "Request rectification or erasure from {name}",
+    "rectifyHint": "Each provider has its own channel. Keep the answer it gave you and the source URLs at hand.",
+    "assistantSkipped": "Not queried in this report.",
+    "assistantFailed": "Did not reply this time; it will be queried again in the next report.",
+    "assistantNames": {
+      "perplexity": "Perplexity",
+      "openai": "ChatGPT (OpenAI)",
+      "gemini": "Gemini (Google)"
+    }
+  },
+  "summary": {
+    "breachesNone": "Your email does not appear in any known breach.",
+    "breachesOne": "Your email appears in 1 known breach{pw}.",
+    "breachesMany": "Your email appears in {n} known breaches{pw}.",
+    "withPassword": ", password included",
+    "withPasswordN": ", {n} of them with passwords",
+    "breachesUnchecked": "We couldn't check breaches this time.",
+    "profilesNone": "Searching your name shows no recognizable public profile.",
+    "profilesOne": "Searching your name shows 1 public profile.",
+    "profilesMany": "Searching your name shows {n} public profiles.",
+    "brokers": " Also, {n} site(s) that sell personal data list your name.",
+    "searchFailed": "The name search didn't work this time."
+  },
+  "findings": {
+    "breachPasswordTitle": "Your email appeared in the {name} breach ({year}) with a password",
+    "breachPasswordDetail": "Leaked: {data}. If you still use that password anywhere, change it today and turn on two-step verification.",
+    "breachTitle": "Your email appeared in the {name} breach ({year})",
+    "breachDetail": "Leaked: {data}. Without a password the risk is lower, but your email circulates in lists used for spam and targeted scams.",
+    "breachUncheckedTitle": "Breaches: not checked",
+    "breachUncheckedDetail": "The breach service didn't respond. Request the report again later.",
+    "noBreachesTitle": "No known breaches",
+    "noBreachesDetail": "Your email is not in any public breach recorded to date. Good sign; it doesn't mean it can't happen tomorrow.",
+    "profileTitle": "Public profile on {platform}",
+    "profileDetail": "Shows up when searching your name: \"{title}\". Check what it shows to strangers (photo, city, job) and tighten privacy if needed.",
+    "brokerTitle": "A site that sells personal data lists your name ({host})",
+    "brokerDetail": "These sites collect phone numbers and addresses from public sources and sell them. It may be someone else with your name; if it's you, almost all have an opt-out form.",
+    "pageTitle": "Public result: \"{title}\"",
+    "pageDetail": "On {host}. Check whether it's about you or someone else with your name.",
+    "noResultsTitle": "Your name barely appears online",
+    "noResultsDetail": "The search returns no recognizable profiles or pages. Low public exposure by name.",
+    "searchFailedTitle": "Name search: unavailable",
+    "searchFailedDetail": "The search engine didn't respond. Request the report again later."
+  },
+  "actionsTpl": {
+    "changePasswordTitle": "Change the leaked passwords",
+    "changePasswordDetail": "Start with {name}. If you reused that password, change it everywhere you used it.",
+    "twoFactorTitle": "Turn on two-step verification",
+    "twoFactorDetail": "On your email and your bank at minimum. With it, a leaked password isn't enough to get in.",
+    "reviewProfilesTitle": "Review your profiles' privacy",
+    "reviewProfilesDetail": "Open your profiles as a stranger would and remove anything you don't want everyone to see.",
+    "brokerOptOutTitle": "Request removal from data-broker sites",
+    "brokerOptOutDetail": "Look for \"opt out\" or \"remove my data\" on each one. It's usually a two-minute form.",
+    "passwordManagerTitle": "Use a password manager",
+    "passwordManagerDetail": "A different password per site without memorizing them. It's the single measure that most reduces damage from future breaches.",
+    "monitorTitle": "Check again in a while",
+    "monitorDetail": "New breaches appear every week. Repeat the report in a few months."
+  },
+  "dataClasses": {
+    "Email addresses": "email addresses",
+    "Passwords": "passwords",
+    "Usernames": "usernames",
+    "Names": "names",
+    "Phone numbers": "phone numbers",
+    "Physical addresses": "physical addresses",
+    "Dates of birth": "dates of birth",
+    "IP addresses": "IP addresses",
+    "Password hints": "password hints",
+    "Geographic locations": "locations",
+    "Genders": "gender",
+    "Job titles": "job titles",
+    "Employers": "employers",
+    "Social media profiles": "social media profiles",
+    "Website activity": "website activity",
+    "Purchases": "purchases",
+    "Credit cards": "credit cards",
+    "Government issued IDs": "government IDs"
+  },
+  "share": {
+    "button": "Share my score",
+    "download": "Download image",
+    "text": "My exposure score on Rastro: {score}/100. See what AI knows about you.",
+    "title": "My Rastro report",
+    "sharing": "Preparing image…",
+    "note": "The image shows your score and your name partially hidden. Never the full report."
+  },
+  "og": {
+    "scoreLabel": "Exposure score",
+    "outOf": "out of 100",
+    "cta": "rastropro.com · See what AI knows about you."
+  },
+  "legal": {
+    "reviewNote": "Base text prepared for review. Confirm it with a professional before opening the service to the public.",
+    "updated": "Last updated: {date}",
+    "pending": "[pending]",
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "Rastro shows you what information about you is public online and what AI assistants say about you. To do that we process a small amount of personal data. Here is what, why, for how long, and what rights you have, in plain language.",
+      "sections": [
+        {
+          "title": "1. Who is responsible",
+          "paragraphs": [
+            "Data controller: {owner}.",
+            "Contact for any privacy question or to exercise your rights: {email}.",
+            "Website: {domain}."
+          ]
+        },
+        {
+          "title": "2. What data we process",
+          "paragraphs": [
+            "What you type in the form: first name, last name, email address and, optionally, your city.",
+            "Optionally, your job or company. It is only used to tell you apart from people with your name.",
+            "The date and time you gave consent and verified your email.",
+            "Your IP address, stored only as a hash (an irreversible fingerprint) to limit the number of reports per person and prevent abuse. We do not keep the IP in clear text.",
+            "The generated report: score, findings, recommended actions and the technical responses from the services consulted, kept so we can review errors.",
+            "If you create an account (by verifying your email), we also store your email as the account identifier, your language, the date of your last access and, if you turn on monthly monitoring, the date you turned it on. The erasure letters you generate are stored with their status and dates to keep the deadline calendar."
+          ]
+        },
+        {
+          "title": "3. Why, and on what legal basis",
+          "paragraphs": [
+            "Purpose: to generate and show you your exposure report, to send you the verification link by email, and to limit use of the service to prevent abuse.",
+            "Legal basis: your consent (Article 6(1)(a) GDPR), which you give by ticking the box in the form and confirm by opening the link we email you. Without that double step we search nothing.",
+            "You may only request a report about yourself. Requesting one about someone else breaches these terms.",
+            "Monthly monitoring (only if you turn it on): every month we query the same sources again with your data and email you only if something changed. You can turn it off in your account or from the link in the email itself.",
+            "Inbox scanner (Pro plan only, and only if you connect it): with your authorisation in Google we read only the sender, subject and date of your emails to infer which services you have accounts with. We don't read content, we store no emails or access keys, and we revoke access when done. We keep only the resulting list of services, which you can delete from your account or by writing to us."
+          ]
+        },
+        {
+          "title": "4. Who receives your data",
+          "paragraphs": [
+            "To build the report we query third-party services, sending each only what is strictly necessary:",
+            "Have I Been Pwned (United Kingdom): receives your email address to check whether it appears in known breaches.",
+            "Brave Search (USA): receives your first and last name and, if given, your city and job or company, to search public results.",
+            "Perplexity (USA): receives your first and last name and, if given, your city and job or company, to ask what AI says about you.",
+            "Anthropic (USA): receives the results above (not your email) to write the report in plain language.",
+            "Gravatar (Automattic, USA): receives a hash (irreversible fingerprint) of your email to check whether a public profile is associated with it.",
+            "Google (USA): if you connect your Gmail, Google receives your authorisation and we access your email headers through its API, with the read-only permission you grant and can revoke at any time from your Google account.",
+            "We also use providers that host and run the service: Supabase (database), Resend (email delivery) and the web hosting provider. They act as data processors under contract.",
+            "Some of these providers are outside the European Economic Area. Transfers rely on Standard Contractual Clauses approved by the European Commission or on the EU-US Data Privacy Framework, depending on the provider.",
+            "We do not sell your data or share it with anyone else."
+          ]
+        },
+        {
+          "title": "5. How long we keep it",
+          "paragraphs": [
+            "30 days from when you request the report. After that, the request and the report are automatically deleted from our database.",
+            "If you have an account, your reports and letters are kept while the account exists, so you can consult them and follow up. You can ask us to delete the account and everything linked to it by writing to {email}.",
+            "The hashes used for rate limiting are renewed every 24 hours.",
+            "If you want your report deleted sooner, write to {email} from the same address you used to request it."
+          ]
+        },
+        {
+          "title": "6. Your rights",
+          "paragraphs": [
+            "You can access your data, correct it, ask us to delete it, object to the processing, ask us to restrict it, and take it with you (portability). You can also withdraw your consent at any time, without affecting what was done before.",
+            "To exercise them, write to {email} stating which right you want to exercise and the email you used to request the report. We will reply within one month.",
+            "If you believe we have not handled your request properly, you can lodge a complaint with the Spanish Data Protection Agency (www.aepd.es) or your local supervisory authority."
+          ]
+        },
+        {
+          "title": "7. Security",
+          "paragraphs": [
+            "Data travels encrypted (HTTPS) and is stored in a database accessible only to the application server. Verification links are single-use and expire after 24 hours.",
+            "No system is infallible. That is why we keep the minimum, for the shortest time possible."
+          ]
+        },
+        {
+          "title": "8. What Rastro does not do",
+          "paragraphs": [
+            "Rastro does not delete information from the internet or from AI assistants, and does not promise to. It gives you visibility and tells you what you can do.",
+            "The report is based on public sources and on answers from automated systems that can be wrong, especially if your name is common. Data may be missing, or some may refer to another person."
+          ]
+        },
+        {
+          "title": "9. Minors",
+          "paragraphs": [
+            "The service is intended for people aged 14 and over. If you are younger, do not use it without your parents' or guardians' permission."
+          ]
+        },
+        {
+          "title": "10. Changes",
+          "paragraphs": [
+            "If we change this policy, we will publish the new version on this page with an updated date."
+          ]
+        }
+      ]
+    },
+    "notice": {
+      "title": "Legal notice",
+      "intro": "Terms of use for Rastro. They are short, because the service is too.",
+      "sections": [
+        {
+          "title": "1. Owner",
+          "paragraphs": [
+            "This website ({domain}) is owned by {owner}. Contact: {email}."
+          ]
+        },
+        {
+          "title": "2. What the service is",
+          "paragraphs": [
+            "Rastro generates, free of charge, an indicative report on the public information that exists online and in AI assistants about the person requesting it."
+          ]
+        },
+        {
+          "title": "3. Terms of use",
+          "paragraphs": [
+            "You may only request reports about yourself. Using the service to obtain information about third parties, to harass, discriminate or make decisions affecting other people is prohibited.",
+            "You must provide an email address you own. We verify it is yours before generating anything.",
+            "We reserve the right to limit or block use of the service if we detect abuse."
+          ]
+        },
+        {
+          "title": "4. Liability",
+          "paragraphs": [
+            "The report is indicative. It is built from public sources and automated systems (search engines, breach databases and AI models) that may contain errors, omissions or data about other people with your name.",
+            "We do not guarantee that the report is complete or accurate, and we are not responsible for decisions you make based on it. The recommended actions are general suggestions, not personalized legal or technical advice.",
+            "Rastro does not remove third-party information and does not guarantee that you can remove it."
+          ]
+        },
+        {
+          "title": "5. Intellectual property",
+          "paragraphs": [
+            "Rastro's design, texts and code belong to its owner. Your report is yours: you may save, share or delete it as you wish."
+          ]
+        },
+        {
+          "title": "6. Governing law",
+          "paragraphs": [
+            "These terms are governed by Spanish law. Any dispute will be heard by the courts with jurisdiction under consumer legislation."
+          ]
+        }
+      ]
+    },
+    "back": "Back to home"
+  },
+  "login": {
+    "title": "Sign in or create your account",
+    "subtitle": "No passwords: with your Google account or with a code we email you.",
+    "email": "Your email",
+    "submit": "Send me the link",
+    "submitting": "Sending…",
+    "sentTitle": "Check your email",
+    "sentBody": "If {email} has a Rastro account, you've just received a sign-in link. It expires in 24 hours.",
+    "noAccount": "No report yet?",
+    "noAccountCta": "Get your first one free",
+    "invalidTitle": "This sign-in link isn't valid",
+    "invalidBody": "It may have been used already or expired. Request a new one.",
+    "google": "Continue with Google",
+    "googleNote": "We only use your email to identify you. We don't access your inbox.",
+    "or": "or with your email",
+    "submitCode": "Send me a code",
+    "noPassword": "You get a 6-digit code (and a link, if you'd rather tap it). No passwords to leak.",
+    "codeEyebrow": "Check your email",
+    "codeTitle": "Enter the code",
+    "codeBody": "We sent it to {email}. It expires in 24 hours and works once.",
+    "codeSubmit": "Sign in",
+    "codeLink": "You can also tap the link in the email; it does the same.",
+    "errors": {
+      "denied": "You cancelled in Google.",
+      "state": "The Google session expired. Try again.",
+      "google": "Google didn't return a verified email.",
+      "db": "Something failed on our side.",
+      "config": "Google isn't configured on this server."
+    }
+  },
+  "loginEmail": {
+    "subject": "Your link to sign in to Rastro",
+    "preheader": "One click and you're in. Expires in 24 hours.",
+    "greeting": "Hi,",
+    "body": "You asked to sign in to your Rastro account. Press the button and you're done.",
+    "cta": "Sign in to Rastro",
+    "fallback": "If the button doesn't work, copy this address into your browser:",
+    "expires": "The link expires in 24 hours and works only once.",
+    "ignore": "If this wasn't you, ignore this message. Nobody can sign in without this link.",
+    "codeIntro": "Your sign-in code:"
+  },
+  "account": {
+    "title": "My account",
+    "subtitle": "Your reports are kept while you have an account. Reports from visitors without an account are deleted after 30 days.",
+    "reports": "Your reports",
+    "empty": "You don't have any finished report yet.",
+    "newReport": "Request a new report",
+    "score": "Score",
+    "status": {
+      "pending": "Unverified",
+      "verified": "Verified",
+      "processing": "Generating",
+      "done": "Ready",
+      "error": "Error"
+    },
+    "view": "View report",
+    "plan": {
+      "free": "Free plan",
+      "pro": "Pro plan"
+    },
+    "signedInAs": "Signed in as {email}",
+    "mustLoginTitle": "This report is private",
+    "mustLoginBody": "Only the person who requested it can view it. Sign in with that email to open it.",
+    "mustLoginCta": "Sign in",
+    "mailboxCard": "Inbox scanner",
+    "mailboxCardBody": "Connect your Gmail and we tell you where you're registered. Headers only, no emails stored.",
+    "mailboxCardCta": "Open the scanner"
+  },
+  "monitor": {
+    "title": "Monthly monitoring",
+    "body": "Every month we regenerate your report and email you only if something changes: a new breach, a new profile, or a change in what AI knows about you.",
+    "on": "On",
+    "off": "Off",
+    "enable": "Turn on monitoring",
+    "disable": "Turn off",
+    "lastCheck": "Last check: {date}",
+    "nextCheck": "Next check: {date}",
+    "neverChecked": "First check in 30 days.",
+    "consent": "By turning it on you consent to us searching your name and email again each month and emailing you the result."
+  },
+  "monitorEmail": {
+    "subject": "Rastro: your exposure has changed ({score}/100)",
+    "preheader": "Your monthly report has changes.",
+    "greeting": "Hi {name},",
+    "intro": "We regenerated your report and there are changes since last month.",
+    "scoreChange": "Your score went from {before} to {after}.",
+    "scoreSame": "Your score is still {after}.",
+    "newBreach": "New breach: {name}",
+    "goneBreach": "No longer listed breach: {name}",
+    "newProfile": "New profile or page with your name: {url}",
+    "goneProfile": "No longer appears: {url}",
+    "newBroker": "A data-broker site now lists you: {host}",
+    "goneBroker": "No longer lists you: {host}",
+    "signalOn": "AI now knows: {what}",
+    "signalOff": "AI no longer shows: {what}",
+    "signals": {
+      "knows_employer": "where you work",
+      "knows_city": "where you live",
+      "contact_data_public": "a phone number or address of yours",
+      "false_claims": "data that is probably false"
+    },
+    "cta": "View the full report",
+    "footer": "You receive this because you turned on monthly monitoring in Rastro. You can turn it off in your account.",
+    "unsubscribe": "Turn off monitoring"
+  },
+  "letters": {
+    "generate": "Generate deletion letter",
+    "title": "Data deletion letter",
+    "subtitle": "Erasure request (Article 17 GDPR) addressed to {host}. Rastro can send it for you and track it.",
+    "recipient": "Recipient",
+    "contactFound": "Privacy contact found",
+    "contactNotFound": "We couldn't find a privacy contact. Look on the site for \"privacy policy\", \"contact\" or \"opt out\" and send it there.",
+    "contactSource": "Source",
+    "subject": "Subject",
+    "body": "Letter text",
+    "copy": "Copy letter",
+    "copied": "Copied",
+    "markSent": "I've sent it",
+    "markSentHelp": "Marking it as sent starts the legal one-month deadline. We'll notify you when it expires.",
+    "sentOn": "Sent on {date}",
+    "deadline": "Reply deadline: {date}",
+    "markAnswered": "They replied",
+    "markNoAnswer": "No reply",
+    "reopen": "Back to draft",
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "answered": "Answered",
+      "no_answer": "No reply",
+      "closed": "Closed"
+    },
+    "listTitle": "Your letters",
+    "listEmpty": "You haven't generated any letter yet. From your report you can generate one for each site showing your data.",
+    "open": "Open",
+    "back": "Back to report",
+    "onlyOwner": "You can only generate letters from your own reports.",
+    "sendByRastro": "Send it for me now",
+    "sendByRastroHelp": "We send it from cartas@rastropro.com on your behalf, with your email as reply address and a copy to you. The one-month legal deadline starts; after 20 days without reply we resend a reminder; when it expires we prepare the complaint to the data protection authority.",
+    "toLabel": "Send to",
+    "toPlaceholder": "privacy@site.com",
+    "toHelp": "You can correct the address if you know a better one.",
+    "orManual": "Or send it yourself: copy it and mark it as sent.",
+    "formContact": "This site uses a form instead of email: open it, paste the letter and mark it as sent. We track the deadline.",
+    "sentByRastro": "Sent by Rastro",
+    "sentByUser": "Sent by you",
+    "followUpOn": "Reminder sent on {date}",
+    "timeline": "Tracking",
+    "event": {
+      "sent": "You marked the letter as sent",
+      "sent_by_rastro": "Rastro sent the letter to {to}",
+      "follow_up": "Rastro resent a reminder to {to}",
+      "reminder": "One-month deadline expired: notice sent",
+      "answered": "They replied",
+      "closed": "Closed: data erased",
+      "no_answer": "Marked as no reply",
+      "reopened": "Back to draft"
+    },
+    "replyTitle": "Did they reply?",
+    "replyBody": "Tell us what they said: we keep it as evidence for the complaint if needed.",
+    "outcome": {
+      "deleted": "They erased my data",
+      "partial": "They erased only part",
+      "refused": "They refuse or ask for more"
+    },
+    "replyNote": "What they replied (paste the email or summarise)",
+    "replySubmit": "Save reply",
+    "outcomeLabel": {
+      "deleted": "Data erased",
+      "partial": "Partial erasure",
+      "refused": "Refused"
+    },
+    "successTitle": "Done",
+    "successBody": "{host} has erased your data. Your score should rise in your next report.",
+    "refusedBody": "If the refusal isn't justified you can complain to the authority: we prepare the filing with the letter, the reminder and their reply as evidence.",
+    "evidence": "Evidence saved: letter, sending date{followUp}{reply}.",
+    "evidenceFollowUp": ", reminder",
+    "evidenceReply": ", the site's reply",
+    "checkTitle": "Still there?",
+    "checkBody": "We load the letter's page and check whether your name still appears. We save the date and result as evidence.",
+    "checkNow": "Check now",
+    "checkGone": "You no longer appear on that page",
+    "checkStill": "Your name still appears",
+    "checkUnknown": "Couldn't check automatically (the page blocks robots or requires access). Check it yourself and mark the result."
+  },
+  "letterTpl": {
+    "subject": "Request for erasure of personal data (Article 17 GDPR) — {name}",
+    "salutation": "To the Data Protection Officer / privacy team of {host}:",
+    "p1": "My name is {name}. I have found that your website displays personal data concerning me at the following address: {url}",
+    "p2": "Specifically: {what}",
+    "p3": "Pursuant to Article 17 of Regulation (EU) 2016/679 (GDPR), I request the erasure of all personal data concerning me on that page and in any other record, file or copy you hold, including data disclosed to third parties, whom you must inform of this request (Articles 17(2) and 19).",
+    "p4": "There is no legal basis for this processing: I have not given consent and have no relationship with you, and I expressly object to the processing of my data (Article 21).",
+    "p5": "I remind you that you must act on this request without undue delay and in any event within one month of receipt (Article 12(3)). If I receive no reply, or an unsatisfactory one, I will lodge a complaint with the competent supervisory authority.",
+    "p6": "Please confirm the erasure in writing to this email address: {email}",
+    "closing": "Sincerely,",
+    "date": "{city}{date}",
+    "followUpSubject": "Reminder: personal data erasure request (Art. 17 GDPR) — {name}",
+    "followUpIntro": "On {sent} I sent you the erasure request reproduced below and have received no reply. I remind you that the one-month legal deadline (Article 12.3 GDPR) expires on {deadline}. After that date without a reply I will lodge a complaint with the supervisory authority."
+  },
+  "deadlines": {
+    "title": "Upcoming deadlines",
+    "none": "You have no pending deadlines.",
+    "due": "Due {date}",
+    "overdue": "Expired {date}",
+    "daysLeft": "{n} days",
+    "today": "today",
+    "overdueShort": "expired"
+  },
+  "deadlineEmail": {
+    "subject": "Rastro: the deadline for your letter to {host} has passed",
+    "preheader": "One month without a reply: you can now escalate.",
+    "greeting": "Hi {name},",
+    "body": "You sent an erasure request to {host} on {sent}. The legal one-month deadline to reply expired on {deadline}.",
+    "ask": "If they replied, mark it on the letter. If not, the next step is a complaint to the data protection authority; we prepare it for you from the letter itself.",
+    "cta": "Open the letter",
+    "footer": "You receive this because you marked this letter as sent in Rastro."
+  },
+  "aepd": {
+    "cta": "Prepare a complaint to the AEPD",
+    "title": "Complaint to the AEPD",
+    "subtitle": "A month has passed without a reply from {host}. This is the complaint text ready to paste into the Spanish Data Protection Agency's electronic office.",
+    "notYet": "A complaint can be filed once a month has passed since the letter was sent without a satisfactory reply.",
+    "text": "Complaint text",
+    "copy": "Copy complaint",
+    "copied": "Copied",
+    "guideTitle": "How to file it, step by step",
+    "steps": [
+      "Go to the AEPD electronic office: sedeagpd.gob.es → \"Reclamaciones\" → \"Presentar reclamación\".",
+      "Identify yourself with a digital certificate, Cl@ve or, if you have neither, the form without certificate (you'll be asked for a copy of your ID).",
+      "Claimant: your details. Respondent: the site {host}{contact}.",
+      "Under \"Hechos\" (facts) paste the complaint text from this page.",
+      "Attach the letter you sent and proof of sending (screenshot of the sent email or form, with the date).",
+      "Save the registration number you get at the end. The AEPD usually replies within weeks; if it admits the complaint, it will require the site to delete your data."
+    ],
+    "attachments": "Documents you must attach",
+    "attach1": "Copy of the erasure request sent on {sent}.",
+    "attach2": "Proof of sending and date (screenshot of the email or form).",
+    "attach3": "If they replied insufficiently, a copy of that reply.",
+    "back": "Back to the letter"
+  },
+  "aepdTpl": {
+    "title": "COMPLAINT TO THE SPANISH DATA PROTECTION AGENCY (AEPD)",
+    "claimant": "CLAIMANT: {name}, email {email}{city}.",
+    "respondent": "RESPONDENT: the controller of the website {host}{contact}.",
+    "factsTitle": "FACTS",
+    "f1": "1. At {url} the respondent publishes personal data concerning me ({what}), without my consent or any other legal basis known to me.",
+    "f2": "2. On {sent} I exercised my right to erasure before the respondent under Article 17 of Regulation (EU) 2016/679 (GDPR), requesting deletion of that data and written confirmation. A copy of the request and proof of sending are attached.",
+    "f3": "3. The one-month period set in Article 12(3) GDPR expired on {deadline} without the respondent acting on the request or replying at all.",
+    "lawTitle": "LEGAL GROUNDS",
+    "l1": "Articles 12, 17, 19 and 21 GDPR; Article 77 GDPR and Articles 15 and 63 et seq. of Spanish Organic Law 3/2018 on Personal Data Protection and digital rights, which recognise the right to lodge a complaint with the supervisory authority when the controller fails to act on a rights request in time.",
+    "requestTitle": "REQUEST",
+    "r1": "That this complaint be admitted and, after the appropriate proceedings, the respondent be required to erase the personal data concerning me and confirm its deletion, without prejudice to any other measures the Agency deems appropriate.",
+    "docsTitle": "ATTACHED DOCUMENTS",
+    "d1": "1. Copy of the erasure request sent on {sent}.",
+    "d2": "2. Proof of sending and date.",
+    "signoff": "{city2}{date}",
+    "signature": "Signed: {name}",
+    "f3refused": "3. The respondent replied refusing to comply or imposing undue conditions. A copy of the reply is attached.",
+    "f2b": "Given the lack of reply, on {followUp} a reminder of the request was sent.",
+    "d3": "3. Copy of the reminder sent on {followUp}.",
+    "d4": "4. Copy of the respondent's reply."
+  },
+  "pro": {
+    "badge": "Pro",
+    "title": "Rastro Pro",
+    "subtitle": "The report is and will stay free. Pro is for people who want Rastro to keep watching for them every month and help remove what shouldn't be there.",
+    "monthly": "Monthly",
+    "monthlyPrice": "€19",
+    "monthlyPer": "per month",
+    "yearly": "Yearly",
+    "yearlyPrice": "€99",
+    "yearlyPer": "per year",
+    "yearlySave": "Save €129",
+    "cta": "Choose",
+    "ctaLogin": "Sign in to subscribe",
+    "features": [
+      "Monthly monitoring: we alert you only if something changes",
+      "Ready-to-send GDPR erasure letters, with the site's contact",
+      "Legal deadline calendar and alert when it expires",
+      "Complaint text for the data protection authority and step-by-step guide",
+      "Cancel anytime from your account"
+    ],
+    "note": "Secure payment with Stripe. We don't store your card. No lock-in.",
+    "locked": "Pro plan feature",
+    "lockedBody": "Daily and monthly monitoring, GDPR letters sent by Rastro, deadlines and the authority complaint belong to Pro ({monthly}/month or {yearly}/year).",
+    "lockedCta": "See the Pro plan",
+    "active": "Pro plan active",
+    "until": "Renews: {date}",
+    "canceling": "Cancelled: active until {date}",
+    "manage": "Manage subscription",
+    "thanks": "Thank you! Your Pro plan will be active in a few seconds.",
+    "thanksPending": "If it doesn't show as active within a minute, reload the page or write to us.",
+    "family": "Family",
+    "familyPer": "per month · up to {n} people",
+    "familyYearlyPer": "per year · up to {n} people",
+    "familyHint": "Each person with their own account, report and monitoring."
+  },
+  "mailbox": {
+    "title": "Inbox scanner",
+    "subtitle": "Where you're registered, according to your own inbox.",
+    "beta": "Beta",
+    "connectTitle": "Connect your Gmail",
+    "rescan": "Scan again",
+    "connect": "Connect Gmail",
+    "connectBody": "We look in your inbox for welcome, verification, order and newsletter emails and group them by service. So you know where you have accounts, since when, and what you haven't used in years.",
+    "promises": [
+      "We read only sender, subject and date. Never the content of emails.",
+      "We store no emails: only the list of services.",
+      "Access is revoked automatically when the scan ends. We keep no keys."
+    ],
+    "testersNote": "During the beta, Google shows an \"unverified app\" warning: that's expected, press \"Continue\". Only emails added as testers can connect.",
+    "proBody": "The inbox scanner is part of the Pro plan.",
+    "scanning": "Scanning",
+    "scanningBody": "Usually one to three minutes depending on inbox size. You can keep this page open.",
+    "step": {
+      "listing": "Finding sign-up, order and newsletter emails",
+      "headers": "Reading senders and subjects",
+      "grouping": "Grouping by service"
+    },
+    "seen": "{n} emails read",
+    "doneEyebrow": "Scan finished",
+    "doneTitle": "{n} services found",
+    "doneBody": "Inbox {mailbox}, {seen} emails reviewed. Each service with its type, how many emails and since when.",
+    "privacyNote": "Access to your inbox is already revoked. Only this list is stored.",
+    "all": "All",
+    "kind": {
+      "account": "Account",
+      "receipt": "Purchases",
+      "newsletter": "Newsletter",
+      "other": "Other"
+    },
+    "old": "Unused 2+ years",
+    "msgs": "emails",
+    "search": "Search…",
+    "none": "Nothing to show with that filter.",
+    "closeLetter": "Closure letter",
+    "errorTitle": "The scan couldn't be completed",
+    "errorBody": "Google cut off access or the inbox is too large for this version. Try again; if it repeats, write to us.",
+    "status": {
+      "processing": "in progress",
+      "error": "error"
+    },
+    "history": "Previous scans",
+    "errors": {
+      "denied": "You cancelled the permission in Google. Without it we can't scan.",
+      "state": "The connection expired. Start again.",
+      "scope": "You didn't grant Gmail read permission. Connect again and tick the box.",
+      "google": "Google didn't respond. Try again in a moment.",
+      "db": "Something failed on our side. Try again.",
+      "config": "The scanner isn't configured on this server yet."
+    },
+    "seenOf": "{n} of {total} emails read"
+  },
+  "tools": {
+    "eyebrow": "Tools",
+    "title": "Tools",
+    "subtitle": "Monitor, clean up and escalate. What comes after the report.",
+    "open": "Open",
+    "scans": "{n} scans done",
+    "letters": "{n} letters",
+    "lettersBody": "Ready-to-send erasure letters, legal deadlines and a complaint to the authority if they don't reply.",
+    "loginTitle": "Sign in to see your tools",
+    "loginBody": "Monitoring, inbox scanner, letters and deadlines belong to your account. Sign in or create one in a minute."
+  },
+  "profile": {
+    "score": "Latest score",
+    "reports": "Reports",
+    "letters": "Letters",
+    "noScore": "—"
+  },
+  "support": {
+    "button": "Support",
+    "title": "Support",
+    "subtitle": "Tell us what's going on and we'll reply by email, usually within one business day.",
+    "email": "Your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "e.g. The code doesn't arrive",
+    "message": "Message",
+    "messagePlaceholder": "What you expected, what happened and on which screen.",
+    "send": "Send",
+    "sending": "Sending…",
+    "sentTitle": "Received",
+    "sentBody": "We sent a copy to {email}. We'll reply there.",
+    "helpTitle": "Need help?",
+    "helpBody": "Questions, errors or something that doesn't add up in your report: write to us.",
+    "errors": {
+      "subject": "Write a subject.",
+      "message": "Tell us a bit more (at least 10 characters)."
+    }
+  },
+  "supportEmail": {
+    "subject": "[Rastro support] {subject}",
+    "ackSubject": "We received your message",
+    "ackBody": "Thanks for writing. We received your message and will reply to this address. Copy of what you sent:",
+    "footer": "Rastro — Support"
+  },
+  "reports": {
+    "title": "Your reports",
+    "latest": "Latest report",
+    "previous": "Previous",
+    "first": "Get my free report",
+    "loginTitle": "Your reports will show here",
+    "loginBody": "Request your first free report from Home; confirming your email creates your account and keeps them here. If you already have an account, sign in.",
+    "scanTitle": "Gmail scan",
+    "scanBody": "Where you're registered, according to your own inbox.",
+    "scanNone": "You haven't scanned your Gmail yet.",
+    "scanCta": "Scan my Gmail",
+    "scanOpen": "View scan",
+    "scanServices": "{n} services",
+    "scanProcessing": "Scan in progress…"
+  },
+  "vigil": {
+    "title": "Monitoring",
+    "active": "Active",
+    "inactive": "Off",
+    "justOn": "Monitoring is on. We'll look again for you every month.",
+    "since": "Protected for {n} days",
+    "sinceToday": "Protected since today",
+    "checks": "{n} checks",
+    "check_one": "1 check",
+    "next": "Next check",
+    "inDays": "in {n} days",
+    "today": "today",
+    "legend": {
+      "check": "Checked",
+      "next": "Next",
+      "today": "Today"
+    },
+    "offTitle": "Not monitoring",
+    "offBody": "Turn on monthly monitoring and your check calendar will show here.",
+    "offCta": "Turn on in Tools"
+  },
+  "landing": {
+    "ctaPrimary": "Get my free report",
+    "ctaSecondary": "See how it works",
+    "askBubble": "Questions? Ask me",
+    "sampleName": "Ana G.",
+    "showTitle": "What your report looks like",
+    "showBody": "No jargon. Every finding tells you what's visible, why it matters and what to do.",
+    "mock": {
+      "breachesTitle": "Breaches",
+      "breachesTag": "3 found",
+      "breach1": "LinkedIn · 2021",
+      "breach1Detail": "Email and password",
+      "breach2": "Canva · 2019",
+      "breach2Detail": "Email and name",
+      "breach3": "Adobe · 2013",
+      "breach3Detail": "Email and password hint",
+      "withPassword": "With password",
+      "noPassword": "No password",
+      "aiTitle": "What AI says about you",
+      "aiQuote": "“Ana García is a nurse at a hospital in Valencia and takes part in local races…”",
+      "signalWork": "Knows where you work",
+      "signalCity": "Knows your city",
+      "signalPhone": "Your phone number",
+      "signalFalse": "A false claim",
+      "yes": "Yes",
+      "no": "No",
+      "found": "Found",
+      "scoreTitle": "Your score",
+      "scoreLevel": "Medium exposure",
+      "actionsTitle": "What to do first",
+      "action1": "Change your LinkedIn password if you reuse it.",
+      "action2": "Set your Strava profile to private.",
+      "action3": "Ask Canva to delete your old account."
+    },
+    "whoTitle": "Who we are",
+    "whoBody": "Rastro is an independent project built in Spain. It felt unfair that anyone, and now any AI, could know more about you than you do. So we built the tool we wished we had: it shows you what's visible about you and gives you the means to reduce it.",
+    "doTitle": "What we do",
+    "do": [
+      "We search your name and email where a stranger would: search engines, known breaches and AI assistants.",
+      "We tell you in a clear report, with a 0–100 score and concrete steps.",
+      "If you want, we keep watching every month and help you demand deletion with GDPR letters."
+    ],
+    "dontTitle": "What we don't do",
+    "dont": [
+      "We never promise to delete anything: we give you visibility and tools.",
+      "We don't look up other people: only you, with your verified email.",
+      "We don't sell or share your data. Without an account it's deleted after 30 days."
+    ],
+    "checkTitle": "What we check",
+    "check": [
+      {
+        "t": "Breaches",
+        "b": "Whether your email shows up in known breaches and what leaked."
+      },
+      {
+        "t": "What AI says",
+        "b": "What AI assistants answer when someone asks about you."
+      },
+      {
+        "t": "Public profiles",
+        "b": "Social networks, directories and pages showing your personal data."
+      },
+      {
+        "t": "False claims",
+        "b": "Things AI states about you that aren't true."
+      }
+    ],
+    "proTitle": "And after the report?",
+    "proBody": "With Rastro Pro we watch your trail every month, generate GDPR deletion letters, track the deadlines and, if they don't reply, prepare the complaint to the data protection authority.",
+    "proCta": "See Rastro Pro",
+    "faqTitle": "Frequently asked questions",
+    "faq": [
+      {
+        "q": "Is it really free?",
+        "a": "Yes. The report with your score and findings is free and asks for no card. The paid part is the tools to act: monthly monitoring, GDPR letters and deadlines."
+      },
+      {
+        "q": "What data do you need?",
+        "a": "Your name, your email and, optionally, your city and occupation so we don't mix you up with someone with the same name. Nothing else."
+      },
+      {
+        "q": "Can I look up someone else?",
+        "a": "No. We only generate reports about the person who confirms the email. It's our rule and also the law."
+      },
+      {
+        "q": "How long does it take?",
+        "a": "One to two minutes after you confirm your email."
+      },
+      {
+        "q": "What happens to my data afterwards?",
+        "a": "Without an account, the report deletes itself after 30 days. With an account it's kept while you have one, and you can delete it any time."
+      }
+    ],
+    "formTitle": "Get your free report",
+    "formBody": "Two minutes. No card. Only about you."
+  },
+  "ask": {
+    "open": "Ask Rastro",
+    "title": "Ask me",
+    "subtitle": "I answer questions about Rastro: what we do, what data we use, what it costs.",
+    "placeholder": "Type your question…",
+    "send": "Send",
+    "thinking": "Thinking…",
+    "suggested": [
+      "What is Rastro?",
+      "What data do you use?",
+      "Can you delete my data?",
+      "How much does it cost?"
+    ],
+    "limit": "That's enough questions for today. If you need something, write to Support.",
+    "error": "I can't answer right now. Try again in a moment.",
+    "close": "Close",
+    "disclaimer": "I'm an automated assistant. For account matters, use Support."
+  },
+  "dash": {
+    "hello": "Hi, {name}",
+    "exposure": "Your exposure now",
+    "outOf": "/ 100",
+    "delta": "{n} points since the previous report",
+    "deltaFlat": "No change since the previous report",
+    "first": "Your first report",
+    "updated": "Updated {date}",
+    "quick": {
+      "report": "New report",
+      "scan": "Scan Gmail",
+      "letters": "GDPR letters",
+      "tools": "Tools"
+    },
+    "donutTitle": "Where you lose points",
+    "donutBody": "Each colour is a reason. Green is the margin you have left.",
+    "remaining": "Margin",
+    "rules": {
+      "breachWithPassword": "Breaches with password",
+      "breachWithoutPassword": "Breaches without password",
+      "publicProfile": "Public profiles",
+      "aiKnowsEmployer": "AI knows where you work",
+      "aiKnowsCity": "AI knows your city",
+      "contactDataPublic": "Phone or address public",
+      "aiFalseData": "False claims in AI"
+    },
+    "clean": "Right now you're not losing points for anything. Keep it up.",
+    "topTitle": "Top findings",
+    "seeAll": "See all",
+    "historyTitle": "Progress",
+    "historyBody": "Score of each report. The higher, the less exposed.",
+    "guideTitle": "Your guide: what to do now",
+    "guideBody": "Tick what you've already done. Saved on this device.",
+    "guideDone": "{done} of {total} done",
+    "guideEmpty": "Once you have a report, the recommended steps will show here.",
+    "askTitle": "Ask Rastro",
+    "askChips": [
+      "How do I raise my score?",
+      "What do I do about a breach with password?",
+      "How do I ask for my data to be deleted?",
+      "What is monitoring for?"
+    ],
+    "vigil": {
+      "on": "Monitoring active",
+      "off": "Monitoring off",
+      "next": "Next check {date}",
+      "cta": "Turn on"
+    },
+    "scan": {
+      "title": "Gmail scan",
+      "none": "Not scanned",
+      "services": "{n} services",
+      "cta": "Scan"
+    },
+    "noReportTitle": "You don't have a report yet",
+    "noReportBody": "Request your first one and you'll see your score, findings and a step-by-step guide here.",
+    "noReportCta": "Get my report"
+  },
+  "profile2": {
+    "edit": "Edit profile",
+    "name": "Name",
+    "namePlaceholder": "What should we call you",
+    "photo": "Photo",
+    "photoChange": "Change photo",
+    "photoRemove": "Remove photo",
+    "photoHelp": "JPG, PNG or WebP. Cropped to a square and stored small.",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "saved": "Profile saved",
+    "errName": "Name must be 2 to 60 characters.",
+    "errPhoto": "Couldn't read the image. Try another one."
+  },
+  "dailyEmail": {
+    "subject": "Rastro: your email shows up in a new breach",
+    "preheader": "Daily check: there's news.",
+    "greeting": "Hi {name}:",
+    "intro": "In today's check your email shows up somewhere new that wasn't there yesterday:",
+    "newBreach": "New breach: {name}",
+    "newPastes": "{n} new public paste(s) with your email",
+    "cta": "View my report",
+    "footer": "We check your email every day against the known-breach database. We only write when something new appears.",
+    "unsubscribe": "Turn off monitoring"
+  },
+  "week": {
+    "title": "This week",
+    "ok": "All clear",
+    "alert": "Something new",
+    "none": "Not checked",
+    "streak": "{n} days in a row all clear",
+    "streakOne": "1 day all clear",
+    "streakZero": "Something new appeared today",
+    "pending": "The first daily check runs tomorrow morning.",
+    "body": "Every day we check whether your email appears in new breaches or pastes. Every month, the full report."
+  },
+  "followUpEmail": {
+    "subject": "Rastro: we resent your letter to {host}",
+    "greeting": "Hi {name}:",
+    "body": "20 days passed without a reply from {host}, so we resent your erasure request as a reminder, with a copy to you. The legal deadline expires on {deadline}.",
+    "ask": "If they reply, mark it on the letter. If not, when the deadline expires we'll prepare the complaint with all the evidence.",
+    "cta": "View the letter",
+    "footer": "You get this because Rastro sent this letter on your behalf."
+  },
+  "sites": {
+    "eyebrow": "Site guide",
+    "title": "How to delete your data from each site",
+    "subtitle": "The sites that show up most in Rastro reports, with the privacy contact and the exact steps to request removal. Free, no account needed.",
+    "pageTitle": "How to delete my data from {name}",
+    "shows": "What it shows about you",
+    "how": "How to ask for removal",
+    "contact": "Privacy contact",
+    "optOut": "Form / rights page",
+    "typical": "They usually reply within {n} days",
+    "typicalInstant": "You fix it yourself in two minutes, no letter needed",
+    "verified": "Contact checked on {date}",
+    "likely": "Contact according to their policy; verify before sending",
+    "notes": "Good to know",
+    "ctaTitle": "Do you show up on {name}?",
+    "ctaBody": "Get your free report: we tell you which sites list you and, with Pro, we send the letter for you and track the deadline.",
+    "cta": "Get my free report",
+    "kinds": {
+      "broker": "Sells data",
+      "people-search": "People search",
+      "business-registry": "Business registry",
+      "directory": "Social network / directory",
+      "phonebook": "Phone book",
+      "results": "Public results"
+    },
+    "known": "Known site",
+    "knownHint": "We have the removal procedure for this site",
+    "seeGuide": "See how to opt out",
+    "letterKnown": "Known procedure for {name}",
+    "all": "All sites",
+    "footerLink": "Site guide"
+  },
+  "family": {
+    "title": "Family plan",
+    "seats": "{used} of {total} seats",
+    "body": "Add the people in your household: each gets their own Pro account with their own report, monitoring and letters.",
+    "add": "Add person",
+    "emailPlaceholder": "email@example.com",
+    "remove": "Remove",
+    "you": "you (owner)",
+    "pending": "invitation sent",
+    "memberTitle": "Included in a family plan",
+    "memberBody": "Your Pro account is paid by {owner}. You have every Pro feature; if the owner cancels, your plan ends on the same date.",
+    "full": "No seats left.",
+    "invalid": "That email isn't valid.",
+    "self": "That's you.",
+    "exists": "That person already has Pro on their own.",
+    "notOwner": "Only the family plan owner can add people.",
+    "inviteEmail": {
+      "subject": "{owner} added you to Rastro Pro",
+      "greeting": "Hi:",
+      "body": "{owner} included you in their Rastro family plan. You now have Rastro Pro: exposure report, daily and monthly monitoring, GDPR letters sent by us and the Gmail scanner.",
+      "ask": "Sign in with this link (or with your email at rastropro.com) and request your first report.",
+      "cta": "Open Rastro",
+      "footer": "If you don't know this person, ignore this email."
+    }
+  },
+  "sim": {
+    "eyebrow": "Attack simulator",
+    "title": "This is how they'd scam you",
+    "subtitle": "Using what's already public about you, we show the messages and the call a scammer would use. It's a simulation: none of it is real and it's sent to nobody but you.",
+    "tag": "SIMULATION",
+    "attackability": "How easy you are to scam",
+    "attackabilityOutOf": "of 100",
+    "attackLevel": {
+      "low": "Hard",
+      "medium": "Possible",
+      "high": "Easy"
+    },
+    "defensesTitle": "The 3 defences that protect you most",
+    "phishingTitle": "Messages you'd receive",
+    "pretext": "Why it would work",
+    "clues": "How to spot it",
+    "channel": {
+      "email": "Email",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp"
+    },
+    "vishingTitle": "The call",
+    "callerClaims": "Who they claim to be",
+    "redFlags": "Red flags",
+    "hangUp": "What to say to hang up",
+    "who": {
+      "caller": "Scammer",
+      "you": "You"
+    },
+    "generate": "Generate my simulation",
+    "regenerate": "Generate again",
+    "generating": "Takes 20–40 seconds.",
+    "sendToMe": "Send them to my email",
+    "sendToMeHelp": "You'll get the 3 messages in your own inbox, marked as simulation, to live the experience. Only to your account.",
+    "sentOk": "Sent to your email. Check your inbox (and spam).",
+    "share": "Share “how they'd scam me”",
+    "shareHint": "The image only carries the score and your masked name.",
+    "lockedTitle": "See the other 2 messages and the call",
+    "lockedBody": "The full simulator, sending to your email and regenerating with each new report belong to Pro.",
+    "noReportTitle": "You need a report first",
+    "noReportBody": "The simulation is built from your exposure report. Get yours for free and come back.",
+    "failed": "Couldn't generate right now. Try again in a minute.",
+    "disclaimer": "Educational simulation about yourself. Links and numbers are fictional. Don't forward it to anyone.",
+    "emailBanner": "RASTRO SIMULATION · MESSAGE {n} OF 3 · NOT REAL",
+    "simulatedFrom": "Simulated sender: {name}",
+    "cluesTitle": "Clues to spot it:",
+    "emailFooter": "You requested this email from your Rastro account to learn to recognise scams. It contains no real links.",
+    "sentEmail": {
+      "subject": "Rastro: your 3 simulated messages are on the way",
+      "greeting": "Hi:",
+      "body": "We've sent you three simulated scam messages built from what's public about you. They're marked as simulation with the clues at the end. Look at them as if they were real: would you have fallen for it?",
+      "cta": "Open the simulator",
+      "footer": "You requested this from your Rastro account."
+    },
+    "hubBody": "See the messages and the call a scammer would use on you, and what protects you.",
+    "guardianHubBody": "Paste a suspicious SMS, email or WhatsApp and we tell you if it's a scam and which of your data it uses."
+  },
+  "guardian": {
+    "eyebrow": "Guardian",
+    "title": "Is it a scam?",
+    "subtitle": "Paste the SMS, email or WhatsApp you received and we tell you whether it's a scam, why, and which of your data it uses. We don't store the message.",
+    "sender": "Sender (optional)",
+    "senderPlaceholder": "Number, email or name shown",
+    "text": "The message",
+    "textPlaceholder": "Paste the text exactly as you received it…",
+    "analyze": "Analyse",
+    "analyzing": "Analysing…",
+    "personalized": "With your account we use your report as context: we know where you have accounts and what leaked, so we detect scams targeting you.",
+    "notPersonalized": "Without an account the analysis is generic (5 per day). With an account we cross it with your report.",
+    "verdict": {
+      "scam": "Scam",
+      "suspicious": "Suspicious",
+      "legit": "Looks legitimate"
+    },
+    "confidence": "Confidence {n}%",
+    "usesData": "Your data it exploits",
+    "actions": "What to do",
+    "verifyHow": "How to verify",
+    "disclaimer": "Automated guidance. When in doubt, don't tap anything and verify through the official app or phone.",
+    "errors": {
+      "text": "Paste the full message (at least a few words).",
+      "limit": "You've used today's 5 free analyses. Rastro Pro has no limit.",
+      "generic": "Couldn't analyse right now. Try again in a moment."
+    }
+  },
+  "aiTpl": {
+    "subject": "Request for rectification and erasure of AI-generated personal data (Arts. 16 and 17 GDPR) — {name}",
+    "date": "{city}{date}",
+    "salutation": "To the data protection officer of {provider}:",
+    "p1": "My name is {name}. When your AI assistant is asked about me, it generates information that is inaccurate, outdated or has no legal basis to be processed and disseminated.",
+    "p2": "I reproduce the answer obtained verbatim:",
+    "noAnswer": "(answer not available right now; I will attach a screenshot)",
+    "p3": "Specifically, the following data are false or must not be generated:",
+    "p4": "Under Articles 16 and 17 of Regulation (EU) 2016/679 I request: (1) the rectification or erasure of that data in the systems and models that generate or retrieve it; (2) that your assistant stop generating information about me from sources without a legal basis; and (3) written confirmation of the measures taken. I expressly object to the processing of my data for training or retrieval purposes (Article 21).",
+    "p5": "I remind you of the one-month deadline in Article 12.3. Without a satisfactory reply I will lodge a complaint with the supervisory authority.",
+    "p6": "You can reply to me at: {email}",
+    "closing": "Sincerely,"
+  },
+  "aiReq": {
+    "withRastro": "Request rectification with Rastro",
+    "title": "Request to {provider}",
+    "steps": "How it works with {provider}"
+  },
+  "images": {
+    "eyebrow": "Your face online",
+    "title": "Images with your name",
+    "subtitle": "What an image search returns for your name and city. Mark the ones that are you and request removal; ignore the rest.",
+    "none": "We found no images linked to your name. Good sign.",
+    "unavailable": "Image search is not available right now.",
+    "source": "View page",
+    "remove": "Request removal",
+    "removeHint": "We create a letter to the site hosting the page (right to erasure and right to one's own image). To remove it from Google too, use the image removal form.",
+    "google": "Remove from Google Images",
+    "noReport": "You need a report (with your city) to search images.",
+    "count": "{n} images",
+    "proOnly": "Image search and removal letters belong to Pro.",
+    "hubBody": "Photos that show up when searching your name, with a removal letter for each site."
+  },
+  "imageTpl": {
+    "what": "an image in which I appear, published at {url}",
+    "extra": "Besides Article 17 GDPR, I invoke my right to my own image (Article 18 of the Spanish Constitution and Organic Law 1/1982), as I have not consented to its capture or dissemination."
+  },
+  "team": {
+    "eyebrow": "Rastro Teams",
+    "title": "Your team, without being the weak link",
+    "subtitle": "88% of cybercrime is fraud, and almost all of it starts with a person. Rastro Teams gives every employee their report, monitoring, letters and the guardian, and gives you a dashboard with your company's human risk: without seeing their data, only their score if they share it.",
+    "smallName": "Small business",
+    "largeName": "Company",
+    "per": "per month · up to {n} people",
+    "cta": "Subscribe",
+    "contact": "Talk to us",
+    "features": [
+      "Each person gets a full Pro account: report, daily and monthly monitoring, GDPR letters sent by Rastro, Gmail scanner, simulator and guardian.",
+      "Company dashboard: who has a report, average score, how many have leaked passwords, who enabled monitoring.",
+      "Privacy by design: the employee decides whether to share their score; the company never sees findings or data.",
+      "Email invitations, add and remove in one click, CSV export.",
+      "Real training: each employee sees how they'd be scammed with their own data."
+    ],
+    "dashTitle": "Team dashboard",
+    "seats": "{used} of {total} seats",
+    "invite": "Invite",
+    "emailPlaceholder": "person@yourcompany.com",
+    "remove": "Remove",
+    "export": "Export CSV",
+    "col": {
+      "person": "Person",
+      "status": "Status",
+      "score": "Score",
+      "passwords": "Leaked passwords",
+      "monitoring": "Monitoring",
+      "updated": "Last report"
+    },
+    "status": {
+      "invited": "Invited",
+      "active": "Active",
+      "noreport": "No report"
+    },
+    "notShared": "Not shared",
+    "shared": "Shared",
+    "on": "On",
+    "off": "No",
+    "avg": "Average score",
+    "withPasswords": "With leaked passwords",
+    "withReport": "With report",
+    "withMonitoring": "With monitoring",
+    "shareTitle": "Share with my company",
+    "shareBody": "{org} included you in Rastro Teams. If you enable it, your company sees only your score, whether you have leaked passwords and whether monitoring is on. Never your findings, report or data. You can turn it off any time.",
+    "shareOn": "Share my score",
+    "shareOff": "Stop sharing",
+    "notOwner": "Only the team owner can manage it.",
+    "full": "No seats left.",
+    "invalid": "That email isn't valid.",
+    "exists": "That person is already in another team or pays their own Pro.",
+    "inviteEmail": {
+      "subject": "{org} gave you Rastro Pro",
+      "greeting": "Hi:",
+      "body": "{org} included you in Rastro Teams. You now have Rastro Pro: exposure report, monitoring, GDPR letters sent by us, Gmail scanner, scam simulator and guardian. Your company doesn't see your data or findings; only your score, and only if you decide to share it.",
+      "ask": "Sign in with this link and request your first report.",
+      "cta": "Open Rastro",
+      "footer": "If you don't know this company, ignore this email."
+    },
+    "nameLabel": "Company name",
+    "rename": "Save",
+    "hubBody": "Manage the people in your team and their risk."
+  }
+}

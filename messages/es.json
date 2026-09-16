@@ -1,0 +1,1357 @@
+{
+  "locale": {
+    "es": "Español",
+    "en": "English",
+    "switchTo": "Cambiar idioma"
+  },
+  "nav": {
+    "brand": "Rastro",
+    "privacy": "Privacidad",
+    "legal": "Aviso legal",
+    "account": "Mi cuenta",
+    "login": "Entrar",
+    "logout": "Cerrar sesión",
+    "sections": "Secciones",
+    "tabs": {
+      "home": "Inicio",
+      "report": "Informe",
+      "tools": "Herramientas",
+      "profile": "Perfil"
+    }
+  },
+  "hero": {
+    "eyebrow": "Informe gratuito de exposición",
+    "title": "Mira lo que la IA sabe de ti.",
+    "subtitle": "Filtraciones, perfiles públicos y lo que los asistentes de IA dicen de ti, en un informe claro con una puntuación de 0 a 100. Gratis.",
+    "trust": {
+      "own": "Solo sobre ti",
+      "verify": "Correo verificado",
+      "retention": "Se borra a los 30 días"
+    },
+    "demoTitle": "Así se ve tu puntuación",
+    "demoBody": "De 0 a 100. Filtraciones, perfiles públicos y lo que la IA dice de ti, en un vistazo."
+  },
+  "form": {
+    "title": "Pide tu informe",
+    "firstName": "Nombre",
+    "firstNamePlaceholder": "Ana",
+    "lastName": "Apellidos",
+    "lastNamePlaceholder": "García Ruiz",
+    "email": "Tu correo",
+    "emailPlaceholder": "ana@ejemplo.com",
+    "emailHelp": "Te enviamos un enlace para confirmar que es tuyo. Sin ese paso no generamos nada.",
+    "city": "Ciudad",
+    "cityOptional": "opcional",
+    "cityPlaceholder": "Valencia",
+    "cityHelp": "Obligatoria: con tu ciudad no te confundimos con otras personas que se llaman como tú. Sin ella el informe pierde fiabilidad.",
+    "consent": "He leído la {privacy} y doy mi consentimiento para que Rastro busque información pública sobre mí y me envíe el informe.",
+    "consentPrivacyLink": "política de privacidad",
+    "submit": "Enviar enlace de verificación",
+    "submitting": "Enviando…",
+    "onlyYourself": "Solo puedes pedir el informe sobre ti mismo.",
+    "occupation": "Profesión o empresa",
+    "occupationPlaceholder": "Enfermera en el Hospital La Fe",
+    "occupationHelp": "Opcional. Con esto la IA distingue tus resultados de los de otras personas con tu nombre.",
+    "cityRequired": "obligatoria"
+  },
+  "formErrors": {
+    "firstName": "Escribe tu nombre.",
+    "lastName": "Escribe tus apellidos.",
+    "email": "Escribe un correo válido.",
+    "consent": "Necesitamos tu consentimiento para continuar.",
+    "rateLimit": "Has pedido demasiados informes hoy. Inténtalo mañana.",
+    "generic": "Algo ha fallado por nuestro lado. Vuelve a intentarlo en un momento.",
+    "code": "Ese código no es correcto.",
+    "codeExpired": "El código ha caducado o se ha usado. Pide un enlace nuevo.",
+    "codeLocked": "Demasiados intentos. Pide un enlace nuevo.",
+    "city": "Dinos tu ciudad (nos hace falta para no confundirte con otra persona)."
+  },
+  "sent": {
+    "title": "Revisa tu correo",
+    "body": "Hemos enviado un enlace a {email}. Ábrelo y empezamos a preparar tu informe.",
+    "spam": "Si no aparece en unos minutos, mira en spam o promociones.",
+    "expires": "El enlace caduca en 24 horas.",
+    "again": "Usar otro correo",
+    "codeTitle": "¿Prefieres no abrir el enlace?",
+    "codeBody": "Escribe aquí el código de 6 dígitos que va en el correo.",
+    "codePlaceholder": "123456",
+    "codeSubmit": "Confirmar con el código",
+    "codeChecking": "Comprobando…"
+  },
+  "how": {
+    "title": "Cómo funciona",
+    "step1Title": "Nos das tu nombre y tu correo",
+    "step1Body": "Sin contraseñas ni documentos.",
+    "step2Title": "Confirmas que el correo es tuyo",
+    "step2Body": "Te llega un código. Sin él no buscamos nada.",
+    "step3Title": "Recibes tu informe",
+    "step3Body": "Puntuación, qué se ve y qué hacer.",
+    "pageTitle": "Cómo lo hacemos",
+    "pageSubtitle": "Qué buscamos, dónde, qué guardamos y durante cuánto tiempo. Sin letra pequeña.",
+    "sections": [
+      {
+        "t": "Qué buscamos y dónde",
+        "items": [
+          "Filtraciones: consultamos tu correo en Have I Been Pwned, la base de datos de referencia de brechas conocidas. Solo enviamos el correo, nada más.",
+          "Buscadores: buscamos tu nombre (con tu ciudad y profesión, si las das) en un buscador web para ver perfiles, directorios y sitios que venden datos.",
+          "Asistentes de IA: preguntamos por ti a Perplexity y, cuando están configurados, a ChatGPT y Gemini, y te enseñamos la respuesta literal.",
+          "Avatar público: comprobamos si tu correo tiene un perfil público en Gravatar con cuentas enlazadas.",
+          "Redacción: una IA (Claude, de Anthropic) ordena todo eso en lenguaje llano y extrae señales; la puntuación la calcula una regla fija y auditable, no la IA."
+        ]
+      },
+      {
+        "t": "Qué guardamos y cuánto tiempo",
+        "items": [
+          "Tu nombre, correo, ciudad y profesión (si la das), el informe y las respuestas de las fuentes.",
+          "Sin cuenta: todo se borra a los 30 días de forma automática.",
+          "Con cuenta: se conserva mientras la tengas; puedes borrarla cuando quieras desde Soporte y se elimina todo, informes incluidos.",
+          "Escáner de Gmail: solo remitente, asunto y fecha; no guardamos correos ni el acceso, que se revoca al terminar."
+        ]
+      },
+      {
+        "t": "Qué no hacemos",
+        "items": [
+          "No vendemos ni cedemos datos a nadie. No hay publicidad.",
+          "No buscamos a otras personas: solo a quien confirma su correo.",
+          "No prometemos borrar: te enseñamos lo que se ve y reclamamos por ti con la ley en la mano (art. 17 RGPD y AEPD).",
+          "No guardamos contraseñas: se entra con un código de un solo uso o con Google."
+        ]
+      },
+      {
+        "t": "Cómo se calcula la puntuación",
+        "items": [
+          "Empiezas en 100 y se resta: cada filtración con contraseña −15 (máx. −45); sin contraseña −5 (máx. −15).",
+          "La IA acierta dónde trabajas −10; tu ciudad −5; teléfono o dirección públicos −15.",
+          "Cada perfil público que la IA atribuye a ti −3 (máx. −15); datos falsos sobre ti en la IA −5.",
+          "Verde de 70 a 100, ámbar de 40 a 69, rojo de 0 a 39. La regla es fija: mismos datos, misma nota."
+        ]
+      },
+      {
+        "t": "Seguridad",
+        "items": [
+          "Todo va cifrado (HTTPS). Las claves de las fuentes viven solo en nuestro servidor.",
+          "Los enlaces y códigos de acceso caducan y se usan una sola vez.",
+          "Copia de seguridad diaria de la base de datos y vigilancia del servicio.",
+          "Servidores en la Unión Europea; responsable del tratamiento en España (ver Aviso legal)."
+        ]
+      }
+    ],
+    "ownerTitle": "Quién está detrás",
+    "ownerBody": "Rastro es un proyecto independiente hecho en España por {owner}. Puedes escribirnos a {email} o desde Soporte.",
+    "footerLink": "Cómo lo hacemos"
+  },
+  "verify": {
+    "loading": "Comprobando el enlace…",
+    "okTitle": "Correo confirmado",
+    "okBody": "Ya podemos preparar tu informe.",
+    "continue": "Continuar",
+    "invalidTitle": "Este enlace no vale",
+    "invalidBody": "Puede que ya se haya usado o que esté mal copiado. Pide uno nuevo.",
+    "expiredTitle": "El enlace ha caducado",
+    "expiredBody": "Los enlaces duran 24 horas. Pide uno nuevo y lo tendrás en tu correo.",
+    "retry": "Pedir un enlace nuevo",
+    "soonTitle": "Ya casi",
+    "soonBody": "La generación del informe llega en los próximos días. Te avisaremos en este mismo correo."
+  },
+  "email": {
+    "subject": "Confirma tu correo para ver tu informe de Rastro",
+    "preheader": "Un clic y empezamos a preparar tu informe.",
+    "greeting": "Hola {name}:",
+    "body": "Has pedido un informe de exposición en Rastro. Confirma que este correo es tuyo y empezamos.",
+    "cta": "Confirmar mi correo",
+    "fallback": "Si el botón no funciona, copia esta dirección en tu navegador:",
+    "expires": "El enlace caduca en 24 horas.",
+    "ignore": "Si no has sido tú, ignora este mensaje. No haremos nada.",
+    "footer": "Rastro — Mira lo que la IA sabe de ti.",
+    "codeIntro": "O escribe este código en la página donde pediste el informe:",
+    "codeLabel": "Tu código"
+  },
+  "footer": {
+    "tagline": "Mira lo que la IA sabe de ti.",
+    "privacy": "Política de privacidad",
+    "legal": "Aviso legal",
+    "contact": "Contacto",
+    "rights": "Rastro. Informes solo sobre uno mismo."
+  },
+  "waiting": {
+    "confirmed": "Correo confirmado",
+    "title": "Preparando tu informe",
+    "subtitle": "Suele tardar menos de un minuto. Puedes dejar esta página abierta.",
+    "step": {
+      "hibp": "Buscando tu correo en filtraciones conocidas",
+      "brave": "Buscando tu nombre en internet",
+      "ai": "Preguntando a la IA qué sabe de ti",
+      "report": "Redactando el informe"
+    },
+    "queued": "En cola",
+    "done": "Listo",
+    "errorTitle": "No hemos podido generar el informe",
+    "errorBody": "Algo ha fallado por nuestro lado. Vuelve a pedirlo desde el inicio; no te costará nada.",
+    "notFoundTitle": "Este informe no existe",
+    "notFoundBody": "Puede que haya caducado (los informes se borran a los 30 días) o que el enlace esté mal copiado."
+  },
+  "report": {
+    "eyebrow": "Informe de exposición",
+    "for": "Para {name}",
+    "scoreLabel": "Puntuación de exposición",
+    "outOf": "de 100",
+    "level": {
+      "green": "Exposición baja",
+      "orange": "Exposición media",
+      "red": "Exposición alta"
+    },
+    "categories": {
+      "breaches": "Filtraciones",
+      "ai": "Lo que dice la IA",
+      "profiles": "Perfiles y páginas públicas",
+      "false": "Datos posiblemente falsos"
+    },
+    "severity": {
+      "high": "Alta",
+      "medium": "Media",
+      "low": "Baja",
+      "info": "Info"
+    },
+    "actionsTitle": "Qué hacer ahora",
+    "source": "Ver fuente",
+    "generated": "Generado el {date}. Se borra automáticamente a los 30 días.",
+    "partial": "Versión preliminar: la parte de «Lo que dice la IA» se añade en el siguiente paso del desarrollo.",
+    "scoreHint": "100 significa que no hemos encontrado nada expuesto.",
+    "again": "Comprobar otro correo",
+    "counts": "{n} hallazgos",
+    "countOne": "1 hallazgo",
+    "whatYouSee": "Qué se ve, por qué importa y qué hacer.",
+    "accountsTitle": "Cuentas conocidas con este correo",
+    "accountsHint": "Servicios donde consta que este correo ha tenido cuenta: por las filtraciones en las que aparece y, si existe, por tu perfil público de Gravatar. No sondeamos webs con tu correo.",
+    "accountBreach": "Cuenta detectada por la filtración de {year}",
+    "accountGravatar": "Enlazada en tu perfil de Gravatar",
+    "accountPassword": "Con contraseña filtrada",
+    "assistantsTitle": "Lo que responde cada IA",
+    "assistantsBody": "Respuesta literal de cada asistente a «¿quién es {name}?». Así ves exactamente lo que le cuentan a quien pregunte por ti.",
+    "assistantSources": "Fuentes que citó",
+    "rectify": "Pedir rectificación o supresión a {name}",
+    "rectifyHint": "Cada proveedor tiene su vía. Ten a mano la respuesta que te ha dado y las URL de origen.",
+    "assistantSkipped": "No consultado en este informe.",
+    "assistantFailed": "No respondió esta vez; se volverá a consultar en el próximo informe.",
+    "assistantNames": {
+      "perplexity": "Perplexity",
+      "openai": "ChatGPT (OpenAI)",
+      "gemini": "Gemini (Google)"
+    }
+  },
+  "summary": {
+    "breachesNone": "Tu correo no aparece en ninguna filtración conocida.",
+    "breachesOne": "Tu correo aparece en 1 filtración conocida{pw}.",
+    "breachesMany": "Tu correo aparece en {n} filtraciones conocidas{pw}.",
+    "withPassword": ", con contraseña incluida",
+    "withPasswordN": ", {n} de ellas con contraseña",
+    "breachesUnchecked": "No hemos podido comprobar las filtraciones esta vez.",
+    "profilesNone": "Al buscar tu nombre no aparece ningún perfil público reconocible.",
+    "profilesOne": "Al buscar tu nombre aparece 1 perfil público.",
+    "profilesMany": "Al buscar tu nombre aparecen {n} perfiles públicos.",
+    "brokers": " Además, {n} sitio(s) que venden datos personales listan tu nombre.",
+    "searchFailed": "La búsqueda por nombre no ha funcionado esta vez."
+  },
+  "findings": {
+    "breachPasswordTitle": "Tu correo apareció en la filtración de {name} ({year}) con contraseña",
+    "breachPasswordDetail": "Se filtraron: {data}. Si esa contraseña la usas todavía en algún sitio, cámbiala hoy y activa la verificación en dos pasos.",
+    "breachTitle": "Tu correo apareció en la filtración de {name} ({year})",
+    "breachDetail": "Se filtraron: {data}. Sin contraseña el riesgo es menor, pero tu correo circula en listas que se usan para spam y estafas dirigidas.",
+    "breachUncheckedTitle": "Filtraciones: no comprobadas",
+    "breachUncheckedDetail": "El servicio de filtraciones no ha respondido. Vuelve a pedir el informe más tarde.",
+    "noBreachesTitle": "Sin filtraciones conocidas",
+    "noBreachesDetail": "Tu correo no está en ninguna de las filtraciones públicas registradas hasta hoy. Buena señal; no significa que no pueda pasar mañana.",
+    "profileTitle": "Perfil público en {platform}",
+    "profileDetail": "Aparece al buscar tu nombre: «{title}». Revisa qué muestra a quien no te conoce (foto, ciudad, empleo) y ajusta la privacidad si sobra algo.",
+    "brokerTitle": "Un sitio que vende datos personales lista tu nombre ({host})",
+    "brokerDetail": "Estas webs recopilan teléfonos y direcciones de fuentes públicas y los venden. Puede ser otra persona con tu nombre; si eres tú, casi todas tienen un formulario para retirar tus datos.",
+    "pageTitle": "Resultado público: «{title}»",
+    "pageDetail": "En {host}. Mira si habla de ti o de otra persona con tu nombre.",
+    "noResultsTitle": "Tu nombre casi no aparece en internet",
+    "noResultsDetail": "La búsqueda no devuelve perfiles ni páginas reconocibles. Poca exposición pública por nombre.",
+    "searchFailedTitle": "Búsqueda por nombre: no disponible",
+    "searchFailedDetail": "El buscador no ha respondido. Vuelve a pedir el informe más tarde."
+  },
+  "actionsTpl": {
+    "changePasswordTitle": "Cambia las contraseñas filtradas",
+    "changePasswordDetail": "Empieza por {name}. Si reutilizabas esa contraseña, cámbiala también donde la usaras.",
+    "twoFactorTitle": "Activa la verificación en dos pasos",
+    "twoFactorDetail": "En tu correo y en tu banco como mínimo. Con ella, una contraseña filtrada no basta para entrar.",
+    "reviewProfilesTitle": "Revisa la privacidad de tus perfiles",
+    "reviewProfilesDetail": "Abre tus perfiles como si fueras un desconocido y quita lo que no quieras que vea cualquiera.",
+    "brokerOptOutTitle": "Pide la retirada en los sitios de datos",
+    "brokerOptOutDetail": "Busca «opt out» o «eliminar mis datos» en cada uno. Suele ser un formulario de dos minutos.",
+    "passwordManagerTitle": "Usa un gestor de contraseñas",
+    "passwordManagerDetail": "Una contraseña distinta por sitio sin tener que recordarlas. Es la medida que más reduce el daño de futuras filtraciones.",
+    "monitorTitle": "Vuelve a comprobarlo dentro de un tiempo",
+    "monitorDetail": "Las filtraciones nuevas aparecen cada semana. Repite el informe en unos meses."
+  },
+  "dataClasses": {
+    "Email addresses": "correos",
+    "Passwords": "contraseñas",
+    "Usernames": "nombres de usuario",
+    "Names": "nombres",
+    "Phone numbers": "teléfonos",
+    "Physical addresses": "direcciones postales",
+    "Dates of birth": "fechas de nacimiento",
+    "IP addresses": "direcciones IP",
+    "Password hints": "pistas de contraseña",
+    "Geographic locations": "ubicaciones",
+    "Genders": "género",
+    "Job titles": "cargos",
+    "Employers": "empresas",
+    "Social media profiles": "perfiles en redes",
+    "Website activity": "actividad web",
+    "Purchases": "compras",
+    "Credit cards": "tarjetas",
+    "Government issued IDs": "documentos de identidad"
+  },
+  "share": {
+    "button": "Compartir mi puntuación",
+    "download": "Descargar imagen",
+    "text": "Mi puntuación de exposición en Rastro: {score}/100. Mira lo que la IA sabe de ti.",
+    "title": "Mi informe de Rastro",
+    "sharing": "Preparando imagen…",
+    "note": "La imagen muestra tu puntuación y tu nombre parcialmente tapado. Nunca el informe completo."
+  },
+  "og": {
+    "scoreLabel": "Puntuación de exposición",
+    "outOf": "de 100",
+    "cta": "rastropro.com · Mira lo que la IA sabe de ti."
+  },
+  "legal": {
+    "reviewNote": "Texto base preparado para su revisión. Confírmalo con un profesional antes de abrir el servicio al público.",
+    "updated": "Última actualización: {date}",
+    "pending": "[pendiente]",
+    "privacy": {
+      "title": "Política de privacidad",
+      "intro": "Rastro te muestra qué información tuya es pública en internet y qué dicen de ti los asistentes de inteligencia artificial. Para hacerlo tratamos unos pocos datos personales. Aquí te explicamos cuáles, para qué, durante cuánto tiempo y qué derechos tienes, en lenguaje claro.",
+      "sections": [
+        {
+          "title": "1. Quién es el responsable",
+          "paragraphs": [
+            "Responsable del tratamiento: {owner}.",
+            "Contacto para cualquier cuestión de privacidad o para ejercer tus derechos: {email}.",
+            "Sitio web: {domain}."
+          ]
+        },
+        {
+          "title": "2. Qué datos tratamos",
+          "paragraphs": [
+            "Los que escribes en el formulario: nombre, apellidos, correo electrónico y, si quieres, tu ciudad.",
+            "Si quieres, tu profesión o empresa. Solo sirve para distinguirte de personas con tu mismo nombre.",
+            "La fecha y hora en que diste tu consentimiento y en que verificaste tu correo.",
+            "Tu dirección IP, guardada únicamente como un hash (una huella irreversible) para limitar el número de informes por persona y evitar abusos. No conservamos la IP en claro.",
+            "El informe generado: puntuación, hallazgos, acciones recomendadas y las respuestas técnicas de los servicios consultados, que guardamos para poder revisar errores.",
+            "Si creas cuenta (al verificar tu correo), guardamos también tu correo como identificador de la cuenta, tu idioma, la fecha del último acceso y, si activas la vigilancia mensual, la fecha en que la activaste. Las cartas de supresión que generes se guardan con su estado y fechas para llevar el calendario de plazos."
+          ]
+        },
+        {
+          "title": "3. Para qué y con qué base legal",
+          "paragraphs": [
+            "Finalidad: generar y mostrarte tu informe de exposición, enviarte el enlace de verificación por correo y limitar el uso del servicio para evitar abusos.",
+            "Base legal: tu consentimiento (artículo 6.1.a del RGPD), que das marcando la casilla del formulario y confirmas abriendo el enlace que te enviamos por correo. Sin ese doble paso no buscamos nada.",
+            "Solo puedes pedir un informe sobre ti mismo. Pedirlo sobre otra persona incumple estas condiciones.",
+            "Vigilancia mensual (solo si la activas): cada mes volvemos a consultar las mismas fuentes con tus datos y te enviamos un correo únicamente si hay cambios. Puedes desactivarla en tu cuenta o desde el enlace del propio correo.",
+            "Escáner de buzón (solo plan Pro y solo si lo conectas tú): con tu autorización en Google leemos únicamente el remitente, el asunto y la fecha de tus correos para deducir en qué servicios tienes cuenta. No leemos el contenido, no guardamos ningún correo ni claves de acceso, y revocamos el acceso al terminar. Solo conservamos la lista de servicios resultante, que puedes borrar desde tu cuenta o escribiéndonos."
+          ]
+        },
+        {
+          "title": "4. Quién recibe tus datos",
+          "paragraphs": [
+            "Para elaborar el informe consultamos servicios de terceros, enviando a cada uno solo lo imprescindible:",
+            "Have I Been Pwned (Reino Unido): recibe tu correo electrónico para comprobar si aparece en filtraciones conocidas.",
+            "Brave Search (EE. UU.): recibe tu nombre y apellidos y, si los diste, tu ciudad y tu profesión o empresa, para buscar resultados públicos.",
+            "Perplexity (EE. UU.): recibe tu nombre y apellidos y, si los diste, tu ciudad y tu profesión o empresa, para preguntar qué dice la IA de ti.",
+            "Anthropic (EE. UU.): recibe los resultados anteriores (no tu correo) para redactar el informe en lenguaje llano.",
+            "Gravatar (Automattic, EE. UU.): recibe un hash (huella irreversible) de tu correo para comprobar si existe un perfil público asociado.",
+            "Google (EE. UU.): si conectas tu Gmail, Google recibe tu autorización y nosotros accedemos a las cabeceras de tus correos a través de su API, con el permiso de solo lectura que tú concedes y puedes revocar en cualquier momento desde tu cuenta de Google.",
+            "Además usamos proveedores que alojan y hacen funcionar el servicio: Supabase (base de datos), Resend (envío de correos) y el proveedor de alojamiento web. Actúan como encargados del tratamiento bajo contrato.",
+            "Algunos de estos proveedores están fuera del Espacio Económico Europeo. Las transferencias se amparan en cláusulas contractuales tipo aprobadas por la Comisión Europea o en el Marco de Privacidad de Datos UE-EE. UU., según el proveedor.",
+            "No vendemos tus datos ni los cedemos a nadie más."
+          ]
+        },
+        {
+          "title": "5. Cuánto tiempo los guardamos",
+          "paragraphs": [
+            "30 días desde que pides el informe. Pasado ese plazo, la solicitud y el informe se borran automáticamente de nuestra base de datos.",
+            "Si tienes cuenta, tus informes y cartas se conservan mientras la cuenta exista, para que puedas consultarlos y hacer el seguimiento. Puedes pedir que borremos la cuenta y todo lo asociado escribiendo a {email}.",
+            "Los hashes usados para limitar el uso se renuevan cada 24 horas.",
+            "Si quieres que borremos tu informe antes, escríbenos a {email} desde el mismo correo con el que lo pediste."
+          ]
+        },
+        {
+          "title": "6. Tus derechos",
+          "paragraphs": [
+            "Puedes acceder a tus datos, rectificarlos, pedir que los borremos, oponerte al tratamiento, pedir que lo limitemos y llevártelos (portabilidad). También puedes retirar tu consentimiento en cualquier momento, sin que eso afecte a lo hecho antes.",
+            "Para ejercerlos, escribe a {email} indicando qué derecho quieres ejercer y el correo con el que pediste el informe. Te responderemos en el plazo de un mes.",
+            "Si crees que no hemos atendido bien tu petición, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es)."
+          ]
+        },
+        {
+          "title": "7. Seguridad",
+          "paragraphs": [
+            "Los datos viajan cifrados (HTTPS) y se guardan en una base de datos con acceso restringido al servidor de la aplicación. Los enlaces de verificación son de un solo uso y caducan a las 24 horas.",
+            "Ningún sistema es infalible. Por eso guardamos lo mínimo y durante el menor tiempo posible."
+          ]
+        },
+        {
+          "title": "8. Lo que Rastro no hace",
+          "paragraphs": [
+            "Rastro no borra información de internet ni de los asistentes de IA, ni promete hacerlo. Te da visibilidad y te indica qué puedes hacer tú.",
+            "El informe se basa en fuentes públicas y en respuestas de sistemas automáticos que pueden equivocarse, especialmente si tu nombre es común. Puede que falten datos o que alguno se refiera a otra persona."
+          ]
+        },
+        {
+          "title": "9. Menores",
+          "paragraphs": [
+            "El servicio está dirigido a mayores de 14 años. Si eres menor, no lo uses sin permiso de tus padres o tutores."
+          ]
+        },
+        {
+          "title": "10. Cambios",
+          "paragraphs": [
+            "Si cambiamos esta política, publicaremos la nueva versión en esta misma página con la fecha actualizada."
+          ]
+        }
+      ]
+    },
+    "notice": {
+      "title": "Aviso legal",
+      "intro": "Condiciones de uso de Rastro. Son cortas, porque el servicio también lo es.",
+      "sections": [
+        {
+          "title": "1. Titular",
+          "paragraphs": [
+            "Este sitio web ({domain}) es titularidad de {owner}. Contacto: {email}."
+          ]
+        },
+        {
+          "title": "2. Qué es el servicio",
+          "paragraphs": [
+            "Rastro genera, de forma gratuita, un informe orientativo sobre la información pública que existe en internet y en asistentes de inteligencia artificial acerca de la persona que lo solicita."
+          ]
+        },
+        {
+          "title": "3. Condiciones de uso",
+          "paragraphs": [
+            "Solo puedes solicitar informes sobre ti mismo. Está prohibido usar el servicio para obtener información sobre terceros, para acosar, discriminar o tomar decisiones que afecten a otras personas.",
+            "Debes indicar un correo electrónico del que seas titular. Verificamos que es tuyo antes de generar nada.",
+            "Nos reservamos el derecho a limitar o bloquear el uso del servicio si detectamos abusos."
+          ]
+        },
+        {
+          "title": "4. Responsabilidad",
+          "paragraphs": [
+            "El informe es orientativo. Se elabora a partir de fuentes públicas y sistemas automáticos (buscadores, bases de datos de filtraciones y modelos de inteligencia artificial) que pueden contener errores, omisiones o datos de otras personas con tu mismo nombre.",
+            "No garantizamos que el informe sea completo ni exacto, y no nos hacemos responsables de las decisiones que tomes basándote en él. Las acciones recomendadas son sugerencias generales, no asesoramiento legal ni técnico personalizado.",
+            "Rastro no elimina información de terceros ni garantiza que puedas eliminarla."
+          ]
+        },
+        {
+          "title": "5. Propiedad intelectual",
+          "paragraphs": [
+            "El diseño, los textos y el código de Rastro son de su titular. Tu informe es tuyo: puedes guardarlo, compartirlo o borrarlo como quieras."
+          ]
+        },
+        {
+          "title": "6. Ley aplicable",
+          "paragraphs": [
+            "Estas condiciones se rigen por la legislación española. Para cualquier conflicto serán competentes los juzgados y tribunales que correspondan según la normativa de consumidores."
+          ]
+        }
+      ]
+    },
+    "back": "Volver al inicio"
+  },
+  "login": {
+    "title": "Entra o crea tu cuenta",
+    "subtitle": "Sin contraseñas: con tu cuenta de Google o con un código que te enviamos al correo.",
+    "email": "Tu correo",
+    "submit": "Enviarme el enlace",
+    "submitting": "Enviando…",
+    "sentTitle": "Revisa tu correo",
+    "sentBody": "Si {email} tiene cuenta en Rastro, acabas de recibir un enlace para entrar. Caduca en 24 horas.",
+    "noAccount": "¿Todavía no tienes informe?",
+    "noAccountCta": "Pide el primero gratis",
+    "invalidTitle": "Este enlace de acceso no vale",
+    "invalidBody": "Puede que ya se haya usado o que haya caducado. Pide uno nuevo.",
+    "google": "Continuar con Google",
+    "googleNote": "Solo usamos tu correo para identificarte. No accedemos a tu buzón.",
+    "or": "o con tu correo",
+    "submitCode": "Enviarme un código",
+    "noPassword": "Te llega un código de 6 dígitos (y un enlace, por si prefieres pulsarlo). Sin contraseñas que filtrar.",
+    "codeEyebrow": "Revisa tu correo",
+    "codeTitle": "Escribe el código",
+    "codeBody": "Lo hemos enviado a {email}. Caduca en 24 horas y vale una vez.",
+    "codeSubmit": "Entrar",
+    "codeLink": "También puedes pulsar el enlace del correo; hace lo mismo.",
+    "errors": {
+      "denied": "Has cancelado en Google.",
+      "state": "La sesión de Google ha caducado. Vuelve a intentarlo.",
+      "google": "Google no ha devuelto un correo verificado.",
+      "db": "Algo ha fallado por nuestro lado.",
+      "config": "Google no está configurado en este servidor."
+    }
+  },
+  "loginEmail": {
+    "subject": "Tu enlace para entrar en Rastro",
+    "preheader": "Un clic y entras. Caduca en 24 horas.",
+    "greeting": "Hola:",
+    "body": "Has pedido entrar en tu cuenta de Rastro. Pulsa el botón y listo.",
+    "cta": "Entrar en Rastro",
+    "fallback": "Si el botón no funciona, copia esta dirección en tu navegador:",
+    "expires": "El enlace caduca en 24 horas y solo sirve una vez.",
+    "ignore": "Si no has sido tú, ignora este mensaje. Nadie puede entrar sin este enlace.",
+    "codeIntro": "Tu código para entrar:"
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "subtitle": "Tus informes se guardan mientras tengas cuenta. Los de visitantes sin cuenta se borran a los 30 días.",
+    "reports": "Tus informes",
+    "empty": "Todavía no tienes ningún informe terminado.",
+    "newReport": "Pedir un informe nuevo",
+    "score": "Puntuación",
+    "status": {
+      "pending": "Sin verificar",
+      "verified": "Verificado",
+      "processing": "Generándose",
+      "done": "Listo",
+      "error": "Error"
+    },
+    "view": "Ver informe",
+    "plan": {
+      "free": "Plan gratuito",
+      "pro": "Plan Pro"
+    },
+    "signedInAs": "Has entrado como {email}",
+    "mustLoginTitle": "Este informe es privado",
+    "mustLoginBody": "Solo puede verlo la persona que lo pidió. Entra con ese correo para abrirlo.",
+    "mustLoginCta": "Entrar",
+    "mailboxCard": "Escáner de buzón",
+    "mailboxCardBody": "Conecta tu Gmail y te decimos en qué sitios estás registrado. Solo cabeceras, sin guardar correos.",
+    "mailboxCardCta": "Abrir el escáner"
+  },
+  "monitor": {
+    "title": "Vigilancia mensual",
+    "body": "Cada mes volvemos a generar tu informe y te avisamos por correo solo si algo cambia: una filtración nueva, un perfil nuevo o un cambio en lo que la IA sabe de ti.",
+    "on": "Activada",
+    "off": "Desactivada",
+    "enable": "Activar vigilancia",
+    "disable": "Desactivar",
+    "lastCheck": "Última comprobación: {date}",
+    "nextCheck": "Próxima comprobación: {date}",
+    "neverChecked": "Primera comprobación dentro de 30 días.",
+    "consent": "Al activarla consientes que cada mes busquemos de nuevo tu nombre y tu correo y te enviemos el resultado."
+  },
+  "monitorEmail": {
+    "subject": "Rastro: hay novedades en tu exposición ({score}/100)",
+    "preheader": "Tu informe mensual tiene cambios.",
+    "greeting": "Hola {name}:",
+    "intro": "Hemos vuelto a generar tu informe y hay cambios desde el mes pasado.",
+    "scoreChange": "Tu puntuación ha pasado de {before} a {after}.",
+    "scoreSame": "Tu puntuación sigue en {after}.",
+    "newBreach": "Nueva filtración: {name}",
+    "goneBreach": "Ya no aparece la filtración: {name}",
+    "newProfile": "Nuevo perfil o página con tu nombre: {url}",
+    "goneProfile": "Ya no aparece: {url}",
+    "newBroker": "Un sitio que vende datos personales te lista ahora: {host}",
+    "goneBroker": "Ya no te lista: {host}",
+    "signalOn": "La IA ahora sabe: {what}",
+    "signalOff": "La IA ya no muestra: {what}",
+    "signals": {
+      "knows_employer": "dónde trabajas",
+      "knows_city": "dónde vives",
+      "contact_data_public": "un teléfono o dirección tuyos",
+      "false_claims": "datos que probablemente son falsos"
+    },
+    "cta": "Ver el informe completo",
+    "footer": "Recibes esto porque activaste la vigilancia mensual en Rastro. Puedes desactivarla en tu cuenta.",
+    "unsubscribe": "Desactivar la vigilancia"
+  },
+  "letters": {
+    "generate": "Generar carta de supresión",
+    "title": "Carta de supresión de datos",
+    "subtitle": "Solicitud de supresión (artículo 17 del RGPD) dirigida a {host}. Rastro puede enviarla por ti y llevar el seguimiento.",
+    "recipient": "Destinatario",
+    "contactFound": "Contacto de privacidad encontrado",
+    "contactNotFound": "No hemos encontrado un contacto de privacidad. Busca en el sitio «política de privacidad», «contacto» o «opt out» y envíala por ahí.",
+    "contactSource": "Fuente",
+    "subject": "Asunto",
+    "body": "Texto de la carta",
+    "copy": "Copiar carta",
+    "copied": "Copiada",
+    "markSent": "Ya la he enviado",
+    "markSentHelp": "Al marcarla como enviada empieza el plazo legal de un mes. Te avisaremos cuando venza.",
+    "sentOn": "Enviada el {date}",
+    "deadline": "Plazo de respuesta: {date}",
+    "markAnswered": "Me han contestado",
+    "markNoAnswer": "No han contestado",
+    "reopen": "Volver a borrador",
+    "status": {
+      "draft": "Borrador",
+      "sent": "Enviada",
+      "answered": "Contestada",
+      "no_answer": "Sin respuesta",
+      "closed": "Cerrada"
+    },
+    "listTitle": "Tus cartas",
+    "listEmpty": "Todavía no has generado ninguna carta. Desde tu informe puedes generar una por cada sitio que muestre tus datos.",
+    "open": "Abrir",
+    "back": "Volver al informe",
+    "onlyOwner": "Solo puedes generar cartas desde tus propios informes.",
+    "sendByRastro": "Enviar por mí ahora",
+    "sendByRastroHelp": "La enviamos desde cartas@rastropro.com en tu nombre, con tu correo como dirección de respuesta y con copia para ti. Empieza el plazo legal de un mes; a los 20 días, si no contestan, reenviamos un recordatorio; al vencer, te preparamos la reclamación a la AEPD.",
+    "toLabel": "Enviar a",
+    "toPlaceholder": "privacidad@sitio.com",
+    "toHelp": "Puedes corregir el correo si conoces uno mejor.",
+    "orManual": "O la envías tú: cópiala y márcala como enviada.",
+    "formContact": "Este sitio usa un formulario en vez de correo: ábrelo, pega la carta y márcala como enviada. Nosotros llevamos el plazo.",
+    "sentByRastro": "Enviada por Rastro",
+    "sentByUser": "Enviada por ti",
+    "followUpOn": "Recordatorio enviado el {date}",
+    "timeline": "Seguimiento",
+    "event": {
+      "sent": "Marcaste la carta como enviada",
+      "sent_by_rastro": "Rastro envió la carta a {to}",
+      "follow_up": "Rastro reenvió un recordatorio a {to}",
+      "reminder": "Venció el plazo de un mes: aviso enviado",
+      "answered": "Han contestado",
+      "closed": "Cerrada: datos suprimidos",
+      "no_answer": "Marcada como sin respuesta",
+      "reopened": "Vuelta a borrador"
+    },
+    "replyTitle": "¿Te han contestado?",
+    "replyBody": "Cuéntanos qué han dicho: lo guardamos como prueba para la reclamación si hace falta.",
+    "outcome": {
+      "deleted": "Han borrado mis datos",
+      "partial": "Han borrado solo una parte",
+      "refused": "Se niegan o piden más cosas"
+    },
+    "replyNote": "Qué te han contestado (pega el correo o resume)",
+    "replySubmit": "Guardar respuesta",
+    "outcomeLabel": {
+      "deleted": "Datos suprimidos",
+      "partial": "Supresión parcial",
+      "refused": "Se niegan"
+    },
+    "successTitle": "Conseguido",
+    "successBody": "{host} ha suprimido tus datos. En tu próximo informe deberías ver subir la puntuación.",
+    "refusedBody": "Si la negativa no está justificada, puedes reclamar ante la AEPD: te preparamos el escrito con la carta, el recordatorio y su respuesta como pruebas.",
+    "evidence": "Pruebas guardadas: carta, fecha de envío{followUp}{reply}.",
+    "evidenceFollowUp": ", recordatorio",
+    "evidenceReply": ", respuesta del sitio",
+    "checkTitle": "¿Sigue ahí?",
+    "checkBody": "Miramos la página de la carta y comprobamos si tu nombre sigue apareciendo. Guardamos la fecha y el resultado como prueba.",
+    "checkNow": "Comprobar ahora",
+    "checkGone": "Ya no apareces en esa página",
+    "checkStill": "Tu nombre sigue apareciendo",
+    "checkUnknown": "No se pudo comprobar automáticamente (la página bloquea robots o exige acceso). Míralo tú y marca el resultado."
+  },
+  "letterTpl": {
+    "subject": "Solicitud de supresión de datos personales (artículo 17 RGPD) — {name}",
+    "salutation": "A la atención del responsable de protección de datos de {host}:",
+    "p1": "Me llamo {name}. He comprobado que en su sitio web aparecen datos personales que me conciernen en la siguiente dirección: {url}",
+    "p2": "En concreto: {what}",
+    "p3": "De acuerdo con el artículo 17 del Reglamento (UE) 2016/679 (RGPD), les solicito la supresión de todos los datos personales que me conciernen en esa página y en cualquier otro registro, fichero o copia que conserven, incluidos los que hayan cedido a terceros, a quienes deberán comunicar esta solicitud (artículos 17.2 y 19).",
+    "p4": "No existe base legal que legitime este tratamiento: no he dado mi consentimiento ni mantengo relación alguna con ustedes, y me opongo expresamente al tratamiento de mis datos (artículo 21).",
+    "p5": "Les recuerdo que deben atender esta solicitud sin dilación y, en todo caso, en el plazo máximo de un mes desde su recepción (artículo 12.3). Si no obtengo respuesta o esta no es satisfactoria, presentaré una reclamación ante la Agencia Española de Protección de Datos.",
+    "p6": "Les ruego que me confirmen por escrito la supresión en esta misma dirección de correo electrónico: {email}",
+    "closing": "Atentamente,",
+    "date": "{city}{date}",
+    "followUpSubject": "Recordatorio: solicitud de supresión de datos personales (art. 17 RGPD) — {name}",
+    "followUpIntro": "El {sent} les remití la solicitud de supresión que reproduzco a continuación y no he recibido respuesta. Les recuerdo que el plazo legal de un mes (artículo 12.3 RGPD) vence el {deadline}. Transcurrido ese plazo sin respuesta presentaré reclamación ante la Agencia Española de Protección de Datos."
+  },
+  "deadlines": {
+    "title": "Próximos plazos",
+    "none": "No tienes plazos pendientes.",
+    "due": "Vence el {date}",
+    "overdue": "Venció el {date}",
+    "daysLeft": "{n} días",
+    "today": "hoy",
+    "overdueShort": "vencido"
+  },
+  "deadlineEmail": {
+    "subject": "Rastro: ha vencido el plazo de tu carta a {host}",
+    "preheader": "Un mes sin respuesta: ya puedes reclamar.",
+    "greeting": "Hola {name}:",
+    "body": "Enviaste una solicitud de supresión a {host} el {sent}. El plazo legal de un mes para contestarte venció el {deadline}.",
+    "ask": "Si te han contestado, márcalo en la carta. Si no, el siguiente paso es la reclamación ante la Agencia Española de Protección de Datos; te la preparamos desde la propia carta.",
+    "cta": "Abrir la carta",
+    "footer": "Recibes esto porque marcaste esta carta como enviada en Rastro."
+  },
+  "aepd": {
+    "cta": "Preparar reclamación a la AEPD",
+    "title": "Reclamación ante la AEPD",
+    "subtitle": "Pasó un mes sin respuesta de {host}. Este es el escrito de reclamación listo para pegar en la sede electrónica de la Agencia Española de Protección de Datos.",
+    "notYet": "La reclamación se puede presentar cuando haya pasado un mes desde el envío de la carta sin respuesta satisfactoria.",
+    "text": "Texto de la reclamación",
+    "copy": "Copiar reclamación",
+    "copied": "Copiada",
+    "guideTitle": "Cómo presentarla, paso a paso",
+    "steps": [
+      "Entra en la sede electrónica de la AEPD: sedeagpd.gob.es → «Reclamaciones» → «Presentar reclamación».",
+      "Identifícate con certificado digital, Cl@ve o, si no tienes, con el formulario sin certificado (te pedirán una copia de tu DNI).",
+      "Reclamante: tus datos. Reclamado: el sitio {host}{contact}.",
+      "En «Hechos» pega el texto de la reclamación de esta página.",
+      "Adjunta la carta que enviaste y la prueba de envío (captura del correo enviado o del formulario, con fecha).",
+      "Guarda el número de registro que te dan al terminar. La AEPD suele contestar en semanas; si admite la reclamación, requerirá al sitio a que borre tus datos."
+    ],
+    "attachments": "Documentos que debes adjuntar",
+    "attach1": "Copia de la solicitud de supresión enviada el {sent}.",
+    "attach2": "Prueba del envío y de la fecha (captura de pantalla del correo o del formulario).",
+    "attach3": "Si te contestaron de forma insuficiente, copia de esa respuesta.",
+    "back": "Volver a la carta"
+  },
+  "aepdTpl": {
+    "title": "RECLAMACIÓN ANTE LA AGENCIA ESPAÑOLA DE PROTECCIÓN DE DATOS",
+    "claimant": "RECLAMANTE: {name}, con correo electrónico {email}{city}.",
+    "respondent": "RECLAMADO: el responsable del sitio web {host}{contact}.",
+    "factsTitle": "HECHOS",
+    "f1": "1. En la dirección {url} el reclamado publica datos personales que me conciernen ({what}), sin mi consentimiento ni ninguna otra base legal que conozca.",
+    "f2": "2. El {sent} ejercí ante el reclamado mi derecho de supresión conforme al artículo 17 del Reglamento (UE) 2016/679 (RGPD), solicitando la eliminación de dichos datos y la confirmación por escrito. Se adjunta copia de la solicitud y prueba de su envío.",
+    "f3": "3. El plazo de un mes establecido en el artículo 12.3 del RGPD venció el {deadline} sin que el reclamado haya atendido la solicitud ni dado respuesta alguna.",
+    "lawTitle": "FUNDAMENTOS",
+    "l1": "Artículos 12, 17, 19 y 21 del RGPD; artículo 77 del RGPD y artículos 15 y 63 y siguientes de la Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales, que reconocen el derecho a presentar reclamación ante la autoridad de control cuando el responsable no atiende el ejercicio de derechos en plazo.",
+    "requestTitle": "SOLICITO",
+    "r1": "Que se admita esta reclamación y, previos los trámites oportunos, se requiera al reclamado para que suprima los datos personales que me conciernen y confirme su eliminación, sin perjuicio de las demás medidas que la Agencia considere procedentes.",
+    "docsTitle": "DOCUMENTOS QUE SE ADJUNTAN",
+    "d1": "1. Copia de la solicitud de supresión enviada el {sent}.",
+    "d2": "2. Prueba del envío y de la fecha.",
+    "signoff": "{city2}{date}",
+    "signature": "Fdo.: {name}",
+    "f3refused": "3. El reclamado respondió negándose a atender la solicitud o condicionándola indebidamente. Se adjunta copia de su respuesta.",
+    "f2b": "Ante la falta de respuesta, el {followUp} se remitió un recordatorio de la solicitud.",
+    "d3": "3. Copia del recordatorio enviado el {followUp}.",
+    "d4": "4. Copia de la respuesta del reclamado."
+  },
+  "pro": {
+    "badge": "Pro",
+    "title": "Rastro Pro",
+    "subtitle": "El informe es y seguirá siendo gratis. Pro es para quien quiere que Rastro siga mirando por ti cada mes y te ayude a retirar lo que sobra.",
+    "monthly": "Mensual",
+    "monthlyPrice": "19 €",
+    "monthlyPer": "al mes",
+    "yearly": "Anual",
+    "yearlyPrice": "99 €",
+    "yearlyPer": "al año",
+    "yearlySave": "Ahorras 129 €",
+    "cta": "Elegir",
+    "ctaLogin": "Entra para suscribirte",
+    "features": [
+      "Vigilancia mensual: te avisamos solo si algo cambia",
+      "Cartas de supresión RGPD listas para enviar, con el contacto del sitio",
+      "Calendario de plazos legales y aviso al vencer",
+      "Escrito de reclamación ante la AEPD y guía paso a paso",
+      "Cancela cuando quieras desde tu cuenta"
+    ],
+    "note": "Pago seguro con Stripe. No guardamos tu tarjeta. Sin permanencia.",
+    "locked": "Función del plan Pro",
+    "lockedBody": "Vigilancia diaria y mensual, cartas RGPD enviadas por Rastro, plazos y reclamación AEPD son del plan Pro ({monthly}/mes o {yearly}/año).",
+    "lockedCta": "Ver el plan Pro",
+    "active": "Plan Pro activo",
+    "until": "Renovación: {date}",
+    "canceling": "Cancelado: activo hasta el {date}",
+    "manage": "Gestionar suscripción",
+    "thanks": "¡Gracias! Tu plan Pro se activará en unos segundos.",
+    "thanksPending": "Si no aparece como activo en un minuto, recarga la página o escríbenos.",
+    "family": "Familiar",
+    "familyPer": "al mes · hasta {n} personas",
+    "familyYearlyPer": "al año · hasta {n} personas",
+    "familyHint": "Cada persona con su cuenta, su informe y su vigilancia."
+  },
+  "mailbox": {
+    "title": "Escáner de buzón",
+    "subtitle": "En qué sitios estás registrado, según tu propio correo.",
+    "beta": "Beta",
+    "connectTitle": "Conecta tu Gmail",
+    "rescan": "Volver a escanear",
+    "connect": "Conectar Gmail",
+    "connectBody": "Buscamos en tu buzón los correos de bienvenida, verificación, pedidos y newsletters, y los agrupamos por servicio. Así sabes dónde tienes cuenta, desde cuándo y qué llevas años sin usar.",
+    "promises": [
+      "Solo leemos remitente, asunto y fecha. Nunca el contenido de los correos.",
+      "No guardamos ningún correo: solo la lista de servicios.",
+      "El acceso se revoca solo al terminar el escaneo. No conservamos claves."
+    ],
+    "testersNote": "Durante la beta, Google muestra un aviso de «app no verificada»: es normal, pulsa «Continuar». Solo pueden conectar los correos dados de alta como probadores.",
+    "proBody": "El escáner de buzón forma parte del plan Pro.",
+    "scanning": "Escaneando",
+    "scanningBody": "Suele tardar entre uno y tres minutos según el tamaño del buzón. Puedes dejar esta página abierta.",
+    "step": {
+      "listing": "Buscando correos de altas, pedidos y newsletters",
+      "headers": "Leyendo remitentes y asuntos",
+      "grouping": "Agrupando por servicio"
+    },
+    "seen": "{n} correos leídos",
+    "doneEyebrow": "Escaneo terminado",
+    "doneTitle": "{n} servicios encontrados",
+    "doneBody": "Buzón {mailbox}, {seen} correos revisados. Cada servicio con su tipo, cuántos correos hay y desde cuándo.",
+    "privacyNote": "El acceso a tu buzón ya está revocado. Solo se guarda esta lista.",
+    "all": "Todos",
+    "kind": {
+      "account": "Cuenta",
+      "receipt": "Compras",
+      "newsletter": "Newsletter",
+      "other": "Otros"
+    },
+    "old": "Sin uso +2 años",
+    "msgs": "correos",
+    "search": "Buscar…",
+    "none": "Nada que mostrar con ese filtro.",
+    "closeLetter": "Carta de cierre",
+    "errorTitle": "No se ha podido completar el escaneo",
+    "errorBody": "Google ha cortado el acceso o el buzón es demasiado grande para esta versión. Vuelve a intentarlo; si se repite, escríbenos.",
+    "status": {
+      "processing": "en curso",
+      "error": "error"
+    },
+    "history": "Escaneos anteriores",
+    "errors": {
+      "denied": "Has cancelado el permiso en Google. Sin él no podemos escanear.",
+      "state": "La conexión ha caducado. Vuelve a empezar.",
+      "scope": "No has concedido el permiso de lectura de Gmail. Vuelve a conectar y marca la casilla.",
+      "google": "Google no ha respondido. Inténtalo de nuevo en un momento.",
+      "db": "Algo ha fallado por nuestro lado. Inténtalo de nuevo.",
+      "config": "El escáner aún no está configurado en este servidor."
+    },
+    "seenOf": "{n} de {total} correos leídos"
+  },
+  "tools": {
+    "eyebrow": "Herramientas",
+    "title": "Herramientas",
+    "subtitle": "Vigilar, limpiar y reclamar. Lo que va después del informe.",
+    "open": "Abrir",
+    "scans": "{n} escaneos hechos",
+    "letters": "{n} cartas",
+    "lettersBody": "Cartas de supresión listas para enviar, plazos legales y reclamación ante la AEPD si no contestan.",
+    "loginTitle": "Entra para ver tus herramientas",
+    "loginBody": "Vigilancia, escáner de buzón, cartas y plazos son de tu cuenta. Entra o crea una en un minuto."
+  },
+  "profile": {
+    "score": "Última puntuación",
+    "reports": "Informes",
+    "letters": "Cartas",
+    "noScore": "—"
+  },
+  "support": {
+    "button": "Soporte",
+    "title": "Soporte",
+    "subtitle": "Cuéntanos qué pasa y te contestamos por correo, normalmente en menos de un día laborable.",
+    "email": "Tu correo",
+    "subject": "Asunto",
+    "subjectPlaceholder": "p. ej. No me llega el código",
+    "message": "Mensaje",
+    "messagePlaceholder": "Qué esperabas, qué ha pasado y en qué pantalla.",
+    "send": "Enviar",
+    "sending": "Enviando…",
+    "sentTitle": "Recibido",
+    "sentBody": "Te hemos enviado una copia a {email}. Te contestamos ahí.",
+    "helpTitle": "¿Necesitas ayuda?",
+    "helpBody": "Dudas, errores o algo que no cuadra en tu informe: escríbenos.",
+    "errors": {
+      "subject": "Escribe un asunto.",
+      "message": "Cuéntanos un poco más (mínimo 10 caracteres)."
+    }
+  },
+  "supportEmail": {
+    "subject": "[Soporte Rastro] {subject}",
+    "ackSubject": "Hemos recibido tu mensaje",
+    "ackBody": "Gracias por escribir. Hemos recibido tu mensaje y te contestaremos a esta dirección. Copia de lo que nos has enviado:",
+    "footer": "Rastro — Soporte"
+  },
+  "reports": {
+    "title": "Tus informes",
+    "latest": "Último informe",
+    "previous": "Anteriores",
+    "first": "Pedir mi informe gratis",
+    "loginTitle": "Aquí verás tus informes",
+    "loginBody": "Pide tu primer informe gratis desde Inicio; al confirmar el correo se crea tu cuenta y quedan guardados aquí. Si ya tienes cuenta, entra.",
+    "scanTitle": "Sondeo de Gmail",
+    "scanBody": "Dónde estás registrado según tu propio buzón.",
+    "scanNone": "Aún no has sondeado tu Gmail.",
+    "scanCta": "Sondear mi Gmail",
+    "scanOpen": "Ver sondeo",
+    "scanServices": "{n} servicios",
+    "scanProcessing": "Sondeo en curso…"
+  },
+  "vigil": {
+    "title": "Vigilancia",
+    "active": "Activa",
+    "inactive": "Desactivada",
+    "justOn": "Vigilancia activada. Cada mes volvemos a mirar por ti.",
+    "since": "Protegido desde hace {n} días",
+    "sinceToday": "Protegido desde hoy",
+    "checks": "{n} comprobaciones",
+    "check_one": "1 comprobación",
+    "next": "Próxima comprobación",
+    "inDays": "en {n} días",
+    "today": "hoy",
+    "legend": {
+      "check": "Comprobado",
+      "next": "Próxima",
+      "today": "Hoy"
+    },
+    "offTitle": "Sin vigilancia",
+    "offBody": "Activa la vigilancia mensual y aquí verás el calendario de comprobaciones.",
+    "offCta": "Activar en Herramientas"
+  },
+  "landing": {
+    "ctaPrimary": "Pedir mi informe gratis",
+    "ctaSecondary": "Ver cómo funciona",
+    "askBubble": "¿Dudas? Pregúntame",
+    "sampleName": "Ana G.",
+    "showTitle": "Así se ve tu informe",
+    "showBody": "Sin jerga. Cada hallazgo te dice qué se ve, por qué importa y qué hacer.",
+    "mock": {
+      "breachesTitle": "Filtraciones",
+      "breachesTag": "3 encontradas",
+      "breach1": "LinkedIn · 2021",
+      "breach1Detail": "Correo y contraseña",
+      "breach2": "Canva · 2019",
+      "breach2Detail": "Correo y nombre",
+      "breach3": "Adobe · 2013",
+      "breach3Detail": "Correo y pista de contraseña",
+      "withPassword": "Con contraseña",
+      "noPassword": "Sin contraseña",
+      "aiTitle": "Lo que la IA dice de ti",
+      "aiQuote": "«Ana García es enfermera en un hospital de Valencia y participa en carreras populares…»",
+      "signalWork": "Sabe dónde trabajas",
+      "signalCity": "Sabe tu ciudad",
+      "signalPhone": "Tu teléfono",
+      "signalFalse": "Un dato falso",
+      "yes": "Sí",
+      "no": "No",
+      "found": "Detectado",
+      "scoreTitle": "Tu puntuación",
+      "scoreLevel": "Exposición media",
+      "actionsTitle": "Qué hacer primero",
+      "action1": "Cambia la contraseña de LinkedIn si la reutilizas.",
+      "action2": "Pon tu perfil de Strava en privado.",
+      "action3": "Pide a Canva que borre tu cuenta antigua."
+    },
+    "whoTitle": "Quiénes somos",
+    "whoBody": "Rastro es un proyecto independiente hecho en España. Nos parecía injusto que cualquiera, y ahora cualquier IA, pudiera saber más de ti que tú mismo. Así que construimos la herramienta que nos habría gustado tener: te enseña lo que se ve de ti y te da los medios para reducirlo.",
+    "doTitle": "Qué hacemos",
+    "do": [
+      "Buscamos tu nombre y tu correo donde lo haría un desconocido: buscadores, filtraciones conocidas y asistentes de IA.",
+      "Te lo contamos en un informe claro, con una puntuación de 0 a 100 y pasos concretos.",
+      "Si quieres, seguimos vigilando cada mes y te ayudamos a reclamar el borrado con cartas RGPD."
+    ],
+    "dontTitle": "Qué no hacemos",
+    "dont": [
+      "No prometemos borrar nada: te damos visibilidad y herramientas.",
+      "No buscamos a otras personas: solo sobre ti, con tu correo verificado.",
+      "No vendemos ni compartimos tus datos. Sin cuenta, se borran a los 30 días."
+    ],
+    "checkTitle": "Qué revisamos",
+    "check": [
+      {
+        "t": "Filtraciones",
+        "b": "Si tu correo aparece en brechas conocidas y qué datos se escaparon."
+      },
+      {
+        "t": "Lo que dice la IA",
+        "b": "Qué responden los asistentes de IA cuando alguien pregunta por ti."
+      },
+      {
+        "t": "Perfiles públicos",
+        "b": "Redes, directorios y páginas donde apareces con datos personales."
+      },
+      {
+        "t": "Datos falsos",
+        "b": "Cosas que la IA afirma sobre ti y no son ciertas."
+      }
+    ],
+    "proTitle": "¿Y después del informe?",
+    "proBody": "Con Rastro Pro vigilamos tu rastro cada mes, generamos las cartas de supresión RGPD, llevamos los plazos y, si no contestan, preparamos la reclamación a la AEPD.",
+    "proCta": "Ver Rastro Pro",
+    "faqTitle": "Preguntas frecuentes",
+    "faq": [
+      {
+        "q": "¿De verdad es gratis?",
+        "a": "Sí. El informe con tu puntuación y tus hallazgos es gratis y no pide tarjeta. Lo de pago son las herramientas para actuar: vigilancia mensual, cartas RGPD y plazos."
+      },
+      {
+        "q": "¿Qué datos necesitáis?",
+        "a": "Tu nombre, tu correo y, si quieres, tu ciudad y profesión para no confundirte con otra persona que se llame igual. Nada más."
+      },
+      {
+        "q": "¿Puedo mirar a otra persona?",
+        "a": "No. Solo generamos informes sobre quien confirma el correo. Es una regla nuestra y también la ley."
+      },
+      {
+        "q": "¿Cuánto tarda?",
+        "a": "Entre uno y dos minutos desde que confirmas el correo."
+      },
+      {
+        "q": "¿Qué pasa con mis datos después?",
+        "a": "Si no creas cuenta, el informe se borra solo a los 30 días. Si la creas, se guarda mientras la tengas y puedes borrarla cuando quieras."
+      }
+    ],
+    "formTitle": "Pide tu informe gratis",
+    "formBody": "Dos minutos. Sin tarjeta. Solo sobre ti."
+  },
+  "ask": {
+    "open": "Pregunta a Rastro",
+    "title": "Pregúntame",
+    "subtitle": "Respondo dudas sobre Rastro: qué hacemos, qué datos usamos, cuánto cuesta.",
+    "placeholder": "Escribe tu pregunta…",
+    "send": "Enviar",
+    "thinking": "Pensando…",
+    "suggested": [
+      "¿Qué es Rastro?",
+      "¿Qué datos usáis?",
+      "¿Podéis borrar mis datos?",
+      "¿Cuánto cuesta?"
+    ],
+    "limit": "Por hoy ya está bien de preguntas. Si necesitas algo, escríbenos en Soporte.",
+    "error": "Ahora mismo no puedo responder. Prueba de nuevo en un momento.",
+    "close": "Cerrar",
+    "disclaimer": "Soy un asistente automático. Para temas de tu cuenta, usa Soporte."
+  },
+  "dash": {
+    "hello": "Hola, {name}",
+    "exposure": "Tu exposición ahora",
+    "outOf": "/ 100",
+    "delta": "{n} puntos desde el informe anterior",
+    "deltaFlat": "Sin cambios desde el informe anterior",
+    "first": "Tu primer informe",
+    "updated": "Actualizado el {date}",
+    "quick": {
+      "report": "Nuevo informe",
+      "scan": "Sondear Gmail",
+      "letters": "Cartas RGPD",
+      "tools": "Herramientas"
+    },
+    "donutTitle": "Dónde pierdes puntos",
+    "donutBody": "Cada color es un motivo. Lo verde es lo que te queda de margen.",
+    "remaining": "Margen",
+    "rules": {
+      "breachWithPassword": "Filtraciones con contraseña",
+      "breachWithoutPassword": "Filtraciones sin contraseña",
+      "publicProfile": "Perfiles públicos",
+      "aiKnowsEmployer": "La IA sabe dónde trabajas",
+      "aiKnowsCity": "La IA sabe tu ciudad",
+      "contactDataPublic": "Teléfono o dirección públicos",
+      "aiFalseData": "Datos falsos en la IA"
+    },
+    "clean": "Ahora mismo no pierdes puntos por nada. Sigue así.",
+    "topTitle": "Principales hallazgos",
+    "seeAll": "Ver todo",
+    "historyTitle": "Evolución",
+    "historyBody": "Puntuación de cada informe. Cuanto más alta, menos expuesto.",
+    "guideTitle": "Tu guía: qué hacer ahora",
+    "guideBody": "Marca lo que ya hayas hecho. Se guarda en este dispositivo.",
+    "guideDone": "{done} de {total} hechas",
+    "guideEmpty": "Cuando tengas un informe, aquí saldrán los pasos recomendados.",
+    "askTitle": "Pregúntale a Rastro",
+    "askChips": [
+      "¿Cómo subo mi puntuación?",
+      "¿Qué hago con una filtración con contraseña?",
+      "¿Cómo pido que borren mis datos?",
+      "¿Para qué sirve la vigilancia?"
+    ],
+    "vigil": {
+      "on": "Vigilancia activa",
+      "off": "Vigilancia desactivada",
+      "next": "Próxima comprobación {date}",
+      "cta": "Activar"
+    },
+    "scan": {
+      "title": "Sondeo de Gmail",
+      "none": "Sin sondear",
+      "services": "{n} servicios",
+      "cta": "Sondear"
+    },
+    "noReportTitle": "Aún no tienes ningún informe",
+    "noReportBody": "Pide el primero y aquí verás tu puntuación, tus hallazgos y una guía de pasos.",
+    "noReportCta": "Pedir mi informe"
+  },
+  "profile2": {
+    "edit": "Editar perfil",
+    "name": "Nombre",
+    "namePlaceholder": "Cómo quieres que te llamemos",
+    "photo": "Foto",
+    "photoChange": "Cambiar foto",
+    "photoRemove": "Quitar foto",
+    "photoHelp": "JPG, PNG o WebP. Se recorta en cuadrado y se guarda pequeña.",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "saved": "Perfil guardado",
+    "errName": "El nombre debe tener entre 2 y 60 caracteres.",
+    "errPhoto": "No se pudo leer la imagen. Prueba con otra."
+  },
+  "dailyEmail": {
+    "subject": "Rastro: tu correo aparece en una filtración nueva",
+    "preheader": "Comprobación diaria: hay novedades.",
+    "greeting": "Hola {name}:",
+    "intro": "En la comprobación de hoy tu correo aparece en algo nuevo que ayer no estaba:",
+    "newBreach": "Nueva filtración: {name}",
+    "newPastes": "{n} volcado(s) público(s) nuevo(s) con tu correo",
+    "cta": "Ver mi informe",
+    "footer": "Comprobamos tu correo cada día contra la base de filtraciones conocidas. Solo escribimos si aparece algo nuevo.",
+    "unsubscribe": "Desactivar la vigilancia"
+  },
+  "week": {
+    "title": "Esta semana",
+    "ok": "Sin novedades",
+    "alert": "Novedad",
+    "none": "Sin comprobar",
+    "streak": "{n} días seguidos sin novedades",
+    "streakOne": "1 día sin novedades",
+    "streakZero": "Hoy ha aparecido algo nuevo",
+    "pending": "La primera comprobación diaria será mañana por la mañana.",
+    "body": "Cada día miramos si tu correo aparece en filtraciones o volcados nuevos. Cada mes, el informe completo."
+  },
+  "followUpEmail": {
+    "subject": "Rastro: hemos reenviado tu carta a {host}",
+    "greeting": "Hola {name}:",
+    "body": "Pasaron 20 días sin respuesta de {host}, así que les hemos reenviado tu solicitud de supresión como recordatorio, con copia para ti. El plazo legal vence el {deadline}.",
+    "ask": "Si te contestan, márcalo en la carta. Si no, al vencer el plazo te prepararemos la reclamación a la AEPD con todas las pruebas.",
+    "cta": "Ver la carta",
+    "footer": "Recibes esto porque Rastro envió esta carta en tu nombre."
+  },
+  "sites": {
+    "eyebrow": "Guía de sitios",
+    "title": "Cómo borrar tus datos de cada sitio",
+    "subtitle": "Los sitios que más aparecen en los informes de Rastro, con el contacto de privacidad y los pasos exactos para pedir la baja. Gratis, sin cuenta.",
+    "pageTitle": "Cómo borrar mis datos de {name}",
+    "shows": "Qué muestra de ti",
+    "how": "Cómo pedir que lo quiten",
+    "contact": "Contacto de privacidad",
+    "optOut": "Formulario / página de derechos",
+    "typical": "Suelen contestar en unos {n} días",
+    "typicalInstant": "Lo arreglas tú en dos minutos, sin carta",
+    "verified": "Contacto comprobado el {date}",
+    "likely": "Contacto según su política; compruébalo antes de enviar",
+    "notes": "Bueno saber",
+    "ctaTitle": "¿Apareces en {name}?",
+    "ctaBody": "Pide tu informe gratis: te decimos en qué sitios estás y, con Pro, enviamos la carta por ti y llevamos el plazo.",
+    "cta": "Pedir mi informe gratis",
+    "kinds": {
+      "broker": "Vende datos",
+      "people-search": "Buscador de personas",
+      "business-registry": "Registro mercantil",
+      "directory": "Red social / directorio",
+      "phonebook": "Guía telefónica",
+      "results": "Resultados públicos"
+    },
+    "known": "Sitio conocido",
+    "knownHint": "Tenemos el trámite de baja de este sitio",
+    "seeGuide": "Ver cómo darse de baja",
+    "letterKnown": "Trámite conocido para {name}",
+    "all": "Todos los sitios",
+    "footerLink": "Guía de sitios"
+  },
+  "family": {
+    "title": "Plan familiar",
+    "seats": "{used} de {total} plazas",
+    "body": "Añade a las personas de tu casa: cada una tendrá su cuenta Pro con su propio informe, vigilancia y cartas.",
+    "add": "Añadir persona",
+    "emailPlaceholder": "correo@ejemplo.com",
+    "remove": "Quitar",
+    "you": "tú (titular)",
+    "pending": "invitación enviada",
+    "memberTitle": "Incluido en un plan familiar",
+    "memberBody": "Tu cuenta Pro la paga {owner}. Tienes todas las funciones Pro; si el titular cancela, tu plan termina en la misma fecha.",
+    "full": "No quedan plazas.",
+    "invalid": "Ese correo no vale.",
+    "self": "Ya eres tú.",
+    "exists": "Esa persona ya tiene Pro por su cuenta.",
+    "notOwner": "Solo el titular del plan familiar puede añadir personas.",
+    "inviteEmail": {
+      "subject": "{owner} te ha añadido a Rastro Pro",
+      "greeting": "Hola:",
+      "body": "{owner} te ha incluido en su plan familiar de Rastro. Ya tienes Rastro Pro: informe de exposición, vigilancia diaria y mensual, cartas RGPD enviadas por nosotros y escáner de Gmail.",
+      "ask": "Entra con este enlace (o con tu correo en rastropro.com) y pide tu primer informe.",
+      "cta": "Entrar en Rastro",
+      "footer": "Si no conoces a esta persona, ignora este correo."
+    }
+  },
+  "sim": {
+    "eyebrow": "Simulador de ataque",
+    "title": "Así te engañarían",
+    "subtitle": "Con lo que ya es público de ti, te enseñamos los mensajes y la llamada que usaría un estafador. Es una simulación: nada de esto es real ni se envía a nadie más que a ti.",
+    "tag": "SIMULACIÓN",
+    "attackability": "Facilidad para engañarte",
+    "attackabilityOutOf": "de 100",
+    "attackLevel": {
+      "low": "Difícil",
+      "medium": "Posible",
+      "high": "Fácil"
+    },
+    "defensesTitle": "Las 3 defensas que más te protegen",
+    "phishingTitle": "Mensajes que recibirías",
+    "pretext": "Por qué colaría",
+    "clues": "Cómo descubrirlo",
+    "channel": {
+      "email": "Correo",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp"
+    },
+    "vishingTitle": "La llamada",
+    "callerClaims": "Quien dice ser",
+    "redFlags": "Señales de alarma",
+    "hangUp": "Qué decir para colgar",
+    "who": {
+      "caller": "Estafador",
+      "you": "Tú"
+    },
+    "generate": "Generar mi simulación",
+    "regenerate": "Volver a generar",
+    "generating": "Tarda entre 20 y 40 segundos.",
+    "sendToMe": "Enviármelos a mi correo",
+    "sendToMeHelp": "Recibirás los 3 mensajes en tu propio correo, marcados como simulación, para vivir la experiencia. Solo a tu cuenta.",
+    "sentOk": "Enviados a tu correo. Mira la bandeja de entrada (y el spam).",
+    "share": "Compartir «así me engañarían»",
+    "shareHint": "La imagen solo lleva la nota y tu nombre tapado.",
+    "lockedTitle": "Ver los otros 2 mensajes y la llamada",
+    "lockedBody": "El simulador completo, el envío a tu correo y regenerarlo con cada informe nuevo son del plan Pro.",
+    "noReportTitle": "Primero necesitas un informe",
+    "noReportBody": "La simulación se construye con tu informe de exposición. Pide el tuyo gratis y vuelve aquí.",
+    "failed": "No se pudo generar ahora mismo. Prueba en un minuto.",
+    "disclaimer": "Simulación educativa sobre ti mismo. Los enlaces y números son ficticios. No la reenvíes a nadie.",
+    "emailBanner": "SIMULACIÓN DE RASTRO · MENSAJE {n} DE 3 · NO ES REAL",
+    "simulatedFrom": "Remitente simulado: {name}",
+    "cluesTitle": "Pistas para descubrirlo:",
+    "emailFooter": "Este correo lo has pedido tú desde tu cuenta de Rastro para aprender a reconocer estafas. No contiene enlaces reales.",
+    "sentEmail": {
+      "subject": "Rastro: tus 3 mensajes simulados van de camino",
+      "greeting": "Hola:",
+      "body": "Te hemos enviado tres mensajes de estafa simulados, construidos con lo que es público de ti. Van marcados como simulación y con las pistas al final. Míralos como si fueran reales: ¿habrías picado?",
+      "cta": "Ver el simulador",
+      "footer": "Lo pediste desde tu cuenta de Rastro."
+    },
+    "hubBody": "Mira los mensajes y la llamada que usaría un estafador contigo, y qué te protege.",
+    "guardianHubBody": "Pega un SMS, correo o WhatsApp sospechoso y te decimos si es una estafa y qué datos tuyos usa."
+  },
+  "guardian": {
+    "eyebrow": "Guardián",
+    "title": "¿Es una estafa?",
+    "subtitle": "Pega el SMS, correo o WhatsApp que te ha llegado y te decimos si es una estafa, por qué, y qué datos tuyos está usando. No guardamos el mensaje.",
+    "sender": "Quién lo envía (opcional)",
+    "senderPlaceholder": "Número, correo o nombre que aparece",
+    "text": "El mensaje",
+    "textPlaceholder": "Pega aquí el texto tal cual te ha llegado…",
+    "analyze": "Analizar",
+    "analyzing": "Analizando…",
+    "personalized": "Con tu cuenta usamos tu informe como contexto: sabemos en qué sitios tienes cuenta y qué se ha filtrado, así detectamos estafas dirigidas a ti.",
+    "notPersonalized": "Sin cuenta, el análisis es genérico (5 al día). Con cuenta lo cruzamos con tu informe.",
+    "verdict": {
+      "scam": "Estafa",
+      "suspicious": "Sospechoso",
+      "legit": "Parece legítimo"
+    },
+    "confidence": "Confianza {n} %",
+    "usesData": "Datos tuyos que aprovecha",
+    "actions": "Qué hacer",
+    "verifyHow": "Cómo verificarlo",
+    "disclaimer": "Orientación automática. Ante la duda, no pulses nada y verifica por la app o el teléfono oficial.",
+    "errors": {
+      "text": "Pega el mensaje completo (al menos unas palabras).",
+      "limit": "Has usado los 5 análisis gratis de hoy. Con Rastro Pro no hay límite.",
+      "generic": "No se pudo analizar ahora. Prueba en un momento."
+    }
+  },
+  "aiTpl": {
+    "subject": "Solicitud de rectificación y supresión de datos personales generados por IA (arts. 16 y 17 RGPD) — {name}",
+    "date": "{city}{date}",
+    "salutation": "A la atención del responsable de protección de datos de {provider}:",
+    "p1": "Me llamo {name}. Al preguntar a su asistente de inteligencia artificial por mi persona, genera información sobre mí que es inexacta, está desactualizada o carece de base legal para ser tratada y difundida.",
+    "p2": "Reproduzco literalmente la respuesta obtenida:",
+    "noAnswer": "(respuesta no disponible en este momento; adjuntaré captura)",
+    "p3": "En concreto, los siguientes datos son falsos o no deben generarse:",
+    "p4": "Con base en los artículos 16 y 17 del Reglamento (UE) 2016/679 solicito: (1) la rectificación o supresión de esos datos en los sistemas y modelos que los generan o recuperan; (2) que su asistente deje de generar información sobre mi persona a partir de fuentes que no tengan base legal; y (3) confirmación por escrito de las medidas adoptadas. Me opongo expresamente al tratamiento de mis datos con fines de entrenamiento o recuperación (artículo 21).",
+    "p5": "Les recuerdo el plazo máximo de un mes del artículo 12.3. Transcurrido sin respuesta satisfactoria, presentaré reclamación ante la Agencia Española de Protección de Datos.",
+    "p6": "Pueden responderme en esta dirección: {email}",
+    "closing": "Atentamente,"
+  },
+  "aiReq": {
+    "withRastro": "Pedir rectificación con Rastro",
+    "title": "Solicitud a {provider}",
+    "steps": "Cómo se tramita con {provider}"
+  },
+  "images": {
+    "eyebrow": "Tu cara en internet",
+    "title": "Imágenes con tu nombre",
+    "subtitle": "Lo que devuelve un buscador de imágenes al poner tu nombre y tu ciudad. Marca las que seas tú y pide su retirada; las que no, ignóralas.",
+    "none": "No hemos encontrado imágenes asociadas a tu nombre. Buena señal.",
+    "unavailable": "La búsqueda de imágenes no está disponible ahora mismo.",
+    "source": "Ver página",
+    "remove": "Pedir retirada",
+    "removeHint": "Creamos una carta al sitio que aloja la página (derecho de supresión y derecho a la propia imagen). Para quitarla también de Google, usa el formulario de retirada de imágenes.",
+    "google": "Quitar de Google Imágenes",
+    "noReport": "Necesitas un informe (con tu ciudad) para buscar imágenes.",
+    "count": "{n} imágenes",
+    "proOnly": "La búsqueda de imágenes y las cartas de retirada son del plan Pro.",
+    "hubBody": "Fotos que salen al buscar tu nombre, con carta de retirada para cada sitio."
+  },
+  "imageTpl": {
+    "what": "una imagen en la que aparezco, publicada en {url}",
+    "extra": "Además del artículo 17 del RGPD, invoco mi derecho a la propia imagen (artículo 18 de la Constitución y Ley Orgánica 1/1982), pues no he consentido su captación ni su difusión."
+  },
+  "team": {
+    "eyebrow": "Rastro Equipos",
+    "title": "Tu equipo, sin ser el eslabón débil",
+    "subtitle": "El 88 % de los ciberdelitos son estafas, y casi todas empiezan por una persona. Rastro Equipos da a cada empleado su informe, vigilancia, cartas y el guardián, y a ti un panel con el riesgo humano de tu empresa: sin ver sus datos, solo su puntuación si la comparten.",
+    "smallName": "Pyme",
+    "largeName": "Empresa",
+    "per": "al mes · hasta {n} personas",
+    "cta": "Contratar",
+    "contact": "Hablar con nosotros",
+    "features": [
+      "Cada persona tiene su cuenta Pro completa: informe, vigilancia diaria y mensual, cartas RGPD enviadas por Rastro, escáner de Gmail, simulador y guardián.",
+      "Panel de empresa: quién tiene el informe hecho, puntuación media, cuántos tienen contraseñas filtradas, quién activó la vigilancia.",
+      "Privacidad por diseño: el empleado decide si comparte su puntuación; la empresa nunca ve hallazgos ni datos.",
+      "Invitaciones por correo, altas y bajas en un clic, exportación a CSV.",
+      "Formación real: cada empleado ve cómo le engañarían a él con sus propios datos."
+    ],
+    "dashTitle": "Panel de equipo",
+    "seats": "{used} de {total} plazas",
+    "invite": "Invitar",
+    "emailPlaceholder": "persona@tuempresa.com",
+    "remove": "Quitar",
+    "export": "Exportar CSV",
+    "col": {
+      "person": "Persona",
+      "status": "Estado",
+      "score": "Puntuación",
+      "passwords": "Contraseñas filtradas",
+      "monitoring": "Vigilancia",
+      "updated": "Último informe"
+    },
+    "status": {
+      "invited": "Invitado",
+      "active": "Activo",
+      "noreport": "Sin informe"
+    },
+    "notShared": "No compartida",
+    "shared": "Compartida",
+    "on": "Activa",
+    "off": "No",
+    "avg": "Puntuación media",
+    "withPasswords": "Con contraseñas filtradas",
+    "withReport": "Con informe",
+    "withMonitoring": "Con vigilancia",
+    "shareTitle": "Compartir con mi empresa",
+    "shareBody": "{org} te ha incluido en Rastro Equipos. Si lo activas, tu empresa verá solo tu puntuación, si tienes contraseñas filtradas y si tienes la vigilancia activa. Nunca tus hallazgos, tu informe ni tus datos. Puedes desactivarlo cuando quieras.",
+    "shareOn": "Compartir mi puntuación",
+    "shareOff": "Dejar de compartir",
+    "notOwner": "Solo el titular del equipo puede gestionarlo.",
+    "full": "No quedan plazas.",
+    "invalid": "Ese correo no vale.",
+    "exists": "Esa persona ya está en otro equipo o paga su propio Pro.",
+    "inviteEmail": {
+      "subject": "{org} te ha dado Rastro Pro",
+      "greeting": "Hola:",
+      "body": "{org} te ha incluido en Rastro Equipos. Ya tienes Rastro Pro: informe de exposición, vigilancia, cartas RGPD enviadas por nosotros, escáner de Gmail, simulador de estafas y guardián. Tu empresa no ve tus datos ni tus hallazgos; solo tu puntuación, y solo si tú decides compartirla.",
+      "ask": "Entra con este enlace y pide tu primer informe.",
+      "cta": "Entrar en Rastro",
+      "footer": "Si no conoces a esta empresa, ignora este correo."
+    },
+    "nameLabel": "Nombre de la empresa",
+    "rename": "Guardar",
+    "hubBody": "Gestiona las personas de tu equipo y su riesgo."
+  }
+}

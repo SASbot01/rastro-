@@ -1,0 +1,10 @@
+# Tunel de Cloudflare para rastropro.com (se rellena en el servidor tras `cloudflared tunnel create rastro`).
+# El UUID y el fichero de credenciales los imprime ese comando. pm2 lo arranca: deploy/ecosystem.config.cjs
+tunnel: f0037292-c257-4605-aa09-20aa1e47d25b
+credentials-file: /home/s4sf/.cloudflared/f0037292-c257-4605-aa09-20aa1e47d25b.json
+ingress:
+  - hostname: rastropro.com
+    service: http://localhost:3000
+  - hostname: www.rastropro.com
+    service: http://localhost:3000
+  - service: http_status:404
