@@ -25,9 +25,15 @@ ssh "$HOST" 'set -euo pipefail; export PATH=$HOME/.npm-global/bin:$PATH; cd ~/ra
   if NEXT_TELEMETRY_DISABLED=1 npm run build > /tmp/rastro-build.log 2>&1; then
     rm -rf .next.bak
     grep -E "Compiled|TypeScript" /tmp/rastro-build.log | head -2
-    # Reinicio, o arranque si pm2 no lo tiene (p. ej. tras un reinicio del servidor sin pm2 startup). Falla en voz alta.
-    (pm2 restart rastro --update-env >/dev/null 2>&1 || pm2 start deploy/ecosystem.config.cjs --only rastro >/dev/null 2>&1) && pm2 save >/dev/null 2>&1; sleep 4
-    if ! pm2 list 2>/dev/null | grep -q "rastro .*online"; then echo "✗ pm2 no tiene rastro online"; exit 1; fi
+    # La app corre bajo systemd (rastro.service, Restart=always). Sin sudo no se puede
+    # hacer systemctl restart: se cierra el proceso y systemd lo levanta con la build nueva.
+    if systemctl is-enabled rastro >/dev/null 2>&1; then
+      pkill -u "$USER" -f "next start -p 3000" || true
+      for i in $(seq 1 20); do sleep 2; curl -fsS --max-time 5 http://localhost:3000/api/health >/dev/null 2>&1 && break; done
+    else
+      pm2 restart rastro --update-env >/dev/null 2>&1 || pm2 start deploy/ecosystem.config.cjs --only rastro >/dev/null 2>&1; pm2 save >/dev/null 2>&1; sleep 4
+    fi
+    curl -fsS --max-time 10 http://localhost:3000/api/health >/dev/null 2>&1 || { echo "✗ la app no responde tras el reinicio"; exit 1; }
     echo "→ $(curl -s -o /dev/null -w "HTTP %{http_code}" http://localhost:3000/) en local, $(curl -s -o /dev/null -w "HTTP %{http_code}" --max-time 20 https://rastropro.com/) en rastropro.com"
   else
     echo "✗ build fallido en el servidor: NO se reinicia la app"; grep -E "error|Error" /tmp/rastro-build.log | head -8
