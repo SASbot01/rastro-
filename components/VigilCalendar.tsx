@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { monitoringStreak } from "@/lib/monitoring-streak";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 
 const DAY = 86_400_000;
@@ -74,11 +75,8 @@ export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt,
     return { date: d, iso, status: dailyByDay.get(iso) ?? null, future: d > today, isToday: dayKey(d) === todayKey };
   });
   // Racha: dias seguidos "ok" contando hacia atras desde la ultima comprobacion.
-  let streak = 0;
-  for (const d of [...daily].sort((a, b) => (a.day < b.day ? 1 : -1))) {
-    if (d.status === "ok") streak += 1;
-    else if (d.status === "alert") break;
-  }
+  const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const streak = monitoringStreak(daily, todayIso);
   const hasDaily = daily.length > 0;
   const lastAlertToday = dailyByDay.get(week.find((w) => w.isToday)?.iso ?? "") === "alert";
   const checksCount = checks.length;
@@ -117,7 +115,7 @@ export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt,
               w.status === "ok" ? "bg-accent" : w.status === "alert" ? "bg-warn" : w.status === "error" ? "bg-faint" : "bg-line";
             const label = w.status === "ok" ? tr("week.ok") : w.status === "alert" ? tr("week.alert") : tr("week.none");
             return (
-              <li key={w.iso} className="flex flex-col items-center gap-1.5" title={`${dateFmt.format(w.date)} · ${label}`}>
+              <li key={w.iso} className="flex flex-col items-center gap-1.5" aria-label={`${dateFmt.format(w.date)} · ${label}`} title={`${dateFmt.format(w.date)} · ${label}`}>
                 <span className={"text-[10.5px] font-medium uppercase " + (w.isToday ? "text-ink" : "text-faint")}>{dows[i]}</span>
                 <span className={"relative flex h-7 w-7 items-center justify-center rounded-full " + (w.isToday ? "ring-1 ring-accent" : "")}>
                   <span className={"h-3 w-3 rounded-full " + cls + (w.future ? " opacity-30" : "") + (justEnabled ? " vigil-pop" : "")} style={justEnabled ? { animationDelay: `${120 + i * 40}ms` } : undefined} />

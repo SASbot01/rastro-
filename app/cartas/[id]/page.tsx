@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { CopyButton } from "@/components/CopyButton";
+import { LetterJourney } from "@/components/experience/LetterJourney";
 import { getMessages, isLocale, translator, type Locale } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { getSession } from "@/lib/session";
@@ -124,6 +125,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
           </span>
         </div>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("letters.subtitle", { host: letter.host })}</p>
+        {letter.events && letter.events.length > 0 && <div className="mt-6"><LetterJourney events={letter.events} messages={messages} locale={locale} checkedAt={letter.last_check_at} stillListed={letter.still_listed}/></div>}
 
         {/* Destinatario */}
         <section className="mt-6 rounded-card border border-line bg-surface p-5">
@@ -307,28 +309,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
           </section>
         )}
 
-        {/* Cronologia (pruebas) */}
-        {letter.events && letter.events.length > 0 && (
-          <section className="mt-4 rounded-card border border-line bg-surface p-5">
-            <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.timeline")}</h2>
-            <ol className="mt-3 grid gap-2.5">
-              {letter.events.map((ev, i) => (
-                <li key={i} className="flex gap-3 text-[14px]">
-                  <span className={"mt-1.5 h-2 w-2 shrink-0 rounded-full " + (ev.type === "closed" ? "bg-accent" : ev.type === "reminder" || ev.type === "no_answer" ? "bg-warn" : "bg-faint")} />
-                  <span className="min-w-0">
-                    <span className="block text-ink">{tr(`letters.event.${ev.type}`, { to: ev.to ?? "" })}</span>
-                    <span className="block text-[12px] text-faint">{fmtShort.format(new Date(ev.at))}</span>
-                  </span>
-                </li>
-              ))}
-            </ol>
-            {letter.sent_at && (
-              <p className="mt-3 text-[12.5px] text-faint">
-                {tr("letters.evidence", { followUp: letter.follow_up_sent_at ? tr("letters.evidenceFollowUp") : "", reply: letter.reply_note ? tr("letters.evidenceReply") : "" })}
-              </p>
-            )}
-          </section>
-        )}
+        {letter.sent_at && <p className="mt-4 text-[12.5px] text-faint">{tr("letters.evidence", { followUp: letter.follow_up_sent_at ? tr("letters.evidenceFollowUp") : "", reply: letter.reply_note ? tr("letters.evidenceReply") : "" })}</p>}
 
         <div className="mt-8 flex flex-wrap gap-5 text-[14px]">
           {letter.request_id && (

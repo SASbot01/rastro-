@@ -19,6 +19,7 @@ export function LocaleSwitcher({
 
   function choose(locale: Locale) {
     if (locale === current) return;
+    // eslint-disable-next-line react-hooks/immutability -- browser cookie API in an event handler
     document.cookie = `${LOCALE_COOKIE}=${locale};path=/;max-age=${ONE_YEAR};samesite=lax`;
     startTransition(() => router.refresh());
   }

@@ -7,6 +7,7 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { levelFor } from "@/lib/report/score";
 import { memberSnapshots, orgForOwner, orgMembers } from "@/lib/org";
+import { sharedMonitoring } from "@/lib/team-privacy";
 
 export const dynamic = "force-dynamic";
 const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
@@ -39,6 +40,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
       <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-12">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("team.eyebrow")}</p>
         <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink">{org ? org.name : tr("team.dashTitle")}</h1>
+        <section className="ex-panel mt-5"><h2 className="text-base font-medium">{tr("experience.teamPrivacy")}</h2><p className="ex-note mt-2">{tr("experience.teamPrivacyBody")}</p></section>
         {e && <p role="alert" className="mt-3 text-[13px] font-medium text-danger">{tr(`team.${e}`)}</p>}
 
         {/* Nombre / creacion */}
@@ -54,7 +56,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                 { v: avg ?? "—", l: tr("team.avg"), cls: avg !== null ? LEVEL_TEXT[levelFor(avg)] : "text-faint" },
                 { v: `${withPw}/${shared.length}`, l: tr("team.withPasswords"), cls: withPw ? "text-danger" : "text-ink" },
                 { v: `${shared.length}/${members.length}`, l: tr("team.withReport"), cls: "text-ink" },
-                { v: `${members.filter((m) => m.monitoring).length}/${members.length}`, l: tr("team.withMonitoring"), cls: "text-ink" },
+                { v: `${members.filter((m) => sharedMonitoring(m) === true).length}/${members.filter((m) => m.org_share_at).length}`, l: tr("team.withMonitoring"), cls: "text-ink" },
               ].map((x) => (
                 <li key={x.l} className={CARD + " !p-4"}><p className={"text-[24px] font-semibold tracking-[-0.02em] " + x.cls}>{x.v}</p><p className="mt-0.5 text-[12px] text-faint">{x.l}</p></li>
               ))}
@@ -83,7 +85,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                           <td className="py-2.5 pr-3 text-muted">{!m.last_seen_at ? tr("team.status.invited") : m.org_share_at ? (s ? tr("team.status.active") : tr("team.status.noreport")) : tr("team.notShared")}</td>
                           <td className={"py-2.5 pr-3 font-semibold " + (s ? LEVEL_TEXT[levelFor(s.score)] : "text-faint")}>{s ? s.score : "—"}</td>
                           <td className={"py-2.5 pr-3 " + (s && s.passwords > 0 ? "text-danger" : "text-muted")}>{s ? s.passwords : "—"}</td>
-                          <td className="py-2.5 pr-3 text-muted">{m.monitoring ? tr("team.on") : tr("team.off")}</td>
+                          <td className="py-2.5 pr-3 text-muted">{sharedMonitoring(m) === null ? "—" : sharedMonitoring(m) ? tr("team.on") : tr("team.off")}</td>
                           <td className="py-2.5 pr-3 text-faint">{s ? fmt.format(new Date(s.at)) : "—"}</td>
                           <td className="py-2.5 text-right"><form action="/api/org/members" method="post"><input type="hidden" name="action" value="remove" /><input type="hidden" name="email" value={m.email} /><button type="submit" className="text-[12.5px] text-muted underline underline-offset-4 hover:text-ink">{tr("team.remove")}</button></form></td>
                         </tr>

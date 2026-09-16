@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import type { GuardianVerdict } from "@/lib/ai/guardian";
 
@@ -13,6 +14,8 @@ export function GuardianForm({ messages, locale, personalized }: { messages: Mes
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GuardianVerdict | null>(null);
+  const [text, setText] = useState("");
+  const [sender, setSender] = useState("");
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -33,13 +36,16 @@ export function GuardianForm({ messages, locale, personalized }: { messages: Mes
   return (
     <div className="grid gap-4">
       <form onSubmit={onSubmit} className="rounded-card border border-line bg-surface p-5 sm:p-6">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-2"><button type="button" disabled={busy} className="ex-text-link" onClick={() => { setText(tr("experience.guardianSampleText")); setSender(""); setResult(null); setError(null); }}>{tr("experience.guardianSample")}</button><Link className="ex-emergency-link" href="/ayuda-urgente">{tr("experience.emergency")} ↗</Link></div>
         <label className="block text-[13px] font-medium text-ink" htmlFor="g-sender">{tr("guardian.sender")}</label>
-        <input id="g-sender" name="sender" maxLength={200} disabled={busy} placeholder={tr("guardian.senderPlaceholder")} className={"mt-1.5 " + FIELD} />
+        <input id="g-sender" name="sender" value={sender} onChange={(e) => setSender(e.target.value)} maxLength={200} disabled={busy} placeholder={tr("guardian.senderPlaceholder")} className={"mt-1.5 " + FIELD} />
         <label className="mt-4 block text-[13px] font-medium text-ink" htmlFor="g-text">{tr("guardian.text")}</label>
-        <textarea id="g-text" name="text" rows={7} maxLength={4000} required disabled={busy} placeholder={tr("guardian.textPlaceholder")} className={"mt-1.5 resize-y " + FIELD} />
+        <textarea id="g-text" name="text" value={text} onChange={(e) => setText(e.target.value)} aria-describedby="guardian-counter" rows={7} maxLength={4000} required disabled={busy} placeholder={tr("guardian.textPlaceholder")} className={"mt-1.5 resize-y " + FIELD} />
+        <p id="guardian-counter" className="ex-note mt-2 text-right">{tr("experience.guardianCount", { n: text.length })}</p>
         <p className="mt-2 text-[12px] text-faint">{personalized ? tr("guardian.personalized") : tr("guardian.notPersonalized")}</p>
         {error && <p role="alert" className="mt-3 text-[13px] font-medium text-danger">{tr(error)}</p>}
         <button type="submit" disabled={busy} className="mt-4 rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-60">{busy ? tr("guardian.analyzing") : tr("guardian.analyze")}</button>
+        {(text || sender || result) && <button type="button" disabled={busy} className="ex-quiet ml-3" onClick={() => { setText(""); setSender(""); setResult(null); setError(null); }}>{tr("experience.guardianClear")}</button>}
       </form>
 
       {result && (

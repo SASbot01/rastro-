@@ -28,11 +28,11 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
   const session = await getSession();
   const user = session ? await findUserByEmail(session.email) : null;
   const pro = isPro(user);
-  const supabase = supabaseAdmin();
 
   let hasReport = false;
   let sim: { id: string; content: Simulation; sent_at: string | null; created_at: string } | null = null;
   if (user) {
+    const supabase = supabaseAdmin();
     const { data: rep } = await supabase.from("reports").select("request_id, requests!inner(user_id, status)").eq("requests.user_id", user.id).eq("requests.status", "done").order("created_at", { ascending: false }).limit(1).maybeSingle<{ request_id: string }>();
     hasReport = Boolean(rep);
     if (rep) {

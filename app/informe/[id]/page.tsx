@@ -41,7 +41,7 @@ function assistantsFrom(raw: RawAi | null | undefined): AssistantView[] {
   return out;
 }
 
-async function loadRequest(id: string): Promise<{ request: RequestRow; report: ReportData | null } | null> {
+async function loadRequest(id: string, ownerEmail: string): Promise<{ request: RequestRow; report: ReportData | null } | null> {
   if (!UUID.test(id)) return null;
   const supabase = supabaseAdmin();
 
@@ -49,6 +49,7 @@ async function loadRequest(id: string): Promise<{ request: RequestRow; report: R
     .from("requests")
     .select("id, email, full_name, locale, status, step, error")
     .eq("id", id)
+    .eq("email", ownerEmail)
     .maybeSingle<RequestRow>();
   if (!request) return null;
 
@@ -97,9 +98,11 @@ export async function generateMetadata({ params }: PageProps<"/informe/[id]">): 
   };
 }
 
-export default async function ReportPage({ params }: PageProps<"/informe/[id]">) {
+export default async function ReportPage({ params, searchParams }: PageProps<"/informe/[id]">) {
   const { id } = await params;
-  const loaded = await loadRequest(id);
+  const { reveal } = await searchParams;
+  const session = await getSession();
+  const loaded = session ? await loadRequest(id, session.email) : null;
 
   // El informe se muestra en el idioma con el que se pidio, no el del navegador.
   const locale: Locale =
@@ -111,9 +114,9 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
 
   // Privado: solo la sesion del correo que pidio el informe. El enlace del
   // correo crea esa sesion; desde otro dispositivo se entra por /entrar.
-  const session = await getSession();
-
-  if (!loaded) {
+  if (!session) {
+    body = <Panel title={tr("account.mustLoginTitle")} body={tr("account.mustLoginBody")} cta={tr("account.mustLoginCta")} href="/entrar" />;
+  } else if (!loaded) {
     body = (
       <Panel
         title={tr("waiting.notFoundTitle")}
@@ -141,6 +144,7 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
         messages={messages}
         partial={loaded.report.generator !== "ai"}
         pro={isPro(session ? await findUserByEmail(session.email) : null)}
+        reveal={reveal === "1"}
       />
     );
   } else if (loaded.request.status === "error" || loaded.request.status === "done") {

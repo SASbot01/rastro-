@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_name__",
+  "description": "__MSG_description__",
+  "version": "0.1.0",
+  "default_locale": "es",
+  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "action": { "default_title": "Rastro Guardián", "default_popup": "popup.html" },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'" }
+}

@@ -2,6 +2,8 @@
 
 Este archivo es el contexto completo del proyecto. Léelo entero antes de tocar nada.
 
+> Actualización de experiencia 16-09-2026: la rama `codex/rastro-experience` añade revelación, stories, espejo, chat de IA, captura anónima, onboarding, ayuda urgente, tema claro, demo y extensión MVP. Ver `docs/EXPERIENCIA-RASTRO-2026.md` para alcance y pruebas. El brief del propietario de esa fecha amplía el antiguo alcance v1 que se conserva abajo como historial. Estos cambios no están publicados todavía.
+
 ## 1. Qué es Rastro
 
 App web SaaS (bilingüe ES/EN desde el día 1) que responde a la pregunta: "¿qué sabe la IA de ti?"

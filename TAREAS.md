@@ -1,5 +1,17 @@
 # Tareas pendientes — Rastro
 
+## Mejora de experiencia · 16-09-2026 (rama, pendiente de publicación)
+
+- [x] Informe con revelación, stories, espejo, mapa de fuentes y respuestas de IA en chat.
+- [x] Captura anónima y descarga PNG, demo ES/EN de siete pantallas, tema claro/oscuro.
+- [x] Ayuda urgente, mejoras del Guardián, panel y cronología de cartas.
+- [x] Corregir rachas, privacidad de vigilancia en Equipos/CSV y autorización del polling.
+- [x] Extensión Guardián MVP y shortcuts PWA.
+- [ ] Revisar visualmente móvil/desktop y extensión en navegadores reales.
+- [ ] Probar con cuenta de ensayo los flujos privados y cartas, antes de publicar.
+- [ ] Publicar la rama en Rastro tras revisión. Servidor inspeccionado sin cambios.
+- Detalle y roadmap de nuevas aplicaciones: `docs/EXPERIENCIA-RASTRO-2026.md`.
+
 Estado a 10-09-2026. Producción: https://rastropro.com (servidor propio, ver README › Despliegue).
 
 ## Antes de abrir al público

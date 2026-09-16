@@ -25,19 +25,25 @@ export function ReportWaiting({ id, steps, initialStep, messages }: Props) {
 
   useEffect(() => {
     let cancelled = false;
+    let inFlight = false;
     const timer = setInterval(async () => {
+      if (inFlight) return;
+      inFlight = true;
       try {
-        const res = await fetch(`/api/report/${id}`, { cache: "no-store" });
+        const res = await fetch(`/api/report/${id}`, { cache: "no-store", signal: AbortSignal.timeout(10000) });
         const body = (await res.json()) as { status: string; step: ReportStep | null };
         if (cancelled) return;
         if (body.status === "done" || body.status === "error" || body.status === "not_found") {
           clearInterval(timer);
-          router.refresh();
+          if (body.status === "done") router.replace(`/informe/${id}?reveal=1`);
+          else router.refresh();
           return;
         }
         setStep(body.step);
       } catch {
         // Un fallo de red puntual no debe romper la espera; se reintenta en el siguiente tick.
+      } finally {
+        inFlight = false;
       }
     }, POLL_MS);
     return () => {

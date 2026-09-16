@@ -11,7 +11,7 @@ import { translator, type Messages } from "@/lib/i18n";
 const TABS = [
   { key: "home", href: "/", match: (p: string) => p === "/" },
   { key: "report", href: "/informe", match: (p: string) => p.startsWith("/informe") },
-  { key: "tools", href: "/herramientas", match: (p: string) => p.startsWith("/herramientas") || p.startsWith("/cartas") || p.startsWith("/cuenta/buzon") },
+  { key: "tools", href: "/herramientas", match: (p: string) => ["/herramientas", "/cartas", "/cuenta/buzon", "/guardian", "/simulador", "/imagenes", "/ayuda-urgente"].some((route) => p.startsWith(route)) },
   { key: "profile", href: "/cuenta", match: (p: string) => p === "/cuenta" || p.startsWith("/entrar") || p.startsWith("/pro") },
 ] as const;
 
@@ -133,7 +133,11 @@ export function SideNav({ messages }: { messages: Messages }) {
           );
         })}
       </ul>
-      <p className="mt-auto px-2 text-[12px] leading-relaxed text-faint">{tr("footer.tagline")}</p>
+      <div className="mt-auto grid gap-4 px-2">
+        <Link href="/demo" className="ex-nav-demo">{tr("experience.demo")} ↗</Link>
+        <Link href="/ayuda-urgente" className="ex-emergency-link">{tr("experience.emergency")} ↗</Link>
+        <p className="text-[12px] leading-relaxed text-faint">{tr("footer.tagline")}</p>
+      </div>
     </aside>
   );
 }

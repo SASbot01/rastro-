@@ -1,0 +1,17 @@
+{
+  "name": { "message": "Rastro Guardian · voluntary review" },
+  "description": { "message": "Select a suspicious message and take it to Guardian. You decide what to review and when to send it." },
+  "title": { "message": "Something feels off?" },
+  "intro": { "message": "Review the text before taking it to Guardian." },
+  "selected": { "message": "Message to check" },
+  "read": { "message": "Use selected text" },
+  "open": { "message": "Copy and open Guardian" },
+  "clear": { "message": "Clear" },
+  "note": { "message": "We don’t read your inbox. Only the text you select is read when you press the button. Nothing is saved or sent automatically." },
+  "copied": { "message": "Text copied. Paste it into Guardian and press Analyze when you are ready." },
+  "empty": { "message": "Select text on the page or paste it here first." },
+  "error": { "message": "We couldn’t read this page. Copy the message and paste it here." },
+  "copyError": { "message": "We couldn’t copy it. Copy the text manually and open rastropro.com/guardian." },
+  "truncated": { "message": "The first 4,000 characters were selected. Review the text." },
+  "limit": { "message": "Maximum 4,000 characters. Remove codes, passwords or banking details before continuing." }
+}

@@ -76,7 +76,7 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
   const shown = scan.services
     .filter((s) => filter === "all" || s.kind === filter)
     .filter((s) => !q || s.name.toLowerCase().includes(q.toLowerCase()) || s.domain.includes(q.toLowerCase()));
-  const oldCutoff = Date.now() - 2 * 365 * 86_400_000;
+  const oldCutoff = new Date(scan.started_at).getTime() - 2 * 365 * 86_400_000;
 
   return (
     <div className="grid gap-4">
