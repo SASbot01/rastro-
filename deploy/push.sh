@@ -28,7 +28,7 @@ ssh "$HOST" 'set -euo pipefail; export PATH=$HOME/.npm-global/bin:$PATH; cd ~/ra
     # La app corre bajo systemd (rastro.service, Restart=always). Sin sudo no se puede
     # hacer systemctl restart: se cierra el proceso y systemd lo levanta con la build nueva.
     if systemctl is-enabled rastro >/dev/null 2>&1; then
-      pkill -u "$(id -un)" -f "next start -p 3000" || true
+      RPID=$(ss -ltnp 2>/dev/null | grep ":3000 " | grep -o "pid=[0-9]*" | head -1 | cut -d= -f2); [ -n "$RPID" ] && kill "$RPID" || true  # systemd lo relanza
       for i in $(seq 1 20); do sleep 2; curl -fsS --max-time 5 http://localhost:3000/api/health >/dev/null 2>&1 && break; done
     else
       pm2 restart rastro --update-env >/dev/null 2>&1 || pm2 start deploy/ecosystem.config.cjs --only rastro >/dev/null 2>&1; pm2 save >/dev/null 2>&1; sleep 4
