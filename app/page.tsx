@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { Onboarding } from "@/components/experience/Onboarding";
 import { AskBubble } from "@/components/AskBubble";
 import { RequestForm } from "@/components/RequestForm";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
@@ -128,6 +130,7 @@ export default async function HomePage() {
       <>
         <SiteHeader locale={locale} messages={messages} />
         <Dashboard locale={locale} messages={messages} user={user} />
+        <section id="form" className="ex-page scroll-mt-20"><div className="mx-auto max-w-[560px]"><h2 className="mb-5 text-2xl font-semibold tracking-tight">{tr("account.newReport")}</h2><RequestForm messages={messages} locale={locale}/></div></section>
         <SiteFooter messages={messages} />
       </>
     );
@@ -160,6 +163,7 @@ export default async function HomePage() {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link href="#form" className="rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("landing.ctaPrimary")}</Link>
               <Link href="#como" className="rounded-[12px] border border-line bg-surface px-5 py-3 text-[15px] font-semibold text-ink hover:border-faint">{tr("landing.ctaSecondary")}</Link>
+              <Link href="/demo" className="ex-text-link">{tr("experience.demo")} ↗</Link>
             </div>
             <ul className="mt-5 flex flex-wrap gap-2">
               {trust.map((item) => (
@@ -289,7 +293,7 @@ export default async function HomePage() {
             <p className="mt-1 text-[15px] text-muted">{tr("landing.formBody")}</p>
           </div>
           <div className="mx-auto max-w-[560px]">
-            <RequestForm messages={messages} locale={locale} />
+            <Onboarding messages={messages} initialDone={(await cookies()).get("rastro_onboarded")?.value === "1"}><RequestForm messages={messages} locale={locale} /></Onboarding>
           </div>
         </section>
       </main>

@@ -44,8 +44,8 @@ export default async function ReportsPage() {
   const user = session ? await findUserByEmail(session.email) : null;
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
 
-  const supabase = supabaseAdmin();
-  const [{ data }, { data: scan }] = user
+  const supabase = user ? supabaseAdmin() : null;
+  const [{ data }, { data: scan }] = user && supabase
     ? await Promise.all([
         supabase
           .from("requests")
