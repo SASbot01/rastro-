@@ -109,3 +109,8 @@ Pendiente tuyo:
 - v5: Rastro Equipos (landing /equipos, panel /equipo, invitaciones, consentimiento del empleado, CSV, Stripe).
 - [ ] **Stripe Equipos**: Payment Links y price ids → `STRIPE_LINK_TEAM_SMALL/LARGE`, `STRIPE_PRICE_IDS_TEAM[_LARGE]`. Sin ellos, la landing muestra "Hablar con nosotros" (soporte).
 - [ ] Para probar un equipo sin Stripe: `update users set plan='pro', plan_until=now()+interval '1 year', plan_kind='team' where email='...'` y luego /equipo.
+
+## API pública (16-09-2026) — hecho
+- Claves en Perfil → API, docs en /api-docs, OpenAPI en /api/v1/openapi.json. Probado en producción con la cuenta demo (todos los endpoints).
+- [ ] Cuando haya usuarios de API: publicar ejemplos en GitHub (script Python + colección) y una entrada en la guía de sitios enlazando a la API.
+- Nota: el `pm2 startup` ya no hace falta; Rastro corre con systemd (unidades creadas en el servidor).
