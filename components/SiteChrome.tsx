@@ -69,6 +69,9 @@ export function SiteFooter({ messages }: { messages: Messages }) {
           <Link href="/sitios" className="text-muted underline underline-offset-4 hover:text-ink">
             {tr("sites.footerLink")}
           </Link>
+          <Link href="/api-docs" className="text-muted underline underline-offset-4 hover:text-ink">
+            {tr("api.footerLink")}
+          </Link>
           <Link href="/equipos" className="text-muted underline underline-offset-4 hover:text-ink">
             {tr("team.eyebrow")}
           </Link>

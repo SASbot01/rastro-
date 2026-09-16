@@ -35,7 +35,7 @@ function scoreOf(row: Row): number | null {
  * (vigilancia, escaner, cartas, plazos) vive en /herramientas.
  */
 export default async function AccountPage({ searchParams }: PageProps<"/cuenta">) {
-  const { pago, vigilancia, familia } = await searchParams;
+  const { pago, vigilancia, familia, newkey, api } = await searchParams;
   const session = await getSession();
   if (!session) redirect("/entrar");
   const user = await findUserByEmail(session.email);
@@ -61,6 +61,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
   const { data: familyMembers } = user.plan_kind === "family"
     ? await supabase.from("users").select("id, email, last_seen_at").eq("family_owner_id", user.id).eq("plan_kind", "member").order("created_at").returns<{ id: string; email: string; last_seen_at: string | null }[]>()
     : { data: null };
+  const { data: apiKeys } = await supabase.from("api_keys").select("id, name, prefix, created_at, last_used_at").eq("user_id", user.id).is("revoked_at", null).order("created_at").returns<{ id: string; name: string; prefix: string; created_at: string; last_used_at: string | null }[]>();
   const { data: orgRow } = user.org_id ? await supabase.from("orgs").select("name").eq("id", user.org_id).maybeSingle<{ name: string }>() : { data: null };
   const orgName = orgRow?.name ?? null;
   const { data: familyOwner } = user.plan_kind === "member" && user.family_owner_id
@@ -201,6 +202,38 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
                 </Link>
               </>
             )}
+          </section>
+
+          {/* API */}
+          <section id="api" className={CARD}>
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-[15px] font-semibold text-ink">{tr("api.keysTitle")}</h2>
+              <Link href="/api-docs" className="text-[13px] font-medium text-accent underline underline-offset-4">{tr("api.docs")}</Link>
+            </div>
+            <p className="mt-1 text-[13px] leading-relaxed text-muted">{tr("api.keysBody")}</p>
+            {typeof newkey === "string" && newkey && (
+              <div className="mt-3 rounded-[12px] border border-accent/40 bg-accent-soft p-3">
+                <p className="text-[12.5px] font-medium text-accent">{tr("api.newKey")}</p>
+                <code className="mt-1 block break-all rounded-[8px] bg-paper px-3 py-2 text-[13px] text-ink">{newkey}</code>
+              </div>
+            )}
+            {api === "full" && <p role="alert" className="mt-2 text-[13px] text-danger">{tr("api.full")}</p>}
+            {api === "error" && <p role="alert" className="mt-2 text-[13px] text-danger">{tr("api.error")}</p>}
+            {(apiKeys?.length ?? 0) > 0 && (
+              <ul className="mt-3 grid gap-1.5">
+                {apiKeys!.map((k) => (
+                  <li key={k.id} className="flex items-center justify-between gap-3 rounded-[12px] bg-surface-2 px-3.5 py-2.5">
+                    <span className="min-w-0"><span className="block truncate text-[14px] font-medium text-ink">{k.name} <span className="font-mono text-[12px] text-faint">{k.prefix}…</span></span><span className="block text-[12px] text-faint">{k.last_used_at ? tr("api.lastUsed", { date: fmt.format(new Date(k.last_used_at)) }) : tr("api.neverUsed")}</span></span>
+                    <form action="/api/keys" method="post"><input type="hidden" name="action" value="revoke" /><input type="hidden" name="id" value={k.id} /><button type="submit" className="text-[12.5px] text-muted underline underline-offset-4 hover:text-ink">{tr("api.revoke")}</button></form>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <form action="/api/keys" method="post" className="mt-3 flex gap-2">
+              <input type="hidden" name="action" value="create" />
+              <input name="name" maxLength={60} placeholder={tr("api.keyName")} className="min-w-0 flex-1 rounded-[12px] border border-line bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink placeholder:text-faint focus:border-accent focus:outline-none" />
+              <button type="submit" className="shrink-0 rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("api.create")}</button>
+            </form>
           </section>
 
           {/* Soporte */}

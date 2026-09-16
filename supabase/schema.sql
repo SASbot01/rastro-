@@ -348,3 +348,16 @@ create index if not exists users_org_idx on public.users (org_id) where org_id i
 -- plan_kind admite 'team' (titular de empresa)
 alter table public.users drop constraint if exists users_plan_kind_check;
 alter table public.users add constraint users_plan_kind_check check (plan_kind in ('individual','family','member','team'));
+-- API publica: claves por cuenta (solo se guarda el hash). Prefijo visible para identificarlas.
+create table if not exists public.api_keys (
+  id           uuid primary key default gen_random_uuid(),
+  user_id      uuid not null references public.users(id) on delete cascade,
+  name         text not null default 'default',
+  prefix       text not null,                 -- primeros 12 caracteres, para mostrar
+  key_hash     text not null unique,          -- sha256 de la clave completa
+  created_at   timestamptz not null default now(),
+  last_used_at timestamptz,
+  revoked_at   timestamptz
+);
+create index if not exists api_keys_user_idx on public.api_keys (user_id);
+alter table public.api_keys enable row level security;

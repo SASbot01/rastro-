@@ -12,7 +12,7 @@ import { hashEmail, hashIp } from "@/lib/crypto";
 const HOUR = 60 * 60;
 const DAY = 24 * HOUR;
 
-export type RateKind = "report" | "login" | "support" | "ask" | "guardian";
+export type RateKind = "report" | "login" | "support" | "ask" | "guardian" | "api" | "api_ai";
 
 export const LIMITS: Record<RateKind, { email: number; ip: number; window: number }> = {
   report: { email: 3, ip: 20, window: DAY },
@@ -20,6 +20,8 @@ export const LIMITS: Record<RateKind, { email: number; ip: number; window: numbe
   support: { email: 5, ip: 30, window: DAY },
   ask: { email: 0, ip: 40, window: DAY }, // chat del muneco: solo por IP
   guardian: { email: 0, ip: 5, window: DAY }, // "¿es una estafa?" gratis: 5 al dia por IP (Pro sin limite)
+  api: { email: 0, ip: 1000, window: DAY }, // API publica: peticiones por clave y dia
+  api_ai: { email: 0, ip: 100, window: DAY }, // API publica: peticiones que usan IA, por clave y dia
 };
 
 async function bump(key: string, limit: number, windowSeconds: number): Promise<boolean> {
@@ -54,4 +56,10 @@ export async function allowByIp(ip: string, kind: RateKind): Promise<boolean> {
   if (process.env.RATE_LIMIT_DISABLED === "1" && process.env.NODE_ENV !== "production") return true;
   const { ip: ipLimit, window } = LIMITS[kind];
   return bump(`${kind}:ip:${hashIp(ip)}`, ipLimit, window);
+}
+
+/** Limite por clave de API (o cualquier identificador estable). */
+export async function allowByKey(id: string, kind: RateKind): Promise<boolean> {
+  const { ip: limit, window } = LIMITS[kind];
+  return bump(`${kind}:key:${hashIp(id)}`, limit, window);
 }
