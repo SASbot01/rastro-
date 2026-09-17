@@ -114,3 +114,8 @@ Pendiente tuyo:
 - Claves en Perfil → API, docs en /api-docs, OpenAPI en /api/v1/openapi.json. Probado en producción con la cuenta demo (todos los endpoints).
 - [ ] Cuando haya usuarios de API: publicar ejemplos en GitHub (script Python + colección) y una entrada en la guía de sitios enlazando a la API.
 - Nota: el `pm2 startup` ya no hace falta; Rastro corre con systemd (unidades creadas en el servidor).
+
+## Extensión Rastro Guardián 0.2 (18-09-2026) — hecho
+- Robot de cookies (3 modelos, arrastrable, cuerpo con tambaleo), nota por web, empresas, aviso de publicidad antes de aceptar, «Rechazar por mí», popup con detalle. Probada en webs reales con Brave.
+- [ ] Publicar en Chrome Web Store / Edge Add-ons (cuenta de desarrollador 5 $, iconos 128/48/16, ficha de privacidad). Hasta entonces se instala «descomprimida» desde /extension.
+- Siguiente fase de la extensión: aviso en sitios del catálogo ("aquí apareces tú"), webs dudosas (dominio recién creado / imita marca), política de privacidad resumida con IA, informe semanal de rastreo.

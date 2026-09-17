@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "test:smoke": "node scripts/smoke-experience.mjs"
+    "test": "node --experimental-strip-types --test tests/*.test.ts tests/*.test.mjs",
+    "test:smoke": "node scripts/smoke-experience.mjs",
+    "ext:sync": "node scripts/sync-extension.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",

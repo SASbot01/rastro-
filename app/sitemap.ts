@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/guardian`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/equipos`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/api-docs`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE}/extension`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     ...BROKERS.map((b) => ({ url: `${BASE}/sitios/${b.slug}`, lastModified: new Date(b.checked), changeFrequency: "monthly" as const, priority: 0.7 })),
     { url: `${BASE}/privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE}/aviso-legal`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
