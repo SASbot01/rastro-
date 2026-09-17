@@ -1,21 +1,27 @@
-# Rastro Guardián — extensión MVP (0.1.0)
+# Rastro Guardián — extensión (0.2.0)
 
-Extensión Manifest V3 para Chrome/Edge, ES/EN. No está publicada en las tiendas ni instalada automáticamente. Esta primera versión captura una selección **tras pulsar el botón**, permite editarla y, con otra acción explícita, la copia y abre el Guardián existente. El análisis lo inicia la persona en la web con su sesión habitual.
+Manifest V3 para Chrome/Edge, ES/EN. Dos funciones:
+
+1. **Robot de cookies**: en cada web (http/https) aparece un robot arrastrable (3 modelos: Vigía, Cubo, Orbe; el cuerpo se tambalea al moverlo). Cuenta las cookies del sitio y de los terceros que carga, las clasifica (necesarias, medición, publicidad/redes, compraventa de datos), detecta publicidad **antes de aceptar**, cookies de años y sesiones mal protegidas, y pone una **nota 0–100**. Botones: «Rechazar por mí» (pulsa la opción más privada del aviso), «Guía de sitios», «Ocultar aquí».
+2. **¿Te suena raro?** (de la 0.1): lleva un texto seleccionado al Guardián de rastropro.com.
 
 ## Probar
 
-1. Abre `chrome://extensions` (o `edge://extensions`). Activa modo desarrollador.
-2. «Cargar descomprimida» → selecciona esta carpeta `extensions/guardian`.
-3. Selecciona texto en una página HTTP(S), abre la extensión y pulsa «Usar el texto seleccionado».
-4. Revisa/elimina datos sensibles, pulsa «Copiar y abrir Guardián» y pega el texto en la web.
-5. Pulsa Analizar en Rastro. El endpoint existente mantiene sus límites y control de sesión.
+1. `chrome://extensions` → modo desarrollador → «Cargar descomprimida» → esta carpeta.
+2. Abre cualquier web: el robot sale abajo a la derecha. Arrástralo; tócalo para ver el resumen. El icono de la extensión muestra la nota.
 
-## Permisos y límites
+## Privacidad (comprobado por tests)
 
-- `activeTab` y `scripting`: leer solo `window.getSelection()` de la pestaña que autorizaste al abrir la extensión. No hay permisos sobre todos los sitios ni scripts persistentes.
-- `clipboardWrite`: copia voluntaria. El portapapeles del sistema puede conservarla después de cerrar la extensión; vaciar el campo **no** borra el portapapeles.
-- Sin claves, backend, almacenamiento, cookies, historial, analítica ni monitorización del buzón.
-- Un máximo de 4.000 caracteres. Chrome protege sus páginas internas y algunas vistas PDF: pegar manualmente en esos casos.
-- No detecta automáticamente phishing ni presencia en brokers. Esas integraciones requieren una fase posterior y consentimiento independiente.
+- **Ninguna llamada de red**: no hay `fetch`, `XMLHttpRequest`, `WebSocket` ni `sendBeacon` en la extensión. Todo se calcula en el navegador (`lib/analyze.js`).
+- Solo se leen **metadatos** de las cookies (nombre, dominio, caducidad, banderas). Los valores no se leen, no se guardan ni se muestran.
+- Permisos: `cookies` + acceso a sitios http/https (necesario para leer las cookies del sitio y dibujar el robot), `storage` (tu robot, su posición y los sitios ocultos), `activeTab`/`scripting`/`clipboardWrite` (función «¿Te suena raro?»). Sin historial, sin `webRequest`, sin pestañas en segundo plano.
+- Los resúmenes se guardan en `storage.session` (se borran al cerrar el navegador).
 
-Pendiente: revisión interactiva en Chrome/Edge, iconos de tienda, ficha de privacidad y publicación. No se presenta como extensión verificada ni como detector automático.
+## Código
+
+- `lib/trackers.js` — dominios y nombres de cookies conocidos (empresa y categoría) y textos de «rechazar».
+- `lib/analyze.js` — motor puro con nota y frases ES/EN (tests en `tests/cookies.test.mjs`).
+- `mascot.js` — robots y física (script clásico, también se usa en rastropro.com/extension).
+- `background.js` (service worker), `content.js`, `popup.*`.
+
+`npm run ext:sync` copia el robot a la web y genera `public/extension/rastro-guardian.zip`.

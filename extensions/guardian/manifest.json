@@ -2,9 +2,12 @@
   "manifest_version": 3,
   "name": "__MSG_name__",
   "description": "__MSG_description__",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "default_locale": "es",
-  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "permissions": ["activeTab", "scripting", "clipboardWrite", "cookies", "storage"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "content_scripts": [{ "matches": ["http://*/*", "https://*/*"], "js": ["mascot.js", "content.js"], "run_at": "document_idle" }],
   "action": { "default_title": "Rastro Guardián", "default_popup": "popup.html" },
   "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'" }
 }

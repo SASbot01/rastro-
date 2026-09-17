@@ -1570,5 +1570,42 @@
     "error": "Couldn't create the key.",
     "docs": "API documentation",
     "footerLink": "API"
+  },
+  "ext": {
+    "eyebrow": "Extension",
+    "title": "A robot that checks cookies for you",
+    "subtitle": "Rastro Guardian lives in your browser. On every site it counts the cookies, tells you how many companies follow you, whether you're tracked before accepting, and gives the site a 0–100 score. Everything is checked on your computer: your cookies never leave it.",
+    "play": "Grab it and move it",
+    "playBody": "Drag the robot around the screen: the head follows you and the body wobbles. Tap it to see the summary of a sample site. You can switch robots.",
+    "demoSite": "sample-shop.com",
+    "features": [
+      "A 0–100 privacy score for every site.",
+      "How many cookies are necessary, analytics or advertising, and from which companies.",
+      "A warning if you're tracked before accepting, if there are companies that buy and sell profiles, or cookies lasting years.",
+      "“Reject for me”: clicks the most private option on the cookie banner.",
+      "If the site sells data and is in our catalogue, it takes you to request removal."
+    ],
+    "installTitle": "Install it (beta)",
+    "install": [
+      "Download the file and unzip it.",
+      "Open chrome://extensions (or edge://extensions) and enable “Developer mode”.",
+      "Click “Load unpacked” and choose the folder.",
+      "Open any site: the robot appears bottom right."
+    ],
+    "download": "Download the extension",
+    "privacy": "Permissions: read the cookies of the site you visit and show the robot on the page. It doesn't read your history, doesn't send cookie values and needs no account.",
+    "reject": "Reject for me",
+    "hide": "Hide here",
+    "more": "Open in Rastro",
+    "bubblePrivacy": "Everything is checked in your browser. We don't send your cookies anywhere.",
+    "waiting": "Looking at this site…",
+    "robots": [
+      "Vigía",
+      "Cubo",
+      "Orbe"
+    ],
+    "rejected": "Done: I clicked “reject” on the cookie banner.",
+    "rejectMissing": "I can't find a reject button on this page.",
+    "hubBody": "A robot in your browser that reviews each site's cookies and sums them up."
   }
 }

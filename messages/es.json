@@ -1570,5 +1570,42 @@
     "error": "No se pudo crear la clave.",
     "docs": "Documentación de la API",
     "footerLink": "API"
+  },
+  "ext": {
+    "eyebrow": "Extensión",
+    "title": "Un robot que mira las cookies por ti",
+    "subtitle": "Rastro Guardián vive en tu navegador. En cada web cuenta las cookies, te dice cuántas empresas te siguen, si te rastrean antes de aceptar y le pone una nota del 0 al 100. Todo se comprueba en tu ordenador: tus cookies no salen de él.",
+    "play": "Cógelo y muévelo",
+    "playBody": "Arrastra al robot por la pantalla: la cabeza va contigo y el cuerpo se tambalea. Tócalo para ver el resumen de una web de ejemplo. Puedes cambiar de robot.",
+    "demoSite": "tienda-de-ejemplo.es",
+    "features": [
+      "Nota de privacidad de cada web, del 0 al 100.",
+      "Cuántas cookies son necesarias, de medición y de publicidad, y de qué empresas.",
+      "Aviso si te rastrean antes de aceptar, si hay empresas que compran y venden perfiles o cookies que duran años.",
+      "«Rechazar por mí»: pulsa la opción más privada del aviso de cookies.",
+      "Si la web vende datos y está en nuestro catálogo, te lleva a pedir la retirada."
+    ],
+    "installTitle": "Instalarla (beta)",
+    "install": [
+      "Descarga el archivo y descomprímelo.",
+      "Abre chrome://extensions (o edge://extensions) y activa «Modo de desarrollador».",
+      "Pulsa «Cargar descomprimida» y elige la carpeta.",
+      "Abre cualquier web: el robot aparece abajo a la derecha."
+    ],
+    "download": "Descargar la extensión",
+    "privacy": "Permisos: leer las cookies del sitio que visitas y mostrar el robot en la página. No lee tu historial, no envía valores de cookies y no necesita cuenta.",
+    "reject": "Rechazar por mí",
+    "hide": "Ocultar aquí",
+    "more": "Ver en Rastro",
+    "bubblePrivacy": "Todo se comprueba en tu navegador. No enviamos tus cookies a ningún sitio.",
+    "waiting": "Mirando esta web…",
+    "robots": [
+      "Vigía",
+      "Cubo",
+      "Orbe"
+    ],
+    "rejected": "Hecho: he pulsado «rechazar» en el aviso de cookies.",
+    "rejectMissing": "No encuentro un botón de rechazar en esta página.",
+    "hubBody": "Un robot en tu navegador que revisa las cookies de cada web y te las resume."
   }
 }

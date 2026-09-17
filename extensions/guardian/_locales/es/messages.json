@@ -1,17 +1,83 @@
 {
-  "name": { "message": "Rastro Guardián · revisión voluntaria" },
-  "description": { "message": "Selecciona un mensaje sospechoso y llévalo a Guardián. Tú decides qué revisar y cuándo enviarlo." },
-  "title": { "message": "¿Te suena raro?" },
-  "intro": { "message": "Revisa el texto antes de llevarlo a Guardián." },
-  "selected": { "message": "Mensaje que quieres comprobar" },
-  "read": { "message": "Usar el texto seleccionado" },
-  "open": { "message": "Copiar y abrir Guardián" },
-  "clear": { "message": "Vaciar" },
-  "note": { "message": "No leemos tu buzón. Solo se toma el texto que seleccionas al pulsar el botón. No se guarda ni se envía automáticamente." },
-  "copied": { "message": "Texto copiado. Pégalo en Guardián y pulsa Analizar cuando estés listo." },
-  "empty": { "message": "Selecciona texto en la página o pégalo aquí primero." },
-  "error": { "message": "No pudimos leer esta página. Copia el mensaje y pégalo aquí." },
-  "copyError": { "message": "No pudimos copiarlo. Copia el texto manualmente y abre rastropro.com/guardian." },
-  "truncated": { "message": "Se han tomado los primeros 4.000 caracteres. Revisa el texto." },
-  "limit": { "message": "Máximo 4.000 caracteres. Elimina códigos, contraseñas o datos bancarios antes de continuar." }
+  "name": {
+    "message": "Rastro Guardián"
+  },
+  "description": {
+    "message": "Un robot que revisa las cookies de cada web y te las resume, y te ayuda a comprobar mensajes sospechosos. Todo en tu navegador."
+  },
+  "title": {
+    "message": "¿Te suena raro?"
+  },
+  "intro": {
+    "message": "Revisa el texto antes de llevarlo a Guardián."
+  },
+  "selected": {
+    "message": "Mensaje que quieres comprobar"
+  },
+  "read": {
+    "message": "Usar el texto seleccionado"
+  },
+  "open": {
+    "message": "Copiar y abrir Guardián"
+  },
+  "clear": {
+    "message": "Vaciar"
+  },
+  "note": {
+    "message": "No leemos tu buzón. Solo se toma el texto que seleccionas al pulsar el botón. No se guarda ni se envía automáticamente."
+  },
+  "copied": {
+    "message": "Texto copiado. Pégalo en Guardián y pulsa Analizar cuando estés listo."
+  },
+  "empty": {
+    "message": "Selecciona texto en la página o pégalo aquí primero."
+  },
+  "error": {
+    "message": "No pudimos leer esta página. Copia el mensaje y pégalo aquí."
+  },
+  "copyError": {
+    "message": "No pudimos copiarlo. Copia el texto manualmente y abre rastropro.com/guardian."
+  },
+  "truncated": {
+    "message": "Se han tomado los primeros 4.000 caracteres. Revisa el texto."
+  },
+  "limit": {
+    "message": "Máximo 4.000 caracteres. Elimina códigos, contraseñas o datos bancarios antes de continuar."
+  },
+  "cookiesTitle": {
+    "message": "Cookies de esta web"
+  },
+  "cookiesEmpty": {
+    "message": "Abre una web normal (http o https) para ver sus cookies."
+  },
+  "reject": {
+    "message": "Rechazar por mí"
+  },
+  "hide": {
+    "message": "Ocultar aquí"
+  },
+  "more": {
+    "message": "Guía de sitios"
+  },
+  "bubblePrivacy": {
+    "message": "Todo se comprueba en tu navegador. No enviamos tus cookies a ningún sitio."
+  },
+  "waiting": {
+    "message": "Mirando esta web…"
+  },
+  "rejected": {
+    "message": "Hecho: he pulsado «rechazar» en el aviso de cookies. Vuelvo a contar en un momento."
+  },
+  "rejectMissing": {
+    "message": "No encuentro un botón de rechazar en esta página."
+  },
+  "robotLabel": {
+    "message": "Tu robot"
+  },
+  "showRobot": {
+    "message": "Mostrar el robot en las páginas"
+  },
+  "detail": {
+    "message": "Ver las cookies"
+  }
 }
