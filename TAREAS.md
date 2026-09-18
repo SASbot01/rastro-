@@ -117,5 +117,5 @@ Pendiente tuyo:
 
 ## Extensión Rastro Guardián 0.2 (18-09-2026) — hecho
 - Robot de cookies (3 modelos, arrastrable, cuerpo con tambaleo), nota por web, empresas, aviso de publicidad antes de aceptar, «Rechazar por mí», popup con detalle. Probada en webs reales con Brave.
-- [ ] Publicar en Chrome Web Store / Edge Add-ons (cuenta de desarrollador 5 $, iconos 128/48/16, ficha de privacidad). Hasta entonces se instala «descomprimida» desde /extension.
+- [ ] Publicar en Chrome Web Store / Edge Add-ons: **todo preparado** en `docs/marketing/store/` (guía paso a paso `CHROME-WEB-STORE.md`, iconos, 3 capturas 1280×800, mosaicos, textos ES/EN, justificación de permisos; política en `/extension/privacidad`). Falta: cuenta de desarrollador (5 $), subir `public/extension/rastro-guardian.zip` y, al aprobarla, poner `NEXT_PUBLIC_CHROME_STORE_URL` (y `NEXT_PUBLIC_EDGE_STORE_URL`) en el servidor: `/extension` pasa solo a «Añadir a Chrome». Un clic desde la web sin tienda no lo permite ningún navegador.
 - Siguiente fase de la extensión: aviso en sitios del catálogo ("aquí apareces tú"), webs dudosas (dominio recién creado / imita marca), política de privacidad resumida con IA, informe semanal de rastreo.

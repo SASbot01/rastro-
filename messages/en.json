@@ -1585,7 +1585,7 @@
       "“Reject for me”: clicks the most private option on the cookie banner.",
       "If the site sells data and is in our catalogue, it takes you to request removal."
     ],
-    "installTitle": "Install it (beta)",
+    "installTitle": "Install it",
     "install": [
       "Download the file and unzip it.",
       "Open chrome://extensions (or edge://extensions) and enable “Developer mode”.",
@@ -1607,6 +1607,73 @@
     ],
     "rejected": "Done: I clicked “reject” on the cookie banner.",
     "rejectMissing": "I can't find a reject button on this page.",
-    "hubBody": "A robot in your browser that reviews each site's cookies and sums them up."
+    "hubBody": "A robot in your browser that reviews each site's cookies and sums them up.",
+    "storeButton": "Add to Chrome",
+    "storeEdge": "Also for Microsoft Edge",
+    "storeSteps": [
+      "Click “Add to Chrome”.",
+      "Chrome shows the permissions: accept with “Add extension”.",
+      "Done: open any site and the robot appears bottom right."
+    ],
+    "storeBody": "One click. The browser asks for the permissions, you accept and that's it. No account, nothing to set up.",
+    "soonTitle": "Coming soon to the Chrome Web Store",
+    "soonBody": "We're publishing it in the official Chrome and Edge stores so it installs with one click by accepting the permissions. Until then you can try it by hand:",
+    "manualTitle": "Manual install (beta)",
+    "privacyLink": "Extension privacy policy"
+  },
+  "extPrivacy": {
+    "title": "Rastro Guardián extension privacy policy",
+    "intro": "Rastro Guardián is a browser extension that reviews the cookies of the site you visit and summarizes them in plain language. This policy explains what data it touches and what it doesn't. Short version: everything happens inside your browser and we send nothing to any server.",
+    "sections": [
+      {
+        "title": "What the extension does",
+        "paragraphs": [
+          "On every page it counts the cookies set by the site and by third-party companies present on it, classifies each one (necessary, analytics, advertising, data trading), computes a privacy score from 0 to 100 and shows it on a floating character and on the toolbar icon. If you ask, it clicks the most private option of the cookie banner for you."
+        ]
+      },
+      {
+        "title": "What data it reads",
+        "paragraphs": [
+          "Only cookie metadata: name, domain, expiry and whether they are secure (HttpOnly/Secure). It never reads the value of any cookie. It also looks at the domains of scripts and images loaded by the page to know which companies are present.",
+          "It does not read your browsing history, page content or what you type, and it never accesses your passwords or accounts."
+        ]
+      },
+      {
+        "title": "What data it sends",
+        "paragraphs": [
+          "None. The extension has no connection to any server, not even Rastro's. It uses no analytics, remote logging or user identifiers. Our code verifies this with an automated test that fails if any network call appears."
+        ]
+      },
+      {
+        "title": "What it stores in your browser",
+        "paragraphs": [
+          "The robot you chose and its position on screen, the list of sites where you clicked “Hide here”, and the summary of the current tab while it is open (cleared when the browser closes). Everything is kept in the extension's local storage on your device and removed when you uninstall it."
+        ]
+      },
+      {
+        "title": "Permissions and why",
+        "paragraphs": [
+          "“cookies”: to read the metadata of the cookies of the site you visit and count them. “storage”: to remember your preferences. “Access to data on all websites”: to show the robot and analyze any page you open; without it the extension couldn't work on every site. It does not request history, tabs or downloads."
+        ]
+      },
+      {
+        "title": "Account and payment",
+        "paragraphs": [
+          "No account or payment is needed. The “View in Rastro” link takes you to rastropro.com if you want to ask a site to remove your data; that step is voluntary and governed by the website's privacy policy."
+        ]
+      },
+      {
+        "title": "Controller and contact",
+        "paragraphs": [
+          "Controller: {owner}. Contact: {email}. Write to us with any question about the extension or this policy."
+        ]
+      },
+      {
+        "title": "Changes",
+        "paragraphs": [
+          "If the extension ever needed to send any data (for example for an optional feature), we would say so here and ask for permission first, inside the browser itself."
+        ]
+      }
+    ]
   }
 }

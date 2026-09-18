@@ -1585,7 +1585,7 @@
       "«Rechazar por mí»: pulsa la opción más privada del aviso de cookies.",
       "Si la web vende datos y está en nuestro catálogo, te lleva a pedir la retirada."
     ],
-    "installTitle": "Instalarla (beta)",
+    "installTitle": "Instalarla",
     "install": [
       "Descarga el archivo y descomprímelo.",
       "Abre chrome://extensions (o edge://extensions) y activa «Modo de desarrollador».",
@@ -1607,6 +1607,73 @@
     ],
     "rejected": "Hecho: he pulsado «rechazar» en el aviso de cookies.",
     "rejectMissing": "No encuentro un botón de rechazar en esta página.",
-    "hubBody": "Un robot en tu navegador que revisa las cookies de cada web y te las resume."
+    "hubBody": "Un robot en tu navegador que revisa las cookies de cada web y te las resume.",
+    "storeButton": "Añadir a Chrome",
+    "storeEdge": "También para Microsoft Edge",
+    "storeSteps": [
+      "Pulsa «Añadir a Chrome».",
+      "Chrome te enseña los permisos: acepta con «Añadir extensión».",
+      "Listo: abre cualquier web y el robot aparece abajo a la derecha."
+    ],
+    "storeBody": "Un clic. El navegador te pide los permisos, aceptas y ya está. Sin cuenta y sin configurar nada.",
+    "soonTitle": "Pronto en la Chrome Web Store",
+    "soonBody": "Estamos publicándola en la tienda oficial de Chrome y Edge para que se instale con un clic aceptando los permisos. Hasta entonces puedes probarla a mano:",
+    "manualTitle": "Instalación manual (beta)",
+    "privacyLink": "Política de privacidad de la extensión"
+  },
+  "extPrivacy": {
+    "title": "Política de privacidad de la extensión Rastro Guardián",
+    "intro": "Rastro Guardián es una extensión de navegador que revisa las cookies de la web que visitas y te las resume en lenguaje llano. Esta política explica qué datos toca y qué no. La versión corta: todo ocurre dentro de tu navegador y no enviamos nada a ningún servidor.",
+    "sections": [
+      {
+        "title": "Qué hace la extensión",
+        "paragraphs": [
+          "En cada página cuenta las cookies del sitio y de las empresas externas que aparecen en él, clasifica cada una (necesaria, de medición, de publicidad, de comercio de datos), calcula una nota de privacidad del 0 al 100 y la muestra en un personaje flotante y en el icono de la barra. Si se lo pides, pulsa por ti la opción más privada del aviso de cookies."
+        ]
+      },
+      {
+        "title": "Qué datos lee",
+        "paragraphs": [
+          "Solo metadatos de cookies: nombre, dominio, caducidad y si son seguras (HttpOnly/Secure). Nunca lee el valor de ninguna cookie. También mira los dominios de los scripts e imágenes cargados por la página para saber qué empresas están presentes.",
+          "No lee tu historial de navegación, no lee el contenido de las páginas ni lo que escribes, no accede a tus contraseñas ni a tus cuentas."
+        ]
+      },
+      {
+        "title": "Qué datos envía",
+        "paragraphs": [
+          "Ninguno. La extensión no tiene conexión con ningún servidor, ni siquiera con Rastro. No usa analítica, ni registros remotos, ni identificadores de usuario. Nuestro código lo comprueba con una prueba automática que falla si aparece cualquier llamada de red."
+        ]
+      },
+      {
+        "title": "Qué guarda en tu navegador",
+        "paragraphs": [
+          "El robot que has elegido y su posición en pantalla, la lista de sitios en los que has pulsado «Ocultar aquí», y el resumen de la pestaña actual mientras esté abierta (se borra al cerrar el navegador). Todo se guarda en el almacenamiento local de la extensión, en tu dispositivo, y se elimina al desinstalarla."
+        ]
+      },
+      {
+        "title": "Permisos que pide y por qué",
+        "paragraphs": [
+          "«cookies»: para leer los metadatos de las cookies del sitio que visitas y contarlas. «storage»: para recordar tus preferencias. «Acceso a los datos de todos los sitios web»: para poder mostrar el robot y analizar cualquier página que abras; sin él no podría funcionar en todas las webs. No pide historial, pestañas, ni descargas."
+        ]
+      },
+      {
+        "title": "Cuenta y pago",
+        "paragraphs": [
+          "No hace falta cuenta ni pago. El enlace «Ver en Rastro» te lleva a rastropro.com si quieres pedir a un sitio que retire tus datos; ese paso es voluntario y se rige por la política de privacidad de la web."
+        ]
+      },
+      {
+        "title": "Responsable y contacto",
+        "paragraphs": [
+          "Responsable: {owner}. Contacto: {email}. Puedes escribirnos para cualquier duda sobre la extensión o sobre esta política."
+        ]
+      },
+      {
+        "title": "Cambios",
+        "paragraphs": [
+          "Si algún día la extensión necesitara enviar algún dato (por ejemplo, para una función opcional), lo diremos aquí y pediremos el permiso antes, dentro del propio navegador."
+        ]
+      }
+    ]
   }
 }
