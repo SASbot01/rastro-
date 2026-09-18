@@ -23,12 +23,12 @@ test("extension has matching translations, minimal permissions and makes no netw
   const manifest = read("../extensions/guardian/manifest.json");
   assert.equal(manifest.manifest_version, 3);
   // El robot de cookies necesita leer cookies y dibujarse en las paginas; nada mas.
-  assert.deepEqual([...manifest.permissions].sort(), ["activeTab", "clipboardWrite", "cookies", "scripting", "storage"]);
+  assert.deepEqual([...manifest.permissions].sort(), ["cookies", "storage"]);
   for (const forbidden of ["history", "webRequest", "tabs", "bookmarks", "downloads", "nativeMessaging"]) assert.ok(!manifest.permissions.includes(forbidden), forbidden);
   // Privacidad: la extension no habla con ningun servidor.
   for (const file of ["background.js", "content.js", "mascot.js", "popup.js", "lib/analyze.js", "lib/trackers.js"]) {
     const source = readFileSync(new URL(`../extensions/guardian/${file}`, import.meta.url), "utf8");
     assert.ok(!/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon|EventSource/.test(source), `${file} hace llamadas de red`);
-    assert.ok(!/\.value\b/.test(source.replace(/e\.target\.value|message\.value|n\.value|\$\("variant"\)\.value/g, "")), `${file} lee valores de cookies`);
+    assert.ok(!/\.value\b/.test(source.replace(/e\.target\.value|n\.value|\$\("variant"\)\.value/g, "")), `${file} lee valores de cookies`);
   }
 });
