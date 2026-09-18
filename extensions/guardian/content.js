@@ -47,7 +47,7 @@
       cfg.mascot = m.mascot;
       mascot = RastroMascot.create({
         storage: memory,
-        labels: { title: "Rastro Guardián", privacy: t("bubblePrivacy"), waiting: t("waiting"), robots: ["Vigía", "Cubo", "Orbe"] },
+        labels: { title: "Rastro Guardián", privacy: t("bubblePrivacy"), waiting: t("waiting"), robots: ["Rastro", "Vigía", "Cubo", "Orbe"] },
         actions: [
           { label: t("reject"), primary: true, run: clickReject },
           { label: t("more"), run: function () { window.open("https://rastropro.com/sitios", "_blank", "noopener"); } },

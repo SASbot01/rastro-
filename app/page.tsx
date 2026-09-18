@@ -163,7 +163,6 @@ export default async function HomePage() {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link href="#form" className="rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("landing.ctaPrimary")}</Link>
               <Link href="#como" className="rounded-[12px] border border-line bg-surface px-5 py-3 text-[15px] font-semibold text-ink hover:border-faint">{tr("landing.ctaSecondary")}</Link>
-              <Link href="/demo" className="ex-text-link">{tr("experience.demo")} ↗</Link>
             </div>
             <ul className="mt-5 flex flex-wrap gap-2">
               {trust.map((item) => (

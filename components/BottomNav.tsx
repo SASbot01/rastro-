@@ -133,8 +133,7 @@ export function SideNav({ messages }: { messages: Messages }) {
           );
         })}
       </ul>
-      <div className="mt-auto grid gap-4 px-2">
-        <Link href="/demo" className="ex-nav-demo">{tr("experience.demo")} ↗</Link>
+      <div className="mt-auto grid gap-3 px-2">
         <Link href="/ayuda-urgente" className="ex-emergency-link">{tr("experience.emergency")} ↗</Link>
         <p className="text-[12px] leading-relaxed text-faint">{tr("footer.tagline")}</p>
       </div>

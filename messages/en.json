@@ -1600,6 +1600,7 @@
     "bubblePrivacy": "Everything is checked in your browser. We don't send your cookies anywhere.",
     "waiting": "Looking at this site…",
     "robots": [
+      "Rastro",
       "Vigía",
       "Cubo",
       "Orbe"
