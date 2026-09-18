@@ -1,5 +1,5 @@
 // Prueba real de la extension: Chrome con la extension cargada, abre una web y lee lo que pinta el robot.
-// Uso: node scripts/test-extension.mjs https://www.elmundo.es [salida.png]
+// Uso: node scripts/test-extension.mjs https://www.elmundo.es [salida.png]   (SHOT_SIZE=1280,800 para capturas de tienda)
 import { spawn } from "node:child_process";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -11,7 +11,7 @@ const ext = resolve("extensions/guardian");
 const profile = mkdtempSync(join(tmpdir(), "rastro-ext-"));
 const PORT = 9444;
 const BROWSER = process.env.BROWSER_BIN || "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"; // Chrome de marca ya no acepta --load-extension
-const chrome = spawn(BROWSER, [`--remote-debugging-port=${PORT}`, "--headless=new", `--user-data-dir=${profile}`, `--disable-extensions-except=${ext}`, `--load-extension=${ext}`, "--no-first-run", "--window-size=1280,900", "about:blank"], { stdio: "ignore" });
+const chrome = spawn(BROWSER, [`--remote-debugging-port=${PORT}`, "--headless=new", `--user-data-dir=${profile}`, `--disable-extensions-except=${ext}`, `--load-extension=${ext}`, "--no-first-run", `--window-size=${process.env.SHOT_SIZE || "1280,900"}`, "about:blank"], { stdio: "ignore" });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 try {
   let targets;
