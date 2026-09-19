@@ -53,6 +53,25 @@ export async function ensureUser(email: string, locale: Locale): Promise<UserRow
   return user;
 }
 
+/**
+ * Cuenta para alguien a quien OTRA persona invita (plan familiar, equipos). A diferencia de ensureUser, no marca
+ * `last_seen_at` ni cambia el idioma de una cuenta que ya existe: la persona aun no ha entrado. Con ensureUser el
+ * invitado salia como "activo" desde el primer momento (la etiqueta "pendiente/invitado" no aparecia nunca) y se
+ * contaba como alta en el embudo.
+ */
+export async function inviteUser(email: string, locale: Locale): Promise<UserRow | null> {
+  const normalized = normalizeEmail(email);
+  const existing = await findUserByEmail(normalized);
+  if (existing) return existing;
+  const { error } = await supabaseAdmin().from("users").insert({ email: normalized, locale });
+  // 23505 = otra peticion la acaba de crear: vale igual.
+  if (error && error.code !== "23505") {
+    console.error("[users] invitacion fallo:", error.message);
+    return null;
+  }
+  return findUserByEmail(normalized);
+}
+
 export async function findUserByEmail(email: string): Promise<UserRow | null> {
   const { data } = await supabaseAdmin()
     .from("users")
