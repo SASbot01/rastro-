@@ -23,11 +23,15 @@ export async function POST(_request: Request, ctx: RouteContext<"/api/letters/[i
   const supabase = supabaseAdmin();
   const { data: letter } = await supabase
     .from("letters")
-    .select("id, target_url, still_listed, removed_at, check_count, events, requests(full_name)")
+    .select("id, kind, mailbox_scan_id, target_url, still_listed, removed_at, check_count, events, requests(full_name)")
     .eq("id", id)
     .eq("user_id", user.id)
-    .maybeSingle<{ id: string; target_url: string; still_listed: boolean | null; removed_at: string | null; check_count: number | null; events: LetterEvent[] | null; requests: { full_name: string } | { full_name: string }[] | null }>();
+    .maybeSingle<{ id: string; kind: string; mailbox_scan_id: string | null; target_url: string; still_listed: boolean | null; removed_at: string | null; check_count: number | null; events: LetterEvent[] | null; requests: { full_name: string } | { full_name: string }[] | null }>();
   if (!letter) return new NextResponse(null, { status: 404 });
+  // Solo tiene sentido en cartas sobre una pagina donde sale la persona. En las de IA (la URL es la web del proveedor) y en
+  // las de cierre de cuenta del buzon (la URL es la portada del servicio) el nombre no sale nunca, y la carta acababa
+  // diciendo "ya no apareces" sin que nadie hubiera retirado nada.
+  if (letter.kind === "ai" || letter.mailbox_scan_id) return NextResponse.redirect(absoluteUrl(`/cartas/${id}`), { status: 303 });
   const req = Array.isArray(letter.requests) ? letter.requests[0] : letter.requests;
   const name = req?.full_name ?? "";
 
