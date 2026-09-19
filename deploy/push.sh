@@ -13,7 +13,7 @@ npx tsc --noEmit 2>&1 | grep -v '^\.next' | grep -E 'error TS' && { echo "✗ er
 echo "→ copiando codigo a $HOST:~/rastro"
 rsync -az --delete \
   --exclude node_modules --exclude .next --exclude .env.local \
-  --exclude 'supabase/.temp' --exclude .git \
+  --exclude 'supabase/.temp' --exclude .git --exclude .claude \
   ./ "$HOST:~/rastro/"
 
 ssh "$HOST" 'set -euo pipefail; export PATH=$HOME/.npm-global/bin:$PATH; cd ~/rastro
