@@ -1,8 +1,24 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { EMPTY_FACTS, diffFacts, knowledgeLevel, sameFact, worthAlert, type AiFacts } from "../lib/ai-watch-core.ts";
+import { EMPTY_FACTS, diffFacts, knowledgeLevel, latestFactsByProvider, sameFact, worthAlert, type AiFacts } from "../lib/ai-watch-core.ts";
 
 const F = (o: Partial<AiFacts>): AiFacts => ({ ...EMPTY_FACTS, knows_you: true, ...o });
+
+test("si un asistente falla una semana, su cambio se detecta igual a la siguiente", () => {
+  const week1 = { facts: { perplexity: F({ city: "Valencia" }), openai: { ...EMPTY_FACTS } } };
+  const week2 = { facts: { perplexity: F({ city: "Valencia" }) } }; // OpenAI caido: la foto sale sin el
+  const week3 = { perplexity: F({ city: "Valencia" }), openai: F({ employer: "Hospital La Fe" }) };
+  // El fallo: comparando solo con la foto anterior (week2), lo que ChatGPT aprendio no se avisaba nunca.
+  assert.deepEqual(diffFacts(week2.facts, week3), []);
+  const prev = latestFactsByProvider([week2, week1]);
+  const kinds = diffFacts(prev, week3).map((c) => `${c.provider}:${c.kind}`);
+  assert.deepEqual(kinds, ["openai:learned_you", "openai:employer_new"]);
+  assert.equal(worthAlert(diffFacts(prev, week3)), true);
+  // La ficha mas reciente de cada asistente manda, y sin fotos anteriores no hay con que comparar.
+  assert.equal(latestFactsByProvider([{ facts: { perplexity: F({ city: "Madrid" }) } }, week1])?.perplexity?.city, "Madrid");
+  assert.equal(latestFactsByProvider([]), null);
+  assert.deepEqual(diffFacts(latestFactsByProvider([]), week3), []);
+});
 
 test("la misma empresa con otra redaccion no es un cambio", () => {
   assert.equal(sameFact("Hospital La Fe", "el Hospital Universitario La Fe de Valencia"), true);
