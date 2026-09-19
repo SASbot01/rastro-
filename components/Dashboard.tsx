@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { AskBubble } from "@/components/AskBubble";
 import { GuideChecklist } from "@/components/GuideChecklist";
+import { RemovalCounter } from "@/components/RemovalCounter";
+import { removalStats, type RemovalStats } from "@/lib/removals";
 import { ScoreRing } from "@/components/experience/ScoreRing";
 import { EmptyState } from "@/components/experience/EmptyState";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
@@ -115,7 +117,7 @@ function reqOf(r: ReportRow) {
 export async function Dashboard({ locale, messages, user }: { locale: Locale; messages: Messages; user: UserRow }) {
   const tr = translator(messages);
   const supabase = supabaseAdmin();
-  const [{ data: reports }, { data: scan }, { count: letters }] = await Promise.all([
+  const [{ data: reports }, { data: scan }, { count: letters }, removals] = await Promise.all([
     supabase
       .from("reports")
       .select("request_id, score, breakdown, findings, actions, created_at, requests!inner(full_name, status, user_id)")
@@ -125,6 +127,7 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
       .returns<ReportRow[]>(),
     supabase.from("mailbox_scans").select("id, status, services, started_at").eq("user_id", user.id).eq("status", "done").order("started_at", { ascending: false }).limit(1).maybeSingle<ScanRow>(),
     supabase.from("letters").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+    removalStats(user.id),
   ]);
   const list = reports ?? [];
   const latest = list[0] ?? null;
@@ -149,7 +152,7 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
           <EmptyState title={tr("dash.noReportTitle")} body={tr("dash.noReportBody")} href="/#form" cta={tr("dash.noReportCta")}/>
         </section>
       ) : (
-        <DashboardBody locale={locale} messages={messages} user={user} latest={latest} previous={previous} list={list} scan={scan ?? null} letters={letters ?? 0} quick={quick} dateFmt={dateFmt} />
+        <DashboardBody locale={locale} messages={messages} user={user} latest={latest} previous={previous} list={list} scan={scan ?? null} letters={letters ?? 0} removals={removals} quick={quick} dateFmt={dateFmt} />
       )}
 
       {/* Preguntale a Rastro */}
@@ -165,8 +168,8 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
   );
 }
 
-function DashboardBody({ locale, messages, user, latest, previous, list, scan, letters, quick, dateFmt }: {
-  locale: Locale; messages: Messages; user: UserRow; latest: ReportRow; previous: ReportRow | null; list: ReportRow[]; scan: ScanRow | null; letters: number;
+function DashboardBody({ locale, messages, user, latest, previous, list, scan, letters, removals, quick, dateFmt }: {
+  locale: Locale; messages: Messages; user: UserRow; latest: ReportRow; previous: ReportRow | null; list: ReportRow[]; scan: ScanRow | null; letters: number; removals: RemovalStats;
   quick: Array<{ href: string; label: string; icon: string }>; dateFmt: Intl.DateTimeFormat;
 }) {
   const tr = translator(messages);
@@ -203,6 +206,9 @@ function DashboardBody({ locale, messages, user, latest, previous, list, scan, l
           ))}
         </div>
       </section>
+
+      {/* Retiradas comprobadas */}
+      {removals.found > 0 && <div className="min-w-0 lg:col-span-2"><RemovalCounter stats={removals} messages={messages} href={removals.found > removals.requested ? `/informe/${latest.request_id}` : "/herramientas"} /></div>}
 
       {/* Donut */}
       <section className={CARD + " p-6"}>

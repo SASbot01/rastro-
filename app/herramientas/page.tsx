@@ -6,6 +6,8 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isPro, prices } from "@/lib/plan";
+import { RemovalCounter } from "@/components/RemovalCounter";
+import { isRemoved, removalStats, type RemovalStats } from "@/lib/removals";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +17,8 @@ interface LetterRow {
   status: "draft" | "sent" | "answered" | "no_answer" | "closed";
   deadline_at: string | null;
   created_at: string;
+  removed_at: string | null;
+  outcome: string | null;
 }
 interface ScanRow {
   id: string;
@@ -43,12 +47,15 @@ export default async function ToolsPage() {
 
   let letters: LetterRow[] = [];
   let lastScan: ScanRow | null = null;
+  let removals: RemovalStats | null = null;
   if (user) {
     const supabase = supabaseAdmin();
-    const [{ data: l }, { data: s }] = await Promise.all([
-      supabase.from("letters").select("id, host, status, deadline_at, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50).returns<LetterRow[]>(),
+    const [{ data: l }, { data: s }, r] = await Promise.all([
+      supabase.from("letters").select("id, host, status, deadline_at, created_at, removed_at, outcome").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50).returns<LetterRow[]>(),
       supabase.from("mailbox_scans").select("id, mailbox, status, services, started_at").eq("user_id", user.id).eq("status", "done").order("started_at", { ascending: false }).limit(1).maybeSingle<ScanRow>(),
+      removalStats(user.id),
     ]);
+    removals = r;
     letters = l ?? [];
     lastScan = s ?? null;
   }
@@ -104,6 +111,7 @@ export default async function ToolsPage() {
           </div>
         ) : (
           <div className="mt-6 grid gap-4 lg:grid-cols-2 lg:items-start">
+            {removals && removals.found > 0 && <div className="min-w-0 lg:col-span-2"><RemovalCounter stats={removals} messages={messages} href="/informe" compact /></div>}
             {/* Vigilancia mensual */}
             <section className={CARD}>
               <div className="flex items-center justify-between gap-3">
@@ -181,6 +189,7 @@ export default async function ToolsPage() {
                       <div className="min-w-0">
                         <p className="truncate text-[14px] font-semibold text-ink">{l.host}</p>
                         <p className="text-[12px] text-faint">
+                          {isRemoved(l) && <span className="mr-1.5 font-semibold text-accent">{tr("removals.badge")}</span>}
                           {tr(`letters.status.${l.status}`)}
                           {l.status === "sent" && l.deadline_at && ` · ${tr("letters.deadline", { date: fmt.format(new Date(l.deadline_at)) })}`}
                         </p>

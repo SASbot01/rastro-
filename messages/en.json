@@ -807,7 +807,9 @@
       "answered": "They replied",
       "closed": "Closed: data erased",
       "no_answer": "Marked as no reply",
-      "reopened": "Back to draft"
+      "reopened": "Back to draft",
+      "verified_gone": "Verified: your data no longer appears",
+      "reappeared": "Your data has appeared again"
     },
     "replyTitle": "Did they reply?",
     "replyBody": "Tell us what they said: we keep it as evidence for the complaint if needed.",
@@ -1675,5 +1677,30 @@
         ]
       }
     ]
+  },
+  "removals": {
+    "title": "Data removed",
+    "body": "Of the sites where you appear, how many we have verified no longer show you.",
+    "aria": "{removed} removed out of {found} found",
+    "legend": {
+      "removed": "removed and verified",
+      "pending": "requested, within deadline",
+      "overdue": "deadline passed",
+      "refused": "refused",
+      "notRequested": "not requested yet"
+    },
+    "how": "We look at each page again once a week. We only count data as removed when we saw it there and it has stopped appearing.",
+    "ctaRequest": "Request removal of {n}",
+    "ctaOverdue": "Escalate {n} overdue",
+    "ctaSee": "See my requests",
+    "badge": "Removed ✓"
+  },
+  "removedEmail": {
+    "subject": "Good news: {host} no longer shows your data",
+    "greeting": "Hi {name},",
+    "p1": "We looked again at the {host} page you sent a request about, and your name no longer appears.",
+    "p2": "It is saved in your letter's timeline, with the date, in case you ever need it as evidence. We'll keep checking in case it comes back.",
+    "cta": "See the evidence",
+    "footer": "You get this notice because you sent an erasure request with Rastro."
   }
 }
