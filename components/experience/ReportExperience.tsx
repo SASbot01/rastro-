@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { ReportData } from "@/components/ReportView";
@@ -8,7 +8,8 @@ import { GuideChecklist } from "@/components/GuideChecklist";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { levelFor } from "@/lib/report/score";
 import { actionableFindings, captureSummary, CATEGORIES, reportCounts, safeSource, sourceHost } from "@/lib/report/presentation";
-import { ScoreRing } from "./ScoreRing";
+import { ShareButton } from "@/components/ShareButton";
+import { LEVEL_RGB, ScoreRing } from "./ScoreRing";
 import { ReportReveal } from "./ReportReveal";
 import { ReportStories } from "./ReportStories";
 import { EmptyState } from "./EmptyState";
@@ -77,11 +78,11 @@ export function ReportExperience({ report, requestId, fullName, messages, locale
     <div className="ex-tabs" role="group" aria-label={tr("report.eyebrow")}>{modes.map((m) => <button key={m} aria-pressed={mode === m} onClick={() => setMode(m)}>{tr(`experience.${m}`)}</button>)}</div>
 
     {mode === "overview" && <>
-      <section className="ex-report-hero">
-        <div className="ex-hero-text"><span className="ex-badge"><span className="ex-dot" />{tr("experience.private")}</span><h2>{fullName}</h2><p className="ex-hero-summary">{report.summary}</p><p className="ex-note">{date} · {tr("experience.highScore")}</p><div className="ex-actions"><button className="ex-button" onClick={() => openStory(0)}>{tr("experience.stories")} <span aria-hidden="true">↗</span></button><button className="ex-quiet" onClick={() => setRevealing(true)}>{tr("experience.replay")} <span aria-hidden="true">▷</span></button></div></div>
+      <section className="ex-report-hero rise" style={{ "--score-rgb": LEVEL_RGB[levelFor(report.score)] } as CSSProperties}>
+        <div className="ex-hero-text"><span className="ex-badge"><span className="ex-dot" />{tr("experience.private")}</span><h2>{fullName}</h2><p className="ex-hero-summary">{report.summary}</p><p className="ex-note">{date} · {tr("experience.highScore")}</p><div className="ex-actions"><button className="ex-button" onClick={() => openStory(0)}>{tr("experience.stories")} <span aria-hidden="true">↗</span></button>{!demo && <ShareButton requestId={requestId} score={report.score} messages={messages} compact />}<button className="ex-quiet" onClick={() => setRevealing(true)}>{tr("experience.replay")} <span aria-hidden="true">▷</span></button></div></div>
         <div className="ex-hero-score"><ScoreRing score={report.score} label={tr("experience.score")} size={214} /><span className={`ex-level ex-level-${levelFor(report.score)}`}>{tr(`report.level.${levelFor(report.score)}`)}</span></div>
       </section>
-      <div className="ex-stat-grid">{CATEGORIES.map((c, i) => <button className="ex-stat" key={c} onClick={() => { const first = findings.findIndex((f) => f.category === c); if (first >= 0) openStory(first); }} disabled={!counts.categories[c]}><span className="ex-stat-icon" aria-hidden="true">{["◈", "✳", "◎", "≈"][i]}</span><strong>{String(counts.categories[c]).padStart(2, "0")}</strong><span>{tr(`report.categories.${c}`)}</span><span className="ex-stat-arrow" aria-hidden="true">↗</span></button>)}</div>
+      <div className="ex-stat-grid">{CATEGORIES.map((c, i) => <button className="ex-stat rise" style={{ "--i": i + 1 } as CSSProperties} key={c} onClick={() => { const first = findings.findIndex((f) => f.category === c); if (first >= 0) openStory(first); }} disabled={!counts.categories[c]}><span className="ex-stat-icon" aria-hidden="true">{["◈", "✳", "◎", "≈"][i]}</span><strong>{counts.categories[c]}</strong><span>{tr(`report.categories.${c}`)}</span><span className="ex-stat-arrow" aria-hidden="true">↗</span></button>)}</div>
       <div className="ex-two-col"><section className="ex-panel"><div className="ex-section-title"><h2>{tr("experience.atlas")}</h2><span className="ex-badge">{counts.sources}</span></div><p className="ex-note">{tr("experience.atlasHint")}</p><div className="ex-atlas"><div className="ex-atlas-orbit" aria-hidden="true"/><div className="ex-atlas-center"><Image src="/brand/logo-96.png" alt="" width={30} height={30}/><span>{tr("experience.atlasCenter")}</span></div><div className="ex-source-list">{findings.slice(0, 6).map((f, i) => <button key={i} onClick={() => openStory(i)}><i className={`ex-source-dot ex-severity-${f.severity}`} /><span>{sourceHost(f.source_url) ?? tr(`report.categories.${f.category}`)}</span><span aria-hidden="true">↗</span></button>)}</div></div>{!findings.length && <EmptyState title={tr("experience.storyEmpty")} body={tr("experience.emptyBody")} />}</section>
         <section className="ex-panel"><div className="ex-section-title"><h2>{tr("experience.missions")}</h2><span aria-hidden="true">↗</span></div><p className="ex-note">{tr("experience.missionHint")}</p>{report.actions.length ? <div className="mt-5"><GuideChecklist key={requestId} reportId={requestId} items={report.actions} doneTemplate={tr("dash.guideDone")} /></div> : <EmptyState title={tr("experience.emptyTitle")} body={tr("experience.emptyBody")} />}</section></div>
       <div className="ex-companion"><Image src="/brand/mascot-112.png" alt="" width={72} height={72}/><div><h2>{tr("experience.mirrorTitle")}</h2><p>{tr("experience.mirrorNote")}</p></div><button className="ex-button-secondary" onClick={() => setMode("mirror")}>{tr("experience.mirror")} ↗</button></div>

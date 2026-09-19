@@ -274,7 +274,7 @@ button:disabled { cursor: default; }
   .ex-hero-text h2 { margin-top: 0; }
   .ex-hero-summary { text-align: left; margin-inline: auto; }
   .ex-hero-text .ex-actions { justify-content: center; }
-  .ex-hero-text .ex-actions .ex-button { flex: 1 1 100%; }
+  .ex-hero-text .ex-actions > .ex-button, .ex-hero-text .ex-actions > .ex-button-secondary { flex: 1 1 100%; }
   .ex-stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
   .ex-panel { padding: 20px; }
   .ex-companion { flex-wrap: wrap; padding: 16px; gap: 12px; }

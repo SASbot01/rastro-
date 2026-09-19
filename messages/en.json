@@ -1722,7 +1722,8 @@
     "ctaRequest": "Request removal of {n}",
     "ctaOverdue": "Escalate {n} overdue",
     "ctaSee": "See my requests",
-    "badge": "Removed ✓"
+    "badge": "Removed ✓",
+    "celebrate": "Verified: you no longer show up on {n} of them."
   },
   "removedEmail": {
     "subject": "Good news: {host} no longer shows your data",

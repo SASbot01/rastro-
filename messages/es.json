@@ -1722,7 +1722,8 @@
     "ctaRequest": "Pedir la retirada de {n}",
     "ctaOverdue": "Reclamar {n} fuera de plazo",
     "ctaSee": "Ver mis solicitudes",
-    "badge": "Retirado ✓"
+    "badge": "Retirado ✓",
+    "celebrate": "Comprobado: ya no sales en {n} de ellos."
   },
   "removedEmail": {
     "subject": "Buenas noticias: {host} ya no muestra tus datos",

@@ -171,6 +171,7 @@ textarea {
   .btn-ghost:hover, .ex-quiet:hover { color: var(--color-ink); background: rgb(255 255 255 / 0.04); }
   .btn-danger { background: rgb(var(--danger-rgb) / 0.12); border-color: rgb(var(--danger-rgb) / 0.35); color: var(--color-danger); }
   .btn-sm { min-height: 40px; padding: 8px 14px; border-radius: 12px; font-size: 13.5px; }
+  .btn-primary.btn-sm { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35); }
   .btn-lg { min-height: 56px; padding: 14px 26px; border-radius: 16px; font-size: 16px; }
   .btn-block { width: 100%; }
   @media (pointer: coarse) { .btn-sm { min-height: 44px; } }
@@ -324,6 +325,14 @@ textarea {
   will-change: transform;
 }
 
+/* Barras que crecen desde la izquierda y motas de celebracion (una sola vez). */
+.bar-grow { transform-origin: left; animation: rastro-grow 0.9s var(--ease) both; animation-delay: calc(200ms + var(--i, 0) * 120ms); }
+@keyframes rastro-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.bar-rise { transform-box: fill-box; transform-origin: bottom; animation: rastro-grow-y 0.8s var(--ease) both; }
+.confetti { position: absolute; width: 7px; height: 7px; border-radius: 2px; background: var(--color-accent); opacity: 0; animation: rastro-confetti 1.1s var(--ease) both; }
+.confetti:nth-child(3n) { background: #eafff0; width: 5px; height: 5px; border-radius: 50%; }
+.confetti:nth-child(3n + 1) { background: rgb(var(--accent-rgb) / 0.6); height: 4px; width: 9px; }
+
 /* Entrada escalonada: style={{ "--i": n }} retrasa 70 ms por elemento. */
 .rise { animation: rastro-rise 0.6s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
 .pop { animation: rastro-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3) both; animation-delay: calc(var(--i, 0) * 70ms); }
@@ -355,5 +364,5 @@ textarea {
     scroll-behavior: auto !important;
   }
   .float, .breathe, .scanline, .hero-rings, .dot-live::after { animation: none !important; }
-  .scanline { display: none; }
+  .scanline, .confetti { display: none; }
 }
