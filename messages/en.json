@@ -1463,6 +1463,23 @@
       "generic": "Couldn't analyse right now. Try again in a moment."
     }
   },
+  "telegram": {
+    "start": "Hi, I'm Rastro's Guardian.\n\nForward (or paste) a text, email or WhatsApp message that looks odd and I'll tell you if it's a scam, why, and what to do.\n\nFree, 5 messages a day. I don't store what you send.\n\nMore tools: rastropro.com",
+    "privacy": "Your message is analyzed on the spot and not stored. We don't store who you are on Telegram either: only an irreversible code to count the daily limit. Don't forward data you don't want to share, such as passwords or codes.",
+    "onlyText": "For now I only read text. If it's a screenshot, copy the message text and paste it here.",
+    "tooShort": "That's too short to analyze. Forward me the whole message.",
+    "limit": "You've reached today's limit of 5 messages. You can continue tomorrow, or use it without limits with Pro at rastropro.com/guardian",
+    "error": "I couldn't analyze it right now. Try again in a minute. If in doubt, don't tap any link.",
+    "why": "Why:",
+    "what": "What to do:",
+    "verify": "How to check it:",
+    "foot": "I don't store your message. Rastro · rastropro.com",
+    "verdict": {
+      "scam": "It's a scam",
+      "suspicious": "Suspicious",
+      "legit": "Looks legitimate"
+    }
+  },
   "aiTpl": {
     "subject": "Request for rectification and erasure of AI-generated personal data (Arts. 16 and 17 GDPR) — {name}",
     "date": "{city}{date}",
