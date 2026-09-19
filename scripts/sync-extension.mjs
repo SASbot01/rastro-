@@ -14,5 +14,7 @@ console.log("reglas de bloqueo:", rules.length);
 cpSync("extensions/guardian/mascot.js", "public/extension/mascot.js");
 const zip = "public/extension/rastro-guardian.zip";
 if (existsSync(zip)) rmSync(zip);
-execFileSync("zip", ["-r", "-q", `../../${zip}`, ".", "-x", "README.md"], { cwd: "extensions/guardian" });
+// _metadata lo escribe Chrome al cargar la carpeta sin empaquetar (indice de las reglas de bloqueo): es de ESE navegador,
+// queda viejo en cuanto cambian las reglas y la Chrome Web Store rechaza los paquetes que lo traen.
+execFileSync("zip", ["-r", "-q", `../../${zip}`, ".", "-x", "README.md", "_metadata/*", "*.DS_Store"], { cwd: "extensions/guardian" });
 console.log("extension sincronizada:", zip);

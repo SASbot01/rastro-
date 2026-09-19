@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Copias de trabajo de agentes
 .claude/worktrees/
+
+# lo escribe Chrome al cargar la extension sin empaquetar
+extensions/guardian/_metadata/
