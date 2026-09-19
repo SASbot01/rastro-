@@ -13,6 +13,7 @@ import { buildActions, buildFindings, buildSummary, signalsFrom } from "@/lib/re
 import { answersFromRaw, saveSnapshot } from "@/lib/ai-watch";
 import { track } from "@/lib/events";
 import { checkSites } from "@/lib/site-checks";
+import { ilikeExact } from "@/lib/like-escape";
 
 /**
  * Job del informe. Se lanza con `after()` desde /verify una vez la solicitud
@@ -94,7 +95,7 @@ async function findCached(row: RequestRow): Promise<{ request: RequestRow; repor
   const { data: prev } = await supabase
     .from("requests")
     .select("id, email, full_name, city, occupation, locale, status, finished_at, origin, user_id")
-    .ilike("email", normalizeEmail(row.email))
+    .ilike("email", ilikeExact(normalizeEmail(row.email))) // escapado: "_" es comodin en ILIKE (otro correo = otra persona)
     .eq("status", "done")
     .neq("id", row.id)
     .gte("created_at", since)
@@ -116,7 +117,7 @@ async function previousAssessment(row: RequestRow): Promise<PreviousAi | null> {
   const { data: prev } = await supabaseAdmin()
     .from("requests")
     .select("id")
-    .ilike("email", normalizeEmail(row.email))
+    .ilike("email", ilikeExact(normalizeEmail(row.email))) // escapado: "_" es comodin en ILIKE (otro correo = otra persona)
     .eq("status", "done")
     .neq("id", row.id)
     .order("created_at", { ascending: false })

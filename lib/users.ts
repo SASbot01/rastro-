@@ -3,6 +3,7 @@ import { normalizeEmail } from "@/lib/crypto";
 import type { Locale } from "@/lib/i18n";
 
 import { track } from "@/lib/events";
+import { ilikeExact } from "@/lib/like-escape";
 /**
  * Cuentas persistentes. Una cuenta = un correo verificado. Se crea sola la
  * primera vez que alguien verifica un enlace; no hay registro aparte.
@@ -47,7 +48,8 @@ export async function ensureUser(email: string, locale: Locale): Promise<UserRow
   if (Date.now() - new Date(user.created_at).getTime() < 10_000) void track("signup", { subject: user.id, locale });
 
   // Solicitudes hechas antes de tener cuenta (o desde otro dispositivo) pasan a ser suyas.
-  await supabase.from("requests").update({ user_id: user.id }).ilike("email", normalized).is("user_id", null);
+  // Patron escapado: "_" es un comodin en ILIKE y sin escapar enlazaria solicitudes de OTRO correo (ana_garcia@ ~ ana.garcia@).
+  await supabase.from("requests").update({ user_id: user.id }).ilike("email", ilikeExact(normalized)).is("user_id", null);
   return user;
 }
 
