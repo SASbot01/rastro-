@@ -36,7 +36,9 @@ update public.reports p set site_checks = '[
 ]'::jsonb
 where p.request_id = (select q.id from public.requests q where q.email = 'demo@rastropro.com' and q.status = 'done' order by q.created_at desc limit 1);
 
--- 3) Memoria de la IA: tres fotos con cambios.
+-- 3) Memoria de la IA: tres fotos con cambios. La cuenta demo queda fuera de la comprobacion semanal
+--    (si no, el cron preguntaria de verdad por "Ana García Ruiz" y estropearia la cronologia preparada).
+update public.users set ai_watch_last_at = '2099-01-01' where email = 'demo@rastropro.com';
 delete from public.ai_snapshots s using public.users u where u.id = s.user_id and u.email = 'demo@rastropro.com';
 with u as (select id from public.users where email = 'demo@rastropro.com'),
 q as (select id, created_at, row_number() over (order by created_at) n from public.requests where email = 'demo@rastropro.com' and status = 'done')
