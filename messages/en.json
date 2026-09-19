@@ -1575,17 +1575,18 @@
   },
   "ext": {
     "eyebrow": "Extension",
-    "title": "A robot that checks cookies for you",
-    "subtitle": "Rastro Guardian lives in your browser. On every site it counts the cookies, tells you how many companies follow you, whether you're tracked before accepting, and gives the site a 0–100 score. Everything is checked on your computer: your cookies never leave it.",
+    "title": "A guardian that watches every site for you",
+    "subtitle": "Rastro Guardián lives in your browser. It warns you if a site imitates your bank or a courier before you type anything, counts cookies, tells you how many companies follow you and can block them. Everything is checked on your computer: nothing leaves it.",
     "play": "Grab it and move it",
     "playBody": "Drag the robot around the screen: the head follows you and the body wobbles. Tap it to see the summary of a sample site. You can switch robots.",
     "demoSite": "sample-shop.com",
     "features": [
-      "A 0–100 privacy score for every site.",
+      "Red warning if the site imitates a bank, a courier or a tax agency: it tells you which one is official and takes you there.",
+      "Privacy score for every site, from 0 to 100.",
       "How many cookies are necessary, analytics or advertising, and from which companies.",
-      "A warning if you're tracked before accepting, if there are companies that buy and sell profiles, or cookies lasting years.",
-      "“Reject for me”: clicks the most private option on the cookie banner.",
-      "If the site sells data and is in our catalogue, it takes you to request removal."
+      "Optional blocking of ads that follow you and companies that trade in profiles.",
+      "“Reject for me”: clicks the most private option of the cookie banner.",
+      "If the site sells data and is in our catalog, it takes you to request removal."
     ],
     "installTitle": "Install it",
     "install": [
@@ -1595,7 +1596,7 @@
       "Open any site: the robot appears bottom right."
     ],
     "download": "Download the extension",
-    "privacy": "Permissions: read the cookies of the site you visit and show the robot on the page. It doesn't read your history, doesn't send cookie values and needs no account.",
+    "privacy": "Permissions: read the cookies of the site you visit, show the robot on the page and, if you turn it on, block trackers. It doesn't read your history, sends nothing to any server and needs no account.",
     "reject": "Reject for me",
     "hide": "Hide here",
     "more": "Open in Rastro",
@@ -1630,13 +1631,13 @@
       {
         "title": "What the extension does",
         "paragraphs": [
-          "On every page it counts the cookies set by the site and by third-party companies present on it, classifies each one (necessary, analytics, advertising, data trading), computes a privacy score from 0 to 100 and shows it on a floating character and on the toolbar icon. If you ask, it clicks the most private option of the cookie banner for you."
+          "On every page it counts the cookies set by the site and by third-party companies, classifies each one, computes a privacy score from 0 to 100 and shows it on a floating character and on the toolbar icon. It checks whether the domain name imitates a well-known brand (banks, couriers, government) and, if so, warns you and shows the official site. If you ask, it clicks the most private option of the cookie banner for you and blocks advertising trackers."
         ]
       },
       {
         "title": "What data it reads",
         "paragraphs": [
-          "Only cookie metadata: name, domain, expiry and whether they are secure (HttpOnly/Secure). It never reads the value of any cookie. It also looks at the domains of scripts and images loaded by the page to know which companies are present.",
+          "Only cookie metadata: name, domain, expiry and whether they are secure (HttpOnly/Secure). It never reads the value of any cookie. It also looks at the domains of scripts and images loaded by the page to know which companies are present, the domain name you visit and whether the page has a password or card field (only whether it exists; never what you type in it).",
           "It does not read your browsing history, page content or what you type, and it never accesses your passwords or accounts."
         ]
       },
@@ -1655,7 +1656,7 @@
       {
         "title": "Permissions and why",
         "paragraphs": [
-          "“cookies”: to read the metadata of the cookies of the site you visit and count them. “storage”: to remember your preferences. “Access to data on all websites”: to show the robot and analyze any page you open; without it the extension couldn't work on every site. It does not request history, tabs or downloads."
+          "“cookies”: to read the metadata of the cookies of the site you visit and count them. “storage”: to remember your preferences. “declarativeNetRequest”: for the optional tracker blocking, with a fixed list bundled in the extension; it is off by default and the browser applies the rules without the extension seeing your traffic. “Access to data on all websites”: to show the robot and analyze any page you open. It does not request history, tabs or downloads."
         ]
       },
       {

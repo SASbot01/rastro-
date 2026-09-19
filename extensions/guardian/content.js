@@ -15,7 +15,16 @@
     return Array.from(hosts).slice(0, 200);
   }
 
-  var mascot = null, rejectTexts = [];
+  function pageSignals() {
+    var hasPassword = false, hasCard = false;
+    try {
+      hasPassword = Array.prototype.some.call(document.querySelectorAll("input[type='password']"), visible);
+      hasCard = Array.prototype.some.call(document.querySelectorAll("input[autocomplete='cc-number'],input[name*='cardnumber' i],input[name*='card_number' i],input[id*='cardnumber' i],input[name*='tarjeta' i],input[placeholder*='1234 5678' i]"), visible);
+    } catch (e) { /* DOM raro */ }
+    return { hasPassword: hasPassword, hasCard: hasCard };
+  }
+
+  var mascot = null, rejectTexts = [], shownRisk = "";
   function clickReject() {
     var nodes = document.querySelectorAll("button,a[role='button'],[role='button'],input[type='button'],input[type='submit']");
     var best = null, bestRank = 99;
@@ -33,15 +42,32 @@
   }
 
   function analyze() {
-    chrome.runtime.sendMessage({ type: "rastro:analyze", thirdPartyHosts: thirdPartyHosts(), bannerVisible: bannerVisible() }, function (res) {
+    chrome.runtime.sendMessage({ type: "rastro:analyze", thirdPartyHosts: thirdPartyHosts(), bannerVisible: bannerVisible(), signals: pageSignals() }, function (res) {
       if (chrome.runtime.lastError || !res || !res.ok || !mascot) return;
       rejectTexts = res.rejectTexts || [];
       mascot.setReport(res.report, res.lines);
+      showRisk(res.risk);
     });
+  }
+
+  // Web que imita a otra: el robot se pone en rojo y abre la burbuja solo. Una vez por nivel (no insiste en cada recuento).
+  function showRisk(risk) {
+    if (!risk || risk.level === "none") { if (shownRisk) { shownRisk = ""; mascot.alert(null); } return; }
+    if (shownRisk === risk.level) return;
+    shownRisk = risk.level;
+    var actions = [];
+    if (risk.official) actions.push({ label: t("goOfficial").replace("{site}", risk.official), primary: true, run: function () { location.href = risk.officialUrl; } });
+    actions.push({ label: t("leave"), primary: !risk.official, run: function () { if (history.length > 1) history.back(); else location.href = "about:blank"; } });
+    actions.push({ label: t("trustSite"), run: function (api) { chrome.storage.local.get(["trustedHosts"], function (h) { chrome.storage.local.set({ trustedHosts: (h.trustedHosts || []).concat(location.hostname).slice(-300) }); shownRisk = ""; api.alert(null); }); } });
+    mascot.alert({ level: risk.level, title: risk.title, lines: risk.lines, actions: actions });
   }
 
   chrome.storage.local.get(["hiddenHosts", "variant", "enabled"], function (cfg) {
     if (cfg.enabled === false || (cfg.hiddenHosts || []).indexOf(location.hostname) >= 0) { analyzeSilently(); return; }
+    start(cfg);
+  });
+
+  function start(cfg) {
     var memory = { getItem: function () { return JSON.stringify(cfg.mascot || (cfg.variant ? { variant: cfg.variant } : null)); }, setItem: function (k, v) { try { var o = JSON.parse(v); chrome.storage.local.set({ mascot: o, variant: o.variant }); } catch (e) { /* nada */ } } };
     chrome.storage.local.get(["mascot"], function (m) {
       cfg.mascot = m.mascot;
@@ -60,7 +86,16 @@
       var pending = null;
       document.addEventListener("click", function () { if (pending) return; pending = setTimeout(function () { pending = null; analyze(); }, 3000); }, true);
     });
-  });
+  }
 
-  function analyzeSilently() { chrome.runtime.sendMessage({ type: "rastro:analyze", thirdPartyHosts: thirdPartyHosts(), bannerVisible: bannerVisible() }, function () { void chrome.runtime.lastError; }); }
+  // Robot oculto o desactivado: se sigue contando para el icono y, si la web imita a otra, el robot aparece igualmente.
+  function analyzeSilently() {
+    chrome.runtime.sendMessage({ type: "rastro:analyze", thirdPartyHosts: thirdPartyHosts(), bannerVisible: bannerVisible(), signals: pageSignals() }, function (res) {
+      if (chrome.runtime.lastError || !res || !res.ok || !res.risk || res.risk.level !== "danger" || mascot) return;
+      chrome.storage.local.get(["variant"], function (cfg) { start(cfg); });
+    });
+    // Un segundo vistazo (los formularios de acceso a veces tardan en pintarse) y ya.
+    if (silentRuns++ < 1) setTimeout(function () { if (!mascot) analyzeSilently(); }, 4000);
+  }
+  var silentRuns = 0;
 })();

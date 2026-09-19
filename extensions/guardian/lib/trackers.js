@@ -30,3 +30,10 @@ export const COOKIE_NAMES = [
 
 /** Textos de botones de "rechazar" de los banners de cookies (en minusculas). */
 export const REJECT_TEXTS = ["rechazar todo", "rechazar todas", "rechazar", "rechazarlas", "solo necesarias", "sólo necesarias", "solo las necesarias", "solo esenciales", "continuar sin aceptar", "no acepto", "denegar", "reject all", "reject", "decline", "deny", "only necessary", "necessary only", "use necessary cookies only", "refuse", "refuser", "tout refuser", "alle ablehnen", "ablehnen"];
+
+// Dominios que corta el bloqueo opcional: publicidad y comercio de datos. Fuera quedan los que tambien sirven contenido
+// o inicio de sesion (videos de TikTok, "Entrar con Facebook", mapas de Bing): bloquearlos rompe webs.
+const NO_BLOCK = new Set(["tiktok.com", "tiktokcdn.com", "byteoversea.com", "bing.com", "snapchat.com", "sc-static.net", "facebook.net"]);
+export function blockedDomains() {
+  return Object.entries(TRACKER_DOMAINS).filter(([domain, [, category]]) => (category === "ads" || category === "broker") && !NO_BLOCK.has(domain)).map(([domain]) => domain).sort();
+}

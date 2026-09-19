@@ -79,5 +79,23 @@
   },
   "detail": {
     "message": "See the cookies"
+  },
+  "goOfficial": {
+    "message": "Go to {site}"
+  },
+  "leave": {
+    "message": "Leave this site"
+  },
+  "trustSite": {
+    "message": "I trust it"
+  },
+  "blockTrackers": {
+    "message": "Block trackers"
+  },
+  "blockHint": {
+    "message": "Cuts ads that follow you and companies that trade in profiles. If a site stops working, turn it off."
+  },
+  "riskTitle": {
+    "message": "Security warning"
   }
 }

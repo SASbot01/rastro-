@@ -25,3 +25,10 @@ Manifest V3 para Chrome/Edge, ES/EN. Dos funciones:
 - `background.js` (service worker), `content.js`, `popup.*`.
 
 `npm run ext:sync` copia el robot a la web y genera `public/extension/rastro-guardian.zip`.
+
+## 0.3 — aviso de webs falsas y bloqueo
+
+- `lib/phishing.js` + `lib/brands.js`: motor puro que compara el dominio con ~45 marcas suplantadas en España (imitaciones a una letra, letras de otros alfabetos y punycode, marca + palabra cebo, extensiones baratas) y dos señales de la página (¿pide contraseña?, ¿pide tarjeta?). Tests en `tests/phishing.test.mjs`, con lista de webs legítimas que NO deben disparar.
+- El robot se pone en rojo y abre la burbuja solo: "Ir a la web oficial", "Salir de aquí", "Es de fiar" (lista local `trustedHosts`). Sale aunque el robot esté oculto en ese sitio.
+- Bloqueo opcional (popup): `rules/trackers.json` se genera en `npm run ext:sync` desde `lib/trackers.js` (publicidad y comercio de datos, solo como tercero). Apagado por defecto.
+- Prueba real: `EXTRA_FLAGS='--host-resolver-rules=MAP+bbva-clientes.com+127.0.0.1:8765' node scripts/test-extension.mjs http://bbva-clientes.com/` y `BLOCK=1 node scripts/test-extension.mjs <url>`.

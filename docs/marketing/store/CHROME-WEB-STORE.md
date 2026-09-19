@@ -12,16 +12,16 @@ Todo lo de esta carpeta está preparado para subirlo tal cual. Tiempo estimado: 
 
 ## 2. Subir el paquete
 
-- Archivo: `public/extension/rastro-guardian.zip` (se regenera con `npm run ext:sync`). Versión actual: **0.2.1**.
+- Archivo: `public/extension/rastro-guardian.zip` (se regenera con `npm run ext:sync`). Versión actual: **0.3.0**.
 - "Nuevo elemento" → arrastra el zip. Debe reconocer nombre, versión e iconos del `manifest.json`.
 
 ## 3. Ficha de la tienda (pegar)
 
-**Nombre:** Rastro Guardián — el robot de las cookies
+**Nombre:** Rastro Guardián — aviso de webs falsas y cookies
 
 **Descripción corta (≤ 132 caracteres):**
-ES: `Un robot que revisa las cookies de cada web, te dice quién te sigue y les pone nota. Todo en tu navegador, sin enviar nada.`
-EN: `A robot that reviews each site's cookies, tells you who tracks you and scores it. All inside your browser, nothing sent.`
+ES: `Te avisa si una web imita a tu banco, resume las cookies de cada sitio y bloquea rastreadores. Todo en tu navegador.`
+EN: `Warns you when a site imitates your bank, sums up each site's cookies and blocks trackers. All inside your browser.`
 
 **Descripción larga:**
 
@@ -29,7 +29,9 @@ ES:
 ```
 Rastro Guardián vive en tu navegador. En cada web que abres, un pequeño personaje (puedes elegir entre 4) revisa las cookies y te lo cuenta en lenguaje llano:
 
+• Aviso en rojo si la web imita a un banco, a Correos, a la DGT o a Hacienda, con enlace a la oficial.
 • Nota de privacidad del 0 al 100, también en el icono de la barra.
+• Bloqueo opcional de publicidad que te sigue y de empresas que comercian con perfiles.
 • Cuántas cookies son necesarias, de medición o de publicidad, y de qué empresas.
 • Aviso si te rastrean antes de aceptar, si hay empresas que compran y venden perfiles o cookies que duran años.
 • «Rechazar por mí»: pulsa la opción más privada del aviso de cookies.
@@ -46,7 +48,9 @@ EN:
 ```
 Rastro Guardián lives in your browser. On every site you open, a small character (pick one of 4) reviews the cookies and explains them in plain language:
 
+• Red warning when the site imitates a bank, a courier or a tax agency, with a link to the official one.
 • Privacy score from 0 to 100, also on the toolbar icon.
+• Optional blocking of ads that follow you and companies that trade in profiles.
 • How many cookies are necessary, analytics or advertising, and which companies set them.
 • Warnings if you're tracked before consenting, if data brokers are present or if cookies last for years.
 • "Reject for me": clicks the most private option of the cookie banner.
@@ -70,17 +74,18 @@ Made by Rastro (rastropro.com), the app that shows you what AI knows about you.
 | Uso | Archivo | Tamaño |
 |---|---|---|
 | Icono de la tienda | `icon-store-128.png` | 128×128 |
-| Capturas (mín. 1, máx. 5) | `shot-elmundo.png`, `shot-marca.png`, `shot-xataka.png` | 1280×800 |
+| Capturas (mín. 1, máx. 5) | `shot-phishing.png` (la primera), `shot-xataka.png`, `shot-marca.png`, `shot-elmundo.png` | 1280×800 |
 | Mosaico promocional pequeño | `promo-small-440x280.png` | 440×280 |
 | Mosaico marquesina (opcional) | `promo-marquee-1400x560.png` | 1400×560 |
 
 ## 5. Pestaña "Prácticas de privacidad" (respuestas exactas)
 
-**Finalidad única:** "Revisar las cookies del sitio que el usuario visita, clasificarlas y mostrar un resumen con una nota de privacidad, con opción de rechazar el aviso de cookies por el usuario."
+**Finalidad única:** "Proteger la privacidad y la seguridad del usuario en el sitio que visita: avisar si el dominio imita a una marca conocida, resumir las cookies y rastreadores con una nota de privacidad, y permitir rechazarlos o bloquearlos."
 
 **Justificación de permisos:**
 - `cookies`: "Leer los metadatos (nombre, dominio, caducidad, flags) de las cookies del sitio activo para contarlas y clasificarlas. Nunca se leen valores."
 - `storage`: "Guardar el personaje elegido, su posición, los sitios donde el usuario lo ha ocultado y el resumen de la pestaña actual (storage.session)."
+- `declarativeNetRequestWithHostAccess`: "Bloqueo opcional de rastreadores de publicidad con un conjunto de reglas estáticas incluido en el paquete (rules/trackers.json). Viene desactivado; el usuario lo activa desde el popup. La extensión no ve el tráfico."
 - Permiso de host `http://*/*`, `https://*/*`: "El resumen debe funcionar en cualquier web que el usuario abra; el script de contenido dibuja el personaje y detecta el aviso de cookies en la página."
 - ¿Usa código remoto? **No.**
 

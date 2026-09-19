@@ -2,11 +2,12 @@
   "manifest_version": 3,
   "name": "__MSG_name__",
   "description": "__MSG_description__",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "default_locale": "es",
   "permissions": [
     "cookies",
-    "storage"
+    "storage",
+    "declarativeNetRequestWithHostAccess"
   ],
   "host_permissions": [
     "http://*/*",
@@ -48,5 +49,14 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
-  "homepage_url": "https://rastropro.com/extension"
+  "homepage_url": "https://rastropro.com/extension",
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "trackers",
+        "enabled": false,
+        "path": "rules/trackers.json"
+      }
+    ]
+  }
 }

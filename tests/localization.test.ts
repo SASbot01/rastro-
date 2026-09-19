@@ -23,10 +23,12 @@ test("extension has matching translations, minimal permissions and makes no netw
   const manifest = read("../extensions/guardian/manifest.json");
   assert.equal(manifest.manifest_version, 3);
   // El robot de cookies necesita leer cookies y dibujarse en las paginas; nada mas.
-  assert.deepEqual([...manifest.permissions].sort(), ["cookies", "storage"]);
+  assert.deepEqual([...manifest.permissions].sort(), ["cookies", "declarativeNetRequestWithHostAccess", "storage"]);
   for (const forbidden of ["history", "webRequest", "tabs", "bookmarks", "downloads", "nativeMessaging"]) assert.ok(!manifest.permissions.includes(forbidden), forbidden);
+  // El bloqueo de rastreadores viene apagado y solo usa reglas estaticas incluidas en el paquete.
+  assert.equal(manifest.declarative_net_request.rule_resources[0].enabled, false);
   // Privacidad: la extension no habla con ningun servidor.
-  for (const file of ["background.js", "content.js", "mascot.js", "popup.js", "lib/analyze.js", "lib/trackers.js"]) {
+  for (const file of ["background.js", "content.js", "mascot.js", "popup.js", "lib/analyze.js", "lib/trackers.js", "lib/phishing.js", "lib/brands.js"]) {
     const source = readFileSync(new URL(`../extensions/guardian/${file}`, import.meta.url), "utf8");
     assert.ok(!/\bfetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon|EventSource/.test(source), `${file} hace llamadas de red`);
     assert.ok(!/\.value\b/.test(source.replace(/e\.target\.value|n\.value|\$\("variant"\)\.value/g, "")), `${file} lee valores de cookies`);
