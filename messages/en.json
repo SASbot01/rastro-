@@ -862,7 +862,8 @@
     "checkNow": "Check now",
     "checkGone": "You no longer appear on that page",
     "checkStill": "Your name still appears",
-    "checkUnknown": "Couldn't check automatically (the page blocks robots or requires access). Check it yourself and mark the result."
+    "checkUnknown": "Couldn't check automatically (the page blocks robots or requires access). Check it yourself and mark the result.",
+    "checkUnconfirmed": "We don't see your name on that page, but we hadn't seen it there before either, so we can't confirm it. Open it yourself and mark the result."
   },
   "letterTpl": {
     "subject": "Request for erasure of personal data (Article 17 GDPR) — {name}",

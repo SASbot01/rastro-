@@ -57,7 +57,7 @@ export default async function MetricsPage({ searchParams }: { searchParams: Prom
 
   // Serie diaria de los cuatro eventos clave.
   const series: EventName[] = ["form_submitted", "report_ready", "signup", "pro_activated"];
-  const dayKeys = Array.from({ length: days }, (_, i) => new Date(now - (days - 1 - i) * 86_400_000).toISOString().slice(0, 10));
+  const dayKeys = Array.from({ length: days }, (_, i) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Madrid" }).format(new Date(now - (days - 1 - i) * 86_400_000)));
   const perDay = new Map<string, number>();
   for (const r of (daily ?? []) as Daily[]) perDay.set(`${String(r.day).slice(0, 10)}|${r.name}`, Number(r.total));
   const maxDay = Math.max(1, ...dayKeys.map((k) => perDay.get(`${k}|form_submitted`) ?? 0));

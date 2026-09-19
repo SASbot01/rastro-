@@ -36,6 +36,7 @@ interface Letter {
   events: LetterEvent[] | null;
   last_check_at: string | null;
   still_listed: boolean | null;
+  removed_at: string | null;
   kind: "site" | "ai" | "image";
   provider: string | null;
 }
@@ -77,7 +78,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
   const { data: letter } = UUID.test(id)
     ? await supabaseAdmin()
         .from("letters")
-        .select("id, request_id, host, target_url, contact, contact_source, subject, body, locale, status, sent_at, deadline_at, sent_via, follow_up_sent_at, reply_note, outcome, events, last_check_at, still_listed, kind, provider")
+        .select("id, request_id, host, target_url, contact, contact_source, subject, body, locale, status, sent_at, deadline_at, sent_via, follow_up_sent_at, reply_note, outcome, events, last_check_at, still_listed, removed_at, kind, provider")
         .eq("id", id)
         .eq("user_id", user.id)
         .maybeSingle<Letter>()
@@ -125,7 +126,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
           </span>
         </div>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("letters.subtitle", { host: letter.host })}</p>
-        {letter.events && letter.events.length > 0 && <div className="mt-6"><LetterJourney events={letter.events} messages={messages} locale={locale} checkedAt={letter.last_check_at} stillListed={letter.still_listed}/></div>}
+        {letter.events && letter.events.length > 0 && <div className="mt-6"><LetterJourney events={letter.events} messages={messages} locale={locale} checkedAt={letter.last_check_at} stillListed={letter.removed_at || letter.outcome === "deleted" ? false : letter.still_listed ? true : null}/></div>}
 
         {/* Destinatario */}
         <section className="mt-6 card p-5">
@@ -294,8 +295,8 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
               <div className="min-w-0">
                 <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("letters.checkTitle")}</h2>
                 {letter.last_check_at ? (
-                  <p className={"mt-1.5 text-[14px] font-semibold " + (letter.still_listed === false ? "text-accent" : letter.still_listed ? "text-warn" : "text-muted")}>
-                    {letter.still_listed === false ? tr("letters.checkGone") : letter.still_listed ? tr("letters.checkStill") : tr("letters.checkUnknown")}
+                  <p className={"mt-1.5 text-[14px] font-semibold " + (letter.removed_at ? "text-accent" : letter.still_listed ? "text-warn" : "text-muted")}>
+                    {letter.removed_at ? tr("letters.checkGone") : letter.still_listed ? tr("letters.checkStill") : letter.still_listed === false ? tr("letters.checkUnconfirmed") : tr("letters.checkUnknown")}
                     <span className="ml-2 text-[12px] font-normal text-faint">{fmtShort.format(new Date(letter.last_check_at))}</span>
                   </p>
                 ) : (

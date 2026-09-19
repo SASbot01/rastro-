@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { getMessages, translator } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
@@ -40,14 +41,22 @@ export default async function AiMemoryPage({ searchParams }: { searchParams: Pro
   const { hoy } = await searchParams;
 
   // Informes anteriores a esta funcion (o a la cuenta): se les hace la foto ahora, una sola vez.
-  await backfillSnapshots(user.id, 3).catch(() => 0);
-  const { data } = await supabaseAdmin()
+  const load = () => supabaseAdmin()
     .from("ai_snapshots")
     .select("id, request_id, source, answers, facts, changes, taken_at")
     .eq("user_id", user.id)
     .order("taken_at", { ascending: false })
     .limit(24)
     .returns<Snapshot[]>();
+  let { data } = await load();
+  // Informes anteriores a esta funcion (o a la cuenta) no tienen foto. Si no hay ninguna, se hace una ahora (la mas
+  // reciente) para no enseñar la pagina vacia; el resto se rellena despues de responder, sin bloquear la carga.
+  if (!data || data.length === 0) {
+    await backfillSnapshots(user.id, 1).catch(() => 0);
+    ({ data } = await load());
+  }
+  const uid = user.id;
+  after(() => backfillSnapshots(uid, 3).then(() => undefined, () => undefined));
   const snaps = data ?? [];
   const latest = snaps[0] ?? null;
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "long" });

@@ -862,7 +862,8 @@
     "checkNow": "Comprobar ahora",
     "checkGone": "Ya no apareces en esa página",
     "checkStill": "Tu nombre sigue apareciendo",
-    "checkUnknown": "No se pudo comprobar automáticamente (la página bloquea robots o exige acceso). Míralo tú y marca el resultado."
+    "checkUnknown": "No se pudo comprobar automáticamente (la página bloquea robots o exige acceso). Míralo tú y marca el resultado.",
+    "checkUnconfirmed": "No vemos tu nombre en esa página, pero tampoco lo habíamos visto antes, así que no podemos confirmarlo. Ábrela tú y marca el resultado."
   },
   "letterTpl": {
     "subject": "Solicitud de supresión de datos personales (artículo 17 RGPD) — {name}",
