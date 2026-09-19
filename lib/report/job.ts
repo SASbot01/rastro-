@@ -14,6 +14,7 @@ import { answersFromRaw, saveSnapshot } from "@/lib/ai-watch";
 import { track } from "@/lib/events";
 import { checkSites } from "@/lib/site-checks";
 import { ilikeExact } from "@/lib/like-escape";
+import { copyForCache } from "@/lib/report/cache-copy";
 
 /**
  * Job del informe. Se lanza con `after()` desde /verify una vez la solicitud
@@ -67,8 +68,10 @@ interface CachedReport {
   actions: unknown;
   breakdown: unknown;
   accounts: unknown;
+  site_checks: unknown;
   generator: string;
-  raw: { hibp?: HibpResult } | null;
+  raw: ({ hibp?: HibpResult } & Record<string, unknown>) | null;
+  [column: string]: unknown;
 }
 
 /** Lo que la pagina de espera puede enseñar antes de que el informe este redactado. Solo contadores y nombres de filtraciones. */
@@ -106,7 +109,7 @@ async function findCached(row: RequestRow): Promise<{ request: RequestRow; repor
 
   const { data: report } = await supabase
     .from("reports")
-    .select("request_id, score, summary, findings, actions, breakdown, accounts, generator, raw")
+    .select("request_id, score, summary, findings, actions, breakdown, accounts, site_checks, generator, raw")
     .eq("request_id", prev.id)
     .maybeSingle<CachedReport>();
   return report ? { request: prev, report } : null;
@@ -167,16 +170,16 @@ export async function runReportJob(requestId: string): Promise<void> {
       cached.request.locale === row.locale
     ) {
       await setStep(row.id, "report");
-      const { request_id: from, raw, ...content } = cached.report;
-      const { error: copyError } = await supabase.from("reports").upsert(
-        { request_id: row.id, ...content, raw: { cached_from: from, hibp: raw?.hibp ?? null } },
-        { onConflict: "request_id" },
-      );
+      const from = cached.report.request_id;
+      // Copia completa (sitios comprobados y respuestas crudas incluidos): ver lib/report/cache-copy.ts.
+      const { error: copyError } = await supabase.from("reports").upsert(copyForCache(cached.report, row.id), { onConflict: "request_id" });
       if (copyError) throw new Error(`reports.upsert (cache): ${copyError.message}`);
       await supabase
         .from("requests")
         .update({ status: "done", step: null, error: null, finished_at: new Date().toISOString() })
         .eq("id", row.id);
+      // El embudo cuenta tambien los informes servidos desde la cache (si no, "generado" queda por debajo de "visto").
+      void track("report_ready", { subject: row.id, locale, props: { origin: row.origin, generator: "cache", seconds: Math.round((Date.now() - startedAt) / 1000), score: cached.report.score } });
       console.log(`[job] informe ${row.id} copiado de ${from} (cache, ${Date.now() - startedAt} ms)`);
       return;
     }
