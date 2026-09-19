@@ -5,6 +5,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { serverEnv } from "@/lib/env";
 import { LOCALES } from "@/lib/i18n";
 import { allowByIp } from "@/lib/rate-limit";
+import { clientIpFrom } from "@/lib/client-ip";
 
 /**
  * "Pregunta a Rastro": el muneco de la portada responde dudas sobre el
@@ -67,7 +68,7 @@ export async function POST(request: Request) {
   const { question, locale, history } = parsed.data;
 
   const h = await headers();
-  const ip = h.get("x-forwarded-for")?.split(",")[0].trim() ?? h.get("x-real-ip") ?? "0.0.0.0";
+  const ip = clientIpFrom(h);
   if (!(await allowByIp(ip, "ask"))) return NextResponse.json({ ok: false, error: "ask.limit" }, { status: 429 });
 
   try {

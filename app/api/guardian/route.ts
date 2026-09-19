@@ -6,6 +6,7 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { isPro } from "@/lib/plan";
 import { allowByIp } from "@/lib/rate-limit";
+import { clientIpFrom } from "@/lib/client-ip";
 import { LOCALES } from "@/lib/i18n";
 import { analyzeMessage } from "@/lib/ai/guardian";
 import type { KnownAccount } from "@/lib/report/accounts";
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
   const pro = isPro(user);
   if (!pro) {
     const h = await headers();
-    const ip = h.get("x-forwarded-for")?.split(",")[0].trim() ?? h.get("x-real-ip") ?? "0.0.0.0";
+    const ip = clientIpFrom(h);
     if (!(await allowByIp(ip, "guardian"))) return NextResponse.json({ ok: false, error: "guardian.errors.limit" }, { status: 429 });
   }
 
