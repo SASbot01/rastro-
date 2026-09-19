@@ -5,6 +5,7 @@ import { buildFollowUp, checkListing, withEvent, type LetterEvent } from "@/lib/
 import { applyCheck } from "@/lib/removals";
 import { getMessages, translator } from "@/lib/i18n";
 import { track } from "@/lib/events";
+import { isCronSkipped } from "@/lib/demo-accounts";
 import { createLoginLink } from "@/lib/login-link";
 import { isLocale, type Locale } from "@/lib/i18n";
 
@@ -175,7 +176,7 @@ async function recheckLetters(supabase: ReturnType<typeof supabaseAdmin>): Promi
     .select("id, host, target_url, locale, still_listed, removed_at, check_count, events, users(email), requests(full_name)")
     .in("status", ["sent", "answered", "no_answer"])
     .in("kind", ["site", "image"])
-    .is("removed_at", null)
+    // Las ya retiradas se siguen mirando: si el dato reaparece, la carta se reabre (applyCheck -> 'reappeared').
     .or(`last_check_at.is.null,last_check_at.lt.${cutoff}`)
     .order("last_check_at", { ascending: true, nullsFirst: true })
     .limit(RECHECK_BATCH)
@@ -187,16 +188,22 @@ async function recheckLetters(supabase: ReturnType<typeof supabaseAdmin>): Promi
   async function worker() {
     for (let letter = queue.shift(); letter; letter = queue.shift()) {
       const name = one(letter.requests)?.full_name ?? "";
-      if (!name || !/^https?:\/\//i.test(letter.target_url)) continue;
-      const result = await checkListing(letter.target_url, name);
-      const { patch, justRemoved } = applyCheck(letter, result);
-      await supabase.from("letters").update(patch).eq("id", letter.id);
-      checked += 1;
-      if (!justRemoved) continue;
-      removed += 1;
-      void track("removal_verified", { subject: letter.id, props: { host: letter.host } });
       const email = one(letter.users)?.email;
-      if (!email) continue;
+      // La cuenta demo lleva URL inventadas: comprobarlas de verdad daria 404 y un "retirado" falso.
+      if (!name || !/^https?:\/\//i.test(letter.target_url) || isCronSkipped(email)) continue;
+      const result = await checkListing(letter.target_url, name);
+      const { patch, justRemoved, notify } = applyCheck(letter, result);
+      checked += 1;
+      if (!justRemoved) {
+        await supabase.from("letters").update(patch).eq("id", letter.id);
+        continue;
+      }
+      // Reclamar la retirada: si dos ejecuciones del cron se solapan (o la persona pulsa "Comprobar ahora" a la vez), solo una avisa.
+      const { data: claimed } = await supabase.from("letters").update(patch).eq("id", letter.id).is("removed_at", null).select("id").maybeSingle();
+      if (!claimed) continue;
+      removed += 1;
+      void track("removal_verified", { subject: letter.id });
+      if (!email || !notify) continue;
       const locale: Locale = isLocale(letter.locale) ? letter.locale : "es";
       const tr = translator(getMessages(locale));
       try {
