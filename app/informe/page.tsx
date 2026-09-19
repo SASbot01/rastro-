@@ -73,11 +73,11 @@ export default async function ReportsPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-12">
+      <main className="page py-8 sm:py-12">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("report.eyebrow")}</p>
-            <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink">{tr("reports.title")}</h1>
+            <p className="eyebrow">{tr("report.eyebrow")}</p>
+            <h1 className="mt-2 h1 text-ink">{tr("reports.title")}</h1>
           </div>
           <Link href="/#form" className="btn btn-primary btn-sm">
             {tr("account.newReport")}
@@ -104,7 +104,7 @@ export default async function ReportsPage() {
             <Link href={`/informe/${latest.id}`} className="mt-6 block card p-6 hover:border-faint sm:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("reports.latest")}</p>
+                  <p className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("reports.latest")}</p>
                   <p className="mt-1 truncate text-[18px] font-semibold text-ink">
                     {latest.full_name}
                     {latest.city && <span className="font-normal text-muted"> · {latest.city}</span>}
@@ -118,12 +118,12 @@ export default async function ReportsPage() {
                   <span className="shrink-0 text-[13px] text-faint">—</span>
                 )}
               </div>
-              <span className="mt-4 inline-block text-[13px] font-medium text-accent underline underline-offset-4">{tr("account.view")}</span>
+              <span className="mt-4 inline-block link text-[14px]">{tr("account.view")}</span>
             </Link>
 
             {rest.length > 0 && (
               <section className="mt-8">
-                <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("reports.previous")}</h2>
+                <h2 className="px-1 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("reports.previous")}</h2>
                 <ul className="mt-3 grid gap-2">
                   {rest.map((row) => {
                     const r = reportOf(row);
@@ -151,7 +151,7 @@ export default async function ReportsPage() {
         {/* Sondeo de Gmail */}
         {user && (
           <section className="mt-8">
-            <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("reports.scanTitle")}</h2>
+            <h2 className="px-1 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("reports.scanTitle")}</h2>
             {scan ? (
               <Link href={`/cuenta/buzon?scan=${scan.id}`} className="mt-3 flex items-center justify-between gap-4 card px-4 py-3.5 hover:border-faint sm:px-5">
                 <div className="min-w-0">
@@ -160,7 +160,7 @@ export default async function ReportsPage() {
                   </p>
                   <p className="mt-0.5 truncate text-[12.5px] text-faint">{scan.mailbox} · {fmt.format(new Date(scan.started_at))}</p>
                 </div>
-                <span className="shrink-0 text-[13px] font-medium text-accent underline underline-offset-4">{tr("reports.scanOpen")}</span>
+                <span className="shrink-0 link text-[14px]">{tr("reports.scanOpen")}</span>
               </Link>
             ) : (
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3 card px-4 py-3.5 sm:px-5">

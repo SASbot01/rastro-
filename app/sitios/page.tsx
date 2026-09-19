@@ -21,14 +21,14 @@ export default async function SitesPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("sites.eyebrow")}</p>
-        <h1 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-ink sm:text-[38px]">{tr("sites.title")}</h1>
+      <main className="page py-10 sm:py-14">
+        <p className="eyebrow">{tr("sites.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("sites.title")}</h1>
         <p className="mt-3 max-w-[60ch] text-[16px] leading-relaxed text-muted">{tr("sites.subtitle")}</p>
 
         {[...groups.entries()].map(([kind, list]) => (
           <section key={kind} className="mt-10">
-            <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr(`sites.kinds.${kind}`)}</h2>
+            <h2 className="px-1 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr(`sites.kinds.${kind}`)}</h2>
             <ul className="mt-3 grid gap-2 sm:grid-cols-2">
               {list.map((b) => (
                 <li key={b.slug}>

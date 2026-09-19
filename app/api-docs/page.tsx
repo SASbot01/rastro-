@@ -38,9 +38,9 @@ export default async function ApiDocsPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("api.eyebrow")}</p>
-        <h1 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-ink sm:text-[38px]">{tr("api.title")}</h1>
+      <main className="page py-10 sm:py-14">
+        <p className="eyebrow">{tr("api.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("api.title")}</h1>
         <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-muted">{tr("api.subtitle")}</p>
         <p className="mt-3 max-w-[62ch] rounded-[12px] border border-accent/40 bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-ink">{tr("api.principle")}</p>
         <div className="mt-5 flex flex-wrap gap-3">
@@ -71,9 +71,9 @@ export default async function ApiDocsPage() {
 
         <h2 className="mt-10 text-[20px] font-semibold tracking-[-0.02em] text-ink">{tr("api.examples")}</h2>
         <div className="mt-4 grid gap-4">
-          <section className={CARD}><h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("api.curl")}</h3><pre className={PRE}>{CURL}</pre></section>
-          <section className={CARD}><h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("api.python")}</h3><pre className={PRE}>{PY}</pre></section>
-          <section className={CARD}><h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("api.js")}</h3><pre className={PRE}>{JS}</pre></section>
+          <section className={CARD}><h3 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("api.curl")}</h3><pre className={PRE}>{CURL}</pre></section>
+          <section className={CARD}><h3 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("api.python")}</h3><pre className={PRE}>{PY}</pre></section>
+          <section className={CARD}><h3 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("api.js")}</h3><pre className={PRE}>{JS}</pre></section>
         </div>
       </main>
       <SiteFooter messages={messages} />

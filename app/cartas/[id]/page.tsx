@@ -41,11 +41,11 @@ interface Letter {
 }
 
 const STATUS_CLASS: Record<Letter["status"], string> = {
-  draft: "bg-paper text-muted",
-  sent: "bg-accent-soft text-accent",
-  answered: "bg-paper text-ok",
-  no_answer: "bg-accent text-black",
-  closed: "bg-paper text-faint",
+  draft: "",
+  sent: "tone-ok",
+  answered: "tone-ok",
+  no_answer: "tone-warn",
+  closed: "",
 };
 
 function StatusButton({ id, status, label, primary }: { id: string; status: string; label: string; primary?: boolean }) {
@@ -93,9 +93,9 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
     return (
       <>
         <SiteHeader locale={locale} messages={messages} />
-        <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-16">
-          <h1 className="text-[24px] font-semibold text-ink">{tr("waiting.notFoundTitle")}</h1>
-          <Link href="/cuenta" className="mt-6 inline-block text-[14px] font-medium text-accent underline underline-offset-4">
+        <main className="page py-16">
+          <h1 className="h2 text-ink">{tr("waiting.notFoundTitle")}</h1>
+          <Link href="/cuenta" className="mt-6 inline-block link text-[14px]">
             {tr("nav.account")}
           </Link>
         </main>
@@ -111,16 +111,16 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
   const fmtShort = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" });
   const expired = letter.status === "sent" && letter.deadline_at && new Date(letter.deadline_at) < new Date();
   const canComplain = letter.status === "no_answer" || expired || (letter.status === "answered" && letter.outcome === "refused");
-  const FIELD = "w-full rounded-[12px] border border-line bg-surface-2 px-3.5 py-3 text-[15px] text-ink placeholder:text-faint focus:border-accent focus:outline-none";
+  const FIELD = "field";
 
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
 
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <h1 className="text-[26px] font-semibold tracking-[-0.025em] text-ink">{tr("letters.title")}</h1>
-          <span className={"rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide " + STATUS_CLASS[letter.status]}>
+      <main className="page py-10 sm:py-14">
+        <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
+          <h1 className="h1 text-ink">{tr("letters.title")}</h1>
+          <span className={"badge mt-1.5 uppercase " + STATUS_CLASS[letter.status]}>
             {tr(`letters.status.${letter.status}`)}
           </span>
         </div>
@@ -129,7 +129,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
 
         {/* Destinatario */}
         <section className="mt-6 card p-5">
-          <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.recipient")}</h2>
+          <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("letters.recipient")}</h2>
           <p className="mt-2 text-[15px] font-semibold text-ink">{letter.host}</p>
           <a href={letter.target_url} target="_blank" rel="noreferrer nofollow" className="mt-1 block truncate text-[13px] text-accent underline underline-offset-4">
             {letter.target_url}
@@ -160,7 +160,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
         {/* Proveedor de IA: pasos del portal de derechos */}
         {aiProvider && (
           <section className="mt-4 rounded-card border border-accent/40 bg-accent-soft p-5">
-            <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("aiReq.steps", { provider: aiProvider.name })}</h2>
+            <h2 className="eyebrow">{tr("aiReq.steps", { provider: aiProvider.name })}</h2>
             <ol className="mt-3 grid gap-2">
               {aiProvider.steps.map((st, i) => (
                 <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-ink">
@@ -169,14 +169,14 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
                 </li>
               ))}
             </ol>
-            <a href={aiProvider.url} target="_blank" rel="noreferrer nofollow" className="mt-3 inline-block text-[13px] font-medium text-accent underline underline-offset-4">{aiProvider.url}</a>
+            <a href={aiProvider.url} target="_blank" rel="noreferrer nofollow" className="mt-3 inline-block link text-[14px]">{aiProvider.url}</a>
           </section>
         )}
 
         {/* Tramite conocido (catalogo) */}
         {known && (
           <section className="mt-4 rounded-card border border-accent/40 bg-accent-soft p-5">
-            <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("sites.letterKnown", { name: known.name })}</h2>
+            <h2 className="eyebrow">{tr("sites.letterKnown", { name: known.name })}</h2>
             <ol className="mt-3 grid gap-2">
               {known.steps.map((st, i) => (
                 <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-ink">
@@ -195,9 +195,9 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
 
         {/* Carta */}
         <section className="mt-4 card p-5">
-          <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.subject")}</h2>
+          <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("letters.subject")}</h2>
           <p className="mt-1.5 text-[15px] font-semibold text-ink">{letter.subject}</p>
-          <h2 className="mt-5 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.body")}</h2>
+          <h2 className="mt-5 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("letters.body")}</h2>
           <pre className="mt-2 whitespace-pre-wrap rounded-[10px] bg-paper p-4 font-sans text-[14px] leading-[1.7] text-ink">{letter.body}</pre>
           <div className="mt-4 flex flex-wrap gap-2">
             <CopyButton text={`${letter.subject}\n\n${letter.body}`} label={tr("letters.copy")} doneLabel={tr("letters.copied")} />
@@ -292,7 +292,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
           <section className="mt-4 card p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="min-w-0">
-                <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.checkTitle")}</h2>
+                <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("letters.checkTitle")}</h2>
                 {letter.last_check_at ? (
                   <p className={"mt-1.5 text-[14px] font-semibold " + (letter.still_listed === false ? "text-accent" : letter.still_listed ? "text-warn" : "text-muted")}>
                     {letter.still_listed === false ? tr("letters.checkGone") : letter.still_listed ? tr("letters.checkStill") : tr("letters.checkUnknown")}

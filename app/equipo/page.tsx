@@ -11,7 +11,7 @@ import { sharedMonitoring } from "@/lib/team-privacy";
 
 export const dynamic = "force-dynamic";
 const CARD = "card p-5 sm:p-6";
-const FIELD = "min-w-0 flex-1 rounded-[12px] border border-line bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink placeholder:text-faint focus:border-accent focus:outline-none";
+const FIELD = "field min-w-0 flex-1 !min-h-[48px]";
 const LEVEL_TEXT = { green: "text-ok", orange: "text-warn", red: "text-danger" } as const;
 
 /** v5 — Panel de Rastro Equipos (solo titular). Ve lo que cada persona comparte: puntuacion, contrasenas filtradas, vigilancia. */
@@ -37,9 +37,9 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-12">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("team.eyebrow")}</p>
-        <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink">{org ? org.name : tr("team.dashTitle")}</h1>
+      <main className="page py-8 sm:py-12">
+        <p className="eyebrow">{tr("team.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{org ? org.name : tr("team.dashTitle")}</h1>
         <section className="ex-panel mt-5"><h2 className="text-base font-medium">{tr("experience.teamPrivacy")}</h2><p className="ex-note mt-2">{tr("experience.teamPrivacyBody")}</p></section>
         {e && <p role="alert" className="mt-3 text-[13px] font-medium text-danger">{tr(`team.${e}`)}</p>}
 
@@ -67,7 +67,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                 <h2 className="text-[16px] font-semibold text-ink">{tr("team.dashTitle")}</h2>
                 <div className="flex items-center gap-3">
                   <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-[11px] font-semibold text-muted">{tr("team.seats", { used: 1 + members.length, total: org.seats })}</span>
-                  <a href="/api/org/export" className="text-[13px] font-medium text-accent underline underline-offset-4">{tr("team.export")}</a>
+                  <a href="/api/org/export" className="link text-[14px]">{tr("team.export")}</a>
                 </div>
               </div>
               {ok === "added" && <p className="mt-2 text-[13px] text-accent">{tr("family.pending")}</p>}

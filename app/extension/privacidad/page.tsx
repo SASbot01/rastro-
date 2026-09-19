@@ -24,8 +24,8 @@ export default async function ExtensionPrivacyPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-12 sm:py-14">
-        <h1 className="text-[30px] leading-tight font-semibold tracking-[-0.025em] text-ink">{doc.title}</h1>
+      <main className="page py-12 sm:py-14">
+        <h1 className="h1 text-ink">{doc.title}</h1>
         <p className="mt-2 text-[13px] text-faint">{messages.legal.updated.replace("{date}", date)}</p>
         <p className="mt-5 text-[16px] leading-[1.65] text-muted">{doc.intro}</p>
         <div className="mt-8 grid gap-8">

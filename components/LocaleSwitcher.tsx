@@ -40,7 +40,7 @@ export function LocaleSwitcher({
             onClick={() => choose(locale)}
             aria-current={active ? "true" : undefined}
             className={
-              "min-h-[34px] min-w-[36px] rounded-full px-2.5 text-[12px] font-semibold uppercase tracking-wide transition-colors " +
+              "min-h-[40px] min-w-[38px] rounded-full px-2.5 text-[12px] font-semibold uppercase tracking-wide transition-colors " +
               (active ? "bg-ink text-paper" : "text-muted hover:text-ink")
             }
           >

@@ -84,7 +84,7 @@ export function ProfileEditor({ messages, name, avatar, email }: { messages: Mes
   if (!open) {
     return (
       <div className="mt-3 flex flex-col items-center gap-1">
-        <button type="button" onClick={() => { setOpen(true); setSaved(false); }} className="text-[13px] font-medium text-accent underline underline-offset-4">{tr("profile2.edit")}</button>
+        <button type="button" onClick={() => { setOpen(true); setSaved(false); }} className="link text-[14px]">{tr("profile2.edit")}</button>
         {saved && <p className="text-[12px] text-accent">{tr("profile2.saved")}</p>}
       </div>
     );

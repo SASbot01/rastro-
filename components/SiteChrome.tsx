@@ -16,17 +16,17 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
           href="/"
           className="flex min-h-[44px] items-center gap-2 text-[16px] font-semibold tracking-[-0.02em] text-ink lg:invisible"
         >
-          <img src="/brand/logo-96.png" alt="" width={26} height={22} className="h-[22px] w-auto" />
-          {tr("nav.brand")}
+          <img src="/brand/logo-96.png" alt="" width={26} height={22} className="h-[22px] w-auto shrink-0" />
+          <span className="max-[339px]:sr-only">{tr("nav.brand")}</span>
         </Link>
         <TopTabs messages={messages} />
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <Link href="/ayuda-urgente" aria-label={tr("experience.emergency")} title={tr("experience.emergency")} className="hit flex h-10 w-10 items-center justify-center rounded-full border border-danger/40 text-[15px] font-bold text-danger transition-colors hover:bg-danger/10">!</Link>
           <Link
             href="/soporte"
             aria-label={tr("support.button")}
             title={tr("support.button")}
-            className="hit flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface-2 text-muted transition-colors hover:border-line-strong hover:text-ink"
+            className={"hit h-10 w-10 items-center justify-center rounded-full border border-line bg-surface-2 text-muted transition-colors hover:border-line-strong hover:text-ink " + (session ? "flex" : "hidden min-[420px]:flex")}
           >
             <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden="true">
               <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" strokeWidth="1.7" />
@@ -37,7 +37,7 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
           <Link
             href={session ? "/cuenta" : "/entrar"}
             aria-label={session ? tr("nav.account") : tr("nav.login")}
-            className={"hit flex h-10 items-center justify-center overflow-hidden rounded-full text-[13.5px] font-semibold transition-[filter,border-color] " + (session ? "w-10 border border-line bg-surface-2 text-ink hover:border-accent/60" : "bg-accent px-4 text-[#04210a] shadow-[0_6px_18px_-8px_rgb(77_252_95/0.7)] hover:brightness-105")}
+            className={"hit flex h-10 items-center justify-center overflow-hidden rounded-full text-[13.5px] font-semibold transition-[filter,border-color] " + (session ? "w-10 border border-line bg-surface-2 text-ink hover:border-accent/60" : "whitespace-nowrap bg-accent px-4 text-[#04210a] shadow-[0_6px_18px_-8px_rgb(77_252_95/0.7)] hover:brightness-105")}
           >
             {me?.avatar ? <img src={me.avatar} alt="" className="h-10 w-10 object-cover" /> : session ? (me?.display_name ?? session.email).slice(0, 1).toUpperCase() : tr("nav.login")}
           </Link>
@@ -62,6 +62,9 @@ export function SiteFooter({ messages }: { messages: Messages }) {
           </Link>
           <Link href="/aviso-legal" className="link-muted inline-flex min-h-[36px] items-center">
             {tr("footer.legal")}
+          </Link>
+          <Link href="/soporte" className="link-muted inline-flex min-h-[36px] items-center">
+            {tr("support.button")}
           </Link>
           <Link href="/como-funciona" className="link-muted inline-flex min-h-[36px] items-center">
             {tr("how.footerLink")}

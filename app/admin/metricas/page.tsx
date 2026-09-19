@@ -70,8 +70,8 @@ export default async function MetricsPage({ searchParams }: { searchParams: Prom
       <main className="mx-auto w-full max-w-[920px] px-5 py-10">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">Interno</p>
-            <h1 className="mt-1 text-[28px] font-semibold tracking-[-0.03em] text-ink">Métricas de producto</h1>
+            <p className="eyebrow">Interno</p>
+            <h1 className="mt-1 h1 text-ink">Métricas de producto</h1>
             <p className="mt-1 text-[13.5px] text-muted">Personas únicas por paso en los últimos {days} días. Sin IP, sin correos: solo contadores.</p>
           </div>
           <nav className="flex gap-1.5">

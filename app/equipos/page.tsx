@@ -42,9 +42,9 @@ export default async function TeamsLanding() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-12 sm:py-16">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("team.eyebrow")}</p>
-        <h1 className="mt-2 text-[32px] leading-tight font-semibold tracking-[-0.025em] text-ink sm:text-[40px]">{tr("team.title")}</h1>
+      <main className="page py-12 sm:py-16">
+        <p className="eyebrow">{tr("team.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("team.title")}</h1>
         <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-muted">{tr("team.subtitle")}</p>
         {user?.plan_kind === "team" ? (
           <Link href="/equipo" className="mt-6 btn btn-primary">{tr("team.dashTitle")} →</Link>

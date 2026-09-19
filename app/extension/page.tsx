@@ -37,9 +37,9 @@ export default async function ExtensionPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("ext.eyebrow")}</p>
-        <h1 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-ink sm:text-[40px]">{tr("ext.title")}</h1>
+      <main className="page py-10 sm:py-14">
+        <p className="eyebrow">{tr("ext.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("ext.title")}</h1>
         <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-muted">{tr("ext.subtitle")}</p>
 
         <section className="mt-6 rounded-card border border-accent/40 bg-accent-soft p-5">

@@ -73,7 +73,7 @@ function Panel({ title, body, cta, href }: { title: string; body: string; cta: s
   return (
     <div className="card p-6 sm:p-8">
       <span aria-hidden="true" className="mb-5 block h-1.5 w-10 rounded-full bg-line" />
-      <h1 className="text-[24px] font-semibold tracking-[-0.02em] text-ink">{title}</h1>
+      <h1 className="h2 text-ink">{title}</h1>
       <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{body}</p>
       <Link
         href={href}
@@ -174,7 +174,7 @@ export default async function ReportPage({ params, searchParams }: PageProps<"/i
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">{body}</main>
+      <main className="page py-10 sm:py-14">{body}</main>
       <SiteFooter messages={messages} />
     </>
   );

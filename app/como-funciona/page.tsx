@@ -21,9 +21,9 @@ export default async function HowPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">Rastro</p>
-        <h1 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-ink sm:text-[38px]">{tr("how.pageTitle")}</h1>
+      <main className="page py-10 sm:py-14">
+        <p className="eyebrow">Rastro</p>
+        <h1 className="mt-2 h1 text-ink">{tr("how.pageTitle")}</h1>
         <p className="mt-3 max-w-[60ch] text-[16px] leading-relaxed text-muted">{tr("how.pageSubtitle")}</p>
 
         <div className="mt-8 grid gap-4">

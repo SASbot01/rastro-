@@ -181,6 +181,8 @@ textarea {
   .link:hover { text-decoration-color: currentColor; }
   .link-muted { color: var(--color-muted); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--color-line-strong); transition: color 0.2s; }
   .link-muted:hover { color: var(--color-ink); }
+  /* En pantallas tactiles el enlace suelto gana zona de toque (44 px) sin mover la maquetacion. */
+  @media (pointer: coarse) { .link, .link-muted, .ex-text-link { padding-block: 11px; margin-block: -11px; } }
 
   /* Chips y etiquetas */
   .chip, .ex-badge {
