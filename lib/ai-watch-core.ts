@@ -98,6 +98,24 @@ export function diffFacts(prev: FactsByProvider | null | undefined, next: FactsB
   return (Object.keys(next) as WatchProvider[]).flatMap((p) => diffProvider(p, prev[p], next[p]));
 }
 
+/**
+ * Ultima ficha conocida de CADA asistente, a partir de las fotos anteriores (de la mas nueva a la mas vieja).
+ * Si una semana falla un proveedor (clave caducada, limite, timeout), esa foto sale sin el; comparando solo
+ * con "la foto anterior" el cambio de ese asistente se perdia dos veces: la semana del fallo (no hay `next`)
+ * y la siguiente (no hay `prev`). Asi, lo que ChatGPT aprendio entre medias no se avisaba nunca.
+ */
+export function latestFactsByProvider(newestFirst: Array<{ facts: FactsByProvider | null | undefined }>): FactsByProvider | null {
+  if (newestFirst.length === 0) return null;
+  const out: FactsByProvider = {};
+  for (const snap of newestFirst) {
+    for (const p of Object.keys(snap.facts ?? {}) as WatchProvider[]) {
+      const f = snap.facts?.[p];
+      if (f && !out[p]) out[p] = f;
+    }
+  }
+  return out;
+}
+
 /** ¿Merece un aviso? Solo si hay algun cambio que no sea menor. */
 export function worthAlert(changes: AiChange[]): boolean {
   return changes.some((c) => !c.minor);

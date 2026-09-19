@@ -2,7 +2,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { askAboutPerson, type PerplexityResult } from "@/lib/perplexity";
 import { askAssistants, type AssistantAnswer } from "@/lib/assistants";
 import { extractFacts, type AnswerForFacts } from "@/lib/ai/facts";
-import { diffFacts, type AiChange, type FactsByProvider, type WatchProvider } from "@/lib/ai-watch-core";
+import { diffFacts, latestFactsByProvider, type AiChange, type FactsByProvider, type WatchProvider } from "@/lib/ai-watch-core";
 import type { Locale } from "@/lib/i18n";
 
 export * from "@/lib/ai-watch-core";
@@ -51,13 +51,33 @@ export async function lastSnapshot(userId: string, before?: string): Promise<Sna
   return data ?? null;
 }
 
+const COLUMNS = "id, request_id, source, answers, facts, changes, taken_at";
+/** Cuantas fotos hacia atras se miran para encontrar la ultima ficha de cada asistente. */
+const LOOKBACK = 8;
+
+/** Ultima ficha conocida de cada asistente antes de `before` (o de ahora). null = no hay ninguna foto anterior. */
+async function previousFacts(userId: string, before?: string): Promise<FactsByProvider | null> {
+  let q = supabaseAdmin().from("ai_snapshots").select("facts").eq("user_id", userId);
+  if (before) q = q.lt("taken_at", before);
+  const { data } = await q.order("taken_at", { ascending: false }).limit(LOOKBACK).returns<Array<{ facts: FactsByProvider }>>();
+  return latestFactsByProvider(data ?? []);
+}
+
 /** Guarda una foto (con ficha y cambios). Devuelve null si no hay respuestas o la ficha fallo. */
 export async function saveSnapshot(opts: { userId: string; requestId?: string | null; source: "report" | "watch"; person: Person; locale: Locale; answers: StoredAnswer[]; takenAt?: string }): Promise<Snapshot | null> {
   if (opts.answers.length === 0) return null;
+  const existing = async () => opts.requestId
+    ? (await supabaseAdmin().from("ai_snapshots").select(COLUMNS).eq("user_id", opts.userId).eq("request_id", opts.requestId).order("taken_at", { ascending: false }).limit(1).maybeSingle<Snapshot>()).data ?? null
+    : null;
+  // Una foto por informe: el job y el relleno de /ia pueden coincidir sobre el mismo informe.
+  const already = await existing();
+  if (already) return already;
   const facts = await extractFacts({ person: opts.person, locale: opts.locale, answers: forFacts(opts.answers) });
   if (!facts || Object.keys(facts).length === 0) return null;
-  const prev = await lastSnapshot(opts.userId, opts.takenAt);
-  const changes = diffFacts(prev?.facts, facts);
+  // La ficha tarda unos segundos (IA): se vuelve a mirar justo antes de guardar.
+  const raced = await existing();
+  if (raced) return raced;
+  const changes = diffFacts(await previousFacts(opts.userId, opts.takenAt), facts);
   const { data, error } = await supabaseAdmin()
     .from("ai_snapshots")
     .insert({ user_id: opts.userId, request_id: opts.requestId ?? null, source: opts.source, answers: opts.answers, facts, changes, ...(opts.takenAt ? { taken_at: opts.takenAt } : {}) })
@@ -66,6 +86,12 @@ export async function saveSnapshot(opts: { userId: string; requestId?: string | 
   if (error) {
     console.warn("[ai-watch] no se pudo guardar la foto:", error.message);
     return null;
+  }
+  // Foto con fecha pasada (relleno de informes antiguos): la foto que viene DESPUES se comparo en su dia con
+  // otra cosa (o con nada); se recalculan sus cambios para que la cronologia cuente lo que paso entre las dos.
+  if (opts.takenAt) {
+    const { data: after } = await supabaseAdmin().from("ai_snapshots").select("id, facts, taken_at").eq("user_id", opts.userId).gt("taken_at", data.taken_at).order("taken_at", { ascending: true }).limit(1).maybeSingle<{ id: string; facts: FactsByProvider; taken_at: string }>();
+    if (after) await supabaseAdmin().from("ai_snapshots").update({ changes: diffFacts(await previousFacts(opts.userId, after.taken_at), after.facts) }).eq("id", after.id);
   }
   return data;
 }

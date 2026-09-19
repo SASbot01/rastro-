@@ -119,7 +119,7 @@ export async function GET(request: Request) {
 
     const diff = diffReports(prevReport, nextReport);
     // Cambios en lo que dice cada IA (la foto la guarda el propio job del informe).
-    const { data: snap } = await supabase.from("ai_snapshots").select("changes").eq("request_id", created.id).maybeSingle<{ changes: AiChange[] }>();
+    const { data: snap } = await supabase.from("ai_snapshots").select("changes").eq("request_id", created.id).order("taken_at", { ascending: true }).limit(1).maybeSingle<{ changes: AiChange[] }>();
     const aiChanges = snap?.changes ?? [];
     const aiAlert = worthAlert(aiChanges);
     if (aiAlert) void track("ai_change_detected", { subject: user.id, locale, props: { changes: aiChanges.filter((c) => !c.minor).length, source: "monitor" } });
