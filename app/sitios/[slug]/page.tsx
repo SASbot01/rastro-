@@ -28,7 +28,7 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
   const messages = getMessages(locale);
   const tr = translator(messages);
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "long" });
-  const CARD = "rounded-card border border-line bg-surface p-5";
+  const CARD = "card p-5";
 
   return (
     <>
@@ -83,7 +83,7 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
             <section className="rounded-card border border-accent/40 bg-accent-soft p-5">
               <h2 className="text-[17px] font-semibold tracking-[-0.02em] text-ink">{tr("sites.ctaTitle", { name: b.name })}</h2>
               <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("sites.ctaBody")}</p>
-              <Link href="/#form" className="mt-4 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("sites.cta")}</Link>
+              <Link href="/#form" className="mt-4 btn btn-primary">{tr("sites.cta")}</Link>
             </section>
           </aside>
         </div>

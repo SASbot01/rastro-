@@ -26,7 +26,7 @@ function dayKey(d: Date) {
  */
 export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt, checks, daily, justEnabled }: Props) {
   const tr = translator(messages);
-  const card = "rounded-card border border-line bg-surface p-5 sm:p-6";
+  const card = "card p-5 sm:p-6";
 
   if (!monitoring) {
     return (

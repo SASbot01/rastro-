@@ -21,7 +21,7 @@ export function RemovalCounter({ stats, messages, href, compact = false }: { sta
   const next = notRequested > 0 ? tr("removals.ctaRequest", { n: notRequested }) : stats.overdue > 0 ? tr("removals.ctaOverdue", { n: stats.overdue }) : tr("removals.ctaSee");
 
   return (
-    <section className={"min-w-0 overflow-hidden rounded-card border border-line bg-surface " + (compact ? "p-5" : "p-6")}>
+    <section className={"min-w-0 overflow-hidden card " + (compact ? "p-5" : "p-6")}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0">
           <h2 className="text-[16px] font-semibold text-ink">{tr("removals.title")}</h2>
@@ -47,7 +47,7 @@ export function RemovalCounter({ stats, messages, href, compact = false }: { sta
       </ul>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <p className="text-[12px] leading-relaxed text-faint">{tr("removals.how")}</p>
-        <Link href={href} className="shrink-0 rounded-[12px] bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-black hover:opacity-90">{next}</Link>
+        <Link href={href} className="shrink-0 btn btn-primary btn-sm">{next}</Link>
       </div>
     </section>
   );

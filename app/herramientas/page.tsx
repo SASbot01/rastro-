@@ -28,8 +28,8 @@ interface ScanRow {
   started_at: string;
 }
 
-const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
-const BTN = "inline-block rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90";
+const CARD = "card p-5 sm:p-6";
+const BTN = "btn btn-primary btn-sm";
 const LINK = "text-[13px] font-medium text-accent underline underline-offset-4";
 
 /**

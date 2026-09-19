@@ -32,7 +32,7 @@ export default async function SitesPage() {
             <ul className="mt-3 grid gap-2 sm:grid-cols-2">
               {list.map((b) => (
                 <li key={b.slug}>
-                  <Link href={`/sitios/${b.slug}`} className="block h-full rounded-card border border-line bg-surface p-4 hover:border-accent">
+                  <Link href={`/sitios/${b.slug}`} className="block h-full card p-4 hover:border-accent">
                     <p className="text-[15px] font-semibold text-ink">{b.name}</p>
                     <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-muted">{b.shows}</p>
                     <p className="mt-2 text-[12px] text-faint">{b.typicalDays === 0 ? tr("sites.typicalInstant") : b.typicalDays ? tr("sites.typical", { n: b.typicalDays }) : ""}</p>
@@ -46,7 +46,7 @@ export default async function SitesPage() {
         <section className="mt-12 rounded-card border border-accent/40 bg-accent-soft p-6">
           <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-ink">{tr("hero.title")}</h2>
           <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("sites.ctaBody")}</p>
-          <Link href="/#form" className="mt-4 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("sites.cta")}</Link>
+          <Link href="/#form" className="mt-4 btn btn-primary">{tr("sites.cta")}</Link>
         </section>
       </main>
       <SiteFooter messages={messages} />

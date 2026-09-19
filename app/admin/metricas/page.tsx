@@ -62,7 +62,7 @@ export default async function MetricsPage({ searchParams }: { searchParams: Prom
   for (const r of (daily ?? []) as Daily[]) perDay.set(`${String(r.day).slice(0, 10)}|${r.name}`, Number(r.total));
   const maxDay = Math.max(1, ...dayKeys.map((k) => perDay.get(`${k}|form_submitted`) ?? 0));
   const others = EVENTS.filter((e) => !FUNNEL.includes(e));
-  const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
+  const CARD = "card p-5 sm:p-6";
 
   return (
     <>

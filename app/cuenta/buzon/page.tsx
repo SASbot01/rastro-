@@ -70,10 +70,10 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
         )}
 
         {!pro ? (
-          <div className="rounded-card border border-line bg-surface p-6">
+          <div className="card p-6">
             <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
             <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("mailbox.proBody")}</p>
-            <Link href="/pro" className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
+            <Link href="/pro" className="mt-4 btn btn-primary">
               {tr("pro.lockedCta")}
             </Link>
           </div>
@@ -82,7 +82,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
             {current && <MailboxView scan={current} locale={locale} messages={messages} pro={pro} />}
 
             {(!current || current.status !== "processing") && (
-              <section className="mt-6 rounded-card border border-line bg-surface p-6">
+              <section className="mt-6 card p-6">
                 <h2 className="text-[15px] font-semibold text-ink">{current ? tr("mailbox.rescan") : tr("mailbox.connectTitle")}</h2>
                 <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("mailbox.connectBody")}</p>
                 <ul className="mt-3 grid gap-1.5 text-[13px] leading-relaxed text-muted">
@@ -97,7 +97,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
                   <button
                     type="submit"
                     disabled={!googleConfigured()}
-                    className="rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-50"
+                    className="btn btn-primary"
                   >
                     {tr("mailbox.connect")}
                   </button>

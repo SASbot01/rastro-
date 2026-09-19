@@ -46,7 +46,7 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
   }, [scan.id, scan.status, router]);
 
   const fmt = new Intl.DateTimeFormat(locale, { month: "short", year: "numeric" });
-  const card = "rounded-card border border-line bg-surface shadow-[0_1px_2px_rgba(26,26,25,0.04)]";
+  const card = "card";
 
   if (live.status === "processing") {
     return (

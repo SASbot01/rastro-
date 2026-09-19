@@ -217,7 +217,10 @@
       "retention": "Deleted after 30 days"
     },
     "demoTitle": "This is what your score looks like",
-    "demoBody": "From 0 to 100. Breaches, public profiles and what AI says about you, at a glance."
+    "demoBody": "From 0 to 100. Breaches, public profiles and what AI says about you, at a glance.",
+    "titleLead": "See what AI",
+    "titleAccent": "knows about you.",
+    "sample": "Sample"
   },
   "form": {
     "title": "Get your report",
@@ -385,8 +388,12 @@
       "noSites": "You are not on any of the {n} data sites we checked.",
       "sites": "You appear on {n} of {total} data sites: {names}.",
       "assistants": "Already answered: {names}.",
-      "prelim": "provisional score. The final one arrives when the AI finishes reading everything."
-    }
+      "prelim": "provisional score. The final one arrives when the AI finishes reading everything.",
+      "prelimLabel": "Provisional score",
+      "prelimNote": "The final one arrives when the AI finishes reading everything."
+    },
+    "progress": "{done} of {total} steps",
+    "searching": "Searching…"
   },
   "report": {
     "eyebrow": "Exposure report",
@@ -1198,7 +1205,9 @@
       }
     ],
     "formTitle": "Get your free report",
-    "formBody": "Two minutes. No card. Only about you."
+    "formBody": "Two minutes. No card. Only about you.",
+    "stepLabel": "Step {n}",
+    "formSecure": "No passwords. You confirm with a code sent to your email."
   },
   "ask": {
     "open": "Ask Rastro",

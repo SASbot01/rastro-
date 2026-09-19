@@ -9,8 +9,8 @@ import { isPro, prices } from "@/lib/plan";
 import { searchImages, type ImageHit } from "@/lib/brave";
 
 export const dynamic = "force-dynamic";
-const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
-const BTN = "inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90";
+const CARD = "card p-5 sm:p-6";
+const BTN = "btn btn-primary";
 
 /** v4 — Imagenes publicas asociadas al nombre, con carta de retirada por sitio. */
 export default async function ImagesPage() {
@@ -55,7 +55,7 @@ export default async function ImagesPage() {
             <p className="mt-6 px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("images.count", { n: result.hits.length })} · {person.full_name}{person.city ? ` · ${person.city}` : ""}</p>
             <ul className="mt-3 grid gap-3 sm:grid-cols-2">
               {[...groups.entries()].map(([pageUrl, hits]) => (
-                <li key={pageUrl} className="overflow-hidden rounded-card border border-line bg-surface">
+                <li key={pageUrl} className="overflow-hidden card">
                   <div className="grid grid-cols-3 gap-1 bg-surface-2 p-1">
                     {hits.slice(0, 3).map((h, i) => (
                       // eslint-disable-next-line @next/next/no-img-element

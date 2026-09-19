@@ -23,7 +23,7 @@ interface Row {
 }
 
 const LEVEL_TEXT = { green: "text-ok", orange: "text-warn", red: "text-danger" } as const;
-const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
+const CARD = "card p-5 sm:p-6";
 
 function scoreOf(row: Row): number | null {
   const r = Array.isArray(row.reports) ? row.reports[0] : row.reports;
@@ -95,7 +95,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
           <h1 className="mt-4 text-[26px] font-semibold tracking-[-0.025em] text-ink">{name}</h1>
           <p className="text-[14px] text-faint">{user.email}</p>
           <ProfileEditor messages={messages} name={name} avatar={user.avatar} email={user.email} />
-          <ul className="mt-6 grid w-full grid-cols-3 divide-x divide-line rounded-card border border-line bg-surface">
+          <ul className="mt-6 grid w-full grid-cols-3 divide-x divide-line card">
             {[
               { v: lastScore ?? tr("profile.noScore"), l: tr("profile.score"), cls: lastScore !== null ? LEVEL_TEXT[levelFor(lastScore)] : "text-faint" },
               { v: list.filter((r) => r.status === "done").length, l: tr("profile.reports"), cls: "text-ink" },
@@ -138,7 +138,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
               <p className="mt-1 text-[13.5px] leading-relaxed text-muted">{tr("team.shareBody", { org: orgName })}</p>
               <form action="/api/org/share" method="post" className="mt-3">
                 <input type="hidden" name="share" value={user.org_share_at ? "0" : "1"} />
-                <button type="submit" className={user.org_share_at ? "text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink" : "rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90"}>{tr(user.org_share_at ? "team.shareOff" : "team.shareOn")}</button>
+                <button type="submit" className={user.org_share_at ? "text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink" : "btn btn-primary"}>{tr(user.org_share_at ? "team.shareOff" : "team.shareOn")}</button>
               </form>
             </section>
           )}
@@ -187,7 +187,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
                       <form action="/api/family" method="post" className="mt-3 flex gap-2">
                         <input type="hidden" name="action" value="add" />
                         <input name="email" type="email" required placeholder={tr("family.emailPlaceholder")} className="min-w-0 flex-1 rounded-[12px] border border-line bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink placeholder:text-faint focus:border-accent focus:outline-none" />
-                        <button type="submit" className="shrink-0 rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("family.add")}</button>
+                        <button type="submit" className="shrink-0 btn btn-primary btn-sm">{tr("family.add")}</button>
                       </form>
                     )}
                   </div>
@@ -197,7 +197,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
               <>
                 <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
                 <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("pro.lockedBody", { monthly: prices().monthly, yearly: prices().yearly })}</p>
-                <Link href="/pro" className="mt-3 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
+                <Link href="/pro" className="mt-3 btn btn-primary">
                   {tr("pro.lockedCta")}
                 </Link>
               </>
@@ -232,7 +232,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
             <form action="/api/keys" method="post" className="mt-3 flex gap-2">
               <input type="hidden" name="action" value="create" />
               <input name="name" maxLength={60} placeholder={tr("api.keyName")} className="min-w-0 flex-1 rounded-[12px] border border-line bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink placeholder:text-faint focus:border-accent focus:outline-none" />
-              <button type="submit" className="shrink-0 rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("api.create")}</button>
+              <button type="submit" className="shrink-0 btn btn-secondary btn-sm">{tr("api.create")}</button>
             </form>
           </section>
 
@@ -242,7 +242,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
               <h2 className="text-[15px] font-semibold text-ink">{tr("support.helpTitle")}</h2>
               <p className="mt-1 text-[13px] leading-relaxed text-muted">{tr("support.helpBody")}</p>
             </div>
-            <Link href="/soporte" className="shrink-0 rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("support.button")}</Link>
+            <Link href="/soporte" className="shrink-0 btn btn-secondary btn-sm">{tr("support.button")}</Link>
           </section>
 
           {/* Informes */}
@@ -274,7 +274,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
                     </div>
                   );
                   return (
-                    <li key={row.id} className="rounded-card border border-line bg-surface px-4 py-3.5 sm:px-5">
+                    <li key={row.id} className="card px-4 py-3.5 sm:px-5">
                       {open ? <Link href={`/informe/${row.id}`} className="block">{inner}</Link> : inner}
                     </li>
                   );
@@ -284,7 +284,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
           </section>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
-            <Link href="/#form" className="rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
+            <Link href="/#form" className="btn btn-primary">
               {tr("account.newReport")}
             </Link>
             <form action="/api/session/logout" method="post">

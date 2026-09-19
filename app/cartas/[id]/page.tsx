@@ -56,8 +56,8 @@ function StatusButton({ id, status, label, primary }: { id: string; status: stri
         type="submit"
         className={
           primary
-            ? "rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90"
-            : "rounded-[10px] border border-line bg-surface px-4 py-3 text-[14px] font-medium text-ink hover:border-faint"
+            ? "btn btn-primary"
+            : "btn btn-secondary"
         }
       >
         {label}
@@ -128,7 +128,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
         {letter.events && letter.events.length > 0 && <div className="mt-6"><LetterJourney events={letter.events} messages={messages} locale={locale} checkedAt={letter.last_check_at} stillListed={letter.still_listed}/></div>}
 
         {/* Destinatario */}
-        <section className="mt-6 rounded-card border border-line bg-surface p-5">
+        <section className="mt-6 card p-5">
           <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.recipient")}</h2>
           <p className="mt-2 text-[15px] font-semibold text-ink">{letter.host}</p>
           <a href={letter.target_url} target="_blank" rel="noreferrer nofollow" className="mt-1 block truncate text-[13px] text-accent underline underline-offset-4">
@@ -194,7 +194,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
         )}
 
         {/* Carta */}
-        <section className="mt-4 rounded-card border border-line bg-surface p-5">
+        <section className="mt-4 card p-5">
           <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.subject")}</h2>
           <p className="mt-1.5 text-[15px] font-semibold text-ink">{letter.subject}</p>
           <h2 className="mt-5 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.body")}</h2>
@@ -205,7 +205,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
         </section>
 
         {/* Enviar / estado y plazos */}
-        <section className="mt-4 rounded-card border border-line bg-surface p-5">
+        <section className="mt-4 card p-5">
           {ok === "sent" && <p className="mb-4 rounded-[12px] bg-accent-soft px-4 py-3 text-[14px] font-medium text-accent">{tr("letters.event.sent_by_rastro", { to: letter.contact ?? "" })}</p>}
           {errorCode === "to" && <p role="alert" className="mb-4 text-[13px] font-medium text-danger">{tr("formErrors.email")}</p>}
           {errorCode === "send" && <p role="alert" className="mb-4 text-[13px] font-medium text-danger">{tr("formErrors.generic")}</p>}
@@ -219,7 +219,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
                   <label className="text-[13px] font-medium text-ink" htmlFor="to">{tr("letters.toLabel")}</label>
                   <input id="to" name="to" type="email" required defaultValue={emailContact} placeholder={tr("letters.toPlaceholder")} className={FIELD} />
                   <p className="-mt-1 text-[12px] text-faint">{tr("letters.toHelp")}</p>
-                  <button type="submit" className="w-fit rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("letters.sendByRastro")}</button>
+                  <button type="submit" className="w-fit btn btn-primary">{tr("letters.sendByRastro")}</button>
                   <p className="text-[12.5px] leading-relaxed text-faint">{tr("letters.sendByRastroHelp")}</p>
                 </form>
               )}
@@ -253,7 +253,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
                   </label>
                 ))}
                 <textarea name="reply_note" rows={4} maxLength={4000} placeholder={tr("letters.replyNote")} className={FIELD + " mt-1"} />
-                <button type="submit" className="w-fit rounded-[12px] bg-accent px-5 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("letters.replySubmit")}</button>
+                <button type="submit" className="w-fit btn btn-primary btn-sm">{tr("letters.replySubmit")}</button>
               </form>
               <div className="mt-3 border-t border-line pt-3">
                 <StatusButton id={letter.id} status="no_answer" label={tr("letters.markNoAnswer")} />
@@ -276,7 +276,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
           )}
 
           {canComplain && (
-            <Link href={`/cartas/${letter.id}/reclamacion`} className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
+            <Link href={`/cartas/${letter.id}/reclamacion`} className="mt-4 btn btn-primary">
               {tr("aepd.cta")}
             </Link>
           )}
@@ -289,7 +289,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
 
         {/* Comprobacion de resultado */}
         {letter.status !== "draft" && (
-          <section className="mt-4 rounded-card border border-line bg-surface p-5">
+          <section className="mt-4 card p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="min-w-0">
                 <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("letters.checkTitle")}</h2>
@@ -303,7 +303,7 @@ export default async function LetterPage({ params, searchParams }: PageProps<"/c
                 )}
               </div>
               <form action={`/api/letters/${letter.id}/check`} method="post">
-                <button type="submit" className="rounded-[10px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-medium text-ink hover:border-faint">{tr("letters.checkNow")}</button>
+                <button type="submit" className="btn btn-secondary btn-sm">{tr("letters.checkNow")}</button>
               </form>
             </div>
           </section>

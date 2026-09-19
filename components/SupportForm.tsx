@@ -41,7 +41,7 @@ export function SupportForm({ messages, locale, email, page }: { messages: Messa
     }
   }
 
-  const card = "rounded-card border border-line bg-surface p-6 sm:p-8";
+  const card = "card p-6 sm:p-8";
 
   if (sentTo) {
     return (
@@ -78,7 +78,7 @@ export function SupportForm({ messages, locale, email, page }: { messages: Messa
         </p>
       )}
 
-      <button type="submit" disabled={busy} className="mt-5 w-full rounded-[12px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-60">
+      <button type="submit" disabled={busy} className="mt-5 w-full btn btn-primary btn-lg">
         {busy ? tr("support.sending") : tr("support.send")}
       </button>
     </form>

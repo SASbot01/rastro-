@@ -47,7 +47,7 @@ const SEVERITY_DOT: Record<Severity, string> = {
   info: "bg-faint",
 };
 
-const CARD = "rounded-card border border-line bg-surface";
+const CARD = "card";
 
 function hostOf(url: string | null): string | null {
   if (!url) return null;
@@ -204,10 +204,10 @@ export function ReportView({
                             <form action="/api/letters" method="post">
                               <input type="hidden" name="request_id" value={requestId} />
                               <input type="hidden" name="site_slug" value={c.slug} />
-                              <button type="submit" className="rounded-[10px] bg-accent px-3 py-1.5 text-[12.5px] font-semibold text-black hover:opacity-90">{tr("report.sitesAsk")}</button>
+                              <button type="submit" className="btn btn-primary btn-sm">{tr("report.sitesAsk")}</button>
                             </form>
                           ) : (
-                            <Link href="/pro" className="rounded-[10px] border border-line px-3 py-1.5 text-[12.5px] font-semibold text-ink hover:border-accent">{tr("report.sitesAsk")} · {tr("pro.badge")}</Link>
+                            <Link href="/pro" className="btn btn-secondary btn-sm">{tr("report.sitesAsk")} · {tr("pro.badge")}</Link>
                           )}
                         </span>
                       </li>

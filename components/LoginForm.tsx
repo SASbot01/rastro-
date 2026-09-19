@@ -69,7 +69,7 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
     }
   }
 
-  const card = "rounded-card border border-line bg-surface p-6 sm:p-8";
+  const card = "card p-6 sm:p-8";
 
   if (step === "code") {
     return (
@@ -94,7 +94,7 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
             {tr(error)}
           </p>
         )}
-        <button type="submit" disabled={busy} className="mt-4 w-full rounded-[12px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-60">
+        <button type="submit" disabled={busy} className="mt-4 w-full btn btn-primary btn-lg">
           {busy ? tr("sent.codeChecking") : tr("login.codeSubmit")}
         </button>
         <p className="mt-4 text-[12.5px] text-faint">{tr("login.codeLink")}</p>
@@ -114,7 +114,7 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
         <form action="/api/auth/google/start" method="post" className="mt-6">
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-3 rounded-[12px] border border-line bg-surface-2 px-5 py-3.5 text-[15px] font-semibold text-ink hover:border-faint"
+            className="flex w-full items-center justify-center gap-3 btn btn-secondary"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
               <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.7v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z" />
@@ -158,7 +158,7 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
             {tr(error)}
           </p>
         )}
-        <button type="submit" disabled={busy} className="mt-4 w-full rounded-[12px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-60">
+        <button type="submit" disabled={busy} className="mt-4 w-full btn btn-primary btn-lg">
           {busy ? tr("login.submitting") : tr("login.submitCode")}
         </button>
         <p className="mt-3 text-[12.5px] leading-relaxed text-faint">{tr("login.noPassword")}</p>

@@ -18,6 +18,7 @@ export const viewport: Viewport = {
   themeColor: "#0a0a0a",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -52,7 +53,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const cfToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
   return (
     <html lang={locale} data-theme="dark" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full pb-[76px] sm:pb-0">
+      <body className="min-h-full pb-[calc(64px+env(safe-area-inset-bottom))] sm:pb-0">
         <a className="ex-skip" href="#page-content">{messages.experience.skipContent}</a>
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px]">
           <SideNav messages={getMessages(locale)} />

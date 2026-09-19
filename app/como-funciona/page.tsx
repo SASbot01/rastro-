@@ -28,7 +28,7 @@ export default async function HowPage() {
 
         <div className="mt-8 grid gap-4">
           {sections.map((sec) => (
-            <section key={sec.t} className="rounded-card border border-line bg-surface p-5 sm:p-6">
+            <section key={sec.t} className="card p-5 sm:p-6">
               <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-ink">{sec.t}</h2>
               <ul className="mt-3 grid gap-2.5">
                 {sec.items.map((it) => (
@@ -40,7 +40,7 @@ export default async function HowPage() {
               </ul>
             </section>
           ))}
-          <section className="rounded-card border border-line bg-surface p-5 sm:p-6">
+          <section className="card p-5 sm:p-6">
             <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-ink">{tr("how.ownerTitle")}</h2>
             <p className="mt-2 text-[14.5px] leading-relaxed text-muted">{tr("how.ownerBody", { owner, email })}</p>
             <div className="mt-3 flex flex-wrap gap-4 text-[14px]">

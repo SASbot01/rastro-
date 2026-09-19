@@ -110,7 +110,7 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
           <p className="mt-6 rounded-[10px] bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-accent">{tr("aepd.notYet")}</p>
         ) : (
           <>
-            <section className="mt-6 rounded-card border border-line bg-surface p-5">
+            <section className="mt-6 card p-5">
               <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("aepd.text")}</h2>
               <pre className="mt-2 whitespace-pre-wrap rounded-[10px] bg-paper p-4 font-sans text-[14px] leading-[1.7] text-ink">{complaint}</pre>
               <div className="mt-4">
@@ -118,7 +118,7 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
               </div>
             </section>
 
-            <section className="mt-4 rounded-card border border-line bg-surface p-5">
+            <section className="mt-4 card p-5">
               <h2 className="text-[15px] font-semibold text-ink">{tr("aepd.guideTitle")}</h2>
               <ol className="mt-4 grid gap-3">
                 {steps.map((s, i) => (

@@ -25,7 +25,7 @@ interface ReportRow {
 interface AiSnapLite { facts: FactsByProvider; changes: AiChange[]; taken_at: string }
 interface ScanRow { id: string; status: string; services: unknown[]; started_at: string }
 
-const CARD = "flex min-w-0 flex-col overflow-hidden rounded-card border border-line bg-surface";
+const CARD = "flex min-w-0 flex-col overflow-hidden card";
 const LEVEL_TEXT: Record<Level, string> = { green: "text-ok", orange: "text-warn", red: "text-danger" };
 const LEVEL_HEX: Record<Level, string> = { green: "#4dfc5f", orange: "#ffb020", red: "#ff5f5f" };
 const RULE_COLOR: Record<string, string> = {
@@ -190,7 +190,7 @@ function DashboardBody({ locale, messages, user, latest, previous, list, scan, l
   return (
     <div className="mt-5 grid gap-4 lg:grid-cols-2">
       {/* Puntuacion */}
-      <section className="relative min-w-0 overflow-hidden rounded-card border border-line bg-surface p-6 lg:col-span-2">
+      <section className="relative min-w-0 overflow-hidden card p-6 lg:col-span-2">
         <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full blur-3xl" style={{ background: LEVEL_HEX[level], opacity: 0.16 }} aria-hidden="true" />
         <div className="flex flex-wrap items-center justify-between gap-6"><div><p className="ex-eyebrow">{tr("experience.label")}</p><h2 className="mt-3 max-w-[16ch] text-3xl font-medium tracking-[-.04em]">{tr("experience.dashboardTitle")}</h2><p className="ex-note mt-3">{tr("experience.highScore")}</p><Link className="ex-button mt-5" href={`/informe/${latest.request_id}`}>{tr("experience.viewReport")} ↗</Link></div><ScoreRing score={latest.score} label={tr("experience.score")} size={180}/></div>
         <div className="mt-3 flex flex-wrap gap-2">

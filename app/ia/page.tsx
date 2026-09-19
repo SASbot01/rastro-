@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const PROVIDERS: WatchProvider[] = ["perplexity", "openai", "gemini"];
-const CARD = "min-w-0 overflow-hidden rounded-card border border-line bg-surface p-5 sm:p-6";
+const CARD = "min-w-0 overflow-hidden card p-5 sm:p-6";
 
 function hostOf(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; }
@@ -61,24 +61,24 @@ export default async function AiMemoryPage({ searchParams }: { searchParams: Pro
         <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.03em] text-ink sm:text-[36px]">{tr("aiWatch.title")}</h1>
         <p className="mt-3 max-w-[64ch] text-[15.5px] leading-relaxed text-muted">{tr("aiWatch.subtitle")}</p>
 
-        <div className="mt-5 flex flex-wrap items-center gap-3 rounded-card border border-line bg-surface px-5 py-4">
+        <div className="mt-5 flex flex-wrap items-center gap-3 card px-5 py-4">
           <p className="min-w-0 flex-1 text-[13.5px] leading-relaxed text-muted">
             {pro && user.monitoring ? <><span className="mr-2 inline-block h-2 w-2 rounded-full bg-accent align-middle" /><span className="font-semibold text-ink">{tr("aiWatch.watchOn")}</span></> : tr("aiWatch.watchOff")}
             {hoy && <span className="mt-1 block text-warn">{tr("aiWatch.checkedToday")}</span>}
           </p>
           {pro ? (
             <form action="/api/ai-watch" method="post" className="shrink-0">
-              <button type="submit" className="rounded-[12px] bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-black hover:opacity-90">{tr("aiWatch.checkNow")}</button>
+              <button type="submit" className="btn btn-primary btn-sm">{tr("aiWatch.checkNow")}</button>
             </form>
           ) : (
-            <Link href="/pro" className="shrink-0 rounded-[12px] bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-black hover:opacity-90">{tr("aiWatch.watchCta")}</Link>
+            <Link href="/pro" className="shrink-0 btn btn-primary btn-sm">{tr("aiWatch.watchCta")}</Link>
           )}
         </div>
 
         {!latest ? (
           <section className={CARD + " mt-5"}>
             <p className="text-[14.5px] text-muted">{tr("aiWatch.empty")}</p>
-            <Link href="/#form" className="mt-4 inline-block rounded-[12px] bg-accent px-5 py-3 text-[14px] font-semibold text-black">{tr("aiWatch.emptyCta")}</Link>
+            <Link href="/#form" className="mt-4 btn btn-primary">{tr("aiWatch.emptyCta")}</Link>
           </section>
         ) : (
           <>

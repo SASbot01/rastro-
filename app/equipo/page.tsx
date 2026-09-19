@@ -10,7 +10,7 @@ import { memberSnapshots, orgForOwner, orgMembers } from "@/lib/org";
 import { sharedMonitoring } from "@/lib/team-privacy";
 
 export const dynamic = "force-dynamic";
-const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
+const CARD = "card p-5 sm:p-6";
 const FIELD = "min-w-0 flex-1 rounded-[12px] border border-line bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink placeholder:text-faint focus:border-accent focus:outline-none";
 const LEVEL_TEXT = { green: "text-ok", orange: "text-warn", red: "text-danger" } as const;
 
@@ -46,7 +46,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
         {/* Nombre / creacion */}
         <form action="/api/org" method="post" className="mt-4 flex gap-2">
           <input name="name" required minLength={2} maxLength={80} defaultValue={org?.name ?? ""} placeholder={tr("team.nameLabel")} className={FIELD} />
-          <button type="submit" className="shrink-0 rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("team.rename")}</button>
+          <button type="submit" className="shrink-0 btn btn-secondary btn-sm">{tr("team.rename")}</button>
         </form>
 
         {org && (
@@ -98,7 +98,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                 <form action="/api/org/members" method="post" className="mt-4 flex gap-2">
                   <input type="hidden" name="action" value="add" />
                   <input name="email" type="email" required placeholder={tr("team.emailPlaceholder")} className={FIELD} />
-                  <button type="submit" className="shrink-0 rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("team.invite")}</button>
+                  <button type="submit" className="shrink-0 btn btn-primary btn-sm">{tr("team.invite")}</button>
                 </form>
               )}
             </section>
