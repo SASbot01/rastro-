@@ -6,17 +6,16 @@ import { createVerifyCode, createVerifyToken, hashIp } from "@/lib/crypto";
 import { sendVerifyEmail } from "@/lib/email";
 import { serverEnv } from "@/lib/env";
 import { allowRequest } from "@/lib/rate-limit";
+import { clientIpFrom } from "@/lib/client-ip";
 
 import { track } from "@/lib/events";
 export const runtime = "nodejs";
 
 const TOKEN_TTL_HOURS = 24;
 
-/** Mejor aproximación a la IP del visitante detrás del proxy de Vercel. */
+/** IP del visitante (ver lib/client-ip.ts: detras de Cloudflare manda CF-Connecting-IP). */
 function clientIp(h: Headers): string {
-  const forwarded = h.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return h.get("x-real-ip") ?? "0.0.0.0";
+  return clientIpFrom(h);
 }
 
 export async function POST(request: Request) {
