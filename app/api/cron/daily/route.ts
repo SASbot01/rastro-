@@ -6,6 +6,7 @@ import { createLoginLink } from "@/lib/login-link";
 import { absoluteUrl } from "@/lib/env";
 import { getMessages, isLocale, translator, type Locale } from "@/lib/i18n";
 import { isPro } from "@/lib/plan";
+import { dailyOutcome } from "@/lib/daily-core";
 
 /**
  * Comprobacion diaria barata (Pro con vigilancia): solo HIBP por correo
@@ -54,15 +55,17 @@ export async function GET(request: Request) {
       continue;
     }
 
-    const [hibp, pastes] = await Promise.all([getBreaches(user.email), getPastes(user.email)]);
+    // Una peticion a HIBP cada vez (el limite es por clave): las dos a la vez hacian que una se llevara un 429.
+    const hibp = await getBreaches(user.email);
     if (!hibp.checked) {
       await supabase.from("daily_checks").insert({ user_id: user.id, day: today, status: "error" });
       results.push({ user: user.id, status: `hibp: ${hibp.reason}` });
       await sleep(PAUSE_MS);
       continue;
     }
+    await sleep(PAUSE_MS);
+    const pastes = await getPastes(user.email);
     const names = hibp.breaches.map((b) => b.name);
-    const pasteCount = pastes.checked ? pastes.pastes.length : 0;
 
     // Referencia: la ultima comprobacion; si no hay, el ultimo informe completo.
     const { data: prev } = await supabase
@@ -73,22 +76,22 @@ export async function GET(request: Request) {
       .order("day", { ascending: false })
       .limit(1)
       .maybeSingle<PrevCheck>();
-    let knownNames: Set<string>;
-    let knownPastes: number;
+    const { data: report } = await lastReport(user.id);
+    // Nombres conocidos = los del ultimo informe + los avisados en comprobaciones anteriores.
+    const knownNames = (report?.raw?.hibp?.breaches ?? []).map((b) => b.name);
     if (prev) {
-      // Nombres conocidos = los del ultimo informe + los avisados en comprobaciones anteriores.
-      const { data: report } = await lastReport(user.id);
-      knownNames = new Set([...(report?.raw?.hibp?.breaches ?? []).map((b) => b.name)]);
       const { data: alerts } = await supabase.from("daily_checks").select("new_breaches").eq("user_id", user.id).returns<{ new_breaches: string[] }[]>();
-      for (const a of alerts ?? []) for (const n of a.new_breaches ?? []) knownNames.add(n);
-      knownPastes = prev.pastes;
-    } else {
-      const { data: report } = await lastReport(user.id);
-      knownNames = new Set((report?.raw?.hibp?.breaches ?? []).map((b) => b.name));
-      knownPastes = report?.raw?.pastes?.checked ? (report.raw.pastes.pastes?.length ?? 0) : pasteCount;
+      for (const a of alerts ?? []) knownNames.push(...(a.new_breaches ?? []));
     }
-    const newBreaches = names.filter((n) => !knownNames.has(n));
-    const newPastes = Math.max(0, pasteCount - knownPastes);
+    // La decision (pura, con tests) vive en lib/daily-core.ts: un fallo al mirar los volcados no es "0 volcados".
+    const { newBreaches, newPastes, pastesToStore: pasteCount } = dailyOutcome({
+      names,
+      pastes: pastes.checked ? pastes.pastes.length : null,
+      knownNames,
+      prevBreaches: prev ? prev.breaches : null,
+      knownPastes: prev ? prev.pastes : report?.raw?.pastes?.checked ? (report.raw.pastes.pastes?.length ?? 0) : null,
+      reportChecked: Boolean(report?.raw?.hibp?.checked),
+    });
     const alert = newBreaches.length > 0 || newPastes > 0;
 
     await supabase.from("daily_checks").insert({
@@ -103,7 +106,6 @@ export async function GET(request: Request) {
 
     if (alert) {
       const locale: Locale = isLocale(user.locale) ? user.locale : "es";
-      const { data: report } = await lastReport(user.id);
       const reportPath = report ? `/informe/${report.request_id}` : "/cuenta";
       try {
         const link = await createLoginLink(user.email, locale, reportPath);
