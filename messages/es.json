@@ -1702,5 +1702,79 @@
     "p2": "Queda guardado en la cronología de tu carta, con fecha, por si alguna vez lo necesitas como prueba. Seguiremos comprobándolo por si vuelve a aparecer.",
     "cta": "Ver la prueba",
     "footer": "Recibes este aviso porque enviaste una solicitud de supresión con Rastro."
+  },
+  "aiWatch": {
+    "eyebrow": "Memoria de la IA",
+    "title": "Lo que la IA dice de ti, mes a mes",
+    "subtitle": "Guardamos la respuesta literal de cada asistente cada vez que miramos y te avisamos cuando cambia: si aprende dónde trabajas, si aparece un teléfono, si te confunde con otra persona.",
+    "providers": {
+      "perplexity": "Perplexity",
+      "openai": "ChatGPT",
+      "gemini": "Gemini"
+    },
+    "contact": {
+      "phone": "un teléfono",
+      "email": "un correo",
+      "address": "una dirección postal",
+      "social": "perfiles en redes"
+    },
+    "change": {
+      "learned_you": "{ai} ahora te identifica. Antes no sabía quién eras.",
+      "forgot_you": "{ai} ya no te identifica. Buena noticia.",
+      "employer_new": "{ai} ahora dice dónde trabajas: {after}.",
+      "employer_changed": "{ai} ha cambiado tu lugar de trabajo: de {before} a {after}.",
+      "employer_gone": "{ai} ya no dice dónde trabajas (antes: {before}).",
+      "city_new": "{ai} ahora dice dónde vives: {after}.",
+      "city_changed": "{ai} ha cambiado tu ciudad: de {before} a {after}.",
+      "city_gone": "{ai} ya no dice dónde vives (antes: {before}).",
+      "contact_new": "{ai} ahora muestra {after} tuyo.",
+      "contact_gone": "{ai} ya no muestra {before}.",
+      "mixes_on": "{ai} ha empezado a mezclarte con otra persona con tu nombre.",
+      "mixes_off": "{ai} ya no te mezcla con otras personas.",
+      "claim_new": "{ai} cuenta algo nuevo: «{after}»"
+    },
+    "now": "Ahora mismo",
+    "knows": "Cuánto sabe de ti",
+    "knowsNothing": "No te identifica",
+    "notAsked": "Sin consultar todavía",
+    "fields": {
+      "employer": "Trabajo",
+      "role": "Puesto",
+      "city": "Ciudad",
+      "contact": "Contacto",
+      "mixes": "Te mezcla con otras personas"
+    },
+    "literal": "Ver la respuesta literal",
+    "sources": "Fuentes",
+    "rectify": "Pedir que lo corrijan o lo retiren",
+    "timeline": "Cronología",
+    "noChanges": "Sin cambios frente a la vez anterior.",
+    "first": "Primera foto: a partir de aquí comparamos.",
+    "sourceReport": "Informe",
+    "sourceWatch": "Comprobación semanal",
+    "empty": "Todavía no hay ninguna foto. Se crea con tu próximo informe.",
+    "emptyCta": "Pedir mi informe",
+    "watchOn": "Comprobación semanal activa",
+    "watchOff": "Con Pro y la vigilancia activa, preguntamos a las IA cada semana y te avisamos si cambia algo.",
+    "watchCta": "Activar vigilancia",
+    "checkNow": "Preguntar ahora",
+    "checkNowHint": "Una vez al día.",
+    "checkedToday": "Ya hemos preguntado hoy. Vuelve mañana.",
+    "missing": "Aún no consultamos: {list}.",
+    "minor": "detalle",
+    "email": {
+      "subject": "Lo que la IA dice de ti ha cambiado",
+      "greeting": "Hola, {name}:",
+      "intro": "Hemos vuelto a preguntar por ti a los asistentes de IA y hay cambios:",
+      "outro": "En Rastro tienes la respuesta literal y cómo pedir que lo corrijan o lo retiren.",
+      "cta": "Ver los cambios",
+      "footer": "Recibes este aviso porque tienes la vigilancia activa. Puedes desactivarla en tu perfil."
+    },
+    "hubTitle": "Memoria de la IA",
+    "hubBody": "Qué dice cada IA de ti, guardado cada mes, con aviso cuando cambia.",
+    "dashTitle": "La IA y tú",
+    "dashChanged": "{n} cambios desde la última vez",
+    "dashSame": "Sin cambios desde la última vez",
+    "dashOpen": "Ver qué dice cada IA"
   }
 }

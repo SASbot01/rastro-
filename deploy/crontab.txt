@@ -3,6 +3,7 @@
 0 5 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/monitor >/dev/null 2>&1 # rastro
 0 6 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/letters >/dev/null 2>&1 # rastro
 30 5 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/repair  >/dev/null 2>&1 # rastro
+30 6 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/ai-watch >/dev/null 2>&1 # rastro
 0 7 * * * curl -fsS -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/daily   >/dev/null 2>&1 # rastro
 30 3 * * * /home/s4sf/rastro/deploy/backup.sh >> /home/s4sf/backups/rastro-backup.log 2>&1 # rastro
 */5 * * * * /home/s4sf/rastro/deploy/watchdog.sh # rastro

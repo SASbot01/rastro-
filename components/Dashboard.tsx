@@ -3,6 +3,7 @@ import { AskBubble } from "@/components/AskBubble";
 import { GuideChecklist } from "@/components/GuideChecklist";
 import { RemovalCounter } from "@/components/RemovalCounter";
 import { removalStats, type RemovalStats } from "@/lib/removals";
+import { knowledgeLevel, type AiChange, type FactsByProvider, type WatchProvider } from "@/lib/ai-watch-core";
 import { ScoreRing } from "@/components/experience/ScoreRing";
 import { EmptyState } from "@/components/experience/EmptyState";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
@@ -21,6 +22,7 @@ interface ReportRow {
   created_at: string;
   requests: { full_name: string; status: string; user_id: string } | { full_name: string; status: string; user_id: string }[] | null;
 }
+interface AiSnapLite { facts: FactsByProvider; changes: AiChange[]; taken_at: string }
 interface ScanRow { id: string; status: string; services: unknown[]; started_at: string }
 
 const CARD = "flex min-w-0 flex-col overflow-hidden rounded-card border border-line bg-surface";
@@ -117,7 +119,7 @@ function reqOf(r: ReportRow) {
 export async function Dashboard({ locale, messages, user }: { locale: Locale; messages: Messages; user: UserRow }) {
   const tr = translator(messages);
   const supabase = supabaseAdmin();
-  const [{ data: reports }, { data: scan }, { count: letters }, removals] = await Promise.all([
+  const [{ data: reports }, { data: scan }, { count: letters }, removals, { data: aiSnap }] = await Promise.all([
     supabase
       .from("reports")
       .select("request_id, score, breakdown, findings, actions, created_at, requests!inner(full_name, status, user_id)")
@@ -128,6 +130,7 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
     supabase.from("mailbox_scans").select("id, status, services, started_at").eq("user_id", user.id).eq("status", "done").order("started_at", { ascending: false }).limit(1).maybeSingle<ScanRow>(),
     supabase.from("letters").select("id", { count: "exact", head: true }).eq("user_id", user.id),
     removalStats(user.id),
+    supabase.from("ai_snapshots").select("facts, changes, taken_at").eq("user_id", user.id).order("taken_at", { ascending: false }).limit(1).maybeSingle<AiSnapLite>(),
   ]);
   const list = reports ?? [];
   const latest = list[0] ?? null;
@@ -152,7 +155,7 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
           <EmptyState title={tr("dash.noReportTitle")} body={tr("dash.noReportBody")} href="/#form" cta={tr("dash.noReportCta")}/>
         </section>
       ) : (
-        <DashboardBody locale={locale} messages={messages} user={user} latest={latest} previous={previous} list={list} scan={scan ?? null} letters={letters ?? 0} removals={removals} quick={quick} dateFmt={dateFmt} />
+        <DashboardBody locale={locale} messages={messages} user={user} latest={latest} previous={previous} list={list} scan={scan ?? null} letters={letters ?? 0} removals={removals} aiSnap={aiSnap ?? null} quick={quick} dateFmt={dateFmt} />
       )}
 
       {/* Preguntale a Rastro */}
@@ -168,8 +171,8 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
   );
 }
 
-function DashboardBody({ locale, messages, user, latest, previous, list, scan, letters, removals, quick, dateFmt }: {
-  locale: Locale; messages: Messages; user: UserRow; latest: ReportRow; previous: ReportRow | null; list: ReportRow[]; scan: ScanRow | null; letters: number; removals: RemovalStats;
+function DashboardBody({ locale, messages, user, latest, previous, list, scan, letters, removals, aiSnap, quick, dateFmt }: {
+  locale: Locale; messages: Messages; user: UserRow; latest: ReportRow; previous: ReportRow | null; list: ReportRow[]; scan: ScanRow | null; letters: number; removals: RemovalStats; aiSnap: AiSnapLite | null;
   quick: Array<{ href: string; label: string; icon: string }>; dateFmt: Intl.DateTimeFormat;
 }) {
   const tr = translator(messages);
@@ -209,6 +212,33 @@ function DashboardBody({ locale, messages, user, latest, previous, list, scan, l
 
       {/* Retiradas comprobadas */}
       {removals.found > 0 && <div className="min-w-0 lg:col-span-2"><RemovalCounter stats={removals} messages={messages} href={removals.found > removals.requested ? `/informe/${latest.request_id}` : "/herramientas"} /></div>}
+
+      {/* La IA y tu */}
+      {aiSnap && (
+        <section className={CARD + " p-6 lg:col-span-2"}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="text-[16px] font-semibold text-ink">{tr("aiWatch.dashTitle")}</h2>
+              <p className={"mt-1 text-[13px] " + (aiSnap.changes.some((c) => !c.minor) ? "text-warn" : "text-muted")}>
+                {aiSnap.changes.some((c) => !c.minor) ? tr("aiWatch.dashChanged", { n: aiSnap.changes.filter((c) => !c.minor).length }) : tr("aiWatch.dashSame")} · {dateFmt.format(new Date(aiSnap.taken_at))}
+              </p>
+            </div>
+            <Link href="/ia" className="text-[13px] font-medium text-accent underline underline-offset-4">{tr("aiWatch.dashOpen")}</Link>
+          </div>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-3">
+            {(Object.keys(aiSnap.facts) as WatchProvider[]).map((p) => {
+              const lv = knowledgeLevel(aiSnap.facts[p]);
+              return (
+                <li key={p} className="min-w-0 rounded-[14px] bg-surface-2 px-3.5 py-3">
+                  <p className="flex items-baseline justify-between text-[13px] font-semibold text-ink"><span>{tr(`aiWatch.providers.${p}`)}</span><span>{lv}<span className="text-faint">/100</span></span></p>
+                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-line"><div className={"h-full rounded-full " + (lv >= 60 ? "bg-danger" : lv >= 30 ? "bg-warn" : "bg-accent")} style={{ width: `${Math.max(3, lv)}%` }} /></div>
+                  <p className="mt-1.5 truncate text-[11.5px] text-faint">{lv === 0 ? tr("aiWatch.knowsNothing") : tr("aiWatch.knows")}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
       {/* Donut */}
       <section className={CARD + " p-6"}>

@@ -1702,5 +1702,79 @@
     "p2": "It is saved in your letter's timeline, with the date, in case you ever need it as evidence. We'll keep checking in case it comes back.",
     "cta": "See the evidence",
     "footer": "You get this notice because you sent an erasure request with Rastro."
+  },
+  "aiWatch": {
+    "eyebrow": "AI memory",
+    "title": "What AI says about you, month by month",
+    "subtitle": "We save each assistant's literal answer every time we look and alert you when it changes: if it learns where you work, if a phone number shows up, if it confuses you with someone else.",
+    "providers": {
+      "perplexity": "Perplexity",
+      "openai": "ChatGPT",
+      "gemini": "Gemini"
+    },
+    "contact": {
+      "phone": "a phone number",
+      "email": "an email address",
+      "address": "a postal address",
+      "social": "social profiles"
+    },
+    "change": {
+      "learned_you": "{ai} now identifies you. It didn't know who you were before.",
+      "forgot_you": "{ai} no longer identifies you. Good news.",
+      "employer_new": "{ai} now says where you work: {after}.",
+      "employer_changed": "{ai} changed your workplace: from {before} to {after}.",
+      "employer_gone": "{ai} no longer says where you work (before: {before}).",
+      "city_new": "{ai} now says where you live: {after}.",
+      "city_changed": "{ai} changed your city: from {before} to {after}.",
+      "city_gone": "{ai} no longer says where you live (before: {before}).",
+      "contact_new": "{ai} now shows {after} of yours.",
+      "contact_gone": "{ai} no longer shows {before}.",
+      "mixes_on": "{ai} has started mixing you up with someone else with your name.",
+      "mixes_off": "{ai} no longer mixes you up with other people.",
+      "claim_new": "{ai} says something new: “{after}”"
+    },
+    "now": "Right now",
+    "knows": "How much it knows about you",
+    "knowsNothing": "Doesn't identify you",
+    "notAsked": "Not asked yet",
+    "fields": {
+      "employer": "Work",
+      "role": "Role",
+      "city": "City",
+      "contact": "Contact",
+      "mixes": "Mixes you up with other people"
+    },
+    "literal": "See the literal answer",
+    "sources": "Sources",
+    "rectify": "Ask them to correct or remove it",
+    "timeline": "Timeline",
+    "noChanges": "No changes since last time.",
+    "first": "First snapshot: we compare from here.",
+    "sourceReport": "Report",
+    "sourceWatch": "Weekly check",
+    "empty": "No snapshot yet. It is created with your next report.",
+    "emptyCta": "Get my report",
+    "watchOn": "Weekly check active",
+    "watchOff": "With Pro and monitoring on, we ask the AIs every week and alert you if anything changes.",
+    "watchCta": "Turn on monitoring",
+    "checkNow": "Ask now",
+    "checkNowHint": "Once a day.",
+    "checkedToday": "We already asked today. Come back tomorrow.",
+    "missing": "Not asked yet: {list}.",
+    "minor": "detail",
+    "email": {
+      "subject": "What AI says about you has changed",
+      "greeting": "Hi {name},",
+      "intro": "We asked the AI assistants about you again and there are changes:",
+      "outro": "In Rastro you have the literal answer and how to ask them to correct or remove it.",
+      "cta": "See the changes",
+      "footer": "You get this notice because monitoring is on. You can turn it off in your profile."
+    },
+    "hubTitle": "AI memory",
+    "hubBody": "What each AI says about you, saved every month, with an alert when it changes.",
+    "dashTitle": "AI and you",
+    "dashChanged": "{n} changes since last time",
+    "dashSame": "No changes since last time",
+    "dashOpen": "See what each AI says"
   }
 }
