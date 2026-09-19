@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase";
-import { hashCode, normalizeEmail } from "@/lib/crypto";
+import { hashCode, normalizeEmail, safeEqual } from "@/lib/crypto";
 import { isLocale } from "@/lib/i18n";
 import { ensureUser } from "@/lib/users";
 import { setSessionCookie } from "@/lib/session";
@@ -46,12 +46,22 @@ export async function POST(request: Request) {
   }
   if (row.attempts >= MAX_ATTEMPTS) return NextResponse.json({ ok: false, error: "formErrors.codeLocked" }, { status: 429 });
 
-  if (row.code_hash !== hashCode(code)) {
-    const attempts = row.attempts + 1;
-    await supabase
-      .from("login_tokens")
-      .update(attempts >= MAX_ATTEMPTS ? { attempts, code_hash: null, used_at: new Date().toISOString() } : { attempts })
-      .eq("token_hash", row.token_hash);
+  // El intento se apunta ANTES de comparar y de forma atomica (solo si nadie lo ha apuntado entre medias). Leer,
+  // comparar y luego sumar dejaba que muchas peticiones en paralelo leyeran todas "0 intentos" y probaran
+  // decenas de codigos con un solo correo de acceso, en vez de 5.
+  const attempts = row.attempts + 1;
+  const { data: counted } = await supabase
+    .from("login_tokens")
+    .update({ attempts })
+    .eq("token_hash", row.token_hash)
+    .eq("attempts", row.attempts)
+    .is("used_at", null)
+    .select("token_hash")
+    .maybeSingle();
+  if (!counted) return NextResponse.json({ ok: false, error: "formErrors.code" }, { status: 429 });
+
+  if (!safeEqual(row.code_hash, hashCode(code))) {
+    if (attempts >= MAX_ATTEMPTS) await supabase.from("login_tokens").update({ code_hash: null, used_at: new Date().toISOString() }).eq("token_hash", row.token_hash);
     return NextResponse.json(
       { ok: false, error: attempts >= MAX_ATTEMPTS ? "formErrors.codeLocked" : "formErrors.code" },
       { status: attempts >= MAX_ATTEMPTS ? 429 : 400 },
