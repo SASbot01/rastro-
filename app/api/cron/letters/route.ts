@@ -176,6 +176,7 @@ async function recheckLetters(supabase: ReturnType<typeof supabaseAdmin>): Promi
     .select("id, host, target_url, locale, still_listed, removed_at, check_count, events, users(email), requests(full_name)")
     .in("status", ["sent", "answered", "no_answer"])
     .in("kind", ["site", "image"])
+    .is("mailbox_scan_id", null) // las de cierre de cuenta apuntan a la portada del servicio: ahi no hay ficha que mirar
     // Las ya retiradas se siguen mirando: si el dato reaparece, la carta se reabre (applyCheck -> 'reappeared').
     .or(`last_check_at.is.null,last_check_at.lt.${cutoff}`)
     .order("last_check_at", { ascending: true, nullsFirst: true })
