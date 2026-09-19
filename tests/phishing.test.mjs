@@ -42,3 +42,30 @@ test("las frases dicen cual es la web oficial", () => {
   assert.ok(d.lines.some((l) => /contraseña/.test(l)));
   assert.equal(levenshtein("santadner", "santander"), 1);
 });
+
+test("empresas y palabras reales a una o dos letras de una marca no son imitaciones", () => {
+  // Todas daban "Cuidado: esta web imita a ..." en rojo: fabricante aleman, cadena de TV, tienda oficial de Netflix, Endesa X, apellidos y palabras corrientes.
+  for (const h of ["www.amazone.de", "amazone.net", "revolt.tv", "netflix.shop", "www.endesax.com", "bannister.com", "banister.com", "microvolt.com", "microstat.com", "papal.com", "goggle.com", "oranje.nl", "correo.com", "abaca.com"]) {
+    assert.equal(level(h), "none", h);
+    assert.equal(level(h, { hasPassword: true }), "none", h + " (con acceso)");
+  }
+});
+
+test("dominios con ñ o tildes con formulario de acceso no son 'letras de otro alfabeto'", () => {
+  for (const h of ["xn--espaa-rta.es", "xn--logroo-0wa.es", "xn--corua-rta.gal", "xn--mlaga-qta.es"]) assert.equal(level(h, { hasPassword: true }), "none", h);
+  // Cirilico de verdad si avisa, con marca (peligro) o sin ella (sospechosa si pide contraseña).
+  assert.equal(level("xn--mazon-3ve.com"), "danger");
+  assert.equal(level("xn--80ak6aa92e.com", { hasPassword: true }), "suspicious");
+});
+
+test("las imitaciones de siempre siguen saltando tras afinar las reglas", () => {
+  for (const h of ["santader.es", "caixabnak.es", "netfiix.com", "amazom.es", "bankimter.com", "linkedln.com", "sabadel.com", "g00gle.com", "faceb00k.com"]) assert.equal(level(h), "danger", h);
+  // A dos letras hace falta otra señal en el propio dominio (palabra cebo, extension barata u otro alfabeto).
+  assert.equal(level("mlcrosofd.com"), "none");
+  assert.equal(level("mlcrosofd-login.com"), "danger");
+  assert.equal(level("mlcrosofd.top"), "danger");
+  // Cebos que faltaban: facturas de suministros y la Seguridad Social escrita con guion.
+  assert.equal(level("movistar-factura.com", { hasPassword: true }), "danger");
+  assert.equal(level("seg-social-aviso.com", { hasCard: true }), "danger");
+  assert.equal(level("sede.seg-social.gob.es", { hasPassword: true }), "none");
+});

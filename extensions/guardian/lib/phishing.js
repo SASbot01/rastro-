@@ -1,7 +1,7 @@
 // Motor puro de deteccion de webs que imitan a otras. Todo se calcula con el nombre del dominio
 // y dos señales de la pagina (¿pide contraseña?, ¿pide tarjeta?). Sin red, sin listas remotas.
 import { baseDomain } from "./analyze.js";
-import { BAIT_WORDS, BRANDS, RISKY_TLDS } from "./brands.js";
+import { BAIT_WORDS, BRANDS, NOT_TYPOS, RISKY_TLDS } from "./brands.js";
 
 const CONFUSABLES = [[/0/g, "o"], [/1/g, "l"], [/3/g, "e"], [/4/g, "a"], [/5/g, "s"], [/7/g, "t"], [/8/g, "b"], [/\$/g, "s"], [/rn/g, "m"], [/vv/g, "w"], [/cl/g, "d"]];
 // Letras de otros alfabetos que se ven igual que una latina (cirilico y griego mas usados en ataques).
@@ -113,9 +113,16 @@ export function assessSite(input) {
     // a) El dominio base ES el nombre de la marca tras deshacer trucos (paypa1, аmazon, rnicrosoft) o con otra extension rara.
     if (compactBase === key && (rawBase !== rawKey || puny || risky)) { hit = brand; strength = 3; out.reasons.push(puny ? "homograph" : "lookalike"); break; }
     // b) A una o dos letras de la marca (santader, caixabnak). Solo marcas largas y misma inicial: menos falsos positivos.
-    if (key.length >= 6 && compactBase[0] === key[0] && compactBase !== key) {
+    //    Palabras y empresas reales que caen a una letra (revolt.tv, amazone.de, correo.*) quedan fuera, y a DOS letras
+    //    hace falta otra señal: si no, bannister.com "imitaba" a Bankinter y microvolt.com a Microsoft.
+    if (key.length >= 6 && compactBase[0] === key[0] && compactBase !== key && !NOT_TYPOS.has(rawBase)) {
       const d = levenshtein(compactBase, key, 2);
-      if (d === 1 || (d === 2 && key.length >= 9)) { hit = brand; strength = 3; out.reasons.push("typo"); break; }
+      if (d === 1 || (d === 2 && key.length >= 9 && (risky || bait || puny))) { hit = brand; strength = 3; out.reasons.push("typo"); break; }
+    }
+    // b2) La marca mal escrita como palabra suelta junto a un cebo o una extension barata (santader-clientes.com, caixabnak-acceso.top).
+    if (key.length >= 6 && (bait || risky)) {
+      const near = plainBase.split(/[^a-z0-9]+/).find((tk) => tk && tk !== plainBase && tk[0] === key[0] && tk !== key && !NOT_TYPOS.has(tk) && (() => { const d = levenshtein(tk, key, 2); return d === 1 || (d === 2 && key.length >= 9); })());
+      if (near) { hit = brand; strength = 3; out.reasons.push("typo"); break; }
     }
     // c) La marca aparece como palabra en un dominio que no es suyo (bbva-clientes.com, correos.paquete-info.top).
     const asToken = tokens.includes(rawKey) || plainTokens.includes(key) || (key.length >= 6 && compactBase.startsWith(key) && compactBase.length > key.length && BAIT_WORDS.some((w) => compactBase.slice(key.length) === w));
@@ -136,7 +143,9 @@ export function assessSite(input) {
   }
 
   // Sin marca: solo señales fuertes combinadas, y siempre como "sospechosa", nunca "peligro".
-  if (puny && asks) { out.level = "suspicious"; out.reasons.push("homograph", "asks_password"); return out; }
+  // Un dominio con ñ o tildes (logroño.es, españa.es) es normal: solo cuentan las letras de OTRO alfabeto (cirilico, griego...).
+  const foreignScript = /[^ -ɏ]/.test(labels.map(decodePunycode).join("."));
+  if (foreignScript && asks) { out.level = "suspicious"; out.reasons.push("homograph", "asks_password"); return out; }
   if (asks && input.https === false) { out.level = "suspicious"; out.reasons.push("no_https_login"); return out; }
   if (asks && risky && (bait || labels.length >= 4 || (host.match(/-/g) || []).length >= 3)) { out.level = "suspicious"; out.reasons.push("risky_tld", input.hasCard ? "asks_card" : "asks_password"); }
   return out;
