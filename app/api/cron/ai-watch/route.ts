@@ -6,6 +6,7 @@ import { sendNoticeEmail } from "@/lib/email";
 import { createLoginLink } from "@/lib/login-link";
 import { getMessages, isLocale, translator, type Locale } from "@/lib/i18n";
 import { track } from "@/lib/events";
+import { isCronSkipped } from "@/lib/demo-accounts";
 
 /**
  * Comprobacion semanal de lo que dicen las IA (Pro con vigilancia activa).
@@ -44,6 +45,8 @@ export async function GET(request: Request) {
     const claim = supabase.from("users").update({ ai_watch_last_at: new Date().toISOString() }).eq("id", user.id);
     const { data: claimed } = await (user.ai_watch_last_at === null ? claim.is("ai_watch_last_at", null) : claim.lt("ai_watch_last_at", cutoff)).select("id").maybeSingle();
     if (!claimed) continue;
+    // Cuentas de demostracion: datos preparados a mano; procesarlas de verdad estropea la demo. Ya reclamada, no vuelve a salir hasta el siguiente ciclo.
+    if (isCronSkipped(user.email)) { results.push({ user: user.id, status: "demo: omitida" }); continue; }
 
     const { data: last } = await supabase.from("requests").select("full_name, city, occupation").eq("user_id", user.id).eq("status", "done").order("created_at", { ascending: false }).limit(1).maybeSingle<LastRequest>();
     if (!last) { results.push({ user: user.id, status: "sin informe" }); continue; }
