@@ -61,8 +61,8 @@ export default async function ProPage() {
           </div>
         ) : (
           <div className={"mt-8 grid gap-4 " + (hasFamily ? "sm:grid-cols-3" : "sm:grid-cols-2")}>
-            <Card cta={tr("pro.cta")} name={tr("pro.monthly")} price={price.monthly} per={tr("pro.monthlyPer")} href={links.monthly} />
-            <Card cta={tr("pro.cta")} name={tr("pro.yearly")} price={price.yearly} per={tr("pro.yearlyPer")} save={tr("pro.yearlySave")} href={links.yearly} />
+            <Card cta={tr("pro.cta")} name={tr("pro.monthly")} price={price.monthly} per={tr("pro.monthlyPer")} href={links.monthly && "/api/go/checkout?plan=monthly"} />
+            <Card cta={tr("pro.cta")} name={tr("pro.yearly")} price={price.yearly} per={tr("pro.yearlyPer")} save={tr("pro.yearlySave")} href={links.yearly && "/api/go/checkout?plan=yearly"} />
             {hasFamily && (
               <Card
                 cta={tr("pro.cta")}
@@ -70,7 +70,7 @@ export default async function ProPage() {
                 price={links.familyYearly && !links.familyMonthly ? price.familyYearly : price.familyMonthly}
                 per={links.familyYearly && !links.familyMonthly ? tr("pro.familyYearlyPer", { n: FAMILY_SEATS }) : tr("pro.familyPer", { n: FAMILY_SEATS })}
                 save={tr("pro.familyHint")}
-                href={links.familyMonthly ?? links.familyYearly}
+                href={links.familyMonthly ? "/api/go/checkout?plan=familyMonthly" : "/api/go/checkout?plan=familyYearly"}
               />
             )}
           </div>

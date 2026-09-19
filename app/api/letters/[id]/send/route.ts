@@ -8,6 +8,7 @@ import { isPro } from "@/lib/plan";
 import { sendLetterEmail } from "@/lib/email";
 import { withEvent, type LetterEvent } from "@/lib/letters";
 
+import { track } from "@/lib/events";
 /**
  * "Enviar por mi": Rastro envia la carta al sitio en nombre del usuario
  * (formulario POST desde /cartas/[id], campo `to`). Reply-to y copia al
@@ -43,6 +44,7 @@ export async function POST(request: Request, ctx: RouteContext<"/api/letters/[id
 
   try {
     const { id: messageId } = await sendLetterEmail({ to, user: user.email, subject: letter.subject, body: letter.body });
+    void track("letter_sent", { subject: id, props: { via: "rastro" } });
     const now = new Date();
     const deadline = new Date(now);
     deadline.setMonth(deadline.getMonth() + 1); // "un mes" (art. 12.3), no 30 dias

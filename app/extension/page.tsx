@@ -5,6 +5,7 @@ import { MascotDemo } from "@/components/MascotDemo";
 import { getMessages, translator } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 
+import { track } from "@/lib/events";
 export async function generateMetadata(): Promise<Metadata> {
   const tr = translator(getMessages(await getLocale()));
   return { title: `Rastro Guardián — ${tr("ext.title")}`, description: tr("ext.subtitle"), alternates: { canonical: "/extension" } };
@@ -29,6 +30,7 @@ export default async function ExtensionPage() {
   const features = messages.ext.features as string[];
   const install = messages.ext.install as string[];
   const storeSteps = messages.ext.storeSteps as string[];
+  void track("extension_page_viewed", { locale });
   const storeUrl = process.env.NEXT_PUBLIC_CHROME_STORE_URL || "";
   const edgeUrl = process.env.NEXT_PUBLIC_EDGE_STORE_URL || "";
   const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";

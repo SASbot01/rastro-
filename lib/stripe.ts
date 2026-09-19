@@ -4,6 +4,7 @@ import { ensureUser, type UserRow } from "@/lib/users";
 import { normalizeEmail } from "@/lib/crypto";
 import type { Locale } from "@/lib/i18n";
 
+import { track } from "@/lib/events";
 /**
  * Stripe (plan Pro). Solo se usa desde el servidor: webhook y portal.
  * La suscripcion manda: cada evento de Stripe se traduce a plan/plan_until.
@@ -89,6 +90,8 @@ export async function syncSubscription(sub: Stripe.Subscription, hint: { userId?
     // Si cancela, Pro sigue hasta el fin del periodo pagado (isPro lo comprueba).
     plan_until: active || sub.cancel_at_period_end ? periodEnd(sub) : null,
   };
+  const { data: before } = await supabase.from("users").select("plan").eq("id", user.id).maybeSingle<{ plan: string }>();
+  if (active && before?.plan !== "pro") void track("pro_activated", { subject: user.id, props: { kind: teamSeats ? "team" : family ? "family" : "individual" } });
   const { error } = await supabase
     .from("users")
     .update({ stripe_customer_id: customerId, stripe_subscription_id: sub.id, plan_kind: teamSeats ? "team" : family ? "family" : "individual", ...patch })

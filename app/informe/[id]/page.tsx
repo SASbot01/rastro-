@@ -11,6 +11,7 @@ import { getSession, sessionOwns } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { isPro } from "@/lib/plan";
 
+import { track } from "@/lib/events";
 export const dynamic = "force-dynamic";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -135,6 +136,7 @@ export default async function ReportPage({ params, searchParams }: PageProps<"/i
       />
     );
   } else if (loaded.request.status === "done" && loaded.report) {
+    void track("report_viewed", { subject: loaded.request.id, locale, props: { score: loaded.report.score } });
     body = (
       <ReportView
         report={loaded.report}

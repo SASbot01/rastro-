@@ -10,6 +10,7 @@ import { LOCALES } from "@/lib/i18n";
 import { analyzeMessage } from "@/lib/ai/guardian";
 import type { KnownAccount } from "@/lib/report/accounts";
 
+import { track } from "@/lib/events";
 /**
  * Guardian (v3): analiza un mensaje sospechoso. Gratis con limite por IP;
  * Pro sin limite y con el contexto del propio informe. El mensaje no se guarda.
@@ -55,6 +56,7 @@ export async function POST(request: Request) {
     }
   }
 
+  void track("guardian_used", { locale, props: { with_context: Boolean(context) } });
   const result = await analyzeMessage({ locale, text, sender: sender || null, context });
   if (!result.ok) {
     console.error("[/api/guardian] fallo:", result.detail);

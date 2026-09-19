@@ -100,6 +100,17 @@ Pago, plan Pro, monitorización, cartas RGPD, panel de usuario, cuentas persiste
 - ✅ **Despliegue**: la app y el túnel corren bajo **systemd** (`rastro.service`, `rastro-tunnel.service`, Restart=always); pm2 ya no gestiona Rastro. `push.sh` reinicia matando el proceso del puerto 3000 (systemd lo relanza).
 - ✅ **v5 Rastro Equipos**: tabla `orgs`, `users.org_id/org_role/org_share_at`, `plan_kind='team'`; `/equipos` (landing, precios `NEXT_PUBLIC_PRICE_TEAM_*`), `/equipo` (panel del titular), `/api/org*`; Stripe `STRIPE_PRICE_IDS_TEAM[_LARGE]` crea la org y propaga a miembros. La empresa solo ve puntuación/contraseñas filtradas/vigilancia si el empleado activa "compartir".
 
+### Bloque "de 8 a 10" (19-09-2026) — estado
+
+Tras una autocrítica ("ancho, no hondo"), seis mejoras de profundidad. Ver también `TAREAS.md`.
+
+- ✅ **Datos retirados** (`lib/removal-stats.ts` puro + `lib/removals.ts`, `components/RemovalCounter.tsx`): contador por sitio (encontrados / pedidos / retirados / fuera de plazo / se negaron) en Inicio y Herramientas. El cron de cartas recomprueba cada URL enviada una vez por semana (`checkListing`); regla conservadora: solo es "retirado" si da 404/410 o si **antes lo vimos y ya no aparece** (`applyCheck`). Evento `verified_gone` en la cronología + correo. Si reaparece, se reabre.
+- ✅ **Memoria de la IA** (`lib/ai-watch-core.ts` puro, `lib/ai-watch.ts`, `lib/ai/facts.ts` con Haiku, tabla `ai_snapshots`, página `/ia`, cron `/api/cron/ai-watch` semanal para Pro con vigilancia, `POST /api/ai-watch` "Preguntar ahora" 1/día): respuesta literal + ficha de hechos por asistente; la comparación entre fotos es determinista (`diffFacts`), las afirmaciones nuevas son cambios menores que no disparan aviso. El correo mensual también incluye estas frases.
+- ✅ **Extensión 0.3**: `lib/phishing.js` + `lib/brands.js` (≈45 marcas suplantadas en España; typos, homógrafos/punycode, marca + palabra cebo, TLD baratos, ¿pide contraseña/tarjeta?), aviso rojo del robot con "Ir a la oficial / Salir / Es de fiar"; bloqueo opcional con `declarativeNetRequest` (`rules/trackers.json` generado en `ext:sync`). Sigue sin llamadas de red. Tests `tests/phishing.test.mjs` con lista de webs legítimas que no deben disparar.
+- ✅ **Sitios comprobados** (`lib/site-checks-core.ts` puro, `lib/site-checks.ts`, `reports.site_checks`): el informe busca el nombre completo en cada sitio del catálogo con `site:` agrupado (3-4 búsquedas por informe). Solo cuenta si el nombre aparece junto. Sección en el informe con "Pedir la retirada" (`/api/letters` con `site_slug`). Los sitios de EE. UU. solo en informes en inglés.
+- ✅ **Informe rápido**: todas las fuentes en paralelo (≈5 s) y `requests.progress` con lo encontrado; la espera enseña filtraciones, sitios y nota provisional mientras Claude redacta (≈25 s). `raw.sources_ms` mide las fuentes.
+- ✅ **Métricas propias** (`lib/events.ts`, tabla `product_events`, `/admin/metricas` solo para `ADMIN_EMAILS`): embudo sin IP, sin correo y sin cookies (subject = hash salado truncado). El pago pasa por `/api/go/checkout` para contar el clic. Se purgan a los 400 días.
+
 ## 6. Modelo de datos (Supabase)
 
 Ver `supabase/schema.sql` (fuente de verdad).

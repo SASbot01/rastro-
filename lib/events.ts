@@ -18,7 +18,7 @@ export const EVENTS = [
 export type EventName = (typeof EVENTS)[number];
 
 /** Orden del embudo principal (para la pagina de metricas). */
-export const FUNNEL: EventName[] = ["form_submitted", "email_verified", "report_ready", "report_viewed", "signup", "letter_sent", "checkout_started", "pro_activated"];
+export const FUNNEL: EventName[] = ["form_submitted", "email_verified", "report_ready", "report_viewed", "signup", "checkout_started", "pro_activated"];
 
 export function hashSubject(id: string): string {
   return createHash("sha256").update(`${process.env.APP_SECRET ?? "rastro"}:evt:${id}`).digest("hex").slice(0, 16);

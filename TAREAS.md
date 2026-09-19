@@ -119,3 +119,16 @@ Pendiente tuyo:
 - Robot de cookies (3 modelos, arrastrable, cuerpo con tambaleo), nota por web, empresas, aviso de publicidad antes de aceptar, «Rechazar por mí», popup con detalle. Probada en webs reales con Brave.
 - [ ] Publicar en Chrome Web Store / Edge Add-ons: **todo preparado** en `docs/marketing/store/` (guía paso a paso `CHROME-WEB-STORE.md`, iconos, 3 capturas 1280×800, mosaicos, textos ES/EN, justificación de permisos; política en `/extension/privacidad`). Falta: cuenta de desarrollador (5 $), subir `public/extension/rastro-guardian.zip` y, al aprobarla, poner `NEXT_PUBLIC_CHROME_STORE_URL` (y `NEXT_PUBLIC_EDGE_STORE_URL`) en el servidor: `/extension` pasa solo a «Añadir a Chrome». Un clic desde la web sin tienda no lo permite ningún navegador.
 - Siguiente fase de la extensión: aviso en sitios del catálogo ("aquí apareces tú"), webs dudosas (dominio recién creado / imita marca), política de privacidad resumida con IA, informe semanal de rastreo.
+
+
+## Bloque "de 8 a 10" (19-09-2026)
+
+Hecho por Claude: contador de datos retirados con recomprobación semanal, memoria de la IA (`/ia`), extensión 0.3 (aviso de webs falsas + bloqueo), comprobación real de sitios del catálogo, informe con resultados en vivo y métricas propias (`/admin/metricas`).
+
+Pendiente de Alejandro:
+- [ ] Poner `ADMIN_EMAILS` en el `.env.local` del servidor con tu correo de acceso para ver `/admin/metricas` (Claude lo dejó puesto con los correos Pro conocidos; revisa que sea el tuyo).
+- [ ] Claves de OpenAI y Gemini: sin ellas la memoria de la IA solo sigue a Perplexity.
+- [ ] Bot de Telegram para el Guardián: crear el bot en @BotFather y poner `TELEGRAM_BOT_TOKEN` en el servidor. WhatsApp exige cuenta de empresa verificada por Meta.
+- [ ] Fuente de filtraciones de malware (LeakCheck o plan superior de HIBP): contratar y poner la clave.
+- [ ] Conseguir 20 personas reales y mirar el embudo en `/admin/metricas` antes de construir más.
+- [ ] Subir la extensión 0.3.0 a la Chrome Web Store (guía en `docs/marketing/store/`).
