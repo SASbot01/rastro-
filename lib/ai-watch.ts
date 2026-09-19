@@ -82,7 +82,7 @@ export async function takeWatchSnapshot(userId: string, person: Person, locale: 
 interface ReportForBackfill {
   request_id: string;
   created_at: string;
-  raw: { perplexity?: PerplexityResult; assistants?: { answers?: AssistantAnswer[] } } | null;
+  raw: { perplexity?: PerplexityResult; assistants?: { answers?: AssistantAnswer[] }; cached_from?: string } | null;
   requests: { full_name: string; city: string | null; occupation: string | null; locale: string; user_id: string } | Array<{ full_name: string; city: string | null; occupation: string | null; locale: string; user_id: string }>;
 }
 
@@ -98,7 +98,8 @@ export async function backfillSnapshots(userId: string, limit = 4): Promise<numb
     supabase.from("ai_snapshots").select("request_id").eq("user_id", userId).not("request_id", "is", null).returns<Array<{ request_id: string }>>(),
   ]);
   const done = new Set((have ?? []).map((h) => h.request_id));
-  const todo = (reports ?? []).filter((r) => !done.has(r.request_id) && answersFromRaw(r.raw?.perplexity, r.raw?.assistants?.answers).length > 0).slice(0, limit).reverse();
+  // Un informe copiado de la cache lleva las MISMAS respuestas que su original: otra foto solo meteria ruido en la cronologia.
+  const todo = (reports ?? []).filter((r) => !done.has(r.request_id) && !r.raw?.cached_from && answersFromRaw(r.raw?.perplexity, r.raw?.assistants?.answers).length > 0).slice(0, limit).reverse();
   let n = 0;
   for (const r of todo) {
     const req = Array.isArray(r.requests) ? r.requests[0] : r.requests;
