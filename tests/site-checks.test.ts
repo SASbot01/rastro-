@@ -25,3 +25,13 @@ test("homonimo parcial no cuenta y una busqueda fallida es 'no se pudo comprobar
   assert.equal(mentionsName("RUIZ GARCIA, ANA", "Ana García Ruiz"), true);
   assert.deepEqual(resolveGroup("Ana García Ruiz", T, null).map((c) => c.status), ["unknown", "unknown", "unknown"]);
 });
+
+test("los apellidos con particulas ('de la', 'de los', 'del') tambien se reconocen", () => {
+  assert.equal(mentionsName("Juan de la Cruz - Madrid | Dateas", "Juan de la Cruz"), true);
+  assert.equal(mentionsName("José Luis de la Fuente Pérez, administrador único", "José Luis de la Fuente Pérez"), true);
+  assert.equal(mentionsName("DE LOS SANTOS GIL, MARIA", "María de los Santos Gil"), true);
+  assert.equal(mentionsName("María del Carmen López", "María del Carmen López"), true);
+  // Sigue sin juntar trozos de personas distintas.
+  assert.equal(mentionsName("Juan Pérez trabaja en Cruz y asociados desde 2019", "Juan de la Cruz"), false);
+  assert.equal(mentionsName("Ana García López, socia de Ruiz y asociados", "Ana García Ruiz"), false);
+});
