@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { translator, type Messages } from "@/lib/i18n";
-import type { ReportStep } from "@/lib/report/job";
+import type { ReportProgress, ReportStep } from "@/lib/report/job";
 
 const POLL_MS = 1500;
 
@@ -22,6 +22,7 @@ export function ReportWaiting({ id, steps, initialStep, messages }: Props) {
   const tr = translator(messages);
   const router = useRouter();
   const [step, setStep] = useState<ReportStep | null>(initialStep);
+  const [progress, setProgress] = useState<ReportProgress | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -31,7 +32,7 @@ export function ReportWaiting({ id, steps, initialStep, messages }: Props) {
       inFlight = true;
       try {
         const res = await fetch(`/api/report/${id}`, { cache: "no-store", signal: AbortSignal.timeout(10000) });
-        const body = (await res.json()) as { status: string; step: ReportStep | null };
+        const body = (await res.json()) as { status: string; step: ReportStep | null; progress?: ReportProgress | null };
         if (cancelled) return;
         if (body.status === "done" || body.status === "error" || body.status === "not_found") {
           clearInterval(timer);
@@ -40,6 +41,7 @@ export function ReportWaiting({ id, steps, initialStep, messages }: Props) {
           return;
         }
         setStep(body.step);
+        if (body.progress) setProgress(body.progress);
       } catch {
         // Un fallo de red puntual no debe romper la espera; se reintenta en el siguiente tick.
       } finally {
@@ -52,7 +54,16 @@ export function ReportWaiting({ id, steps, initialStep, messages }: Props) {
     };
   }, [id, router]);
 
+  // Las fuentes corren a la vez: un paso esta hecho cuando su dato ya ha llegado, no por orden.
+  const p = progress ?? {};
+  const arrived: Record<string, boolean> = { hibp: p.breaches !== undefined, brave: p.results !== undefined && p.sites !== undefined, ai: false, report: false };
   const currentIndex = step ? steps.indexOf(step) : -1;
+  const live: Array<{ key: string; tone: "ok" | "warn" | "bad"; text: string }> = [];
+  if (p.breaches) live.push(p.breaches.total === 0 ? { key: "b", tone: "ok", text: tr("waiting.live.noBreaches") } : { key: "b", tone: p.breaches.withPassword > 0 ? "bad" : "warn", text: tr("waiting.live.breaches", { n: p.breaches.total, names: p.breaches.names.slice(0, 3).join(", ") }) });
+  if (p.results) live.push({ key: "r", tone: p.results.profiles > 0 ? "warn" : "ok", text: tr("waiting.live.results", { n: p.results.total, profiles: p.results.profiles }) });
+  if (p.sites) live.push(p.sites.listed.length === 0 ? { key: "s", tone: "ok", text: tr("waiting.live.noSites", { n: p.sites.checked }) } : { key: "s", tone: "bad", text: tr("waiting.live.sites", { n: p.sites.listed.length, total: p.sites.checked, names: p.sites.listed.slice(0, 3).join(", ") }) });
+  if (p.assistants?.length) live.push({ key: "a", tone: "warn", text: tr("waiting.live.assistants", { names: [...new Set(p.assistants)].map((a) => tr(`aiWatch.providers.${a}`)).join(", ") }) });
+  const TONE = { ok: "bg-accent", warn: "bg-warn", bad: "bg-danger" } as const;
 
   return (
     <div className="rounded-card border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(26,26,25,0.04)] sm:p-8">
@@ -64,7 +75,7 @@ export function ReportWaiting({ id, steps, initialStep, messages }: Props) {
 
       <ol className="mt-7 grid gap-3" aria-live="polite">
         {steps.map((s, i) => {
-          const state = i < currentIndex ? "done" : i === currentIndex ? "active" : "queued";
+          const state = arrived[s] || i < currentIndex ? "done" : i === currentIndex || (currentIndex >= 0 && !arrived[s] && i < 2) ? "active" : "queued";
           return (
             <li key={s} className="flex items-center gap-3">
               <span
@@ -95,6 +106,26 @@ export function ReportWaiting({ id, steps, initialStep, messages }: Props) {
           );
         })}
       </ol>
+
+      {live.length > 0 && (
+        <div className="mt-7 border-t border-line pt-5" aria-live="polite">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("waiting.live.title")}</p>
+          <ul className="mt-3 grid gap-2">
+            {live.map((l) => (
+              <li key={l.key} className="flex gap-3 rounded-[12px] bg-surface-2 px-3.5 py-2.5 text-[13.5px] leading-relaxed text-ink">
+                <span className={"mt-[7px] h-2 w-2 shrink-0 rounded-full " + TONE[l.tone]} />
+                {l.text}
+              </li>
+            ))}
+          </ul>
+          {typeof p.prelimScore === "number" && (
+            <p className="mt-4 flex items-baseline gap-2 text-[13px] text-muted">
+              <span className="text-[30px] font-semibold leading-none tracking-[-0.03em] text-ink">{p.prelimScore}</span>
+              {tr("waiting.live.prelim")}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
