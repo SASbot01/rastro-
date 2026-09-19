@@ -1463,6 +1463,23 @@
       "generic": "No se pudo analizar ahora. Prueba en un momento."
     }
   },
+  "telegram": {
+    "start": "Hola, soy el Guardián de Rastro.\n\nReenvíame (o pégame) un SMS, correo o WhatsApp que te parezca raro y te digo si es una estafa, por qué y qué hacer.\n\nGratis, 5 mensajes al día. No guardo lo que me envías.\n\nMás herramientas: rastropro.com",
+    "privacy": "Tu mensaje se analiza en el momento y no se guarda. Tampoco guardamos quién eres en Telegram: solo un código irreversible para contar el límite diario. No reenvíes datos que no quieras compartir, como contraseñas o códigos.",
+    "onlyText": "De momento solo leo texto. Si es una captura, copia el texto del mensaje y pégamelo.",
+    "tooShort": "Es muy corto para analizarlo. Reenvíame el mensaje completo.",
+    "limit": "Has llegado al límite de 5 mensajes de hoy. Mañana puedes seguir, o úsalo sin límite con Pro en rastropro.com/guardian",
+    "error": "No he podido analizarlo ahora. Prueba otra vez en un minuto. Si dudas, no pulses ningún enlace.",
+    "why": "Por qué:",
+    "what": "Qué hacer:",
+    "verify": "Cómo comprobarlo:",
+    "foot": "No guardo tu mensaje. Rastro · rastropro.com",
+    "verdict": {
+      "scam": "Es una estafa",
+      "suspicious": "Sospechoso",
+      "legit": "Parece legítimo"
+    }
+  },
   "aiTpl": {
     "subject": "Solicitud de rectificación y supresión de datos personales generados por IA (arts. 16 y 17 RGPD) — {name}",
     "date": "{city}{date}",
