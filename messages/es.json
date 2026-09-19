@@ -1575,15 +1575,16 @@
   },
   "ext": {
     "eyebrow": "Extensión",
-    "title": "Un robot que mira las cookies por ti",
-    "subtitle": "Rastro Guardián vive en tu navegador. En cada web cuenta las cookies, te dice cuántas empresas te siguen, si te rastrean antes de aceptar y le pone una nota del 0 al 100. Todo se comprueba en tu ordenador: tus cookies no salen de él.",
+    "title": "Un guardián que vigila cada web por ti",
+    "subtitle": "Rastro Guardián vive en tu navegador. Te avisa si una web imita a tu banco o a Correos antes de que escribas nada, cuenta las cookies, te dice cuántas empresas te siguen y puede bloquearlas. Todo se comprueba en tu ordenador: nada sale de él.",
     "play": "Cógelo y muévelo",
     "playBody": "Arrastra al robot por la pantalla: la cabeza va contigo y el cuerpo se tambalea. Tócalo para ver el resumen de una web de ejemplo. Puedes cambiar de robot.",
     "demoSite": "tienda-de-ejemplo.es",
     "features": [
+      "Aviso en rojo si la web imita a un banco, a Correos, a la DGT o a Hacienda: te dice cuál es la oficial y te lleva a ella.",
       "Nota de privacidad de cada web, del 0 al 100.",
       "Cuántas cookies son necesarias, de medición y de publicidad, y de qué empresas.",
-      "Aviso si te rastrean antes de aceptar, si hay empresas que compran y venden perfiles o cookies que duran años.",
+      "Bloqueo opcional de publicidad que te sigue y de empresas que comercian con perfiles.",
       "«Rechazar por mí»: pulsa la opción más privada del aviso de cookies.",
       "Si la web vende datos y está en nuestro catálogo, te lleva a pedir la retirada."
     ],
@@ -1595,7 +1596,7 @@
       "Abre cualquier web: el robot aparece abajo a la derecha."
     ],
     "download": "Descargar la extensión",
-    "privacy": "Permisos: leer las cookies del sitio que visitas y mostrar el robot en la página. No lee tu historial, no envía valores de cookies y no necesita cuenta.",
+    "privacy": "Permisos: leer las cookies del sitio que visitas, mostrar el robot en la página y, si lo activas, bloquear rastreadores. No lee tu historial, no envía nada a ningún servidor y no necesita cuenta.",
     "reject": "Rechazar por mí",
     "hide": "Ocultar aquí",
     "more": "Ver en Rastro",
@@ -1630,13 +1631,13 @@
       {
         "title": "Qué hace la extensión",
         "paragraphs": [
-          "En cada página cuenta las cookies del sitio y de las empresas externas que aparecen en él, clasifica cada una (necesaria, de medición, de publicidad, de comercio de datos), calcula una nota de privacidad del 0 al 100 y la muestra en un personaje flotante y en el icono de la barra. Si se lo pides, pulsa por ti la opción más privada del aviso de cookies."
+          "En cada página cuenta las cookies del sitio y de las empresas externas que aparecen en él, clasifica cada una, calcula una nota de privacidad del 0 al 100 y la muestra en un personaje flotante y en el icono de la barra. Comprueba si el nombre del dominio imita al de una marca conocida (bancos, mensajería, administración) y, si es así, avisa y enseña cuál es la web oficial. Si se lo pides, pulsa por ti la opción más privada del aviso de cookies y bloquea rastreadores de publicidad."
         ]
       },
       {
         "title": "Qué datos lee",
         "paragraphs": [
-          "Solo metadatos de cookies: nombre, dominio, caducidad y si son seguras (HttpOnly/Secure). Nunca lee el valor de ninguna cookie. También mira los dominios de los scripts e imágenes cargados por la página para saber qué empresas están presentes.",
+          "Solo metadatos de cookies: nombre, dominio, caducidad y si son seguras (HttpOnly/Secure). Nunca lee el valor de ninguna cookie. También mira los dominios de los scripts e imágenes cargados por la página para saber qué empresas están presentes, el nombre del dominio que visitas y si la página tiene un campo de contraseña o de tarjeta (solo si existe; nunca lo que escribes en él).",
           "No lee tu historial de navegación, no lee el contenido de las páginas ni lo que escribes, no accede a tus contraseñas ni a tus cuentas."
         ]
       },
@@ -1655,7 +1656,7 @@
       {
         "title": "Permisos que pide y por qué",
         "paragraphs": [
-          "«cookies»: para leer los metadatos de las cookies del sitio que visitas y contarlas. «storage»: para recordar tus preferencias. «Acceso a los datos de todos los sitios web»: para poder mostrar el robot y analizar cualquier página que abras; sin él no podría funcionar en todas las webs. No pide historial, pestañas, ni descargas."
+          "«cookies»: para leer los metadatos de las cookies del sitio que visitas y contarlas. «storage»: para recordar tus preferencias. «declarativeNetRequest»: para el bloqueo opcional de rastreadores, con una lista fija incluida en la extensión; viene apagado y el navegador aplica las reglas sin que la extensión vea tu tráfico. «Acceso a los datos de todos los sitios web»: para poder mostrar el robot y analizar cualquier página que abras. No pide historial, pestañas, ni descargas."
         ]
       },
       {

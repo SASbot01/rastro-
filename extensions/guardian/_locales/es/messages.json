@@ -79,5 +79,23 @@
   },
   "detail": {
     "message": "Ver las cookies"
+  },
+  "goOfficial": {
+    "message": "Ir a {site}"
+  },
+  "leave": {
+    "message": "Salir de aquí"
+  },
+  "trustSite": {
+    "message": "Es de fiar"
+  },
+  "blockTrackers": {
+    "message": "Bloquear rastreadores"
+  },
+  "blockHint": {
+    "message": "Corta la publicidad que te sigue y a las empresas que comercian con perfiles. Si una web deja de funcionar, apágalo."
+  },
+  "riskTitle": {
+    "message": "Aviso de seguridad"
   }
 }

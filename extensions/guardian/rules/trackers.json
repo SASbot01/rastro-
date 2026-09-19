@@ -1,0 +1,716 @@
+[
+ {
+  "id": 1,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "adform.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 2,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "adnxs.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 3,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "ads-twitter.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 4,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "adservice.google.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 5,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "adsrvr.org"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 6,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "agkn.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 7,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "amazon-adsystem.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 8,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "bluekai.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 9,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "casalemedia.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 10,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "criteo.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 11,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "criteo.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 12,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "crwdcntrl.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 13,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "demdex.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 14,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "doubleclick.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 15,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "everesttech.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 16,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "exelator.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 17,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "eyeota.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 18,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "googleadservices.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 19,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "googlesyndication.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 20,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "id5-sync.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 21,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "krxd.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 22,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "liveramp.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 23,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "openx.net"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 24,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "outbrain.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 25,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "pubmatic.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 26,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "quantcount.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 27,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "quantserve.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 28,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "rlcdn.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 29,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "rubiconproject.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 30,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "smartadserver.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 31,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "taboola.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 32,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "tapad.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 33,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "teads.tv"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 34,
+  "priority": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "requestDomains": [
+    "zeotap.com"
+   ],
+   "domainType": "thirdParty",
+   "resourceTypes": [
+    "script",
+    "xmlhttprequest",
+    "image",
+    "sub_frame",
+    "ping",
+    "other"
+   ]
+  }
+ }
+]

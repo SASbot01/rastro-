@@ -168,6 +168,7 @@
     ".lines{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:7px}.lines li{color:#d8d8d4}.lines li.flag{color:#f4f4f2;padding-left:10px;border-left:2px solid var(--accent)}",
     ".chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}.chip{font-size:11.5px;padding:3px 8px;border-radius:999px;background:#1d1d1d;border:1px solid #2a2a2a;color:#a3a39e}.chip.broker{border-color:#ff5f5f66;color:#ff8d8d}.chip.ads{border-color:#ffb02055;color:#ffc861}",
     ".actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}",
+    ".alert{margin:-4px -4px 14px;padding:12px 12px 13px;border-radius:14px;border:1px solid #ff5f5f;background:rgba(255,95,95,.12)}.alert.suspicious{border-color:#ffb020;background:rgba(255,176,32,.10)}.alert-title{margin:0;font-weight:700;font-size:14.5px;line-height:1.35;color:#fff}.alert-lines{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:5px;color:#e8e8e4;font-size:13px}.alert .actions{margin-top:11px}.alert .actions button.primary{background:#ff5f5f;border-color:#ff5f5f;color:#0a0a0a}.alert.suspicious .actions button.primary{background:#ffb020;border-color:#ffb020}",
     "button{font:inherit;cursor:pointer;border-radius:12px;padding:9px 12px;font-weight:600;font-size:13px;border:1px solid #2a2a2a;background:#1d1d1d;color:#f4f4f2}",
     "button.primary{background:#4dfc5f;color:#0a0a0a;border-color:#4dfc5f}",
     "button:focus-visible{outline:2px solid #4dfc5f;outline-offset:2px}",
@@ -204,15 +205,15 @@
       paintState();
     }
 
-    var state = { level: "idle", score: null, report: null, lines: [] };
-    function accent() { return COLORS[state.level] || COLORS.idle; }
+    var state = { level: "idle", score: null, report: null, lines: [], alert: null };
+    function accent() { if (state.alert) return state.alert.level === "danger" ? COLORS.red : COLORS.orange; return COLORS[state.level] || COLORS.idle; }
     function paintState() {
       var a = accent();
       wrap.style.setProperty("--accent", a);
       root.querySelectorAll(".accent-fill").forEach(function (n) { n.setAttribute("fill", a); });
       root.querySelectorAll(".accent-text").forEach(function (n) { n.setAttribute("fill", a); });
-      if (head && head.screenText) head.screenText.textContent = state.score == null ? "··" : state.level === "red" ? "!!" : String(state.score);
-      badge.hidden = state.score == null; badge.textContent = state.score == null ? "" : String(state.score);
+      if (head && head.screenText) head.screenText.textContent = state.alert ? "!!" : state.score == null ? "··" : state.level === "red" ? "!!" : String(state.score);
+      badge.hidden = !state.alert && state.score == null; badge.textContent = state.alert ? "!" : state.score == null ? "" : String(state.score);
     }
 
     /* ---------- Fisica ---------- */
@@ -305,6 +306,14 @@
     }
     function renderPanel() {
       panel.textContent = "";
+      if (state.alert) {
+        var box = h("div", "alert " + state.alert.level, panel);
+        h("p", "alert-title", box, state.alert.title);
+        var al = h("ul", "alert-lines", box);
+        (state.alert.lines || []).forEach(function (line) { h("li", "", al, line); });
+        var aa = h("div", "actions", box);
+        (state.alert.actions || []).forEach(function (a) { var b = h("button", a.primary ? "primary" : "", aa, a.label); b.type = "button"; b.addEventListener("click", function () { a.run(api); }); });
+      }
       var top = h("div", "head", panel);
       var sc = h("div", "score", top);
       if (state.score != null) { sc.appendChild(ring(state.score, accent())); h("b", "", sc, String(state.score)); } else { sc.appendChild(ring(0, "#262626")); h("b", "", sc, "··"); }
@@ -327,6 +336,8 @@
       element: host,
       setReport: function (report, lines) { state.report = report; state.lines = lines || []; state.score = report ? report.score : null; state.level = report ? report.level : "idle"; paintState(); if (!panel.hidden) renderPanel(); if (report && report.level === "red" && !reduced) { omega += 9; antV += 14; } },
       setVariant: function (v) { if (VARIANTS.indexOf(v) < 0) return; variant = v; build(); persist(); if (!panel.hidden) renderPanel(); if (opts.onVariant) opts.onVariant(v); },
+      /** Aviso de seguridad (web que imita a otra). null lo quita. Abre la burbuja y sacude al robot. */
+      alert: function (a) { state.alert = a || null; paintState(); if (a) { panel.hidden = false; renderPanel(); placePanel(); if (!reduced) { omega += 12; antV += 18; } } else if (!panel.hidden) renderPanel(); },
       say: function (lines) { state.lines = lines; panel.hidden = false; renderPanel(); placePanel(); },
       open: function () { if (panel.hidden) toggle(); },
       close: function () { panel.hidden = true; },
