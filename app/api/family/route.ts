@@ -9,6 +9,7 @@ import { sendNoticeEmail } from "@/lib/email";
 import { createLoginLink } from "@/lib/login-link";
 import { getMessages, isLocale, translator, type Locale } from "@/lib/i18n";
 import { normalizeEmail } from "@/lib/crypto";
+import { canJoinFamily } from "@/lib/plan-rules";
 
 /**
  * Plan familiar: el titular anade o quita personas (formulario POST desde
@@ -47,9 +48,8 @@ export async function POST(request: Request) {
   const locale: Locale = isLocale(owner.locale) ? owner.locale : "es";
   const member = await ensureUser(email, locale);
   if (!member) return back("invalid");
-  // Quien ya paga su propio Pro no entra en la familia (no se pisa una suscripcion real).
-  if (isPro(member) && member.plan_kind === "individual" && member.stripe_customer_id) return back("exists");
-  if (member.family_owner_id && member.family_owner_id !== owner.id) return back("exists");
+  // Quien ya tiene su propio plan (de pago, de otra familia o de una empresa) no entra: no se pisa una suscripcion real.
+  if (!canJoinFamily(member, owner.id)) return back("exists");
 
   const { error } = await supabase
     .from("users")
