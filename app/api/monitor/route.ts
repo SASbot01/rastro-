@@ -5,6 +5,7 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { isPro } from "@/lib/plan";
 
+import { track } from "@/lib/events";
 /**
  * Activa o desactiva la vigilancia mensual de la cuenta con sesion.
  * Formulario POST desde /herramientas (campo `enabled` = "1" | "0").
@@ -22,6 +23,7 @@ export async function POST(request: Request) {
     return NextResponse.redirect(absoluteUrl("/pro"), { status: 303 });
   }
 
+  if (enabled) void track("monitoring_on", {});
   const { error } = await supabaseAdmin()
     .from("users")
     .update({

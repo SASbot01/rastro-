@@ -7,6 +7,7 @@ import { sendVerifyEmail } from "@/lib/email";
 import { serverEnv } from "@/lib/env";
 import { allowRequest } from "@/lib/rate-limit";
 
+import { track } from "@/lib/events";
 export const runtime = "nodejs";
 
 const TOKEN_TTL_HOURS = 24;
@@ -100,5 +101,6 @@ async function handleRequest(request: Request) {
     return NextResponse.json({ ok: false, error: "formErrors.generic" }, { status: 502 });
   }
 
+  void track("form_submitted", { subject: inserted.id, locale, props: { has_occupation: Boolean(occupation) } });
   return NextResponse.json({ ok: true });
 }

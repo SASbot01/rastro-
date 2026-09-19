@@ -9,6 +9,7 @@ import type { Finding } from "@/lib/report/findings";
 import { isPro } from "@/lib/plan";
 import { brokerForHost } from "@/lib/brokers/catalog";
 
+import { track } from "@/lib/events";
 /**
  * Genera una carta de supresion para un hallazgo del informe (formulario
  * POST desde ReportView: request_id + finding_index). Solo el dueno del
@@ -109,6 +110,7 @@ export async function POST(request: Request) {
     console.error("[/api/letters] insert fallo:", error?.message);
     return new NextResponse(null, { status: 500 });
   }
+  void track("letter_created", { subject: created.id });
   return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });
 }
 
@@ -155,6 +157,7 @@ async function lettersFromMailbox(sessionEmail: string, host: string, scanId: st
     console.error("[/api/letters] insert (buzon) fallo:", error?.message);
     return new NextResponse(null, { status: 500 });
   }
+  void track("letter_created", { subject: created.id });
   return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });
 }
 
@@ -195,6 +198,7 @@ async function letterForImage(sessionEmail: string, pageUrl: string) {
     console.error("[/api/letters] insert (imagen) fallo:", error?.message);
     return new NextResponse(null, { status: 500 });
   }
+  void track("letter_created", { subject: created.id });
   return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });
 }
 
@@ -229,5 +233,6 @@ async function letterForSite(session: NonNullable<Awaited<ReturnType<typeof getS
     console.error("[/api/letters] insert (sitio) fallo:", error?.message);
     return new NextResponse(null, { status: 500 });
   }
+  void track("letter_created", { subject: created.id });
   return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });
 }
