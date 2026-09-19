@@ -807,7 +807,9 @@
       "answered": "Han contestado",
       "closed": "Cerrada: datos suprimidos",
       "no_answer": "Marcada como sin respuesta",
-      "reopened": "Vuelta a borrador"
+      "reopened": "Vuelta a borrador",
+      "verified_gone": "Comprobado: tus datos ya no aparecen",
+      "reappeared": "Tus datos han vuelto a aparecer"
     },
     "replyTitle": "¿Te han contestado?",
     "replyBody": "Cuéntanos qué han dicho: lo guardamos como prueba para la reclamación si hace falta.",
@@ -1675,5 +1677,30 @@
         ]
       }
     ]
+  },
+  "removals": {
+    "title": "Datos retirados",
+    "body": "De los sitios donde apareces, en cuántos hemos comprobado que ya no sales.",
+    "aria": "{removed} retirados de {found} encontrados",
+    "legend": {
+      "removed": "retirados y comprobados",
+      "pending": "pedidos, en plazo",
+      "overdue": "plazo vencido",
+      "refused": "se negaron",
+      "notRequested": "sin pedir todavía"
+    },
+    "how": "Volvemos a mirar cada página una vez por semana. Solo contamos un dato como retirado cuando lo vimos y ha dejado de aparecer.",
+    "ctaRequest": "Pedir la retirada de {n}",
+    "ctaOverdue": "Reclamar {n} fuera de plazo",
+    "ctaSee": "Ver mis solicitudes",
+    "badge": "Retirado ✓"
+  },
+  "removedEmail": {
+    "subject": "Buenas noticias: {host} ya no muestra tus datos",
+    "greeting": "Hola, {name}:",
+    "p1": "Hemos vuelto a mirar la página de {host} sobre la que enviaste una solicitud y tu nombre ya no aparece.",
+    "p2": "Queda guardado en la cronología de tu carta, con fecha, por si alguna vez lo necesitas como prueba. Seguiremos comprobándolo por si vuelve a aparecer.",
+    "cta": "Ver la prueba",
+    "footer": "Recibes este aviso porque enviaste una solicitud de supresión con Rastro."
   }
 }

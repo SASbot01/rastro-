@@ -81,7 +81,7 @@ export async function findPrivacyContact(
   return optOut ? { contact: optOut.url, source: optOut.url } : null;
 }
 
-export type LetterEventType = "sent" | "sent_by_rastro" | "follow_up" | "reminder" | "answered" | "closed" | "no_answer" | "reopened";
+export type LetterEventType = "sent" | "sent_by_rastro" | "follow_up" | "reminder" | "answered" | "closed" | "no_answer" | "reopened" | "verified_gone" | "reappeared";
 export interface LetterEvent {
   at: string;
   type: LetterEventType;
@@ -157,12 +157,13 @@ function fold(text: string): string {
 }
 
 /**
- * Descarga la URL y busca el nombre. true = sigue apareciendo; false = ya no;
- * null = no se pudo comprobar (bloqueo, error, pagina que exige JS/pago).
+ * Descarga la URL y busca el nombre. listed: true = sigue apareciendo; false =
+ * ya no; null = no se pudo comprobar (bloqueo, error, pagina que exige JS/pago).
+ * httpGone: la pagina ya no existe (404/410), la prueba mas fuerte de retirada.
  */
-export async function checkStillListed(url: string, fullName: string): Promise<boolean | null> {
+export async function checkListing(url: string, fullName: string): Promise<{ listed: boolean | null; httpGone: boolean }> {
   const parts = fold(fullName).split(/\s+/).filter((p) => p.length > 2);
-  if (parts.length === 0) return null;
+  if (parts.length === 0) return { listed: null, httpGone: false };
   try {
     const res = await fetch(url, {
       headers: { "user-agent": "Mozilla/5.0 (compatible; RastroBot/1.0; +https://rastropro.com)", accept: "text/html,*/*" },
@@ -170,14 +171,19 @@ export async function checkStillListed(url: string, fullName: string): Promise<b
       redirect: "follow",
       cache: "no-store",
     });
-    if (res.status === 404 || res.status === 410) return false;
-    if (!res.ok) return null;
+    if (res.status === 404 || res.status === 410) return { listed: false, httpGone: true };
+    if (!res.ok) return { listed: null, httpGone: false };
     const html = await res.text();
     const text = fold(html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " "));
-    if (text.length < 200) return null;
+    if (text.length < 200) return { listed: null, httpGone: false };
     // Apellidos + nombre: todos los trozos del nombre deben aparecer.
-    return parts.every((p) => text.includes(p));
+    return { listed: parts.every((p) => text.includes(p)), httpGone: false };
   } catch {
-    return null;
+    return { listed: null, httpGone: false };
   }
+}
+
+/** Compatibilidad: solo el booleano. */
+export async function checkStillListed(url: string, fullName: string): Promise<boolean | null> {
+  return (await checkListing(url, fullName)).listed;
 }
