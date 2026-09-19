@@ -36,7 +36,7 @@ export async function GET(_request: Request, ctx: RouteContext<"/api/report/[id]
   ) {
     await supabase
       .from("requests")
-      .update({ status: "error", error: "timeout", finished_at: new Date().toISOString() })
+      .update({ status: "error", error: "timeout", progress: null, finished_at: new Date().toISOString() })
       .eq("id", id)
       .eq("status", "processing");
     return NextResponse.json({ status: "error", step: null, error: "timeout" });

@@ -294,7 +294,7 @@ export async function runReportJob(requestId: string): Promise<void> {
     void track("report_failed", { subject: row.id, locale });
     await supabase
       .from("requests")
-      .update({ status: "error", error: message.slice(0, 500), finished_at: new Date().toISOString() })
+      .update({ status: "error", error: message.slice(0, 500), progress: null, finished_at: new Date().toISOString() }) // el progreso (nombres de filtraciones) no se queda guardado si no hay informe
       .eq("id", row.id);
   }
 }
