@@ -29,12 +29,16 @@ export async function POST(request: Request) {
   const hostParam = String(form.get("host") ?? "").trim().toLowerCase();
   const scanId = String(form.get("mailbox_scan_id") ?? "");
   const pageUrl = String(form.get("page_url") ?? "").trim();
+  const siteSlug = String(form.get("site_slug") ?? "").trim();
 
   // Modo imagen (v4): carta al sitio que aloja una foto en la que aparece la persona.
   if (pageUrl) return letterForImage(session.email, pageUrl);
 
   // Modo buzon: carta de cierre para un servicio detectado en el escaneo (sin informe ni hallazgo).
   if (hostParam) return lettersFromMailbox(session.email, hostParam, scanId);
+
+  // Modo sitio comprobado: carta al sitio del catalogo donde el informe vio a la persona.
+  if (siteSlug) return letterForSite(session, requestId, siteSlug);
 
   if (!UUID.test(requestId) || !Number.isInteger(index) || index < 0) return new NextResponse(null, { status: 400 });
 
@@ -189,6 +193,40 @@ async function letterForImage(sessionEmail: string, pageUrl: string) {
     .single<{ id: string }>();
   if (error || !created) {
     console.error("[/api/letters] insert (imagen) fallo:", error?.message);
+    return new NextResponse(null, { status: 500 });
+  }
+  return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });
+}
+
+
+async function letterForSite(session: NonNullable<Awaited<ReturnType<typeof getSession>>>, requestId: string, slug: string) {
+  if (!UUID.test(requestId) || !/^[a-z0-9-]{2,40}$/.test(slug)) return new NextResponse(null, { status: 400 });
+  const supabase = supabaseAdmin();
+  const { data: req } = await supabase.from("requests").select("id, email, full_name, city, locale").eq("id", requestId).maybeSingle<{ id: string; email: string; full_name: string; city: string | null; locale: string }>();
+  if (!req || !sessionOwns(session, req.email)) return new NextResponse(null, { status: 403 });
+  const user = await findUserByEmail(session.email);
+  if (!user) return NextResponse.redirect(absoluteUrl("/entrar"), { status: 303 });
+  if (!isPro(user)) return NextResponse.redirect(absoluteUrl("/pro"), { status: 303 });
+
+  const { data: report } = await supabase.from("reports").select("site_checks").eq("request_id", req.id).maybeSingle<{ site_checks: Array<{ slug: string; name: string; host: string; status: string; url: string | null }> | null }>();
+  const check = report?.site_checks?.find((c) => c.slug === slug && c.status === "listed" && c.url);
+  if (!check?.url) return new NextResponse(null, { status: 404 });
+
+  const { data: existing } = await supabase.from("letters").select("id").eq("user_id", user.id).eq("target_url", check.url).maybeSingle<{ id: string }>();
+  if (existing) return NextResponse.redirect(absoluteUrl(`/cartas/${existing.id}`), { status: 303 });
+
+  const locale: Locale = isLocale(req.locale) ? req.locale : "es";
+  const tr = translator(getMessages(locale));
+  const known = brokerForHost(check.host);
+  const contact = known && (known.email || known.optOutUrl) ? { contact: known.email ?? known.optOutUrl!, source: known.privacyUrl ?? known.optOutUrl } : await findPrivacyContact(check.host, locale).catch(() => null);
+  const letter = buildLetter({ fullName: req.full_name, email: req.email, city: req.city, host: check.host, url: check.url, what: tr("report.sitesWhat", { site: check.name }), locale });
+  const { data: created, error } = await supabase
+    .from("letters")
+    .insert({ user_id: user.id, request_id: req.id, host: check.host, target_url: check.url, contact: contact?.contact ?? null, contact_source: contact?.source ?? null, subject: letter.subject, body: letter.body, locale })
+    .select("id")
+    .single<{ id: string }>();
+  if (error || !created) {
+    console.error("[/api/letters] insert (sitio) fallo:", error?.message);
     return new NextResponse(null, { status: 500 });
   }
   return NextResponse.redirect(absoluteUrl(`/cartas/${created.id}`), { status: 303 });

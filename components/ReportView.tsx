@@ -25,6 +25,7 @@ export interface ReportData {
   generator: "ai" | "template";
   accounts?: KnownAccount[];
   assistants?: AssistantView[];
+  site_checks?: Array<{ slug: string; name: string; host: string; status: "listed" | "not_found" | "unknown"; url: string | null; title: string | null }> | null;
 }
 
 export interface AssistantView {
@@ -173,6 +174,59 @@ export function ReportView({
           </h2>
           <p className="text-[12.5px] text-faint">{tr("report.whatYouSee")}</p>
         </div>
+
+        {report.site_checks && report.site_checks.length > 0 && (() => {
+          const listed = report.site_checks.filter((c) => c.status === "listed");
+          const clean = report.site_checks.filter((c) => c.status === "not_found");
+          const unknown = report.site_checks.filter((c) => c.status === "unknown");
+          return (
+            <details className={"group min-w-0 overflow-hidden " + CARD} open={listed.length > 0}>
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
+                <span className="flex min-w-0 items-center gap-2 text-[15px] font-semibold text-ink">
+                  {tr("report.sitesTitle")}
+                  <span className={"rounded-full px-2 py-0.5 text-[11px] font-semibold " + (listed.length > 0 ? "bg-danger/15 text-danger" : "bg-accent-soft text-accent")}>{listed.length} / {report.site_checks.length - unknown.length}</span>
+                </span>
+                <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0 text-faint transition-transform group-open:rotate-180" aria-hidden="true"><path d="m5 7.5 5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </summary>
+              <div className="border-t border-line px-5 pt-3 pb-4">
+                <p className="text-[13px] leading-relaxed text-muted">{tr(listed.length > 0 ? "report.sitesBodyListed" : "report.sitesBodyClean", { n: report.site_checks.length - unknown.length })}</p>
+                {listed.length > 0 && (
+                  <ul className="mt-3 grid gap-2">
+                    {listed.map((c) => (
+                      <li key={c.slug} className="flex min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-2 rounded-[14px] bg-surface-2 px-4 py-3">
+                        <div className="min-w-0">
+                          <p className="text-[14px] font-semibold text-ink">{c.name} <span className="ml-1 rounded-full bg-danger/15 px-2 py-0.5 text-[10.5px] font-semibold uppercase text-danger">{tr("report.sitesListed")}</span></p>
+                          {c.url && <a href={c.url} target="_blank" rel="noreferrer nofollow" className="mt-0.5 block truncate text-[12.5px] text-muted underline underline-offset-4 hover:text-ink">{c.title || c.url}</a>}
+                        </div>
+                        <span className="flex shrink-0 items-center gap-3">
+                          <Link href={`/sitios/${c.slug}`} className="text-[12.5px] font-medium text-muted underline underline-offset-4 hover:text-ink">{tr("report.sitesHow")}</Link>
+                          {pro ? (
+                            <form action="/api/letters" method="post">
+                              <input type="hidden" name="request_id" value={requestId} />
+                              <input type="hidden" name="site_slug" value={c.slug} />
+                              <button type="submit" className="rounded-[10px] bg-accent px-3 py-1.5 text-[12.5px] font-semibold text-black hover:opacity-90">{tr("report.sitesAsk")}</button>
+                            </form>
+                          ) : (
+                            <Link href="/pro" className="rounded-[10px] border border-line px-3 py-1.5 text-[12.5px] font-semibold text-ink hover:border-accent">{tr("report.sitesAsk")} · {tr("pro.badge")}</Link>
+                          )}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <ul className="mt-3 flex flex-wrap gap-1.5">
+                  {clean.map((c) => (
+                    <li key={c.slug} className="rounded-full border border-line px-2.5 py-1 text-[12px] text-muted"><span className="mr-1 text-accent">✓</span>{c.name}</li>
+                  ))}
+                  {unknown.map((c) => (
+                    <li key={c.slug} className="rounded-full border border-line px-2.5 py-1 text-[12px] text-faint" title={tr("report.sitesUnknown")}>? {c.name}</li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-[12px] leading-relaxed text-faint">{tr("report.sitesNote")}</p>
+              </div>
+            </details>
+          );
+        })()}
 
         {report.accounts && report.accounts.length > 0 && (
           <details className={"group min-w-0 overflow-hidden " + CARD}>

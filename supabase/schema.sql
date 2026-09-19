@@ -417,3 +417,8 @@ grant execute on all functions in schema public to service_role;
 grant all on all tables in schema public to service_role;
 grant all on all sequences in schema public to service_role;
 notify pgrst, 'reload schema';
+
+-- ===== 20260919110000_request_progress.sql =====
+-- Espera con resultados en vivo: lo que ya se ha encontrado mientras la IA redacta (solo contadores y nombres de filtraciones).
+alter table public.requests add column if not exists progress jsonb;
+notify pgrst, 'reload schema';

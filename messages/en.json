@@ -367,7 +367,7 @@
     "subtitle": "This usually takes under a minute. You can keep this page open.",
     "step": {
       "hibp": "Checking your email against known breaches",
-      "brave": "Searching your name on the web",
+      "brave": "Searching your name and checking data sites one by one",
       "ai": "Asking AI what it knows about you",
       "report": "Writing the report"
     },
@@ -376,7 +376,17 @@
     "errorTitle": "We couldn't generate the report",
     "errorBody": "Something went wrong on our side. Request it again from the home page; it's free.",
     "notFoundTitle": "This report doesn't exist",
-    "notFoundBody": "It may have expired (reports are deleted after 30 days) or the link may be copied incorrectly."
+    "notFoundBody": "It may have expired (reports are deleted after 30 days) or the link may be copied incorrectly.",
+    "live": {
+      "title": "What we have found so far",
+      "noBreaches": "Your email is not in any known breach.",
+      "breaches": "Your email appears in {n} breaches: {names}…",
+      "results": "{n} public results with your name, {profiles} are profiles.",
+      "noSites": "You are not on any of the {n} data sites we checked.",
+      "sites": "You appear on {n} of {total} data sites: {names}.",
+      "assistants": "Already answered: {names}.",
+      "prelim": "provisional score. The final one arrives when the AI finishes reading everything."
+    }
   },
   "report": {
     "eyebrow": "Exposure report",
@@ -425,7 +435,16 @@
       "perplexity": "Perplexity",
       "openai": "ChatGPT (OpenAI)",
       "gemini": "Gemini (Google)"
-    }
+    },
+    "sitesTitle": "Data sites checked",
+    "sitesBodyListed": "We searched your full name on {n} sites that publish or sell personal data. You appear on these:",
+    "sitesBodyClean": "We searched your full name on {n} sites that publish or sell personal data and you don't appear on any.",
+    "sitesListed": "listed",
+    "sitesHow": "How to remove it",
+    "sitesAsk": "Request removal",
+    "sitesUnknown": "Could not be checked",
+    "sitesNote": "We check with a public search engine whether the site has a page with your full name. If your name is common, open the link and confirm it's you before requesting removal.",
+    "sitesWhat": "My personal data published on {site}"
   },
   "summary": {
     "breachesNone": "Your email does not appear in any known breach.",

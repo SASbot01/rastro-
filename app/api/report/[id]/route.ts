@@ -9,7 +9,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
  * Estado del informe para la pagina de espera (polling).
- * Nunca devuelve datos personales: solo status, paso y error.
+ * Solo para el dueño (sesion). Devuelve status, paso, error y el progreso en vivo
+ * (contadores y nombres de filtraciones y sitios; nunca el contenido del informe).
  */
 export async function GET(_request: Request, ctx: RouteContext<"/api/report/[id]">) {
   const { id } = await ctx.params;
@@ -20,7 +21,7 @@ export async function GET(_request: Request, ctx: RouteContext<"/api/report/[id]
   const supabase = supabaseAdmin();
   const { data: row, error } = await supabase
     .from("requests")
-    .select("email, status, step, error, started_at")
+    .select("email, status, step, error, started_at, progress")
     .eq("id", id)
     .eq("email", session.email)
     .maybeSingle();
@@ -42,7 +43,7 @@ export async function GET(_request: Request, ctx: RouteContext<"/api/report/[id]
   }
 
   return NextResponse.json(
-    { status: row.status, step: row.step, error: row.error },
+    { status: row.status, step: row.step, error: row.error, progress: row.progress ?? null },
     { headers: { "cache-control": "no-store" } },
   );
 }

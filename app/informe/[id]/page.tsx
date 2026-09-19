@@ -57,7 +57,7 @@ async function loadRequest(id: string, ownerEmail: string): Promise<{ request: R
   if (request.status === "done") {
     const { data } = await supabase
       .from("reports")
-      .select("score, summary, findings, actions, created_at, generator, accounts, raw")
+      .select("score, summary, findings, actions, created_at, generator, accounts, site_checks, raw")
       .eq("request_id", id)
       .maybeSingle<ReportData & { raw: RawAi | null }>();
     if (data) {

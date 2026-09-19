@@ -367,7 +367,7 @@
     "subtitle": "Suele tardar menos de un minuto. Puedes dejar esta página abierta.",
     "step": {
       "hibp": "Buscando tu correo en filtraciones conocidas",
-      "brave": "Buscando tu nombre en internet",
+      "brave": "Buscando tu nombre y comprobando sitios de datos uno a uno",
       "ai": "Preguntando a la IA qué sabe de ti",
       "report": "Redactando el informe"
     },
@@ -376,7 +376,17 @@
     "errorTitle": "No hemos podido generar el informe",
     "errorBody": "Algo ha fallado por nuestro lado. Vuelve a pedirlo desde el inicio; no te costará nada.",
     "notFoundTitle": "Este informe no existe",
-    "notFoundBody": "Puede que haya caducado (los informes se borran a los 30 días) o que el enlace esté mal copiado."
+    "notFoundBody": "Puede que haya caducado (los informes se borran a los 30 días) o que el enlace esté mal copiado.",
+    "live": {
+      "title": "Lo que ya hemos encontrado",
+      "noBreaches": "Tu correo no aparece en ninguna filtración conocida.",
+      "breaches": "Tu correo aparece en {n} filtraciones: {names}…",
+      "results": "{n} resultados públicos con tu nombre, {profiles} son perfiles.",
+      "noSites": "No apareces en ninguno de los {n} sitios de datos que comprobamos.",
+      "sites": "Apareces en {n} de {total} sitios de datos: {names}.",
+      "assistants": "Ya han respondido: {names}.",
+      "prelim": "puntuación provisional. La definitiva llega cuando la IA termine de leerlo todo."
+    }
   },
   "report": {
     "eyebrow": "Informe de exposición",
@@ -425,7 +435,16 @@
       "perplexity": "Perplexity",
       "openai": "ChatGPT (OpenAI)",
       "gemini": "Gemini (Google)"
-    }
+    },
+    "sitesTitle": "Sitios de datos comprobados",
+    "sitesBodyListed": "Hemos buscado tu nombre completo en {n} sitios que publican o venden datos personales. Apareces en estos:",
+    "sitesBodyClean": "Hemos buscado tu nombre completo en {n} sitios que publican o venden datos personales y no apareces en ninguno.",
+    "sitesListed": "apareces",
+    "sitesHow": "Cómo retirarlo",
+    "sitesAsk": "Pedir la retirada",
+    "sitesUnknown": "No se pudo comprobar",
+    "sitesNote": "Comprobamos con un buscador público si hay una página del sitio con tu nombre completo. Si tienes un nombre común, abre el enlace y confirma que eres tú antes de pedir la retirada.",
+    "sitesWhat": "Mis datos personales publicados en {site}"
   },
   "summary": {
     "breachesNone": "Tu correo no aparece en ninguna filtración conocida.",
