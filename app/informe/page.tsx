@@ -73,38 +73,38 @@ export default async function ReportsPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-12">
+      <main className="page py-8 sm:py-12">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("report.eyebrow")}</p>
-            <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink">{tr("reports.title")}</h1>
+            <p className="eyebrow">{tr("report.eyebrow")}</p>
+            <h1 className="mt-2 h1 text-ink">{tr("reports.title")}</h1>
           </div>
-          <Link href="/#form" className="rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">
+          <Link href="/#form" className="btn btn-primary btn-sm">
             {tr("account.newReport")}
           </Link>
         </div>
 
         {!user ? (
-          <section className="mt-6 rounded-card border border-line bg-surface p-6">
+          <section className="mt-6 card p-6">
             <p className="text-[15px] font-semibold text-ink">{tr("reports.loginTitle")}</p>
             <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("reports.loginBody")}</p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <Link href="/#form" className="rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("reports.first")}</Link>
-              <Link href="/entrar" className="rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("nav.login")}</Link>
+              <Link href="/#form" className="btn btn-primary btn-sm">{tr("reports.first")}</Link>
+              <Link href="/entrar" className="btn btn-secondary btn-sm">{tr("nav.login")}</Link>
             </div>
           </section>
         ) : list.length === 0 ? (
-          <section className="mt-6 rounded-card border border-line bg-surface p-6">
+          <section className="mt-6 card p-6">
             <p className="text-[15px] font-semibold text-ink">{tr("account.empty")}</p>
-            <Link href="/#form" className="mt-4 inline-block rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("reports.first")}</Link>
+            <Link href="/#form" className="mt-4 btn btn-primary btn-sm">{tr("reports.first")}</Link>
           </section>
         ) : (
           <>
             {/* Ultimo informe, destacado */}
-            <Link href={`/informe/${latest.id}`} className="mt-6 block rounded-card border border-line bg-surface p-6 hover:border-faint sm:p-8">
+            <Link href={`/informe/${latest.id}`} className="mt-6 block card p-6 hover:border-faint sm:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("reports.latest")}</p>
+                  <p className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("reports.latest")}</p>
                   <p className="mt-1 truncate text-[18px] font-semibold text-ink">
                     {latest.full_name}
                     {latest.city && <span className="font-normal text-muted"> · {latest.city}</span>}
@@ -118,18 +118,18 @@ export default async function ReportsPage() {
                   <span className="shrink-0 text-[13px] text-faint">—</span>
                 )}
               </div>
-              <span className="mt-4 inline-block text-[13px] font-medium text-accent underline underline-offset-4">{tr("account.view")}</span>
+              <span className="mt-4 inline-block link text-[14px]">{tr("account.view")}</span>
             </Link>
 
             {rest.length > 0 && (
               <section className="mt-8">
-                <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("reports.previous")}</h2>
+                <h2 className="px-1 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("reports.previous")}</h2>
                 <ul className="mt-3 grid gap-2">
                   {rest.map((row) => {
                     const r = reportOf(row);
                     return (
                       <li key={row.id}>
-                        <Link href={`/informe/${row.id}`} className="flex items-center justify-between gap-4 rounded-card border border-line bg-surface px-4 py-3.5 hover:border-faint sm:px-5">
+                        <Link href={`/informe/${row.id}`} className="flex items-center justify-between gap-4 card px-4 py-3.5 hover:border-faint sm:px-5">
                           <div className="min-w-0">
                             <p className="truncate text-[15px] font-semibold text-ink">
                               {row.full_name}
@@ -151,24 +151,24 @@ export default async function ReportsPage() {
         {/* Sondeo de Gmail */}
         {user && (
           <section className="mt-8">
-            <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("reports.scanTitle")}</h2>
+            <h2 className="px-1 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("reports.scanTitle")}</h2>
             {scan ? (
-              <Link href={`/cuenta/buzon?scan=${scan.id}`} className="mt-3 flex items-center justify-between gap-4 rounded-card border border-line bg-surface px-4 py-3.5 hover:border-faint sm:px-5">
+              <Link href={`/cuenta/buzon?scan=${scan.id}`} className="mt-3 flex items-center justify-between gap-4 card px-4 py-3.5 hover:border-faint sm:px-5">
                 <div className="min-w-0">
                   <p className="truncate text-[15px] font-semibold text-ink">
                     {scan.status === "processing" ? tr("reports.scanProcessing") : tr("reports.scanServices", { n: scan.services.length })}
                   </p>
                   <p className="mt-0.5 truncate text-[12.5px] text-faint">{scan.mailbox} · {fmt.format(new Date(scan.started_at))}</p>
                 </div>
-                <span className="shrink-0 text-[13px] font-medium text-accent underline underline-offset-4">{tr("reports.scanOpen")}</span>
+                <span className="shrink-0 link text-[14px]">{tr("reports.scanOpen")}</span>
               </Link>
             ) : (
-              <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-card border border-line bg-surface px-4 py-3.5 sm:px-5">
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-3 card px-4 py-3.5 sm:px-5">
                 <div className="min-w-0">
                   <p className="text-[15px] font-semibold text-ink">{tr("reports.scanNone")}</p>
                   <p className="mt-0.5 text-[13px] text-muted">{tr("reports.scanBody")}</p>
                 </div>
-                <Link href="/cuenta/buzon" className="shrink-0 rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("reports.scanCta")}</Link>
+                <Link href="/cuenta/buzon" className="shrink-0 btn btn-secondary btn-sm">{tr("reports.scanCta")}</Link>
               </div>
             )}
           </section>

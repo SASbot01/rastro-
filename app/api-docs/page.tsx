@@ -32,20 +32,20 @@ export default async function ApiDocsPage() {
   const messages = getMessages(locale);
   const tr = translator(messages);
   const paths = Object.entries(API_SPEC.paths) as Array<[string, Record<string, { summary: string; description?: string }>]>;
-  const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
+  const CARD = "card p-5 sm:p-6";
   const PRE = "mt-2 overflow-x-auto rounded-[12px] bg-paper p-4 font-mono text-[12.5px] leading-relaxed text-ink";
 
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("api.eyebrow")}</p>
-        <h1 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-ink sm:text-[38px]">{tr("api.title")}</h1>
+      <main className="page py-10 sm:py-14">
+        <p className="eyebrow">{tr("api.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("api.title")}</h1>
         <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-muted">{tr("api.subtitle")}</p>
         <p className="mt-3 max-w-[62ch] rounded-[12px] border border-accent/40 bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-ink">{tr("api.principle")}</p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/cuenta#api" className="rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("api.getKey")}</Link>
-          <a href="/api/v1/openapi.json" className="rounded-[12px] border border-line bg-surface px-5 py-3 text-[15px] font-semibold text-ink hover:border-faint">{tr("api.openapi")}</a>
+          <Link href="/cuenta#api" className="btn btn-primary">{tr("api.getKey")}</Link>
+          <a href="/api/v1/openapi.json" className="btn btn-secondary">{tr("api.openapi")}</a>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -57,7 +57,7 @@ export default async function ApiDocsPage() {
         <ul className="mt-4 grid gap-2">
           {paths.map(([path, methods]) =>
             Object.entries(methods).map(([method, op]) => (
-              <li key={method + path} className="rounded-card border border-line bg-surface px-4 py-3.5">
+              <li key={method + path} className="card px-4 py-3.5">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className={"rounded-full px-2 py-0.5 font-mono text-[11px] font-semibold uppercase " + (method === "get" ? "bg-accent-soft text-accent" : "bg-warn/15 text-warn")}>{method}</span>
                   <code className="font-mono text-[13.5px] text-ink">/api/v1{path}</code>
@@ -71,9 +71,9 @@ export default async function ApiDocsPage() {
 
         <h2 className="mt-10 text-[20px] font-semibold tracking-[-0.02em] text-ink">{tr("api.examples")}</h2>
         <div className="mt-4 grid gap-4">
-          <section className={CARD}><h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("api.curl")}</h3><pre className={PRE}>{CURL}</pre></section>
-          <section className={CARD}><h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("api.python")}</h3><pre className={PRE}>{PY}</pre></section>
-          <section className={CARD}><h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("api.js")}</h3><pre className={PRE}>{JS}</pre></section>
+          <section className={CARD}><h3 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("api.curl")}</h3><pre className={PRE}>{CURL}</pre></section>
+          <section className={CARD}><h3 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("api.python")}</h3><pre className={PRE}>{PY}</pre></section>
+          <section className={CARD}><h3 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("api.js")}</h3><pre className={PRE}>{JS}</pre></section>
         </div>
       </main>
       <SiteFooter messages={messages} />

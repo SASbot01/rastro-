@@ -56,10 +56,10 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
+      <main className="page py-10 sm:py-14">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-[26px] font-semibold tracking-[-0.025em] text-ink">{tr("mailbox.title")}</h1>
+            <h1 className="h2 text-ink">{tr("mailbox.title")}</h1>
             <p className="mt-1 text-[14px] text-muted">{tr("mailbox.subtitle")}</p>
           </div>
           <span className="rounded-full bg-accent-soft px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-accent">{tr("mailbox.beta")}</span>
@@ -70,10 +70,10 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
         )}
 
         {!pro ? (
-          <div className="rounded-card border border-line bg-surface p-6">
+          <div className="card p-6">
             <p className="text-[15px] font-semibold text-ink">{tr("pro.locked")}</p>
             <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("mailbox.proBody")}</p>
-            <Link href="/pro" className="mt-4 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
+            <Link href="/pro" className="mt-4 btn btn-primary">
               {tr("pro.lockedCta")}
             </Link>
           </div>
@@ -82,7 +82,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
             {current && <MailboxView scan={current} locale={locale} messages={messages} pro={pro} />}
 
             {(!current || current.status !== "processing") && (
-              <section className="mt-6 rounded-card border border-line bg-surface p-6">
+              <section className="mt-6 card p-6">
                 <h2 className="text-[15px] font-semibold text-ink">{current ? tr("mailbox.rescan") : tr("mailbox.connectTitle")}</h2>
                 <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("mailbox.connectBody")}</p>
                 <ul className="mt-3 grid gap-1.5 text-[13px] leading-relaxed text-muted">
@@ -97,7 +97,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
                   <button
                     type="submit"
                     disabled={!googleConfigured()}
-                    className="rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-50"
+                    className="btn btn-primary"
                   >
                     {tr("mailbox.connect")}
                   </button>
@@ -109,7 +109,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
 
             {list.length > 1 && (
               <section className="mt-6">
-                <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("mailbox.history")}</h2>
+                <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("mailbox.history")}</h2>
                 <ul className="mt-3 grid gap-2">
                   {list.map((s) => (
                     <li key={s.id} className="flex items-center justify-between gap-3 text-[14px]">
@@ -129,7 +129,7 @@ export default async function MailboxPage({ searchParams }: PageProps<"/cuenta/b
           </>
         )}
 
-        <Link href="/cuenta" className="mt-8 inline-block text-[14px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+        <Link href="/cuenta" className="mt-8 inline-block link-muted text-[14px]">
           {tr("nav.account")}
         </Link>
       </main>

@@ -217,7 +217,10 @@
       "retention": "Deleted after 30 days"
     },
     "demoTitle": "This is what your score looks like",
-    "demoBody": "From 0 to 100. Breaches, public profiles and what AI says about you, at a glance."
+    "demoBody": "From 0 to 100. Breaches, public profiles and what AI says about you, at a glance.",
+    "titleLead": "See what AI",
+    "titleAccent": "knows about you.",
+    "sample": "Sample"
   },
   "form": {
     "title": "Get your report",
@@ -385,8 +388,12 @@
       "noSites": "You are not on any of the {n} data sites we checked.",
       "sites": "You appear on {n} of {total} data sites: {names}.",
       "assistants": "Already answered: {names}.",
-      "prelim": "provisional score. The final one arrives when the AI finishes reading everything."
-    }
+      "prelim": "provisional score. The final one arrives when the AI finishes reading everything.",
+      "prelimLabel": "Provisional score",
+      "prelimNote": "The final one arrives when the AI finishes reading everything."
+    },
+    "progress": "{done} of {total} steps",
+    "searching": "Searching…"
   },
   "report": {
     "eyebrow": "Exposure report",
@@ -855,7 +862,8 @@
     "checkNow": "Check now",
     "checkGone": "You no longer appear on that page",
     "checkStill": "Your name still appears",
-    "checkUnknown": "Couldn't check automatically (the page blocks robots or requires access). Check it yourself and mark the result."
+    "checkUnknown": "Couldn't check automatically (the page blocks robots or requires access). Check it yourself and mark the result.",
+    "checkUnconfirmed": "We don't see your name on that page, but we hadn't seen it there before either, so we can't confirm it. Open it yourself and mark the result."
   },
   "letterTpl": {
     "subject": "Request for erasure of personal data (Article 17 GDPR) — {name}",
@@ -1198,7 +1206,9 @@
       }
     ],
     "formTitle": "Get your free report",
-    "formBody": "Two minutes. No card. Only about you."
+    "formBody": "Two minutes. No card. Only about you.",
+    "stepLabel": "Step {n}",
+    "formSecure": "No passwords. You confirm with a code sent to your email."
   },
   "ask": {
     "open": "Ask Rastro",
@@ -1730,7 +1740,8 @@
     "ctaRequest": "Request removal of {n}",
     "ctaOverdue": "Escalate {n} overdue",
     "ctaSee": "See my requests",
-    "badge": "Removed ✓"
+    "badge": "Removed ✓",
+    "celebrate": "Verified: you no longer show up on {n} of them."
   },
   "removedEmail": {
     "subject": "Good news: {host} no longer shows your data",

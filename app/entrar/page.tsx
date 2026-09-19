@@ -15,7 +15,7 @@ export default async function LoginPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-12 sm:py-16">
+      <main className="page py-12 sm:py-16">
         <LoginForm messages={messages} locale={locale} googleEnabled={googleConfigured()} />
       </main>
       <SiteFooter messages={messages} />

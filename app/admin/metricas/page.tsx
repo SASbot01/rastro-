@@ -57,12 +57,12 @@ export default async function MetricsPage({ searchParams }: { searchParams: Prom
 
   // Serie diaria de los cuatro eventos clave.
   const series: EventName[] = ["form_submitted", "report_ready", "signup", "pro_activated"];
-  const dayKeys = Array.from({ length: days }, (_, i) => new Date(now - (days - 1 - i) * 86_400_000).toISOString().slice(0, 10));
+  const dayKeys = Array.from({ length: days }, (_, i) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Madrid" }).format(new Date(now - (days - 1 - i) * 86_400_000)));
   const perDay = new Map<string, number>();
   for (const r of (daily ?? []) as Daily[]) perDay.set(`${String(r.day).slice(0, 10)}|${r.name}`, Number(r.total));
   const maxDay = Math.max(1, ...dayKeys.map((k) => perDay.get(`${k}|form_submitted`) ?? 0));
   const others = EVENTS.filter((e) => !FUNNEL.includes(e));
-  const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
+  const CARD = "card p-5 sm:p-6";
 
   return (
     <>
@@ -70,8 +70,8 @@ export default async function MetricsPage({ searchParams }: { searchParams: Prom
       <main className="mx-auto w-full max-w-[920px] px-5 py-10">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">Interno</p>
-            <h1 className="mt-1 text-[28px] font-semibold tracking-[-0.03em] text-ink">Métricas de producto</h1>
+            <p className="eyebrow">Interno</p>
+            <h1 className="mt-1 h1 text-ink">Métricas de producto</h1>
             <p className="mt-1 text-[13.5px] text-muted">Personas únicas por paso en los últimos {days} días. Sin IP, sin correos: solo contadores.</p>
           </div>
           <nav className="flex gap-1.5">

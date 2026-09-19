@@ -217,7 +217,10 @@
       "retention": "Se borra a los 30 días"
     },
     "demoTitle": "Así se ve tu puntuación",
-    "demoBody": "De 0 a 100. Filtraciones, perfiles públicos y lo que la IA dice de ti, en un vistazo."
+    "demoBody": "De 0 a 100. Filtraciones, perfiles públicos y lo que la IA dice de ti, en un vistazo.",
+    "titleLead": "Mira lo que la IA",
+    "titleAccent": "sabe de ti.",
+    "sample": "Ejemplo"
   },
   "form": {
     "title": "Pide tu informe",
@@ -385,8 +388,12 @@
       "noSites": "No apareces en ninguno de los {n} sitios de datos que comprobamos.",
       "sites": "Apareces en {n} de {total} sitios de datos: {names}.",
       "assistants": "Ya han respondido: {names}.",
-      "prelim": "puntuación provisional. La definitiva llega cuando la IA termine de leerlo todo."
-    }
+      "prelim": "puntuación provisional. La definitiva llega cuando la IA termine de leerlo todo.",
+      "prelimLabel": "Puntuación provisional",
+      "prelimNote": "La definitiva llega cuando la IA termine de leerlo todo."
+    },
+    "progress": "{done} de {total} pasos",
+    "searching": "Buscando…"
   },
   "report": {
     "eyebrow": "Informe de exposición",
@@ -855,7 +862,8 @@
     "checkNow": "Comprobar ahora",
     "checkGone": "Ya no apareces en esa página",
     "checkStill": "Tu nombre sigue apareciendo",
-    "checkUnknown": "No se pudo comprobar automáticamente (la página bloquea robots o exige acceso). Míralo tú y marca el resultado."
+    "checkUnknown": "No se pudo comprobar automáticamente (la página bloquea robots o exige acceso). Míralo tú y marca el resultado.",
+    "checkUnconfirmed": "No vemos tu nombre en esa página, pero tampoco lo habíamos visto antes, así que no podemos confirmarlo. Ábrela tú y marca el resultado."
   },
   "letterTpl": {
     "subject": "Solicitud de supresión de datos personales (artículo 17 RGPD) — {name}",
@@ -1198,7 +1206,9 @@
       }
     ],
     "formTitle": "Pide tu informe gratis",
-    "formBody": "Dos minutos. Sin tarjeta. Solo sobre ti."
+    "formBody": "Dos minutos. Sin tarjeta. Solo sobre ti.",
+    "stepLabel": "Paso {n}",
+    "formSecure": "Sin contraseñas. Confirmas con un código que te llega al correo."
   },
   "ask": {
     "open": "Pregunta a Rastro",
@@ -1730,7 +1740,8 @@
     "ctaRequest": "Pedir la retirada de {n}",
     "ctaOverdue": "Reclamar {n} fuera de plazo",
     "ctaSee": "Ver mis solicitudes",
-    "badge": "Retirado ✓"
+    "badge": "Retirado ✓",
+    "celebrate": "Comprobado: ya no sales en {n} de ellos."
   },
   "removedEmail": {
     "subject": "Buenas noticias: {host} ya no muestra tus datos",

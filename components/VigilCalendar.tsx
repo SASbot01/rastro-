@@ -26,14 +26,14 @@ function dayKey(d: Date) {
  */
 export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt, checks, daily, justEnabled }: Props) {
   const tr = translator(messages);
-  const card = "rounded-card border border-line bg-surface p-5 sm:p-6";
+  const card = "card p-5 sm:p-6";
 
   if (!monitoring) {
     return (
       <section className={card}>
         <p className="text-[15px] font-semibold text-ink">{tr("vigil.offTitle")}</p>
         <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("vigil.offBody")}</p>
-        <Link href="/herramientas" className="mt-3 inline-block text-[14px] font-medium text-accent underline underline-offset-4">{tr("vigil.offCta")} →</Link>
+        <Link href="/herramientas" className="mt-3 inline-block link text-[14px]">{tr("vigil.offCta")} →</Link>
       </section>
     );
   }
@@ -104,7 +104,7 @@ export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt,
       {/* Tira semanal: comprobacion diaria */}
       <div className="mt-4 rounded-[14px] border border-line bg-surface-2 p-3.5">
         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("week.title")}</p>
+          <p className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("week.title")}</p>
           <p className={"text-[12.5px] font-semibold " + (lastAlertToday ? "text-warn" : "text-accent")}>
             {!hasDaily ? "" : lastAlertToday ? tr("week.streakZero") : streak === 1 ? tr("week.streakOne") : tr("week.streak", { n: streak })}
           </p>
@@ -130,7 +130,7 @@ export function VigilCalendar({ locale, messages, monitoring, consentAt, lastAt,
 
       {/* Calendario */}
       <div className="mt-4 rounded-[14px] border border-line bg-surface-2 p-3.5">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-faint">{monthFmt.format(monthDate)}</p>
+        <p className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{monthFmt.format(monthDate)}</p>
         <div className="mt-2 grid grid-cols-7 gap-y-1 text-center">
           {dows.map((d, i) => (
             <span key={i} className="text-[10.5px] font-medium uppercase text-faint">{d}</span>

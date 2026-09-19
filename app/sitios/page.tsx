@@ -21,18 +21,18 @@ export default async function SitesPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("sites.eyebrow")}</p>
-        <h1 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-ink sm:text-[38px]">{tr("sites.title")}</h1>
+      <main className="page py-10 sm:py-14">
+        <p className="eyebrow">{tr("sites.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("sites.title")}</h1>
         <p className="mt-3 max-w-[60ch] text-[16px] leading-relaxed text-muted">{tr("sites.subtitle")}</p>
 
         {[...groups.entries()].map(([kind, list]) => (
           <section key={kind} className="mt-10">
-            <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr(`sites.kinds.${kind}`)}</h2>
+            <h2 className="px-1 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr(`sites.kinds.${kind}`)}</h2>
             <ul className="mt-3 grid gap-2 sm:grid-cols-2">
               {list.map((b) => (
                 <li key={b.slug}>
-                  <Link href={`/sitios/${b.slug}`} className="block h-full rounded-card border border-line bg-surface p-4 hover:border-accent">
+                  <Link href={`/sitios/${b.slug}`} className="block h-full card p-4 hover:border-accent">
                     <p className="text-[15px] font-semibold text-ink">{b.name}</p>
                     <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-muted">{b.shows}</p>
                     <p className="mt-2 text-[12px] text-faint">{b.typicalDays === 0 ? tr("sites.typicalInstant") : b.typicalDays ? tr("sites.typical", { n: b.typicalDays }) : ""}</p>
@@ -46,7 +46,7 @@ export default async function SitesPage() {
         <section className="mt-12 rounded-card border border-accent/40 bg-accent-soft p-6">
           <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-ink">{tr("hero.title")}</h2>
           <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("sites.ctaBody")}</p>
-          <Link href="/#form" className="mt-4 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("sites.cta")}</Link>
+          <Link href="/#form" className="mt-4 btn btn-primary">{tr("sites.cta")}</Link>
         </section>
       </main>
       <SiteFooter messages={messages} />
