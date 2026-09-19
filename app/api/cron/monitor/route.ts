@@ -5,6 +5,9 @@ import { diffLines, diffReports, type ReportSnapshot } from "@/lib/report/diff";
 import { sendMonitorEmail } from "@/lib/email";
 import { createLoginLink } from "@/lib/login-link";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { worthAlert, type AiChange } from "@/lib/ai-watch";
+import { changeLines } from "@/lib/ai-watch-lines";
+import { track } from "@/lib/events";
 
 /**
  * Monitorizacion mensual (semana 2). Cron diario: coge hasta BATCH usuarios
@@ -115,9 +118,14 @@ export async function GET(request: Request) {
     }
 
     const diff = diffReports(prevReport, nextReport);
+    // Cambios en lo que dice cada IA (la foto la guarda el propio job del informe).
+    const { data: snap } = await supabase.from("ai_snapshots").select("changes").eq("request_id", created.id).maybeSingle<{ changes: AiChange[] }>();
+    const aiChanges = snap?.changes ?? [];
+    const aiAlert = worthAlert(aiChanges);
+    if (aiAlert) void track("ai_change_detected", { subject: user.id, locale, props: { changes: aiChanges.filter((c) => !c.minor).length, source: "monitor" } });
     await supabase.from("reports").update({ raw: { ...(nextReport.raw ?? {}), diff } }).eq("request_id", created.id);
 
-    if (diff.changed) {
+    if (diff.changed || aiAlert) {
       const reportUrl = await createLoginLink(user.email, locale, `/informe/${created.id}`);
       const unsubscribeUrl = await createLoginLink(user.email, locale, "/cuenta");
       try {
@@ -125,7 +133,7 @@ export async function GET(request: Request) {
           to: user.email,
           name: last.full_name.split(" ")[0],
           score: nextReport.score,
-          lines: diffLines(diff, locale),
+          lines: [...diffLines(diff, locale), ...changeLines(aiChanges, locale).slice(0, 5)],
           reportUrl,
           unsubscribeUrl,
           locale,
@@ -134,7 +142,7 @@ export async function GET(request: Request) {
         console.error("[cron/monitor] correo fallo:", err);
       }
     }
-    results.push({ user: user.id, status: "ok", changed: diff.changed });
+    results.push({ user: user.id, status: "ok", changed: diff.changed || aiAlert });
   }
 
   console.log(`[cron/monitor] procesados ${results.length}:`, JSON.stringify(results));

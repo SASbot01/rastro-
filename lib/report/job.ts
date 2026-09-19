@@ -10,6 +10,8 @@ import { isLocale, type Locale } from "@/lib/i18n";
 import { normalizeEmail } from "@/lib/crypto";
 import { computeScore } from "@/lib/report/score";
 import { buildActions, buildFindings, buildSummary, signalsFrom } from "@/lib/report/findings";
+import { answersFromRaw, saveSnapshot } from "@/lib/ai-watch";
+import { track } from "@/lib/events";
 
 /**
  * Job del informe. Se lanza con `after()` desde /verify una vez la solicitud
@@ -46,6 +48,7 @@ interface RequestRow {
   status: string;
   finished_at: string | null;
   origin: "user" | "monitor";
+  user_id: string | null;
 }
 
 interface CachedReport {
@@ -74,7 +77,7 @@ async function findCached(row: RequestRow): Promise<{ request: RequestRow; repor
   const since = new Date(Date.now() - CACHE_DAYS * 86_400_000).toISOString();
   const { data: prev } = await supabase
     .from("requests")
-    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin")
+    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin, user_id")
     .ilike("email", normalizeEmail(row.email))
     .eq("status", "done")
     .neq("id", row.id)
@@ -118,7 +121,7 @@ export async function runReportJob(requestId: string): Promise<void> {
 
   const { data: row, error } = await supabase
     .from("requests")
-    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin")
+    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin, user_id")
     .eq("id", requestId)
     .maybeSingle<RequestRow>();
 
@@ -235,11 +238,18 @@ export async function runReportJob(requestId: string): Promise<void> {
       .update({ status: "done", step: null, error: null, finished_at: new Date().toISOString() })
       .eq("id", row.id);
 
+    // Memoria de lo que dice cada IA (solo con cuenta). Despues de marcar 'done': no retrasa el informe.
+    if (row.user_id) {
+      await saveSnapshot({ userId: row.user_id, requestId: row.id, source: "report", person: { full_name: row.full_name, city: row.city, occupation: row.occupation }, locale, answers: answersFromRaw(perplexity, assistants.answers) }).catch((e) => console.warn("[job] foto de IA fallo:", String(e).slice(0, 160)));
+    }
+    void track("report_ready", { subject: row.id, locale, props: { origin: row.origin, generator: content.generator, seconds: Math.round((Date.now() - startedAt) / 1000), score } });
+
     const tokens = ai.ok ? `${ai.usage.input_tokens}in/${ai.usage.output_tokens}out` : "sin IA";
     console.log(`[job] informe ${row.id} listo en ${Date.now() - startedAt} ms, score ${score}, ${content.generator} (${tokens})`);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`[job] informe ${row.id} fallo:`, message);
+    void track("report_failed", { subject: row.id, locale });
     await supabase
       .from("requests")
       .update({ status: "error", error: message.slice(0, 500), finished_at: new Date().toISOString() })
