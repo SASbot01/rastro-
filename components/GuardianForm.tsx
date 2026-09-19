@@ -5,7 +5,7 @@ import Link from "next/link";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import type { GuardianVerdict } from "@/lib/ai/guardian";
 
-const FIELD = "w-full rounded-[12px] border border-line bg-surface-2 px-3.5 py-3 text-[15px] text-ink placeholder:text-faint focus:border-accent focus:outline-none disabled:opacity-60";
+const FIELD = "field";
 const VERDICT = { scam: "bg-danger/15 text-danger", suspicious: "bg-warn/15 text-warn", legit: "bg-accent-soft text-accent" } as const;
 
 /** Formulario del guardian: pega el mensaje, recibe el veredicto. */
@@ -35,7 +35,7 @@ export function GuardianForm({ messages, locale, personalized }: { messages: Mes
 
   return (
     <div className="grid gap-4">
-      <form onSubmit={onSubmit} className="rounded-card border border-line bg-surface p-5 sm:p-6">
+      <form onSubmit={onSubmit} className="card p-5 sm:p-6">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-2"><button type="button" disabled={busy} className="ex-text-link" onClick={() => { setText(tr("experience.guardianSampleText")); setSender(""); setResult(null); setError(null); }}>{tr("experience.guardianSample")}</button><Link className="ex-emergency-link" href="/ayuda-urgente">{tr("experience.emergency")} ↗</Link></div>
         <label className="block text-[13px] font-medium text-ink" htmlFor="g-sender">{tr("guardian.sender")}</label>
         <input id="g-sender" name="sender" value={sender} onChange={(e) => setSender(e.target.value)} maxLength={200} disabled={busy} placeholder={tr("guardian.senderPlaceholder")} className={"mt-1.5 " + FIELD} />
@@ -44,12 +44,12 @@ export function GuardianForm({ messages, locale, personalized }: { messages: Mes
         <p id="guardian-counter" className="ex-note mt-2 text-right">{tr("experience.guardianCount", { n: text.length })}</p>
         <p className="mt-2 text-[12px] text-faint">{personalized ? tr("guardian.personalized") : tr("guardian.notPersonalized")}</p>
         {error && <p role="alert" className="mt-3 text-[13px] font-medium text-danger">{tr(error)}</p>}
-        <button type="submit" disabled={busy} className="mt-4 rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-60">{busy ? tr("guardian.analyzing") : tr("guardian.analyze")}</button>
+        <button type="submit" disabled={busy} className="btn btn-primary mt-4 w-full sm:w-auto">{busy ? tr("guardian.analyzing") : tr("guardian.analyze")}</button>
         {(text || sender || result) && <button type="button" disabled={busy} className="ex-quiet ml-3" onClick={() => { setText(""); setSender(""); setResult(null); setError(null); }}>{tr("experience.guardianClear")}</button>}
       </form>
 
       {result && (
-        <section aria-live="polite" className="rounded-card border border-line bg-surface p-5 sm:p-6">
+        <section aria-live="polite" className="card p-5 sm:p-6">
           <div className="flex flex-wrap items-center gap-3">
             <span className={"rounded-full px-3 py-1 text-[12.5px] font-semibold uppercase tracking-wide " + VERDICT[result.verdict]}>{tr(`guardian.verdict.${result.verdict}`)}</span>
             <span className="text-[12.5px] text-faint">{tr("guardian.confidence", { n: result.confidence })}</span>
@@ -60,11 +60,11 @@ export function GuardianForm({ messages, locale, personalized }: { messages: Mes
           </ul>
           {result.uses_your_data.length > 0 && (
             <div className="mt-4 rounded-[12px] bg-surface-2 p-4">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-danger">{tr("guardian.usesData")}</p>
+              <p className="eyebrow !text-danger">{tr("guardian.usesData")}</p>
               <ul className="mt-1 grid gap-1">{result.uses_your_data.map((d) => <li key={d} className="text-[13.5px] text-ink">· {d}</li>)}</ul>
             </div>
           )}
-          <p className="mt-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("guardian.actions")}</p>
+          <p className="mt-4 eyebrow">{tr("guardian.actions")}</p>
           <ol className="mt-1 grid gap-1.5">
             {result.actions.map((a, i) => <li key={a} className="flex gap-2.5 text-[14px] leading-relaxed text-ink"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-[11px] font-semibold text-black">{i + 1}</span>{a}</li>)}
           </ol>

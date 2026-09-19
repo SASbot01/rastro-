@@ -28,24 +28,24 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
   const messages = getMessages(locale);
   const tr = translator(messages);
   const fmt = new Intl.DateTimeFormat(locale, { dateStyle: "long" });
-  const CARD = "rounded-card border border-line bg-surface p-5";
+  const CARD = "card p-5";
 
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <Link href="/sitios" className="text-[13px] font-medium text-accent underline underline-offset-4">← {tr("sites.all")}</Link>
-        <p className="mt-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr(`sites.kinds.${b.kind}`)}</p>
-        <h1 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-ink sm:text-[38px]">{tr("sites.pageTitle", { name: b.name })}</h1>
+      <main className="page py-10 sm:py-14">
+        <Link href="/sitios" className="link text-[14px]">← {tr("sites.all")}</Link>
+        <p className="mt-4 eyebrow">{tr(`sites.kinds.${b.kind}`)}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("sites.pageTitle", { name: b.name })}</h1>
 
         <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
           <div className="grid gap-4">
             <section className={CARD}>
-              <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("sites.shows")}</h2>
+              <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("sites.shows")}</h2>
               <p className="mt-2 text-[15px] leading-relaxed text-ink">{b.shows}</p>
             </section>
             <section className={CARD}>
-              <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("sites.how")}</h2>
+              <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("sites.how")}</h2>
               <ol className="mt-3 grid gap-3">
                 {b.steps.map((st, i) => (
                   <li key={i} className="flex gap-3 text-[15px] leading-relaxed text-ink">
@@ -58,7 +58,7 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
             </section>
             {b.notes && (
               <section className={CARD}>
-                <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("sites.notes")}</h2>
+                <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("sites.notes")}</h2>
                 <p className="mt-2 text-[14px] leading-relaxed text-muted">{b.notes}</p>
               </section>
             )}
@@ -66,7 +66,7 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
 
           <aside className="grid gap-4">
             <section className={CARD}>
-              <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("sites.contact")}</h2>
+              <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("sites.contact")}</h2>
               {b.email ? (
                 <a href={`mailto:${b.email}`} className="mt-2 block break-all text-[15px] font-semibold text-ink underline underline-offset-4">{b.email}</a>
               ) : (
@@ -74,7 +74,7 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
               )}
               {b.optOutUrl && (
                 <>
-                  <h3 className="mt-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("sites.optOut")}</h3>
+                  <h3 className="mt-4 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("sites.optOut")}</h3>
                   <a href={b.optOutUrl} target="_blank" rel="noreferrer nofollow" className="mt-1 block break-all text-[13.5px] text-accent underline underline-offset-4">{b.optOutUrl}</a>
                 </>
               )}
@@ -83,7 +83,7 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
             <section className="rounded-card border border-accent/40 bg-accent-soft p-5">
               <h2 className="text-[17px] font-semibold tracking-[-0.02em] text-ink">{tr("sites.ctaTitle", { name: b.name })}</h2>
               <p className="mt-2 text-[14px] leading-relaxed text-muted">{tr("sites.ctaBody")}</p>
-              <Link href="/#form" className="mt-4 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("sites.cta")}</Link>
+              <Link href="/#form" className="mt-4 btn btn-primary">{tr("sites.cta")}</Link>
             </section>
           </aside>
         </div>

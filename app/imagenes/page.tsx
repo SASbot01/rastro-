@@ -9,8 +9,8 @@ import { isPro, prices } from "@/lib/plan";
 import { searchImages, type ImageHit } from "@/lib/brave";
 
 export const dynamic = "force-dynamic";
-const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
-const BTN = "inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90";
+const CARD = "card p-5 sm:p-6";
+const BTN = "btn btn-primary";
 
 /** v4 — Imagenes publicas asociadas al nombre, con carta de retirada por sitio. */
 export default async function ImagesPage() {
@@ -35,9 +35,9 @@ export default async function ImagesPage() {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-12">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("images.eyebrow")}</p>
-        <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink sm:text-[34px]">{tr("images.title")}</h1>
+      <main className="page py-8 sm:py-12">
+        <p className="eyebrow">{tr("images.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("images.title")}</h1>
         <p className="mt-2 max-w-[60ch] text-[15px] leading-relaxed text-muted">{tr("images.subtitle")}</p>
 
         {!user ? (
@@ -52,10 +52,10 @@ export default async function ImagesPage() {
           <section className={CARD + " mt-6"}><p className="text-[15px] font-semibold text-accent">{tr("images.none")}</p></section>
         ) : (
           <>
-            <p className="mt-6 px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("images.count", { n: result.hits.length })} · {person.full_name}{person.city ? ` · ${person.city}` : ""}</p>
+            <p className="mt-6 px-1 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("images.count", { n: result.hits.length })} · {person.full_name}{person.city ? ` · ${person.city}` : ""}</p>
             <ul className="mt-3 grid gap-3 sm:grid-cols-2">
               {[...groups.entries()].map(([pageUrl, hits]) => (
-                <li key={pageUrl} className="overflow-hidden rounded-card border border-line bg-surface">
+                <li key={pageUrl} className="overflow-hidden card">
                   <div className="grid grid-cols-3 gap-1 bg-surface-2 p-1">
                     {hits.slice(0, 3).map((h, i) => (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -66,8 +66,8 @@ export default async function ImagesPage() {
                     <p className="truncate text-[14px] font-semibold text-ink">{hits[0].title || hits[0].hostname}</p>
                     <p className="truncate text-[12px] text-faint">{hits[0].hostname}</p>
                     <div className="mt-3 flex flex-wrap items-center gap-3">
-                      <a href={pageUrl} target="_blank" rel="noreferrer nofollow" className="text-[13px] font-medium text-muted underline underline-offset-4 hover:text-ink">{tr("images.source")}</a>
-                      <form action="/api/letters" method="post"><input type="hidden" name="page_url" value={pageUrl} /><button type="submit" className="text-[13px] font-medium text-accent underline underline-offset-4">{tr("images.remove")}</button></form>
+                      <a href={pageUrl} target="_blank" rel="noreferrer nofollow" className="link-muted text-[14px]">{tr("images.source")}</a>
+                      <form action="/api/letters" method="post"><input type="hidden" name="page_url" value={pageUrl} /><button type="submit" className="link text-[14px]">{tr("images.remove")}</button></form>
                     </div>
                   </div>
                 </li>

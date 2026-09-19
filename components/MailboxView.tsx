@@ -46,13 +46,13 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
   }, [scan.id, scan.status, router]);
 
   const fmt = new Intl.DateTimeFormat(locale, { month: "short", year: "numeric" });
-  const card = "rounded-card border border-line bg-surface shadow-[0_1px_2px_rgba(26,26,25,0.04)]";
+  const card = "card";
 
   if (live.status === "processing") {
     return (
       <div className={card + " p-6 sm:p-8"}>
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("mailbox.scanning")}</p>
-        <h1 className="mt-2 text-[24px] font-semibold tracking-[-0.02em] text-ink">{scan.mailbox}</h1>
+        <p className="eyebrow">{tr("mailbox.scanning")}</p>
+        <h1 className="mt-2 h2 text-ink">{scan.mailbox}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("mailbox.scanningBody")}</p>
         <p className="mt-5 flex items-center gap-2 text-[14px] text-ink">
           <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
@@ -66,7 +66,7 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
   if (live.status === "error") {
     return (
       <div className={card + " p-6 sm:p-8"}>
-        <h1 className="text-[24px] font-semibold tracking-[-0.02em] text-ink">{tr("mailbox.errorTitle")}</h1>
+        <h1 className="h2 text-ink">{tr("mailbox.errorTitle")}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("mailbox.errorBody")}</p>
       </div>
     );
@@ -81,8 +81,8 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
   return (
     <div className="grid gap-4">
       <div className={card + " p-6 sm:p-8"}>
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("mailbox.doneEyebrow")}</p>
-        <h1 className="mt-2 text-[28px] leading-tight font-semibold tracking-[-0.025em] text-ink">
+        <p className="eyebrow">{tr("mailbox.doneEyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">
           {tr("mailbox.doneTitle", { n: scan.services.length })}
         </h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">
@@ -106,7 +106,7 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder={tr("mailbox.search")}
-          className="ml-auto w-full max-w-[220px] rounded-full border border-line bg-surface px-3.5 py-1.5 text-[13px] text-ink placeholder:text-faint focus:border-accent focus:outline-none"
+          className="field ml-auto !min-h-[44px] max-w-[240px] !rounded-full !py-2"
         />
       </div>
 
@@ -133,7 +133,7 @@ export function MailboxView({ scan, locale, messages, pro }: { scan: Scan; local
                 <form action="/api/letters" method="post">
                   <input type="hidden" name="host" value={s.domain} />
                   <input type="hidden" name="mailbox_scan_id" value={scan.id} />
-                  <button type="submit" className="text-[13px] font-medium text-accent underline underline-offset-4">
+                  <button type="submit" className="link text-[14px]">
                     {tr("mailbox.closeLetter")}
                   </button>
                 </form>

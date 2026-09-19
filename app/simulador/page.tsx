@@ -10,8 +10,8 @@ import type { Simulation } from "@/lib/ai/simulate";
 
 export const dynamic = "force-dynamic";
 
-const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
-const BTN = "inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90";
+const CARD = "card p-5 sm:p-6";
+const BTN = "btn btn-primary";
 
 function levelOf(n: number): "low" | "medium" | "high" {
   return n < 35 ? "low" : n < 65 ? "medium" : "high";
@@ -47,9 +47,9 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-12">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("sim.eyebrow")}</p>
-        <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink sm:text-[34px]">{tr("sim.title")}</h1>
+      <main className="page py-8 sm:py-12">
+        <p className="eyebrow">{tr("sim.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("sim.title")}</h1>
         <p className="mt-2 max-w-[60ch] text-[15px] leading-relaxed text-muted">{tr("sim.subtitle")}</p>
 
         {e === "failed" && <p role="alert" className="mt-4 text-[13.5px] font-medium text-danger">{tr("sim.failed")}</p>}
@@ -96,9 +96,9 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
                 </div>
                 <p className="mt-3 text-[13.5px] leading-relaxed text-muted">{s.attackability_reason}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <a href={`/simulador/${sim!.id}/imagen?f=story`} target="_blank" rel="noreferrer" className="rounded-[10px] border border-line bg-surface-2 px-3.5 py-2 text-[13px] font-medium text-ink hover:border-faint">{tr("sim.share")}</a>
+                  <a href={`/simulador/${sim!.id}/imagen?f=story`} target="_blank" rel="noreferrer" className="btn btn-secondary btn-sm">{tr("sim.share")}</a>
                   {pro && (
-                    <form action="/api/simulate" method="post"><input type="hidden" name="action" value="generate" /><button type="submit" className="rounded-[10px] border border-line bg-surface-2 px-3.5 py-2 text-[13px] font-medium text-muted hover:text-ink">{tr("sim.regenerate")}</button></form>
+                    <form action="/api/simulate" method="post"><input type="hidden" name="action" value="generate" /><button type="submit" className="btn btn-secondary btn-sm">{tr("sim.regenerate")}</button></form>
                   )}
                 </div>
                 <p className="mt-2 text-[11.5px] text-faint">{tr("sim.shareHint")}</p>
@@ -118,9 +118,9 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
 
             {/* Phishing + llamada */}
             <div className="grid gap-4">
-              <h2 className="px-1 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("sim.phishingTitle")}</h2>
+              <h2 className="px-1 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("sim.phishingTitle")}</h2>
               {visiblePhishing.map((p, i) => (
-                <article key={i} className="overflow-hidden rounded-card border border-line bg-surface">
+                <article key={i} className="overflow-hidden card">
                   <div className="flex items-center justify-between gap-3 bg-accent px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-black">
                     <span>{tr("sim.tag")} · {tr(`sim.channel.${p.channel}`)}</span><span>{i + 1}/3</span>
                   </div>
@@ -130,7 +130,7 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
                     <p className="mt-3 whitespace-pre-line rounded-[12px] bg-surface-2 p-4 text-[14px] leading-relaxed text-ink">{p.body}</p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                       <div><p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-warn">{tr("sim.pretext")}</p><p className="mt-1 text-[13.5px] leading-relaxed text-muted">{p.pretext}</p></div>
-                      <div><p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("sim.clues")}</p><ul className="mt-1 grid gap-1">{p.clues.map((c) => <li key={c} className="flex gap-2 text-[13.5px] leading-relaxed text-muted"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />{c}</li>)}</ul></div>
+                      <div><p className="eyebrow">{tr("sim.clues")}</p><ul className="mt-1 grid gap-1">{p.clues.map((c) => <li key={c} className="flex gap-2 text-[13.5px] leading-relaxed text-muted"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />{c}</li>)}</ul></div>
                     </div>
                   </div>
                 </article>
@@ -151,7 +151,7 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
                       <p className="mt-2 text-[12.5px] leading-relaxed text-faint">{tr("sim.sendToMeHelp")}</p>
                     </form>
                   </section>
-                  <h2 className="px-1 pt-2 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("sim.vishingTitle")}</h2>
+                  <h2 className="px-1 pt-2 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("sim.vishingTitle")}</h2>
                   <section className={CARD}>
                     <p className="text-[14px] leading-relaxed text-muted">{s.vishing.scenario}</p>
                     <p className="mt-2 text-[13px] text-faint">{tr("sim.callerClaims")}: <span className="text-ink">{s.vishing.caller_claims}</span></p>
@@ -166,7 +166,7 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
                     </ol>
                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                       <div><p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-warn">{tr("sim.redFlags")}</p><ul className="mt-1 grid gap-1">{s.vishing.red_flags.map((c) => <li key={c} className="flex gap-2 text-[13.5px] leading-relaxed text-muted"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-warn" />{c}</li>)}</ul></div>
-                      <div><p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("sim.hangUp")}</p><p className="mt-1 text-[13.5px] leading-relaxed text-ink">«{s.vishing.hang_up}»</p></div>
+                      <div><p className="eyebrow">{tr("sim.hangUp")}</p><p className="mt-1 text-[13.5px] leading-relaxed text-ink">«{s.vishing.hang_up}»</p></div>
                     </div>
                   </section>
                 </>

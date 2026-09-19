@@ -33,13 +33,13 @@ export default async function ExtensionPage() {
   void track("extension_page_viewed", { locale });
   const storeUrl = process.env.NEXT_PUBLIC_CHROME_STORE_URL || "";
   const edgeUrl = process.env.NEXT_PUBLIC_EDGE_STORE_URL || "";
-  const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
+  const CARD = "card p-5 sm:p-6";
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("ext.eyebrow")}</p>
-        <h1 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-ink sm:text-[40px]">{tr("ext.title")}</h1>
+      <main className="page py-10 sm:py-14">
+        <p className="eyebrow">{tr("ext.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{tr("ext.title")}</h1>
         <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-muted">{tr("ext.subtitle")}</p>
 
         <section className="mt-6 rounded-card border border-accent/40 bg-accent-soft p-5">
@@ -60,7 +60,7 @@ export default async function ExtensionPage() {
             {storeUrl ? (
               <>
                 <p className="mt-1 text-[14px] leading-relaxed text-muted">{tr("ext.storeBody")}</p>
-                <a href={storeUrl} target="_blank" rel="noopener" className="mt-4 inline-flex items-center gap-2 rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">
+                <a href={storeUrl} target="_blank" rel="noopener" className="mt-4 btn btn-primary">
                   <ChromeMark />{tr("ext.storeButton")}
                 </a>
                 {edgeUrl && <a href={edgeUrl} target="_blank" rel="noopener" className="ml-3 text-[13.5px] font-medium text-accent underline-offset-2 hover:underline">{tr("ext.storeEdge")}</a>}
@@ -79,7 +79,7 @@ export default async function ExtensionPage() {
                     <li key={s} className="flex gap-3 text-[14px] leading-relaxed text-muted"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-[12px] font-semibold text-black">{i + 1}</span>{s}</li>
                   ))}
                 </ol>
-                <a href="/extension/rastro-guardian.zip" className="mt-4 inline-block rounded-[12px] bg-accent px-5 py-3 text-[15px] font-semibold text-black hover:opacity-90">{tr("ext.download")}</a>
+                <a href="/extension/rastro-guardian.zip" className="mt-4 btn btn-primary">{tr("ext.download")}</a>
               </>
             )}
             <p className="mt-3 text-[12.5px] leading-relaxed text-faint">{tr("ext.privacy")} <Link href="/extension/privacidad" className="text-accent underline-offset-2 hover:underline">{tr("ext.privacyLink")}</Link></p>

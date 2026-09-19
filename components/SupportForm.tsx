@@ -3,10 +3,8 @@
 import { useState, type FormEvent } from "react";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 
-const FIELD =
-  "w-full rounded-[12px] border border-line bg-surface-2 px-3.5 py-3 text-[15px] text-ink " +
-  "placeholder:text-faint transition-colors hover:border-faint focus:border-accent focus:outline-none disabled:opacity-60";
-const LABEL = "block text-[13px] font-medium text-ink";
+const FIELD = "field";
+const LABEL = "label";
 
 export function SupportForm({ messages, locale, email, page }: { messages: Messages; locale: Locale; email: string | null; page: string | null }) {
   const tr = translator(messages);
@@ -41,12 +39,12 @@ export function SupportForm({ messages, locale, email, page }: { messages: Messa
     }
   }
 
-  const card = "rounded-card border border-line bg-surface p-6 sm:p-8";
+  const card = "card p-6 sm:p-8";
 
   if (sentTo) {
     return (
       <section aria-live="polite" className={card}>
-        <h1 className="text-[22px] font-semibold tracking-[-0.02em] text-ink">{tr("support.sentTitle")}</h1>
+        <h1 className="h2 text-ink">{tr("support.sentTitle")}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("support.sentBody", { email: sentTo })}</p>
       </section>
     );
@@ -54,7 +52,7 @@ export function SupportForm({ messages, locale, email, page }: { messages: Messa
 
   return (
     <form onSubmit={onSubmit} noValidate className={card}>
-      <h1 className="text-[24px] font-semibold tracking-[-0.025em] text-ink">{tr("support.title")}</h1>
+      <h1 className="h2 text-ink">{tr("support.title")}</h1>
       <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("support.subtitle")}</p>
 
       <div className="mt-6 grid gap-4">
@@ -78,7 +76,7 @@ export function SupportForm({ messages, locale, email, page }: { messages: Messa
         </p>
       )}
 
-      <button type="submit" disabled={busy} className="mt-5 w-full rounded-[12px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-60">
+      <button type="submit" disabled={busy} className="mt-5 w-full btn btn-primary btn-lg">
         {busy ? tr("support.sending") : tr("support.send")}
       </button>
     </form>

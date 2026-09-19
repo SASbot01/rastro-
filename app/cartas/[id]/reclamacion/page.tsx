@@ -102,23 +102,23 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
     <>
       <SiteHeader locale={locale} messages={messages} />
 
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
-        <h1 className="text-[26px] font-semibold tracking-[-0.025em] text-ink">{tr("aepd.title")}</h1>
+      <main className="page py-10 sm:py-14">
+        <h1 className="h2 text-ink">{tr("aepd.title")}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("aepd.subtitle", { host: letter.host })}</p>
 
         {!complaint ? (
           <p className="mt-6 rounded-[10px] bg-accent-soft px-4 py-3 text-[14px] leading-relaxed text-accent">{tr("aepd.notYet")}</p>
         ) : (
           <>
-            <section className="mt-6 rounded-card border border-line bg-surface p-5">
-              <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("aepd.text")}</h2>
+            <section className="mt-6 card p-5">
+              <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("aepd.text")}</h2>
               <pre className="mt-2 whitespace-pre-wrap rounded-[10px] bg-paper p-4 font-sans text-[14px] leading-[1.7] text-ink">{complaint}</pre>
               <div className="mt-4">
                 <CopyButton text={complaint} label={tr("aepd.copy")} doneLabel={tr("aepd.copied")} />
               </div>
             </section>
 
-            <section className="mt-4 rounded-card border border-line bg-surface p-5">
+            <section className="mt-4 card p-5">
               <h2 className="text-[15px] font-semibold text-ink">{tr("aepd.guideTitle")}</h2>
               <ol className="mt-4 grid gap-3">
                 {steps.map((s, i) => (
@@ -130,7 +130,7 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
                   </li>
                 ))}
               </ol>
-              <h3 className="mt-6 text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{tr("aepd.attachments")}</h3>
+              <h3 className="mt-6 text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">{tr("aepd.attachments")}</h3>
               <ul className="mt-2 grid list-disc gap-1.5 pl-5 text-[14px] leading-relaxed text-muted">
                 <li>{tr("aepd.attach1", { sent: fmt.format(new Date(letter.sent_at!)) })}</li>
                 <li>{tr("aepd.attach2")}</li>
@@ -140,7 +140,7 @@ export default async function ComplaintPage({ params }: PageProps<"/cartas/[id]/
           </>
         )}
 
-        <Link href={`/cartas/${letter.id}`} className="mt-8 inline-block text-[14px] font-medium text-accent underline underline-offset-4">
+        <Link href={`/cartas/${letter.id}`} className="mt-8 inline-block link text-[14px]">
           {tr("aepd.back")}
         </Link>
       </main>

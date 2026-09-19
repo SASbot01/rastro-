@@ -71,13 +71,13 @@ async function loadRequest(id: string, ownerEmail: string): Promise<{ request: R
 
 function Panel({ title, body, cta, href }: { title: string; body: string; cta: string; href: string }) {
   return (
-    <div className="rounded-card border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(26,26,25,0.04)] sm:p-8">
+    <div className="card p-6 sm:p-8">
       <span aria-hidden="true" className="mb-5 block h-1.5 w-10 rounded-full bg-line" />
-      <h1 className="text-[24px] font-semibold tracking-[-0.02em] text-ink">{title}</h1>
+      <h1 className="h2 text-ink">{title}</h1>
       <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{body}</p>
       <Link
         href={href}
-        className="mt-6 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black transition-opacity hover:opacity-90"
+        className="mt-6 btn btn-primary"
       >
         {cta}
       </Link>
@@ -174,7 +174,7 @@ export default async function ReportPage({ params, searchParams }: PageProps<"/i
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">{body}</main>
+      <main className="page py-10 sm:py-14">{body}</main>
       <SiteFooter messages={messages} />
     </>
   );
