@@ -8,6 +8,7 @@ import { isLocale, type Locale } from "@/lib/i18n";
 import { worthAlert, type AiChange } from "@/lib/ai-watch";
 import { changeLines } from "@/lib/ai-watch-lines";
 import { track } from "@/lib/events";
+import { isCronSkipped } from "@/lib/demo-accounts";
 
 /**
  * Monitorizacion mensual (semana 2). Cron diario: coge hasta BATCH usuarios
@@ -60,6 +61,8 @@ export async function GET(request: Request) {
       .maybeSingle();
     if (claimError) console.error("[cron/monitor] reclamacion fallo:", claimError.message);
     if (!claimed) continue;
+    // Cuentas de demostracion: datos preparados a mano; procesarlas de verdad estropea la demo. Ya reclamada, no vuelve a salir hasta el siguiente ciclo.
+    if (isCronSkipped(user.email)) { results.push({ user: user.id, status: "demo: omitida" }); continue; }
 
     const locale: Locale = isLocale(user.locale) ? user.locale : "es";
 
