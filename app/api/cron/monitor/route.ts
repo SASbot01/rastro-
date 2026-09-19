@@ -24,7 +24,7 @@ const EVERY_DAYS = 30;
 
 interface DueUser { id: string; email: string; locale: string; monitor_last_at: string | null }
 interface LastRequest { id: string; full_name: string; city: string | null; occupation: string | null; consent_at: string; locale: string }
-interface ReportRow { score: number; raw: ReportSnapshot["raw"] }
+interface ReportRow { score: number; raw: ReportSnapshot["raw"]; site_checks: ReportSnapshot["site_checks"] }
 
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
@@ -77,7 +77,7 @@ export async function GET(request: Request) {
     }
     const { data: prevReport } = await supabase
       .from("reports")
-      .select("score, raw")
+      .select("score, raw, site_checks")
       .eq("request_id", last.id)
       .maybeSingle<ReportRow>();
 
@@ -109,7 +109,7 @@ export async function GET(request: Request) {
 
     const { data: nextReport } = await supabase
       .from("reports")
-      .select("score, raw")
+      .select("score, raw, site_checks")
       .eq("request_id", created.id)
       .maybeSingle<ReportRow>();
     if (!nextReport || !prevReport) {
