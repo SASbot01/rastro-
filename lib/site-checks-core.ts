@@ -34,7 +34,9 @@ export function foldText(text: string): string {
 export function mentionsName(text: string, fullName: string): boolean {
   const parts = foldText(fullName).split(" ").filter((p) => p.length > 2);
   if (parts.length < 2) return false;
-  const words = foldText(text).split(" ");
+  // Las particulas ("de", "la", "y") se quitan tambien del texto, igual que del nombre: si no, "Juan de la Cruz"
+  // nunca cabia en la ventana y a esa persona ningun sitio le salia como "apareces".
+  const words = foldText(text).split(" ").filter((w) => w.length > 2);
   const span = parts.length + 1; // admite una palabra intercalada ("Ana María García Ruiz")
   for (let i = 0; i + parts.length <= words.length; i++) {
     const win = new Set(words.slice(i, i + span));
