@@ -38,7 +38,10 @@ export async function GET(request: Request) {
     .select("id, email, locale, plan, plan_until")
     .eq("monitoring", true)
     .eq("plan", "pro")
-    .limit(BATCH)
+    // Se leen todas las cuentas (no solo las 40 primeras, que eran siempre las mismas) y se paran a los BATCH comprobados
+    // de verdad: las ya hechas hoy no cuentan, asi que una segunda pasada del cron sigue por donde se quedo la primera.
+    .order("created_at", { ascending: true })
+    .limit(2000)
     .returns<DueUser[]>();
   if (error) {
     console.error("[cron/daily] consulta fallo:", error.message);
@@ -46,7 +49,9 @@ export async function GET(request: Request) {
   }
 
   const results: Array<{ user: string; status: string }> = [];
+  let processed = 0;
   for (const user of users ?? []) {
+    if (processed >= BATCH) break;
     if (!isPro(user)) continue;
     // Ya comprobado hoy (cron solapado o relanzado): saltar.
     const { data: todayRow } = await supabase.from("daily_checks").select("id").eq("user_id", user.id).eq("day", today).maybeSingle();
@@ -55,6 +60,7 @@ export async function GET(request: Request) {
       continue;
     }
 
+    processed += 1;
     // Una peticion a HIBP cada vez (el limite es por clave): las dos a la vez hacian que una se llevara un 429.
     const hibp = await getBreaches(user.email);
     if (!hibp.checked) {
