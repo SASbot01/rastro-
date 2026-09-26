@@ -24,7 +24,7 @@ export function prices(): { monthly: string; yearly: string; familyMonthly: stri
   };
 }
 
-export function paymentLinks(email?: string | null, userId?: string | null): { monthly: string | null; yearly: string | null; familyMonthly: string | null; familyYearly: string | null } {
+export function paymentLinks(email?: string | null, userId?: string | null): { monthly: string | null; yearly: string | null; familyMonthly: string | null; familyYearly: string | null; launchYearly: string | null } {
   const decorate = (base: string | undefined) => {
     if (!base) return null;
     const url = new URL(base);
@@ -37,7 +37,15 @@ export function paymentLinks(email?: string | null, userId?: string | null): { m
     yearly: decorate(process.env.STRIPE_LINK_YEARLY),
     familyMonthly: decorate(process.env.STRIPE_LINK_FAMILY_MONTHLY),
     familyYearly: decorate(process.env.STRIPE_LINK_FAMILY_YEARLY),
+    launchYearly: decorate(process.env.STRIPE_LINK_LAUNCH_YEARLY),
   };
+}
+
+/** Precio de lanzamiento del anual (primeras N personas). Sin enlace de Stripe no se ofrece. */
+export function launchOffer(): { price: string; seats: number } | null {
+  const price = process.env.NEXT_PUBLIC_PRICE_LAUNCH_YEARLY;
+  if (!price || !process.env.STRIPE_LINK_LAUNCH_YEARLY) return null;
+  return { price, seats: Number(process.env.NEXT_PUBLIC_LAUNCH_SEATS || 100) };
 }
 
 

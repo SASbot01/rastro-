@@ -8,7 +8,7 @@ import { track } from "@/lib/events";
 /** Paso intermedio hacia el pago: apunta el evento del embudo y redirige al enlace de Stripe (el correo nunca va en nuestra URL). */
 export const runtime = "nodejs";
 
-const PLANS = ["monthly", "yearly", "familyMonthly", "familyYearly"] as const;
+const PLANS = ["monthly", "yearly", "familyMonthly", "familyYearly", "launchYearly"] as const;
 
 export async function GET(request: Request) {
   const plan = new URL(request.url).searchParams.get("plan") as (typeof PLANS)[number] | null;
