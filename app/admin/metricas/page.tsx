@@ -22,6 +22,7 @@ const LABEL: Record<EventName, string> = {
   checkout_started: "Fue a pagar", pro_activated: "Pro activado", monitoring_on: "Vigilancia activada",
   guardian_used: "Guardián usado", simulator_used: "Simulador usado", images_used: "Imágenes usado", mailbox_scanned: "Buzón escaneado",
   ai_change_detected: "Cambio en la IA detectado", site_check_listed: "Informe con sitios de datos", extension_page_viewed: "Página de extensión vista", extension_download: "Extensión descargada", nurture_sent: "Correo de seguimiento enviado",
+  domain_report_requested: "Informe de dominio pedido", domain_report_generated: "Informe de dominio generado", domain_report_viewed: "Informe de dominio visto",
 };
 
 interface Count { name: string; total: number; uniques: number }

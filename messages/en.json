@@ -1936,5 +1936,199 @@
       "launch": "Launch price: {price} for the first year instead of {yearly}, for the first 100 people. Cancel anytime.",
       "price": "It costs {monthly} a month or {yearly} a year, cancel anytime."
     }
+  },
+  "domainReport": {
+    "eyebrow": "Rastro Teams",
+    "title": "Exposure report for {domain}",
+    "subtitle": "What anyone can check from the outside about the company's email, website and name. No personal data: only what a scammer sees before acting.",
+    "scoreLabel": "Exposure score",
+    "generated": "Checked on {date}",
+    "level": {
+      "green": "Well protected",
+      "orange": "Things to fix",
+      "red": "High risk"
+    },
+    "levelBody": {
+      "green": "Email and website are reasonably protected. Details remain, but impersonating the company takes real effort.",
+      "orange": "There are gaps a scammer would exploit with little effort. The three actions below close them in an afternoon.",
+      "red": "Today it is easy to pose as the company. Start with the first action this week."
+    },
+    "sections": {
+      "email": "Email: can you be impersonated?",
+      "web": "Website: what the visitor sees",
+      "lookalikes": "Look-alike domains",
+      "emails": "Domain addresses in plain sight",
+      "ai": "What AI says about the company"
+    },
+    "email": {
+      "spf": {
+        "missing": "No SPF: the domain does not say which servers may send mail on its behalf.",
+        "hard": "SPF published and strict (-all): only authorised servers can send as @{domain}.",
+        "soft": "SPF published but soft (~all): fake emails pass as \"suspicious\" instead of being rejected.",
+        "neutral": "SPF published but with no effect (?all): it does not protect.",
+        "open": "SPF published without a final rule: it does not say what to do with other servers."
+      },
+      "dmarc": {
+        "missing": "No DMARC: nothing tells Gmail or Outlook what to do with a fake email claiming to come from @{domain}.",
+        "none": "DMARC in monitoring mode (p=none): it receives reports but blocks no fake email.",
+        "quarantine": "DMARC at p=quarantine: fake emails go to spam. Good; the next step is p=reject.",
+        "reject": "DMARC at p=reject: fake emails are rejected. This is the best setting."
+      },
+      "dkim": {
+        "found": "DKIM signature published ({list}).",
+        "missing": "We found no DKIM signature under the usual selectors. It may exist under another name; confirm with your provider."
+      },
+      "provider": "Email provider: {provider}.",
+      "providers": {
+        "google": "Google Workspace",
+        "microsoft": "Microsoft 365",
+        "ovh": "OVHcloud",
+        "ionos": "IONOS",
+        "other": "other",
+        "none": "none (the domain receives no email)"
+      },
+      "why": "Why it matters: without DMARC, anyone can send an email that appears to come from @{domain} (to a customer, an employee, the bank) and the recipient has no way to tell it is fake. With DMARC at quarantine or reject, Gmail and Outlook send it to spam or reject it."
+    },
+    "web": {
+      "unreachable": "The website did not answer over https:// or http:// (we also tried www.). It may live on another domain or be down right now.",
+      "blocked": "The website answered with status {status}: it probably blocks bots. We could only check what it let us see.",
+      "https": {
+        "ok": "The website loads with a padlock (HTTPS).",
+        "missing": "The website does not load over HTTPS: the connection is unencrypted and browsers mark it \"Not secure\"."
+      },
+      "redirect": {
+        "ok": "http:// redirects to https://.",
+        "missing": "http:// does not redirect to https://: anyone typing the domain by hand may stay on the unencrypted version.",
+        "unknown": "We could not check whether http:// redirects to https://."
+      },
+      "hsts": {
+        "ok": "HSTS active: the browser will remember to always use HTTPS.",
+        "missing": "No HSTS: nothing forces the browser to always use the secure version."
+      },
+      "csp": {
+        "ok": "Has a content security policy (CSP).",
+        "missing": "No content security policy (CSP), the barrier against injected scripts. Minor, but recommended."
+      },
+      "frame": {
+        "ok": "Protected against being embedded in other websites.",
+        "missing": "Another website can embed it in an invisible frame (clickjacking)."
+      },
+      "leak": "The server announces its version ({server}): it saves an attacker the first step, looking up known flaws for that version.",
+      "noLeak": "The server does not announce software versions.",
+      "cms": "Built with {cms}.",
+      "cmsVersion": "Built with {cms} {version}: the version is visible. Hide it and keep it up to date.",
+      "trackers": {
+        "one": "1 company receives data from every visit to the homepage: {list}.",
+        "none": "We detected no third-party trackers on the homepage.",
+        "some": "{n} companies receive data from every visit to the homepage: {list}."
+      },
+      "banner": {
+        "found": "There is a cookie notice ({name}).",
+        "generic": "There is a cookie notice.",
+        "missing": "We detected no cookie notice. With trackers, the law requires asking permission before loading them.",
+        "missingNoTrackers": "We detected no cookie notice; without trackers none is needed."
+      },
+      "why": "Why it matters: the website is the company's face. Without a padlock or with versions on show, a customer hesitates and an attacker knows where to start."
+    },
+    "lookalikes": {
+      "none": "None of the {n} look-alike domains we tried is registered. Good sign: nobody got there first, yet.",
+      "some": "{n} of the {total} look-alike domains we tried are registered:",
+      "registered": "Someone has registered {domain}.",
+      "yours": "{domain} points to your own name servers: it is probably yours.",
+      "free": "Available: {list}.",
+      "why": "Why it matters: a near-identical domain is the first thing a scammer buys to send fake invoices or clone the website. If it is yours, great; if not, you want to know and warn the team."
+    },
+    "emails": {
+      "none": "We found no @{domain} addresses in search results. Less surface for phishing.",
+      "some": "{n} @{domain} addresses appear in public search results: {personal} look personal and {generic} generic (info@, contact@…).",
+      "masked": "We show them masked and store them that way: this report collects no personal data.",
+      "why": "Why it matters: every address with a first and last name in sight is a target. \"Hi Ana, here is the invoice\" works far better than \"Dear customer\".",
+      "unchecked": "We could not query the search engine this time."
+    },
+    "ai": {
+      "intro": "We asked an AI assistant with web search what {domain} is. Verbatim answer:",
+      "question": "What is {domain}? Which company is behind it, where is it based and what does it do? Answer in 5 lines at most.",
+      "sources": "Sources",
+      "empty": "The AI gave no answer this time.",
+      "why": "Why it matters: this is what an attacker uses to write a credible email in two minutes, and what a customer reads before calling. Errors can be corrected."
+    },
+    "recTitle": "Three things to do, by impact",
+    "recs": {
+      "dmarc_missing": "Publish a DMARC record starting at p=quarantine. It is one line in the DNS and it cuts off impersonation of the company's email.",
+      "dmarc_none": "Raise DMARC from p=none to p=quarantine: right now it only watches and blocks no fake email.",
+      "dmarc_quarantine": "Move DMARC from p=quarantine to p=reject once you confirm all legitimate mail passes.",
+      "https_missing": "Enable HTTPS on the website (free certificate; almost every host offers it in one click) and redirect http:// to https://.",
+      "unreachable": "Make sure the website answers at {domain} and not only at www.: today it did not load from outside.",
+      "spf_missing": "Publish an SPF record stating which servers may send mail on your behalf, ending in -all.",
+      "spf_soft": "Harden SPF: replace ~all (or nothing) with -all so fake emails are rejected instead of passing as suspicious.",
+      "lookalikes": "Review the look-alike domains already registered: if they are not yours, warn the team and consider registering the obvious ones (about 10 € a year each).",
+      "dkim_missing": "Turn on DKIM signing at your email provider: it is the digital signature of every message and usually a switch in the admin panel.",
+      "hsts_missing": "Add the HSTS header so browsers always use the secure version of the website.",
+      "version_leak": "Hide the server version in the headers (Server / X-Powered-By) and make sure it is up to date.",
+      "public_emails": "Replace named addresses on the website and in directories with generic mailboxes (info@, bookings@) and warn those people they are likely phishing targets.",
+      "trackers": "Review the website's trackers: remove the ones you do not use and make the cookie notice ask permission before loading them.",
+      "csp_missing": "Add a content security policy (CSP) to the website, even a basic one.",
+      "mfa": "Turn on two-step verification for every company email account: it stops almost every login with a stolen password.",
+      "passwords": "Check whether the team's passwords appear in known breaches and change the ones that are reused.",
+      "access_review": "Review every quarter who has access to email, the website and the domain, and remove anyone who has left the company."
+    },
+    "providerHint": {
+      "google": "Google Workspace explains it step by step in its help centre: support.google.com/a/answer/2466563.",
+      "microsoft": "Microsoft 365 has the guide \"Set up DMARC\" on learn.microsoft.com.",
+      "ovh": "At OVHcloud it is done from the domain's DNS zone; their help centre has a DMARC guide.",
+      "ionos": "At IONOS it is done from the domain's DNS settings; their help centre has a DMARC guide.",
+      "other": "Whoever runs your email or website can do it in a few minutes.",
+      "none": "Whoever manages your domain can do it in a few minutes."
+    },
+    "cta": {
+      "title": "We watch this every month for your team",
+      "body": "From {price}/month: a report and monitoring for every person on the team, GDPR letters, the anti-scam guardian and this domain check, with an alert when something changes.",
+      "button": "See Rastro Teams"
+    },
+    "method": {
+      "title": "How this report was made",
+      "body": "Everything is a public check from the outside: the domain's DNS records, the website's homepage, whether look-alike domains exist, one web search and one question to an AI assistant. Nothing intrusive, nothing inside your systems and no personal data: addresses are shown masked. The score subtracts points for each gap; it starts at 100."
+    },
+    "copy": {
+      "button": "Copy text for LinkedIn",
+      "done": "Copied",
+      "title": "Exposure report for {domain}: {score}/100",
+      "actions": "Three things I would do today:",
+      "footer": "Full report:"
+    },
+    "request": {
+      "title": "Request the report for {domain}",
+      "body": "There is no report for this domain yet. Leave a contact email and we will prepare it; it is free.",
+      "email": "Contact email",
+      "button": "Request the report",
+      "sent": "Received. We will let you know as soon as it is ready.",
+      "legal": "We will use the email only to send you this report.",
+      "notice": "Someone requested the exposure report for {domain}. Generate it at /equipos/informe and reply with the link."
+    },
+    "generate": {
+      "title": "Domain report",
+      "body": "Generate a company's exposure report to send it to them. Public checks only; addresses are masked.",
+      "label": "Company domain",
+      "placeholder": "dental-clinic-example.com",
+      "button": "Generate report",
+      "hint": "Takes about 20 seconds. If one exists from the last 7 days, it is generated again. Maximum 10 per day.",
+      "recent": "Recent reports",
+      "forbidden": "This tool is for administrators and Rastro Teams account holders.",
+      "errors": {
+        "invalid": "That domain is not valid. Type something like company.com.",
+        "limit": "You have reached the maximum of 10 reports today.",
+        "failed": "We could not generate the report. Try again in a moment.",
+        "forbidden": "Administrators and Rastro Teams account holders only."
+      }
+    },
+    "teamCard": {
+      "title": "Domain report",
+      "body": "Generate a company's exposure report (email, website, look-alike domains) to send it to them.",
+      "cta": "Open"
+    },
+    "formErrors": {
+      "email": "Enter a valid email.",
+      "domain": "That domain is not valid."
+    }
   }
 }
