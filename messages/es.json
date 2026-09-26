@@ -390,7 +390,9 @@
       "assistants": "Ya han respondido: {names}.",
       "prelim": "puntuación provisional. La definitiva llega cuando la IA termine de leerlo todo.",
       "prelimLabel": "Puntuación provisional",
-      "prelimNote": "La definitiva llega cuando la IA termine de leerlo todo."
+      "prelimNote": "La definitiva llega cuando la IA termine de leerlo todo.",
+      "noStealer": "Ningún virus roba-contraseñas ha capturado tus claves, que sepamos.",
+      "stealer": "Un virus capturó tu contraseña de {n} sitios: {names}. Cámbialas hoy desde otro dispositivo."
     },
     "progress": "{done} de {total} pasos",
     "searching": "Buscando…"
@@ -1337,7 +1339,8 @@
       "aiKnowsEmployer": "La IA sabe dónde trabajas",
       "aiKnowsCity": "La IA sabe tu ciudad",
       "contactDataPublic": "Teléfono o dirección públicos",
-      "aiFalseData": "Datos falsos en la IA"
+      "aiFalseData": "Datos falsos en la IA",
+      "stealerLog": "Contraseñas robadas por un virus"
     },
     "clean": "Ahora mismo no pierdes puntos por nada. Sigue así.",
     "topTitle": "Principales hallazgos",

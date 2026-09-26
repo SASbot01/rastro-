@@ -390,7 +390,9 @@
       "assistants": "Already answered: {names}.",
       "prelim": "provisional score. The final one arrives when the AI finishes reading everything.",
       "prelimLabel": "Provisional score",
-      "prelimNote": "The final one arrives when the AI finishes reading everything."
+      "prelimNote": "The final one arrives when the AI finishes reading everything.",
+      "noStealer": "No password-stealing malware has captured your credentials, as far as we know.",
+      "stealer": "Malware captured your password for {n} sites: {names}. Change them today from another device."
     },
     "progress": "{done} of {total} steps",
     "searching": "Searching…"
@@ -1337,7 +1339,8 @@
       "aiKnowsEmployer": "AI knows where you work",
       "aiKnowsCity": "AI knows your city",
       "contactDataPublic": "Phone or address public",
-      "aiFalseData": "False claims in AI"
+      "aiFalseData": "False claims in AI",
+      "stealerLog": "Passwords stolen by malware"
     },
     "clean": "Right now you're not losing points for anything. Keep it up.",
     "topTitle": "Top findings",

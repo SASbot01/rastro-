@@ -81,3 +81,11 @@ test("un fallo de lectura no pisa el resultado anterior y una reaparicion reabre
 test("las filtraciones no son sitios a los que pedir retirada", () => {
   assert.deepEqual(actionableHosts([{ category: "breaches", source_url: "https://x.com/a" }, { category: "profiles", source_url: "https://www.y.com/p" }, { category: "ai", source_url: null }]), ["y.com"]);
 });
+
+import { computeScore } from "../lib/report/score.ts";
+test("una contraseña robada por un virus pesa mas que cualquier filtracion y tiene tope", () => {
+  const base = { breachesWithPassword: 0, breachesWithoutPassword: 0, publicProfiles: 0, aiKnowsEmployer: false, aiKnowsCity: false, contactDataPublic: false, aiFalseData: false };
+  assert.equal(computeScore({ ...base, stealerLogs: 1 }).breakdown.stealerLog, -20);
+  assert.equal(computeScore({ ...base, stealerLogs: 5 }).breakdown.stealerLog, -40);
+  assert.equal("stealerLog" in computeScore(base).breakdown, false);
+});

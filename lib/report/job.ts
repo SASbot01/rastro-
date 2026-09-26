@@ -1,5 +1,5 @@
 import { supabaseAdmin } from "@/lib/supabase";
-import { getBreaches, getPastes, type HibpResult } from "@/lib/hibp";
+import { getBreaches, getPastes, getStealerLogs, type HibpResult } from "@/lib/hibp";
 import { getGravatar } from "@/lib/gravatar";
 import { buildAccounts } from "@/lib/report/accounts";
 import { searchName } from "@/lib/brave";
@@ -82,6 +82,7 @@ export interface ReportProgress {
   sites?: { checked: number; listed: string[] } | null;
   assistants?: string[];
   prelimScore?: number;
+  stealer?: { sites: string[] } | null;
 }
 
 async function setStep(id: string, step: ReportStep): Promise<void> {
@@ -213,16 +214,18 @@ export async function runReportJob(requestId: string): Promise<void> {
     const perplexityP = askAboutPerson(name).then((p) => { if (p.answers.length) report({ assistants: [...(progress.assistants ?? []), "perplexity"] }); return p; });
     const assistantsP = askAssistants(name).then((a) => { if (a.answers.length) report({ assistants: [...(progress.assistants ?? []), ...a.answers.map((x) => x.provider)] }); return a; });
 
-    const [hibp, pastes, gravatar, braveOnly, sites, perplexity, assistants] = await Promise.all([hibpP, getPastes(row.email), getGravatar(row.email), braveP, sitesP, perplexityP, assistantsP]);
+    const stealerP = getStealerLogs(row.email).then((st) => { if (st.checked) report({ stealer: { sites: st.domains.slice(0, 5) } }); return st; });
+    const [hibp, pastes, gravatar, braveOnly, sites, perplexity, assistants, stealerLogs] = await Promise.all([hibpP, getPastes(row.email), getGravatar(row.email), braveP, sitesP, perplexityP, assistantsP, stealerP]);
+    const stealerCount = stealerLogs.checked ? stealerLogs.domains.length : 0;
     const accounts = buildAccounts(hibp, gravatar);
     // Los sitios del catalogo donde aparece la persona entran como resultados "broker" (sin duplicar URL).
     const brave = braveOnly.ok ? { ...braveOnly, hits: [...braveOnly.hits, ...sites.hits.filter((h) => !braveOnly.hits.some((x) => x.url === h.url))] } : braveOnly;
-    report({ prelimScore: computeScore(signalsFrom(hibp, brave, undefined, undefined, pastes.checked ? pastes.pastes.length : 0)).score });
+    report({ prelimScore: computeScore(signalsFrom(hibp, brave, undefined, undefined, pastes.checked ? pastes.pastes.length : 0, stealerCount)).score });
 
     await setStep(row.id, "ai");
     const sourcesMs = Date.now() - startedAt;
     const previous = row.origin === "monitor" ? await previousAssessment(row) : null;
-    const ai = await writeReport({ person, hibp, brave, perplexity, assistants: assistants.answers, pastes, gravatar, accounts, previous });
+    const ai = await writeReport({ person, hibp, brave, perplexity, assistants: assistants.answers, pastes, stealerLogs, gravatar, accounts, previous });
     if (!ai.ok) console.warn(`[job] ${row.id}: Anthropic no disponible (${ai.reason} ${ai.detail ?? ""}); usando plantillas`);
 
     await setStep(row.id, "report");
@@ -235,7 +238,7 @@ export async function runReportJob(requestId: string): Promise<void> {
         : 0
       : undefined;
     const pasteCount = pastes.checked ? pastes.pastes.length : 0;
-    const { score, breakdown } = computeScore(signalsFrom(hibp, brave, ai.ok ? ai.report.signals : undefined, attributed, pasteCount));
+    const { score, breakdown } = computeScore(signalsFrom(hibp, brave, ai.ok ? ai.report.signals : undefined, attributed, pasteCount, stealerCount));
 
     const content = ai.ok
       ? { summary: ai.report.summary, findings: ai.report.findings, actions: ai.report.actions, generator: "ai" as const }
@@ -252,6 +255,7 @@ export async function runReportJob(requestId: string): Promise<void> {
         raw: {
           hibp,
           pastes,
+          stealerLogs,
           gravatar,
           brave,
           perplexity,
