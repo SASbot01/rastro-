@@ -1,5 +1,6 @@
 import { getMessages, translator, type Locale } from "@/lib/i18n";
 import { askPerplexity } from "@/lib/perplexity";
+import { isPublicHttpUrl, pageListsName } from "@/lib/removal-stats";
 
 /**
  * Cartas de supresion RGPD (art. 17). Plantilla fija en messages/*.json
@@ -81,7 +82,7 @@ export async function findPrivacyContact(
   return optOut ? { contact: optOut.url, source: optOut.url } : null;
 }
 
-export type LetterEventType = "sent" | "sent_by_rastro" | "follow_up" | "reminder" | "answered" | "closed" | "no_answer" | "reopened";
+export type LetterEventType = "sent" | "sent_by_rastro" | "follow_up" | "reminder" | "answered" | "closed" | "no_answer" | "reopened" | "verified_gone" | "reappeared";
 export interface LetterEvent {
   at: string;
   type: LetterEventType;
@@ -151,33 +152,49 @@ export function buildComplaint(input: ComplaintInput): string {
 }
 
 
-/** Quita acentos y pasa a minusculas para comparar nombres con el texto de una pagina. */
-function fold(text: string): string {
-  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-}
+const MAX_REDIRECTS = 4;
 
 /**
- * Descarga la URL y busca el nombre. true = sigue apareciendo; false = ya no;
- * null = no se pudo comprobar (bloqueo, error, pagina que exige JS/pago).
+ * Descarga la URL y busca el nombre. listed: true = sigue apareciendo; false =
+ * ya no; null = no se pudo comprobar (bloqueo, error, pagina que exige JS/pago).
+ * httpGone: la pagina ya no existe (404/410), la prueba mas fuerte de retirada.
+ * Solo paginas publicas: cada salto de redireccion se valida (isPublicHttpUrl).
  */
-export async function checkStillListed(url: string, fullName: string): Promise<boolean | null> {
-  const parts = fold(fullName).split(/\s+/).filter((p) => p.length > 2);
-  if (parts.length === 0) return null;
+export async function checkListing(url: string, fullName: string): Promise<{ listed: boolean | null; httpGone: boolean }> {
+  const unknown = { listed: null, httpGone: false };
+  if (fullName.trim().split(/\s+/).every((p) => p.length <= 2)) return unknown;
   try {
-    const res = await fetch(url, {
-      headers: { "user-agent": "Mozilla/5.0 (compatible; RastroBot/1.0; +https://rastropro.com)", accept: "text/html,*/*" },
-      signal: AbortSignal.timeout(12_000),
-      redirect: "follow",
-      cache: "no-store",
-    });
-    if (res.status === 404 || res.status === 410) return false;
-    if (!res.ok) return null;
-    const html = await res.text();
-    const text = fold(html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " "));
-    if (text.length < 200) return null;
-    // Apellidos + nombre: todos los trozos del nombre deben aparecer.
-    return parts.every((p) => text.includes(p));
+    let current = url;
+    const signal = AbortSignal.timeout(12_000);
+    for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+      if (!isPublicHttpUrl(current)) return unknown;
+      const res = await fetch(current, {
+        headers: { "user-agent": "Mozilla/5.0 (compatible; RastroBot/1.0; +https://rastropro.com)", accept: "text/html,*/*" },
+        signal,
+        redirect: "manual",
+        cache: "no-store",
+      });
+      if (res.status >= 300 && res.status < 400) {
+        const location = res.headers.get("location");
+        if (!location) return unknown;
+        current = new URL(location, current).toString();
+        continue;
+      }
+      // 404/410 es prueba de retirada si lo da el propio sitio de la carta (con o sin www/https), no otro al que nos mandan.
+      if (res.status === 404 || res.status === 410) {
+        const host = (u: string) => new URL(u).hostname.replace(/^www\./, "");
+        return host(current) === host(url) ? { listed: false, httpGone: true } : unknown;
+      }
+      if (!res.ok) return unknown;
+      return { listed: pageListsName(await res.text(), fullName), httpGone: false };
+    }
+    return unknown;
   } catch {
-    return null;
+    return unknown;
   }
+}
+
+/** Compatibilidad: solo el booleano. */
+export async function checkStillListed(url: string, fullName: string): Promise<boolean | null> {
+  return (await checkListing(url, fullName)).listed;
 }

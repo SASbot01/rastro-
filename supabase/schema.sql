@@ -348,3 +348,105 @@ create index if not exists users_org_idx on public.users (org_id) where org_id i
 -- plan_kind admite 'team' (titular de empresa)
 alter table public.users drop constraint if exists users_plan_kind_check;
 alter table public.users add constraint users_plan_kind_check check (plan_kind in ('individual','family','member','team'));
+-- API publica: claves por cuenta (solo se guarda el hash). Prefijo visible para identificarlas.
+create table if not exists public.api_keys (
+  id           uuid primary key default gen_random_uuid(),
+  user_id      uuid not null references public.users(id) on delete cascade,
+  name         text not null default 'default',
+  prefix       text not null,                 -- primeros 12 caracteres, para mostrar
+  key_hash     text not null unique,          -- sha256 de la clave completa
+  created_at   timestamptz not null default now(),
+  last_used_at timestamptz,
+  revoked_at   timestamptz
+);
+create index if not exists api_keys_user_idx on public.api_keys (user_id);
+alter table public.api_keys enable row level security;
+
+-- ===== 20260919100000_removals_ai_watch_events.sql =====
+-- Bloque "de 8 a 10" (19-09-2026).
+-- 1) Retiradas verificadas: fecha en la que comprobamos que el dato ya no aparece.
+alter table public.letters
+  add column if not exists removed_at  timestamptz,           -- primera comprobacion "ya no aparece" tras haber aparecido (o 404/410)
+  add column if not exists check_count int not null default 0; -- comprobaciones automaticas + manuales
+create index if not exists letters_recheck_idx on public.letters (last_check_at nulls first) where removed_at is null and status in ('sent','answered','no_answer');
+
+-- 2) Memoria de lo que dice cada IA sobre la persona, para detectar cambios en el tiempo.
+create table if not exists public.ai_snapshots (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references public.users(id) on delete cascade,
+  request_id  uuid references public.requests(id) on delete set null,
+  source      text not null default 'report' check (source in ('report','watch')),
+  answers     jsonb not null,             -- [{provider, model, question, answer, sources[]}]
+  facts       jsonb not null,             -- {provider: {knows_you, employer, city, contact[], claims[]}}
+  changes     jsonb not null default '[]'::jsonb, -- [{provider, kind, before, after}] frente a la foto anterior
+  taken_at    timestamptz not null default now()
+);
+create index if not exists ai_snapshots_user_idx on public.ai_snapshots (user_id, taken_at desc);
+alter table public.ai_snapshots enable row level security;
+alter table public.users add column if not exists ai_watch_last_at timestamptz;
+
+-- 3) Metricas de producto propias: solo contadores de embudo. Sin IP, sin correo, sin cookies.
+create table if not exists public.product_events (
+  id      bigserial primary key,
+  name    text not null,                  -- form_submitted, email_verified, report_ready, report_viewed, ...
+  subject text,                           -- sha256 truncado de la solicitud o la cuenta (para contar unicos), nunca el id real
+  locale  text,
+  props   jsonb not null default '{}'::jsonb,
+  at      timestamptz not null default now()
+);
+create index if not exists product_events_name_at_idx on public.product_events (name, at desc);
+create index if not exists product_events_at_idx on public.product_events (at desc);
+alter table public.product_events enable row level security;
+
+-- 4) Comprobacion real de sitios del catalogo por persona (resultado por informe).
+alter table public.reports add column if not exists site_checks jsonb; -- [{slug, host, status:'listed'|'not_found'|'unknown', url, title}]
+
+-- Agregados del embudo (para /admin/metricas): totales y unicos por evento, y serie diaria.
+create or replace function public.product_event_counts(since timestamptz)
+returns table(name text, total bigint, uniques bigint) language sql stable as $$
+  select e.name, count(*)::bigint, count(distinct coalesce(e.subject, e.id::text))::bigint
+  from public.product_events e where e.at >= since group by e.name
+$$;
+create or replace function public.product_event_daily(since timestamptz)
+returns table(day date, name text, total bigint) language sql stable as $$
+  select (e.at at time zone 'Europe/Madrid')::date, e.name, count(*)::bigint
+  from public.product_events e where e.at >= since group by 1, 2 order by 1
+$$;
+grant execute on all functions in schema public to service_role;
+
+grant all on all tables in schema public to service_role;
+grant all on all sequences in schema public to service_role;
+notify pgrst, 'reload schema';
+
+-- ===== 20260919110000_request_progress.sql =====
+-- Espera con resultados en vivo: lo que ya se ha encontrado mientras la IA redacta (solo contadores y nombres de filtraciones).
+alter table public.requests add column if not exists progress jsonb;
+notify pgrst, 'reload schema';
+
+-- ===== 20260926100000_ref_nurture.sql =====
+-- Origen del trafico (?ref=ig, tiktok, li...) por solicitud, para saber que contenido trae informes.
+alter table public.requests add column if not exists ref text;
+-- Secuencia de 3 correos tras el primer informe (dia 1, 3 y 7), por cuenta.
+alter table public.users
+  add column if not exists nurture_step    int not null default 0,   -- ultimo correo enviado (0-3)
+  add column if not exists nurture_last_at timestamptz,
+  add column if not exists nurture_opt_out boolean not null default false;
+create index if not exists users_nurture_idx on public.users (nurture_step, nurture_last_at) where nurture_step < 3 and nurture_opt_out = false;
+-- ===== 20260926110000_domain_reports.sql =====
+-- Informe de exposicion de un dominio de empresa (Rastro Equipos, herramienta de venta).
+-- Solo datos de la empresa: DNS del correo, web, dominios parecidos, correos TAPADOS y lo que dice la IA.
+-- Nunca guarda datos de personas: los correos se conservan solo como "in***@dominio.es".
+create table if not exists public.domain_reports (
+  id         uuid primary key default gen_random_uuid(),
+  domain     text not null,                 -- dominio normalizado en minusculas, sin www
+  locale     text not null default 'es',
+  report     jsonb not null,                -- DomainReport (lib/domain-report-core.ts)
+  score      int  not null,
+  created_at timestamptz not null default now(),
+  created_by uuid references public.users(id) on delete set null  -- cuenta que lo genero (admin o titular de equipo)
+);
+create index if not exists domain_reports_domain_idx on public.domain_reports (domain, locale, created_at desc);
+alter table public.domain_reports enable row level security;
+
+grant all on all tables in schema public to service_role;
+notify pgrst, 'reload schema';

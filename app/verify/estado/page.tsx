@@ -22,14 +22,14 @@ export default async function VerifyStatePage({ searchParams }: PageProps<"/veri
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-16">
-        <div className="rounded-card border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(26,26,25,0.04)] sm:p-8">
+      <main className="page py-16">
+        <div className="card p-6 sm:p-8">
           <span aria-hidden="true" className="mb-5 block h-1.5 w-10 rounded-full bg-line" />
-          <h1 className="text-[24px] font-semibold tracking-[-0.02em] text-ink">{copy.title}</h1>
+          <h1 className="h2 text-ink">{copy.title}</h1>
           <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{copy.body}</p>
           <Link
             href={copy.href}
-            className="mt-6 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black transition-opacity hover:opacity-90"
+            className="mt-6 btn btn-primary"
           >
             {copy.cta}
           </Link>

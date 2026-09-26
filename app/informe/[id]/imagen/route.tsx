@@ -4,6 +4,7 @@ import { getMessages, isLocale, translator, type Locale } from "@/lib/i18n";
 import { levelFor } from "@/lib/report/score";
 import { maskName } from "@/lib/report/mask";
 
+import { track } from "@/lib/events";
 /**
  * Imagen compartible (CLAUDE.md s.4.4): score, semaforo y nombre tapado.
  * Nunca hallazgos ni datos personales: es lo que la gente sube a redes.
@@ -44,6 +45,8 @@ export async function GET(request: Request, ctx: RouteContext<"/informe/[id]/ima
   if (!report) return new Response(null, { status: 404 });
 
   const locale: Locale = isLocale(req.locale) ? req.locale : "es";
+  // La imagen vertical solo la pide el boton Compartir: sirve de evento del embudo.
+  if (story) void track("report_shared", { subject: id, locale });
   const tr = translator(getMessages(locale));
   const level = levelFor(report.score);
   const color = LEVEL_COLOR[level];

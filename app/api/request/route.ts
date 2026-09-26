@@ -6,16 +6,16 @@ import { createVerifyCode, createVerifyToken, hashIp } from "@/lib/crypto";
 import { sendVerifyEmail } from "@/lib/email";
 import { serverEnv } from "@/lib/env";
 import { allowRequest } from "@/lib/rate-limit";
+import { clientIpFrom } from "@/lib/client-ip";
 
+import { track } from "@/lib/events";
 export const runtime = "nodejs";
 
 const TOKEN_TTL_HOURS = 24;
 
-/** Mejor aproximación a la IP del visitante detrás del proxy de Vercel. */
+/** IP del visitante (ver lib/client-ip.ts: detras de Cloudflare manda CF-Connecting-IP). */
 function clientIp(h: Headers): string {
-  const forwarded = h.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return h.get("x-real-ip") ?? "0.0.0.0";
+  return clientIpFrom(h);
 }
 
 export async function POST(request: Request) {
@@ -46,6 +46,7 @@ async function handleRequest(request: Request) {
   }
 
   const { firstName, lastName, email, city, occupation, locale } = parsed.data;
+  const ref = parsed.data.ref ? parsed.data.ref.toLowerCase() : null;
   const fullName = `${firstName} ${lastName}`.replace(/\s+/g, " ").trim();
 
   const h = await headers();
@@ -69,6 +70,7 @@ async function handleRequest(request: Request) {
       city: city || null,
       occupation: occupation || null,
       locale,
+      ref,
       consent_at: now.toISOString(),
       status: "pending",
       ip_hash: hashIp(ip),
@@ -100,5 +102,6 @@ async function handleRequest(request: Request) {
     return NextResponse.json({ ok: false, error: "formErrors.generic" }, { status: 502 });
   }
 
+  void track("form_submitted", { subject: inserted.id, locale, props: { has_occupation: Boolean(occupation), ref: ref ?? "directo" } });
   return NextResponse.json({ ok: true });
 }

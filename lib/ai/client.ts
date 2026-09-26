@@ -2,9 +2,15 @@ import Anthropic from "@anthropic-ai/sdk";
 import { serverEnv } from "@/lib/env";
 
 /** Cliente Anthropic compartido por informe, simulador y guardian. */
-let client: Anthropic | null = null;
+// Un cliente por tiempo de espera. Con uno solo, el primero que lo pedia fijaba el timeout de todos: si arrancaba
+// la ficha de la IA (45 s), el simulador (que pide 90 s) y el informe (60 s) se cortaban a los 45.
+const clients = new Map<number, Anthropic>();
 export function anthropic(timeoutMs = 60_000): Anthropic {
-  if (!client) client = new Anthropic({ apiKey: serverEnv.anthropicApiKey, timeout: timeoutMs, maxRetries: 1 });
+  let client = clients.get(timeoutMs);
+  if (!client) {
+    client = new Anthropic({ apiKey: serverEnv.anthropicApiKey, timeout: timeoutMs, maxRetries: 1 });
+    clients.set(timeoutMs, client);
+  }
   return client;
 }
 

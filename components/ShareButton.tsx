@@ -10,7 +10,7 @@ type State = "idle" | "busy";
  * hoja nativa (Web Share API con fichero); si no esta disponible, abre la
  * imagen para guardarla. Nunca comparte el enlace del informe completo.
  */
-export function ShareButton({ requestId, score, messages }: { requestId: string; score: number; messages: Messages }) {
+export function ShareButton({ requestId, score, messages, compact = false }: { requestId: string; score: number; messages: Messages; compact?: boolean }) {
   const tr = translator(messages);
   const [state, setState] = useState<State>("idle");
   const imageUrl = `/informe/${requestId}/imagen?f=story`;
@@ -37,6 +37,21 @@ export function ShareButton({ requestId, score, messages }: { requestId: string;
     }
   }
 
+  const icon = (
+    <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" aria-hidden="true">
+      <path d="M10 3v9M6.5 6.5 10 3l3.5 3.5M4 11v4a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+  // Version de un solo boton para la portada del informe.
+  if (compact) {
+    return (
+      <button type="button" onClick={share} disabled={state === "busy"} aria-busy={state === "busy"} className="ex-button-secondary">
+        {icon}
+        {state === "busy" ? tr("share.sharing") : tr("share.button")}
+      </button>
+    );
+  }
+
   return (
     <div className="grid gap-2">
       <div className="flex flex-wrap gap-2">
@@ -44,11 +59,9 @@ export function ShareButton({ requestId, score, messages }: { requestId: string;
           type="button"
           onClick={share}
           disabled={state === "busy"}
-          className="inline-flex items-center gap-2 rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="btn btn-primary"
         >
-          <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
-            <path d="M10 3v9M6.5 6.5 10 3l3.5 3.5M4 11v4a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          {icon}
           {state === "busy" ? tr("share.sharing") : tr("share.button")}
         </button>
         <a
@@ -56,12 +69,12 @@ export function ShareButton({ requestId, score, messages }: { requestId: string;
           download="rastro.png"
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center rounded-[10px] border border-line bg-surface px-4 py-3 text-[14px] font-medium text-ink hover:border-faint"
+          className="inline-flex items-center btn btn-secondary"
         >
           {tr("share.download")}
         </a>
       </div>
-      <p className="px-1 text-[12px] leading-relaxed text-faint">{tr("share.note")}</p>
+      <p className="note px-1">{tr("share.note")}</p>
     </div>
   );
 }

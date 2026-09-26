@@ -1,4 +1,192 @@
 {
+  "experience": {
+    "onboardingSkip": "Ir al formulario",
+    "onboardingStart": "Ver mi rastro",
+    "onboardingTitle1": "Te enseñamos lo que se ve de ti.",
+    "onboardingBody1": "Reunimos filtraciones conocidas, páginas públicas y respuestas de la IA en un informe que se entiende.",
+    "onboardingTitle2": "Solo sobre ti. Siempre con tu permiso.",
+    "onboardingBody2": "Antes de buscar, confirmas tu correo con un código. No uses Rastro para investigar a otra persona.",
+    "onboardingTitle3": "Tú decides qué pasa después.",
+    "onboardingBody3": "Sin cuenta, el informe se borra a los 30 días. Con cuenta, puedes conservarlo y decidir si quieres vigilancia.",
+    "label": "TU IDENTIDAD DIGITAL",
+    "title": "Lo que se ve de ti.",
+    "subtitle": "Entiende tu rastro. Decide tu siguiente paso.",
+    "overview": "Resumen",
+    "stories": "Stories",
+    "mirror": "Modo espejo",
+    "assistants": "Lo que dice la IA",
+    "details": "Informe completo",
+    "private": "Vista privada",
+    "capture": "Preparar captura",
+    "captureOn": "Captura sin datos personales",
+    "captureHint": "Solo mostramos la nota y los recuentos. Tu nombre, los hallazgos y las fuentes están ocultos.",
+    "exitCapture": "Volver a mi informe",
+    "export": "Descargar tarjeta",
+    "exportError": "No pudimos crear la imagen. Puedes hacer una captura de esta vista.",
+    "shareFooter": "Mira lo que internet y la IA saben de ti.",
+    "highScore": "Cuanto más alta, menor exposición.",
+    "score": "Tu puntuación",
+    "findings": "Hallazgos que revisar",
+    "sources": "Fuentes enlazadas",
+    "actions": "Tu próximo paso",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "close": "Cerrar",
+    "finish": "Volver al resumen",
+    "step": "{current} de {total}",
+    "seen": "Qué se ve",
+    "why": "Por qué importa",
+    "do": "Qué hacer",
+    "storyHint": "Desliza o usa las flechas. Tú decides el ritmo.",
+    "storyEmpty": "No hay hallazgos que recorrer.",
+    "emptyTitle": "Todo empieza por mirar.",
+    "emptyBody": "Cuando haya resultados, los verás aquí con su fuente y un siguiente paso.",
+    "replay": "Ver revelación",
+    "skip": "Ir al informe",
+    "revealIntro": "Tu rastro ya tiene forma.",
+    "revealBody": "Esto es lo que aparece en las fuentes consultadas.",
+    "revealCount": "{n} hallazgos para entender",
+    "revealScore": "Ahora sabes por dónde empezar.",
+    "revealCta": "Ver qué hemos encontrado",
+    "reduced": "Puedes saltar esta presentación en cualquier momento.",
+    "atlas": "Dónde aparece tu rastro",
+    "atlasHint": "Un mapa de fuentes, no de ubicaciones. Cada punto abre un hallazgo del informe.",
+    "atlasCenter": "TÚ",
+    "source": "Abrir fuente",
+    "noSource": "Sin enlace de origen",
+    "unknown": "La atribución puede necesitar confirmación.",
+    "mirrorTitle": "Así podría conocerte un desconocido.",
+    "mirrorBody": "Esta ficha reúne solo lo que ya aparece en tu informe. Una coincidencia no demuestra que un perfil sea tuyo.",
+    "mirrorLabel": "FICHA DE EXPOSICIÓN",
+    "hidden": "Contenido personal oculto",
+    "mirrorEmpty": "No hay información suficiente para construir la ficha.",
+    "mirrorNote": "No inferimos familiares, direcciones ni rutinas.",
+    "chatQuestion": "¿Qué se sabe de {name}?",
+    "chatHint": "Respuestas recogidas en la fecha del informe. Pueden contener errores.",
+    "false": "Esto es falso · rectificar",
+    "portal": "Portal de derechos",
+    "chatEmpty": "Todavía no hay respuestas de asistentes en este informe.",
+    "unavailable": "No disponible en este análisis",
+    "demoAction": "En tu informe real podrás preparar la solicitud con Rastro.",
+    "missions": "Pequeños pasos, más control.",
+    "missionHint": "Tu progreso se guarda en este dispositivo. Completar una tarea no cambia la puntuación; el próximo informe evaluará la exposición.",
+    "dashboardTitle": "Tu privacidad, en perspectiva.",
+    "dashboardBody": "Una vista clara de lo que sabes y de lo que puedes hacer hoy.",
+    "viewReport": "Explorar mi informe",
+    "emergency": "Necesito ayuda ahora",
+    "demo": "Explorar una demo",
+    "demoBadge": "DEMO · DATOS FICTICIOS",
+    "demoBody": "Recorre el producto con un ejemplo inventado. Aquí no se consulta a ninguna IA ni se envían cartas.",
+    "demoNav": "Pantallas de la demo",
+    "demoReport": "Informe",
+    "demoDashboard": "Inicio",
+    "demoLetter": "Carta",
+    "demoProfile": "Vigilancia",
+    "demoTeam": "Equipo",
+    "demoGuardian": "Guardián",
+    "demoSystem": "Componentes",
+    "demoStart": "Obtener mi informe",
+    "theme": "Cambiar entre claro y oscuro",
+    "themeLight": "Modo claro",
+    "themeDark": "Modo oscuro",
+    "skipContent": "Saltar al contenido",
+    "systemTitle": "Un sistema, todas las pantallas.",
+    "systemBody": "Inter · esquinas de 24 px · un acento · estados que también se explican con palabras.",
+    "active": "Vigilancia activa",
+    "pending": "Pendiente de revisar",
+    "attention": "Necesita atención",
+    "completed": "Completado",
+    "verified": "Comprobación realizada",
+    "loading": "Preparando tu informe",
+    "demoName": "Alex Ejemplo",
+    "demoSummary": "Una filtración incluye una contraseña. Tu perfil profesional aparece en un buscador y una IA te atribuye una ciudad incorrecta. Empieza por la contraseña; después revisa lo que se publica sobre ti.",
+    "demoFinding1": "Una contraseña apareció en una filtración",
+    "demoDetail1": "En este ejemplo ficticio, un servicio registró una filtración de correo y contraseña. Si reutilizas esa contraseña, otras cuentas podrían estar expuestas.",
+    "demoFinding2": "Tu perfil profesional es público",
+    "demoDetail2": "El perfil de ejemplo muestra tu profesión y ciudad. Revisa qué campos quieres que pueda ver alguien sin iniciar sesión.",
+    "demoFinding3": "Una IA te atribuye una ciudad incorrecta",
+    "demoDetail3": "El asistente del ejemplo sitúa a esta persona en Madrid. Es un dato ficticio que sirve para mostrar el recorrido de rectificación.",
+    "demoFinding4": "La IA relaciona tu nombre con tu trabajo",
+    "demoDetail4": "Una respuesta de ejemplo utiliza un perfil público para mencionar tu profesión. Comprueba primero que se refiera a ti.",
+    "demoAction1": "Renueva la contraseña que reutilizas",
+    "demoActionDetail1": "Empieza por tu correo principal. Usa una contraseña distinta por servicio y activa la verificación en dos pasos.",
+    "demoAction2": "Revisa lo que enseña tu perfil",
+    "demoActionDetail2": "Abre los ajustes de privacidad y limita los datos que no necesitas hacer públicos.",
+    "demoAction3": "Pide que se corrija el dato falso",
+    "demoActionDetail3": "Guarda la respuesta literal y revisa la solicitud antes de enviarla al proveedor.",
+    "demoAnswer": "Alex Ejemplo es una persona ficticia que trabaja en diseño y reside en Madrid. Esta respuesta está inventada para enseñar cómo revisar y rectificar una afirmación de la IA.",
+    "whyCategory": {
+      "breaches": "Una contraseña reutilizada puede abrir la puerta a otras cuentas.",
+      "profiles": "Los datos públicos pueden hacer más creíble un mensaje que intenta engañarte.",
+      "ai": "Un asistente puede reunir información pública y presentarla fuera de contexto.",
+      "false": "Una afirmación incorrecta puede confundirse con un hecho sobre ti."
+    },
+    "doCategory": {
+      "breaches": "Si la contraseña sigue en uso, cámbiala y activa la verificación en dos pasos.",
+      "profiles": "Comprueba que el perfil sea tuyo. Revisa su privacidad o prepara una solicitud.",
+      "ai": "Contrasta la respuesta con sus fuentes. Si hay errores, pide una rectificación.",
+      "false": "Conserva la respuesta literal y usa el portal de derechos del proveedor."
+    },
+    "letterJourney": "Cada paso deja constancia.",
+    "letterJourneyBody": "La cronología conserva los eventos registrados de tu solicitud.",
+    "letterSent": "Solicitud enviada",
+    "letterReminder": "Recordatorio enviado",
+    "letterReply": "Respuesta del sitio",
+    "letterChecked": "Comprobación posterior",
+    "victory": "Un paso menos de exposición.",
+    "victoryBody": "La última comprobación no encontró tus datos en esa página. Esto no confirma una retirada de todo internet ni cambia tu nota automáticamente.",
+    "before": "Antes",
+    "after": "Última comprobación",
+    "beforeText": "Solicitaste revisar esta aparición.",
+    "afterText": "No se encontró en la página comprobada.",
+    "letterDemoHint": "Ejemplo de cronología. No se ha enviado ninguna solicitud.",
+    "teamPrivacy": "El control sigue siendo de cada persona.",
+    "teamPrivacyBody": "Solo se agregan las puntuaciones compartidas voluntariamente. Los hallazgos, mensajes y cartas siguen siendo privados.",
+    "teamOpted": "Han decidido compartir",
+    "teamHidden": "Sin compartir",
+    "teamAverage": "Media compartida",
+    "teamEmpty": "Aún no hay suficientes datos compartidos.",
+    "member": "Miembro {n}",
+    "teamStatus": "Visibilidad",
+    "teamScore": "Puntuación",
+    "guardianSample": "Probar un mensaje de ejemplo",
+    "guardianClear": "Limpiar mensaje y resultado",
+    "guardianCount": "{n} / 4.000 caracteres",
+    "guardianSampleText": "Tu paquete está retenido. Paga 1,99 € hoy en https://entrega.example para recibirlo. Si no lo haces, devolveremos el envío.",
+    "guardianDemoTitle": "Hay señales que conviene revisar.",
+    "guardianDemoBody": "Este ejemplo combina urgencia, un pequeño pago y un enlace ajeno al servicio. El dominio .example es ficticio. Abre la app oficial del transportista para comprobar el estado.",
+    "guardianDemoLabel": "EJEMPLO EXPLICADO · NO ES UN ANÁLISIS EN DIRECTO",
+    "emergencyTitle": "Vamos paso a paso.",
+    "emergencyBody": "Si acabas de caer en una estafa, empieza por lo que está en riesgo. Esta guía no envía avisos ni realiza bloqueos por ti.",
+    "emergencyQuestion": "¿Qué ha pasado?",
+    "emergencyMoney": "He pagado o dado datos bancarios",
+    "emergencyAccount": "He dado una contraseña o perdido una cuenta",
+    "emergencyMessage": "Solo he recibido un mensaje",
+    "emergencyProgress": "{done} de 5 pasos revisados",
+    "emergencyDone": "Marcar como revisado",
+    "emergencyUndo": "Volver a revisar",
+    "emergencyReset": "Empezar de nuevo",
+    "emergencyLocal": "El progreso solo dura mientras esta página está abierta. No pedimos datos bancarios ni contraseñas.",
+    "emergencyHelp": "Hablar con INCIBE · 017",
+    "emergencyHelpNote": "Ayuda en ciberseguridad en España. El 017 orienta; la denuncia se presenta ante las Fuerzas y Cuerpos de Seguridad.",
+    "emergencySource": "Guía oficial de INCIBE",
+    "emergencySteps": {
+      "moneyTitle": "Contacta con tu banco",
+      "moneyBody": "Usa la app oficial o el número de tu tarjeta. Explica lo ocurrido y pide revisar los movimientos y bloquear los medios de pago afectados.",
+      "accountTitle": "Recupera el control de tus cuentas",
+      "accountBody": "Desde un dispositivo de confianza, empieza por el correo principal. Cambia las contraseñas afectadas, cierra sesiones y activa dos pasos.",
+      "messageTitle": "Detén la conversación",
+      "messageBody": "No pulses enlaces ni envíes dinero, códigos o documentos. Comprueba el mensaje en la app o web oficial escribiendo tú la dirección.",
+      "secureTitle": "Revisa los accesos",
+      "secureBody": "Comprueba las sesiones abiertas y los métodos de recuperación. Si compartiste una contraseña, cámbiala también donde la reutilizabas.",
+      "evidenceTitle": "Conserva las pruebas",
+      "evidenceBody": "Guarda capturas, mensajes, fechas y justificantes antes de bloquear al remitente. Conserva los originales en un lugar seguro.",
+      "reportTitle": "Pide ayuda y denuncia si procede",
+      "reportBody": "El 017 puede orientarte. Si hubo fraude, presenta una denuncia ante las Fuerzas y Cuerpos de Seguridad con las pruebas que tengas.",
+      "watchTitle": "Avisa y revisa",
+      "watchBody": "Si usaron tu cuenta, avisa a tus contactos por otro canal. Revisa los próximos movimientos y los avisos de acceso. Puedes configurar vigilancia desde tu perfil."
+    }
+  },
   "locale": {
     "es": "Español",
     "en": "English",
@@ -29,7 +217,10 @@
       "retention": "Se borra a los 30 días"
     },
     "demoTitle": "Así se ve tu puntuación",
-    "demoBody": "De 0 a 100. Filtraciones, perfiles públicos y lo que la IA dice de ti, en un vistazo."
+    "demoBody": "De 0 a 100. Filtraciones, perfiles públicos y lo que la IA dice de ti, en un vistazo.",
+    "titleLead": "Mira lo que la IA",
+    "titleAccent": "sabe de ti.",
+    "sample": "Ejemplo"
   },
   "form": {
     "title": "Pide tu informe",
@@ -179,7 +370,7 @@
     "subtitle": "Suele tardar menos de un minuto. Puedes dejar esta página abierta.",
     "step": {
       "hibp": "Buscando tu correo en filtraciones conocidas",
-      "brave": "Buscando tu nombre en internet",
+      "brave": "Buscando tu nombre y comprobando sitios de datos uno a uno",
       "ai": "Preguntando a la IA qué sabe de ti",
       "report": "Redactando el informe"
     },
@@ -188,7 +379,21 @@
     "errorTitle": "No hemos podido generar el informe",
     "errorBody": "Algo ha fallado por nuestro lado. Vuelve a pedirlo desde el inicio; no te costará nada.",
     "notFoundTitle": "Este informe no existe",
-    "notFoundBody": "Puede que haya caducado (los informes se borran a los 30 días) o que el enlace esté mal copiado."
+    "notFoundBody": "Puede que haya caducado (los informes se borran a los 30 días) o que el enlace esté mal copiado.",
+    "live": {
+      "title": "Lo que ya hemos encontrado",
+      "noBreaches": "Tu correo no aparece en ninguna filtración conocida.",
+      "breaches": "Tu correo aparece en {n} filtraciones: {names}…",
+      "results": "{n} resultados públicos con tu nombre, {profiles} son perfiles.",
+      "noSites": "No apareces en ninguno de los {n} sitios de datos que comprobamos.",
+      "sites": "Apareces en {n} de {total} sitios de datos: {names}.",
+      "assistants": "Ya han respondido: {names}.",
+      "prelim": "puntuación provisional. La definitiva llega cuando la IA termine de leerlo todo.",
+      "prelimLabel": "Puntuación provisional",
+      "prelimNote": "La definitiva llega cuando la IA termine de leerlo todo."
+    },
+    "progress": "{done} de {total} pasos",
+    "searching": "Buscando…"
   },
   "report": {
     "eyebrow": "Informe de exposición",
@@ -237,7 +442,16 @@
       "perplexity": "Perplexity",
       "openai": "ChatGPT (OpenAI)",
       "gemini": "Gemini (Google)"
-    }
+    },
+    "sitesTitle": "Sitios de datos comprobados",
+    "sitesBodyListed": "Hemos buscado tu nombre completo en {n} sitios que publican o venden datos personales. Apareces en estos:",
+    "sitesBodyClean": "Hemos buscado tu nombre completo en {n} sitios que publican o venden datos personales y no apareces en ninguno.",
+    "sitesListed": "apareces",
+    "sitesHow": "Cómo retirarlo",
+    "sitesAsk": "Pedir la retirada",
+    "sitesUnknown": "No se pudo comprobar",
+    "sitesNote": "Comprobamos con un buscador público si hay una página del sitio con tu nombre completo. Si tienes un nombre común, abre el enlace y confirma que eres tú antes de pedir la retirada.",
+    "sitesWhat": "Mis datos personales publicados en {site}"
   },
   "summary": {
     "breachesNone": "Tu correo no aparece en ninguna filtración conocida.",
@@ -619,7 +833,9 @@
       "answered": "Han contestado",
       "closed": "Cerrada: datos suprimidos",
       "no_answer": "Marcada como sin respuesta",
-      "reopened": "Vuelta a borrador"
+      "reopened": "Vuelta a borrador",
+      "verified_gone": "Comprobado: tus datos ya no aparecen",
+      "reappeared": "Tus datos han vuelto a aparecer"
     },
     "replyTitle": "¿Te han contestado?",
     "replyBody": "Cuéntanos qué han dicho: lo guardamos como prueba para la reclamación si hace falta.",
@@ -646,7 +862,8 @@
     "checkNow": "Comprobar ahora",
     "checkGone": "Ya no apareces en esa página",
     "checkStill": "Tu nombre sigue apareciendo",
-    "checkUnknown": "No se pudo comprobar automáticamente (la página bloquea robots o exige acceso). Míralo tú y marca el resultado."
+    "checkUnknown": "No se pudo comprobar automáticamente (la página bloquea robots o exige acceso). Míralo tú y marca el resultado.",
+    "checkUnconfirmed": "No vemos tu nombre en esa página, pero tampoco lo habíamos visto antes, así que no podemos confirmarlo. Ábrela tú y marca el resultado."
   },
   "letterTpl": {
     "subject": "Solicitud de supresión de datos personales (artículo 17 RGPD) — {name}",
@@ -727,8 +944,8 @@
   },
   "pro": {
     "badge": "Pro",
-    "title": "Rastro Pro",
-    "subtitle": "El informe es y seguirá siendo gratis. Pro es para quien quiere que Rastro siga mirando por ti cada mes y te ayude a retirar lo que sobra.",
+    "title": "Que Rastro pida la retirada por ti. Y lo compruebe.",
+    "subtitle": "El informe es y seguirá siendo gratis. Pro es para que no tengas que perseguir a nadie: enviamos las cartas, reclamamos, comprobamos cada semana y te enseñamos cuántos datos han desaparecido.",
     "monthly": "Mensual",
     "monthlyPrice": "19 €",
     "monthlyPer": "al mes",
@@ -739,10 +956,11 @@
     "cta": "Elegir",
     "ctaLogin": "Entra para suscribirte",
     "features": [
-      "Vigilancia mensual: te avisamos solo si algo cambia",
-      "Cartas de supresión RGPD listas para enviar, con el contacto del sitio",
-      "Calendario de plazos legales y aviso al vencer",
-      "Escrito de reclamación ante la AEPD y guía paso a paso",
+      "Cartas de supresión enviadas por Rastro, con reclamación al día 20 y pruebas guardadas",
+      "Comprobación semanal de cada retirada y aviso cuando el dato desaparece",
+      "Vigilancia mensual de filtraciones, sitios de datos y lo que dice la IA",
+      "Memoria de lo que cada IA dice de ti, con aviso si cambia",
+      "Escrito de reclamación ante la AEPD listo con tus pruebas",
       "Cancela cuando quieras desde tu cuenta"
     ],
     "note": "Pago seguro con Stripe. No guardamos tu tarjeta. Sin permanencia.",
@@ -758,7 +976,91 @@
     "family": "Familiar",
     "familyPer": "al mes · hasta {n} personas",
     "familyYearlyPer": "al año · hasta {n} personas",
-    "familyHint": "Cada persona con su cuenta, su informe y su vigilancia."
+    "familyHint": "Cada persona con su cuenta, su informe y su vigilancia.",
+    "personalFound": "Apareces en {n} sitios que publican o venden tus datos. Con Pro pedimos la retirada de los {n} hoy mismo.",
+    "personalClean": "Hoy no apareces en sitios de venta de datos. Pro vigila para que siga así y te avisa si algo cambia.",
+    "launchBadge": "Lanzamiento · quedan {n} de {total}",
+    "launchName": "Anual de lanzamiento",
+    "launchPer": "el primer año · después {yearly}",
+    "launchSave": "En vez de {yearly}",
+    "howTitle": "Cómo funciona",
+    "how": [
+      {
+        "t": "Encontramos",
+        "d": "Buscamos tu nombre en los sitios que venden datos, tus filtraciones y lo que dice cada IA de ti. Cada mes, sin que hagas nada."
+      },
+      {
+        "t": "Pedimos",
+        "d": "Enviamos la carta legal por ti desde cartas@rastropro.com, con copia para ti. Si no contestan en 20 días, reclamamos. Si se niegan, preparamos la queja a la AEPD con todas las pruebas."
+      },
+      {
+        "t": "Comprobamos",
+        "d": "Volvemos a mirar cada página una vez por semana. Cuando tu nombre deja de aparecer, te avisamos y queda como prueba con fecha. Si vuelve, lo reabrimos."
+      }
+    ],
+    "measureTitle": "Lo que mides, no lo que te prometen",
+    "measureBody": "En tu panel ves un solo número: datos retirados y comprobados sobre datos encontrados. Nadie puede prometer borrar; nosotros lo medimos.",
+    "compareTitle": "Gratis o Pro",
+    "compare": [
+      {
+        "f": "Informe de exposición con puntuación",
+        "free": "Sí",
+        "pro": "Sí, cada mes"
+      },
+      {
+        "f": "Sitios de venta de datos comprobados",
+        "free": "Se ven",
+        "pro": "Se pide la retirada por ti"
+      },
+      {
+        "f": "Cartas RGPD",
+        "free": "Plantilla para enviarla tú",
+        "pro": "Las envía Rastro, reclama y guarda las pruebas"
+      },
+      {
+        "f": "Comprobación de que el dato ya no está",
+        "free": "Manual",
+        "pro": "Cada semana, con aviso"
+      },
+      {
+        "f": "Lo que dice cada IA de ti",
+        "free": "Hoy",
+        "pro": "Memoria y aviso si cambia"
+      },
+      {
+        "f": "Filtraciones nuevas de tu correo",
+        "free": "Al pedir informe",
+        "pro": "Aviso diario"
+      },
+      {
+        "f": "Guardián de estafas",
+        "free": "5 al día",
+        "pro": "Sin límite y cruzado con tu informe"
+      },
+      {
+        "f": "Reclamación a la AEPD",
+        "free": "Guía",
+        "pro": "Escrito listo con tus pruebas"
+      }
+    ],
+    "faqTitle": "Preguntas rápidas",
+    "faq": [
+      {
+        "q": "¿Borráis mis datos de internet?",
+        "a": "No podemos prometerlo, y quien lo prometa te engaña. Lo que hacemos es ejercer tu derecho por ti, insistir y comprobar el resultado. La mayoría de sitios españoles retiran en menos de un mes."
+      },
+      {
+        "q": "¿Y si me doy de baja?",
+        "a": "Se cancela desde tu cuenta en un clic y sigues con Pro hasta el final del periodo pagado. Tus cartas y pruebas se quedan en tu cuenta."
+      },
+      {
+        "q": "¿Qué datos usáis para las cartas?",
+        "a": "Tu nombre, tu correo y la URL exacta donde apareces. Nada más. Las cartas salen de nuestro correo y tú recibes copia de todo."
+      }
+    ],
+    "colFree": "Gratis",
+    "colPro": "Pro",
+    "personalFoundOne": "Apareces en un sitio que publica o vende tus datos. Con Pro pedimos la retirada hoy mismo."
   },
   "mailbox": {
     "title": "Escáner de buzón",
@@ -989,7 +1291,9 @@
       }
     ],
     "formTitle": "Pide tu informe gratis",
-    "formBody": "Dos minutos. Sin tarjeta. Solo sobre ti."
+    "formBody": "Dos minutos. Sin tarjeta. Solo sobre ti.",
+    "stepLabel": "Paso {n}",
+    "formSecure": "Sin contraseñas. Confirmas con un código que te llega al correo."
   },
   "ask": {
     "open": "Pregunta a Rastro",
@@ -1254,6 +1558,23 @@
       "generic": "No se pudo analizar ahora. Prueba en un momento."
     }
   },
+  "telegram": {
+    "start": "Hola, soy el Guardián de Rastro.\n\nReenvíame (o pégame) un SMS, correo o WhatsApp que te parezca raro y te digo si es una estafa, por qué y qué hacer.\n\nGratis, 5 mensajes al día. No guardo lo que me envías.\n\nMás herramientas: rastropro.com",
+    "privacy": "Tu mensaje se analiza en el momento y no se guarda. Tampoco guardamos quién eres en Telegram: solo un código irreversible para contar el límite diario. No reenvíes datos que no quieras compartir, como contraseñas o códigos.",
+    "onlyText": "De momento solo leo texto. Si es una captura, copia el texto del mensaje y pégamelo.",
+    "tooShort": "Es muy corto para analizarlo. Reenvíame el mensaje completo.",
+    "limit": "Has llegado al límite de 5 mensajes de hoy. Mañana puedes seguir, o úsalo sin límite con Pro en rastropro.com/guardian",
+    "error": "No he podido analizarlo ahora. Prueba otra vez en un minuto. Si dudas, no pulses ningún enlace.",
+    "why": "Por qué:",
+    "what": "Qué hacer:",
+    "verify": "Cómo comprobarlo:",
+    "foot": "No guardo tu mensaje. Rastro · rastropro.com",
+    "verdict": {
+      "scam": "Es una estafa",
+      "suspicious": "Sospechoso",
+      "legit": "Parece legítimo"
+    }
+  },
   "aiTpl": {
     "subject": "Solicitud de rectificación y supresión de datos personales generados por IA (arts. 16 y 17 RGPD) — {name}",
     "date": "{city}{date}",
@@ -1353,5 +1674,461 @@
     "nameLabel": "Nombre de la empresa",
     "rename": "Guardar",
     "hubBody": "Gestiona las personas de tu equipo y su riesgo."
+  },
+  "api": {
+    "eyebrow": "API",
+    "title": "Rastro API",
+    "subtitle": "Usa las herramientas de Rastro en tus scripts, misiones y proyectos: catálogo de sitios que venden datos con su trámite de baja, portales de rectificación de las IA, redacción de cartas RGPD, análisis de mensajes sospechosos, cálculo de la puntuación y lectura de tus propios informes.",
+    "principle": "Una regla: la API nunca devuelve datos de terceros. Los informes, cartas y comprobaciones son solo los de la cuenta dueña de la clave. Lo demás son catálogos públicos y herramientas.",
+    "auth": "Autenticación",
+    "authBody": "Crea una clave en tu perfil (Perfil → API). Envíala en cada petición como cabecera `Authorization: Bearer rk_live_…`. Se muestra una sola vez; puedes revocarla cuando quieras.",
+    "limits": "Límites",
+    "limitsBody": "1.000 peticiones al día por clave. Los endpoints que usan IA (guardián) requieren Rastro Pro y tienen 100 al día. Respuestas JSON, CORS abierto, errores con `{ error: { code, message } }`.",
+    "endpoints": "Endpoints",
+    "examples": "Ejemplos",
+    "openapi": "Especificación OpenAPI (JSON)",
+    "getKey": "Crear mi clave",
+    "curl": "curl",
+    "python": "Python",
+    "js": "JavaScript",
+    "keysTitle": "API",
+    "keysBody": "Claves para usar la API de Rastro desde tus programas. Máximo 5. La clave completa se muestra una sola vez.",
+    "keyName": "Nombre (p. ej. «mi script»)",
+    "create": "Crear clave",
+    "revoke": "Revocar",
+    "lastUsed": "Último uso: {date}",
+    "neverUsed": "Sin usar",
+    "newKey": "Tu clave nueva (cópiala ahora, no se volverá a mostrar):",
+    "full": "Ya tienes 5 claves activas. Revoca una para crear otra.",
+    "error": "No se pudo crear la clave.",
+    "docs": "Documentación de la API",
+    "footerLink": "API"
+  },
+  "ext": {
+    "eyebrow": "Extensión",
+    "title": "Un guardián que vigila cada web por ti",
+    "subtitle": "Rastro Guardián vive en tu navegador. Te avisa si una web imita a tu banco o a Correos antes de que escribas nada, cuenta las cookies, te dice cuántas empresas te siguen y puede bloquearlas. Todo se comprueba en tu ordenador: nada sale de él.",
+    "play": "Cógelo y muévelo",
+    "playBody": "Arrastra al robot por la pantalla: la cabeza va contigo y el cuerpo se tambalea. Tócalo para ver el resumen de una web de ejemplo. Puedes cambiar de robot.",
+    "demoSite": "tienda-de-ejemplo.es",
+    "features": [
+      "Aviso en rojo si la web imita a un banco, a Correos, a la DGT o a Hacienda: te dice cuál es la oficial y te lleva a ella.",
+      "Nota de privacidad de cada web, del 0 al 100.",
+      "Cuántas cookies son necesarias, de medición y de publicidad, y de qué empresas.",
+      "Bloqueo opcional de publicidad que te sigue y de empresas que comercian con perfiles.",
+      "«Rechazar por mí»: pulsa la opción más privada del aviso de cookies.",
+      "Si la web vende datos y está en nuestro catálogo, te lleva a pedir la retirada."
+    ],
+    "installTitle": "Instalarla",
+    "install": [
+      "Descarga el archivo y descomprímelo.",
+      "Abre chrome://extensions (o edge://extensions) y activa «Modo de desarrollador».",
+      "Pulsa «Cargar descomprimida» y elige la carpeta.",
+      "Abre cualquier web: el robot aparece abajo a la derecha."
+    ],
+    "download": "Descargar la extensión",
+    "privacy": "Permisos: leer las cookies del sitio que visitas, mostrar el robot en la página y, si lo activas, bloquear rastreadores. No lee tu historial, no envía nada a ningún servidor y no necesita cuenta.",
+    "reject": "Rechazar por mí",
+    "hide": "Ocultar aquí",
+    "more": "Ver en Rastro",
+    "bubblePrivacy": "Todo se comprueba en tu navegador. No enviamos tus cookies a ningún sitio.",
+    "waiting": "Mirando esta web…",
+    "robots": [
+      "Rastro",
+      "Vigía",
+      "Cubo",
+      "Orbe"
+    ],
+    "rejected": "Hecho: he pulsado «rechazar» en el aviso de cookies.",
+    "rejectMissing": "No encuentro un botón de rechazar en esta página.",
+    "hubBody": "Un robot en tu navegador que revisa las cookies de cada web y te las resume.",
+    "storeButton": "Añadir a Chrome",
+    "storeEdge": "También para Microsoft Edge",
+    "storeSteps": [
+      "Pulsa «Añadir a Chrome».",
+      "Chrome te enseña los permisos: acepta con «Añadir extensión».",
+      "Listo: abre cualquier web y el robot aparece abajo a la derecha."
+    ],
+    "storeBody": "Un clic. El navegador te pide los permisos, aceptas y ya está. Sin cuenta y sin configurar nada.",
+    "soonTitle": "Pronto en la Chrome Web Store",
+    "soonBody": "Estamos publicándola en la tienda oficial de Chrome y Edge para que se instale con un clic aceptando los permisos. Hasta entonces puedes probarla a mano:",
+    "manualTitle": "Instalación manual (beta)",
+    "privacyLink": "Política de privacidad de la extensión"
+  },
+  "extPrivacy": {
+    "title": "Política de privacidad de la extensión Rastro Guardián",
+    "intro": "Rastro Guardián es una extensión de navegador que revisa las cookies de la web que visitas y te las resume en lenguaje llano. Esta política explica qué datos toca y qué no. La versión corta: todo ocurre dentro de tu navegador y no enviamos nada a ningún servidor.",
+    "sections": [
+      {
+        "title": "Qué hace la extensión",
+        "paragraphs": [
+          "En cada página cuenta las cookies del sitio y de las empresas externas que aparecen en él, clasifica cada una, calcula una nota de privacidad del 0 al 100 y la muestra en un personaje flotante y en el icono de la barra. Comprueba si el nombre del dominio imita al de una marca conocida (bancos, mensajería, administración) y, si es así, avisa y enseña cuál es la web oficial. Si se lo pides, pulsa por ti la opción más privada del aviso de cookies y bloquea rastreadores de publicidad."
+        ]
+      },
+      {
+        "title": "Qué datos lee",
+        "paragraphs": [
+          "Solo metadatos de cookies: nombre, dominio, caducidad y si son seguras (HttpOnly/Secure). Nunca lee el valor de ninguna cookie. También mira los dominios de los scripts e imágenes cargados por la página para saber qué empresas están presentes, el nombre del dominio que visitas y si la página tiene un campo de contraseña o de tarjeta (solo si existe; nunca lo que escribes en él).",
+          "No lee tu historial de navegación, no lee el contenido de las páginas ni lo que escribes, no accede a tus contraseñas ni a tus cuentas."
+        ]
+      },
+      {
+        "title": "Qué datos envía",
+        "paragraphs": [
+          "Ninguno. La extensión no tiene conexión con ningún servidor, ni siquiera con Rastro. No usa analítica, ni registros remotos, ni identificadores de usuario. Nuestro código lo comprueba con una prueba automática que falla si aparece cualquier llamada de red."
+        ]
+      },
+      {
+        "title": "Qué guarda en tu navegador",
+        "paragraphs": [
+          "El robot que has elegido y su posición en pantalla, la lista de sitios en los que has pulsado «Ocultar aquí», y el resumen de la pestaña actual mientras esté abierta (se borra al cerrar el navegador). Todo se guarda en el almacenamiento local de la extensión, en tu dispositivo, y se elimina al desinstalarla."
+        ]
+      },
+      {
+        "title": "Permisos que pide y por qué",
+        "paragraphs": [
+          "«cookies»: para leer los metadatos de las cookies del sitio que visitas y contarlas. «storage»: para recordar tus preferencias. «declarativeNetRequest»: para el bloqueo opcional de rastreadores, con una lista fija incluida en la extensión; viene apagado y el navegador aplica las reglas sin que la extensión vea tu tráfico. «Acceso a los datos de todos los sitios web»: para poder mostrar el robot y analizar cualquier página que abras. No pide historial, pestañas, ni descargas."
+        ]
+      },
+      {
+        "title": "Cuenta y pago",
+        "paragraphs": [
+          "No hace falta cuenta ni pago. El enlace «Ver en Rastro» te lleva a rastropro.com si quieres pedir a un sitio que retire tus datos; ese paso es voluntario y se rige por la política de privacidad de la web."
+        ]
+      },
+      {
+        "title": "Responsable y contacto",
+        "paragraphs": [
+          "Responsable: {owner}. Contacto: {email}. Puedes escribirnos para cualquier duda sobre la extensión o sobre esta política."
+        ]
+      },
+      {
+        "title": "Cambios",
+        "paragraphs": [
+          "Si algún día la extensión necesitara enviar algún dato (por ejemplo, para una función opcional), lo diremos aquí y pediremos el permiso antes, dentro del propio navegador."
+        ]
+      }
+    ]
+  },
+  "removals": {
+    "title": "Datos retirados",
+    "body": "De los sitios donde apareces, en cuántos hemos comprobado que ya no sales.",
+    "aria": "{removed} retirados de {found} encontrados",
+    "legend": {
+      "removed": "retirados y comprobados",
+      "pending": "pedidos, en plazo",
+      "overdue": "plazo vencido",
+      "refused": "se negaron",
+      "notRequested": "sin pedir todavía"
+    },
+    "how": "Volvemos a mirar cada página una vez por semana. Solo contamos un dato como retirado cuando lo vimos y ha dejado de aparecer.",
+    "ctaRequest": "Pedir la retirada de {n}",
+    "ctaOverdue": "Reclamar {n} fuera de plazo",
+    "ctaSee": "Ver mis solicitudes",
+    "badge": "Retirado ✓",
+    "celebrate": "Comprobado: ya no sales en {n} de ellos."
+  },
+  "removedEmail": {
+    "subject": "Buenas noticias: {host} ya no muestra tus datos",
+    "greeting": "Hola, {name}:",
+    "p1": "Hemos vuelto a mirar la página de {host} sobre la que enviaste una solicitud y tu nombre ya no aparece.",
+    "p2": "Queda guardado en la cronología de tu carta, con fecha, por si alguna vez lo necesitas como prueba. Seguiremos comprobándolo por si vuelve a aparecer.",
+    "cta": "Ver la prueba",
+    "footer": "Recibes este aviso porque enviaste una solicitud de supresión con Rastro."
+  },
+  "aiWatch": {
+    "eyebrow": "Memoria de la IA",
+    "title": "Lo que la IA dice de ti, mes a mes",
+    "subtitle": "Guardamos la respuesta literal de cada asistente cada vez que miramos y te avisamos cuando cambia: si aprende dónde trabajas, si aparece un teléfono, si te confunde con otra persona.",
+    "providers": {
+      "perplexity": "Perplexity",
+      "openai": "ChatGPT",
+      "gemini": "Gemini"
+    },
+    "contact": {
+      "phone": "un teléfono",
+      "email": "un correo",
+      "address": "una dirección postal",
+      "social": "perfiles en redes"
+    },
+    "change": {
+      "learned_you": "{ai} ahora te identifica. Antes no sabía quién eras.",
+      "forgot_you": "{ai} ya no te identifica. Buena noticia.",
+      "employer_new": "{ai} ahora dice dónde trabajas: {after}.",
+      "employer_changed": "{ai} ha cambiado tu lugar de trabajo: de {before} a {after}.",
+      "employer_gone": "{ai} ya no dice dónde trabajas (antes: {before}).",
+      "city_new": "{ai} ahora dice dónde vives: {after}.",
+      "city_changed": "{ai} ha cambiado tu ciudad: de {before} a {after}.",
+      "city_gone": "{ai} ya no dice dónde vives (antes: {before}).",
+      "contact_new": "{ai} ahora muestra {after} tuyo.",
+      "contact_gone": "{ai} ya no muestra {before}.",
+      "mixes_on": "{ai} ha empezado a mezclarte con otra persona con tu nombre.",
+      "mixes_off": "{ai} ya no te mezcla con otras personas.",
+      "claim_new": "{ai} cuenta algo nuevo: «{after}»"
+    },
+    "now": "Ahora mismo",
+    "knows": "Cuánto sabe de ti",
+    "knowsNothing": "No te identifica",
+    "notAsked": "Sin consultar todavía",
+    "fields": {
+      "employer": "Trabajo",
+      "role": "Puesto",
+      "city": "Ciudad",
+      "contact": "Contacto",
+      "mixes": "Te mezcla con otras personas"
+    },
+    "literal": "Ver la respuesta literal",
+    "sources": "Fuentes",
+    "rectify": "Pedir que lo corrijan o lo retiren",
+    "timeline": "Cronología",
+    "noChanges": "Sin cambios frente a la vez anterior.",
+    "first": "Primera foto: a partir de aquí comparamos.",
+    "sourceReport": "Informe",
+    "sourceWatch": "Comprobación semanal",
+    "empty": "Todavía no hay ninguna foto. Se crea con tu próximo informe.",
+    "emptyCta": "Pedir mi informe",
+    "watchOn": "Comprobación semanal activa",
+    "watchOff": "Con Pro y la vigilancia activa, preguntamos a las IA cada semana y te avisamos si cambia algo.",
+    "watchCta": "Activar vigilancia",
+    "checkNow": "Preguntar ahora",
+    "checkNowHint": "Una vez al día.",
+    "checkedToday": "Ya hemos preguntado hoy. Vuelve mañana.",
+    "missing": "Aún no consultamos: {list}.",
+    "minor": "detalle",
+    "email": {
+      "subject": "Lo que la IA dice de ti ha cambiado",
+      "greeting": "Hola, {name}:",
+      "intro": "Hemos vuelto a preguntar por ti a los asistentes de IA y hay cambios:",
+      "outro": "En Rastro tienes la respuesta literal y cómo pedir que lo corrijan o lo retiren.",
+      "cta": "Ver los cambios",
+      "footer": "Recibes este aviso porque tienes la vigilancia activa. Puedes desactivarla en tu perfil."
+    },
+    "hubTitle": "Memoria de la IA",
+    "hubBody": "Qué dice cada IA de ti, guardado cada mes, con aviso cuando cambia.",
+    "dashTitle": "La IA y tú",
+    "dashChanged": "{n} cambios desde la última vez",
+    "dashSame": "Sin cambios desde la última vez",
+    "dashOpen": "Ver qué dice cada IA"
+  },
+  "nurture": {
+    "greeting": "Hola, {name}:",
+    "ctaReport": "Abrir mi informe",
+    "ctaTools": "Ver mis herramientas",
+    "ctaPro": "Ver Rastro Pro",
+    "footer": "Recibes este correo porque pediste tu informe en Rastro. Son tres correos en total. Si no quieres más: {stop}",
+    "d1": {
+      "subject": "Tu informe: por dónde empezar hoy",
+      "p1": "Ayer viste lo que se sabe de ti. Estas son las tres cosas que más cambian tu puntuación, en orden:",
+      "p2": "La primera se hace en cinco minutos. Cuando la marques como hecha en la guía de tu informe, tu puntuación se actualiza."
+    },
+    "d3": {
+      "subject": "Cómo retiramos tus datos (y cómo lo comprobamos)",
+      "p1Found": "Apareces en {n} sitios que publican o venden datos personales. Cada uno tiene la obligación legal de retirarlos si se lo pides.",
+      "p1None": "En tu informe no encontramos sitios que vendan tus datos. Buena noticia, pero cambian cada mes.",
+      "p2": "Con Pro, Rastro envía la carta por ti desde cartas@rastropro.com, la reclama al día 20 si no contestan y vuelve a mirar la página cada semana. Cuando tu nombre deja de aparecer, te avisamos y queda como prueba con fecha.",
+      "p3": "No prometemos borrar. Prometemos medirlo: en tu panel verás cuántos datos se han retirado de cuántos encontramos."
+    },
+    "d7": {
+      "subject": "Una semana después: ¿sigue todo igual?",
+      "p1Found": "Hace una semana apareciste en {n} sitios de venta de datos. Si no has pedido la retirada, siguen ahí.",
+      "p1None": "Hace una semana tu puntuación estaba bien. Lo que cambia con el tiempo son las filtraciones nuevas y lo que la IA aprende de ti.",
+      "p2": "Pro vigila cada mes, envía las cartas por ti y guarda lo que cada IA dice de ti para avisarte si cambia.",
+      "launch": "Precio de lanzamiento: {price} el primer año en vez de {yearly}, para las primeras 100 personas. Se cancela cuando quieras.",
+      "price": "Cuesta {monthly} al mes o {yearly} al año, y se cancela cuando quieras."
+    }
+  },
+  "domainReport": {
+    "eyebrow": "Rastro Equipos",
+    "title": "Informe de exposición de {domain}",
+    "subtitle": "Lo que cualquiera puede comprobar desde fuera sobre el correo, la web y el nombre de la empresa. Sin datos de personas: solo lo que ve un estafador antes de actuar.",
+    "scoreLabel": "Nota de exposición",
+    "generated": "Comprobado el {date}",
+    "level": {
+      "green": "Buena protección",
+      "orange": "Hay cosas que arreglar",
+      "red": "Riesgo alto"
+    },
+    "levelBody": {
+      "green": "El correo y la web están razonablemente protegidos. Quedan detalles, pero suplantar a la empresa cuesta trabajo.",
+      "orange": "Hay huecos que un estafador aprovecharía con poco esfuerzo. Las tres acciones de abajo los cierran en una tarde.",
+      "red": "Hoy es fácil hacerse pasar por la empresa. Conviene empezar por la primera acción esta misma semana."
+    },
+    "sections": {
+      "email": "Correo: ¿pueden suplantaros?",
+      "web": "Web: qué ve el visitante",
+      "lookalikes": "Dominios parecidos",
+      "emails": "Correos del dominio a la vista",
+      "ai": "Lo que dice la IA de la empresa"
+    },
+    "email": {
+      "spf": {
+        "missing": "Sin SPF: el dominio no dice qué servidores pueden enviar correo en su nombre.",
+        "hard": "SPF publicado y estricto (-all): solo los servidores autorizados pueden enviar como @{domain}.",
+        "soft": "SPF publicado pero blando (~all): los correos falsos pasan como \"dudosos\" en vez de rechazarse.",
+        "neutral": "SPF publicado pero sin efecto (?all): no protege.",
+        "open": "SPF publicado sin regla final: no dice qué hacer con el resto de servidores."
+      },
+      "dmarc": {
+        "missing": "Sin DMARC: nada le dice a Gmail u Outlook qué hacer con un correo falso que diga venir de @{domain}.",
+        "none": "DMARC en modo observación (p=none): recibe informes pero no bloquea ningún correo falso.",
+        "quarantine": "DMARC en p=quarantine: los correos falsos van a spam. Bien; el siguiente paso es p=reject.",
+        "reject": "DMARC en p=reject: los correos falsos se rechazan. Es la mejor configuración."
+      },
+      "dkim": {
+        "found": "Firma DKIM publicada ({list}).",
+        "missing": "No encontramos firma DKIM en los selectores habituales. Puede existir con otro nombre; conviene confirmarlo con el proveedor."
+      },
+      "provider": "Proveedor de correo: {provider}.",
+      "providers": {
+        "google": "Google Workspace",
+        "microsoft": "Microsoft 365",
+        "ovh": "OVHcloud",
+        "ionos": "IONOS",
+        "other": "otro",
+        "none": "ninguno (el dominio no recibe correo)"
+      },
+      "why": "Por qué importa: sin DMARC, cualquiera puede enviar un correo que parezca venir de @{domain} (a un cliente, a un empleado, al banco) y el receptor no tiene forma de saber que es falso. Con DMARC en quarantine o reject, Gmail y Outlook lo mandan a spam o lo rechazan."
+    },
+    "web": {
+      "unreachable": "La web no respondió ni por https:// ni por http:// (probamos también con www.). Puede estar en otro dominio o caída en este momento.",
+      "blocked": "La web respondió con el código {status}: probablemente bloquea robots. Solo pudimos comprobar lo que dejó ver.",
+      "https": {
+        "ok": "La web carga con candado (HTTPS).",
+        "missing": "La web no carga por HTTPS: la conexión va sin cifrar y los navegadores la marcan como \"No es segura\"."
+      },
+      "redirect": {
+        "ok": "http:// redirige a https://.",
+        "missing": "http:// no redirige a https://: quien escriba el dominio a mano puede quedarse en la versión sin cifrar.",
+        "unknown": "No pudimos comprobar si http:// redirige a https://."
+      },
+      "hsts": {
+        "ok": "HSTS activo: el navegador recordará usar siempre HTTPS.",
+        "missing": "Sin HSTS: nada obliga al navegador a usar siempre la versión segura."
+      },
+      "csp": {
+        "ok": "Con política de contenido (CSP).",
+        "missing": "Sin política de contenido (CSP), la barrera contra scripts inyectados. Es menor, pero recomendable."
+      },
+      "frame": {
+        "ok": "Protegida contra ser incrustada en otras webs.",
+        "missing": "Otra web puede incrustarla en un marco invisible (clickjacking)."
+      },
+      "leak": "El servidor anuncia su versión ({server}): a un atacante le ahorra el primer paso, buscar fallos conocidos de esa versión.",
+      "noLeak": "El servidor no anuncia versiones de software.",
+      "cms": "Hecha con {cms}.",
+      "cmsVersion": "Hecha con {cms} {version}: la versión es visible. Conviene ocultarla y tenerla al día.",
+      "trackers": {
+        "one": "1 empresa recibe datos de cada visita a la portada: {list}.",
+        "none": "No detectamos rastreadores de terceros en la portada.",
+        "some": "{n} empresas reciben datos de cada visita a la portada: {list}."
+      },
+      "banner": {
+        "found": "Hay aviso de cookies ({name}).",
+        "generic": "Hay aviso de cookies.",
+        "missing": "No detectamos aviso de cookies. Con rastreadores, la ley exige pedir permiso antes de cargarlos.",
+        "missingNoTrackers": "No detectamos aviso de cookies; sin rastreadores no hace falta."
+      },
+      "why": "Por qué importa: la web es la cara de la empresa. Sin candado o con versiones a la vista, un cliente desconfía y un atacante sabe por dónde empezar."
+    },
+    "lookalikes": {
+      "none": "Ninguno de los {n} dominios parecidos que probamos está registrado. Buena señal: nadie se ha adelantado, todavía.",
+      "some": "{n} de los {total} dominios parecidos que probamos están registrados:",
+      "registered": "Alguien ha registrado {domain}.",
+      "yours": "{domain} apunta a vuestros mismos servidores de nombres: probablemente es vuestro.",
+      "free": "Libres: {list}.",
+      "why": "Por qué importa: un dominio casi igual es lo primero que compra un estafador para enviar facturas falsas o clonar la web. Si es vuestro, perfecto; si no, conviene saberlo y avisar al equipo."
+    },
+    "emails": {
+      "none": "No encontramos direcciones @{domain} en los resultados de búsqueda. Menos superficie para el phishing.",
+      "some": "{n} direcciones @{domain} aparecen en resultados públicos: {personal} parecen de personas y {generic} genéricas (info@, contacto@…).",
+      "masked": "Las mostramos tapadas y así se guardan: este informe no recoge datos de personas.",
+      "why": "Por qué importa: cada dirección con nombre y apellido a la vista es un objetivo. \"Hola Ana, te paso la factura\" funciona mucho mejor que \"Estimado cliente\".",
+      "unchecked": "No pudimos consultar el buscador esta vez."
+    },
+    "ai": {
+      "intro": "Preguntamos a un asistente de IA con búsqueda web qué es {domain}. Respuesta literal:",
+      "question": "¿Qué es {domain}? ¿Qué empresa hay detrás, dónde está y a qué se dedica? Responde en 5 líneas como mucho.",
+      "sources": "Fuentes",
+      "empty": "La IA no dio respuesta esta vez.",
+      "why": "Por qué importa: es lo que un atacante usa para escribir un correo creíble en dos minutos, y lo que un cliente lee antes de llamar. Si hay errores, se pueden corregir."
+    },
+    "recTitle": "Tres cosas que hacer, por orden de impacto",
+    "recs": {
+      "dmarc_missing": "Publicar un registro DMARC empezando por p=quarantine. Es una línea en el DNS y corta la suplantación del correo de la empresa.",
+      "dmarc_none": "Subir DMARC de p=none a p=quarantine: ahora mismo solo observa, no bloquea ningún correo falso.",
+      "dmarc_quarantine": "Pasar DMARC de p=quarantine a p=reject cuando comprobéis que todo el correo legítimo pasa.",
+      "https_missing": "Activar HTTPS en la web (certificado gratuito; casi todos los alojamientos lo dan en un clic) y redirigir http:// a https://.",
+      "unreachable": "Comprobar que la web responde en {domain} y no solo en www.: hoy no cargó desde fuera.",
+      "spf_missing": "Publicar un registro SPF que diga qué servidores pueden enviar correo en vuestro nombre, terminado en -all.",
+      "spf_soft": "Endurecer el SPF: cambiar ~all (o nada) por -all para que los correos falsos se rechacen en vez de pasar como dudosos.",
+      "lookalikes": "Revisar los dominios parecidos ya registrados: si no son vuestros, avisar al equipo y valorar registrar los más obvios (unos 10 € al año cada uno).",
+      "dkim_missing": "Activar la firma DKIM en el proveedor de correo: es la firma digital de cada mensaje y suele ser un interruptor en el panel.",
+      "hsts_missing": "Añadir la cabecera HSTS para que el navegador use siempre la versión segura de la web.",
+      "version_leak": "Ocultar la versión del servidor en las cabeceras (Server / X-Powered-By) y comprobar que está actualizado.",
+      "public_emails": "Sustituir en la web y en directorios los correos con nombre por buzones genéricos (info@, citas@) y avisar a esas personas de que son objetivo probable de phishing.",
+      "trackers": "Revisar los rastreadores de la web: quitar los que no se usan y que el aviso de cookies pida permiso antes de cargarlos.",
+      "csp_missing": "Añadir una política de contenido (CSP) a la web, aunque sea básica.",
+      "mfa": "Activar la verificación en dos pasos en todas las cuentas de correo de la empresa: frena casi todos los accesos con contraseña robada.",
+      "passwords": "Comprobar si las contraseñas del equipo aparecen en filtraciones conocidas y cambiar las que se repiten.",
+      "access_review": "Revisar cada trimestre quién tiene acceso al correo, a la web y al dominio, y dar de baja a quien ya no está en la empresa."
+    },
+    "providerHint": {
+      "google": "Google Workspace lo explica paso a paso en su ayuda: support.google.com/a/answer/2466563.",
+      "microsoft": "Microsoft 365 tiene la guía \"Configurar DMARC\" en learn.microsoft.com.",
+      "ovh": "En OVHcloud se hace desde la zona DNS del dominio; su ayuda tiene una guía de DMARC.",
+      "ionos": "En IONOS se hace desde la configuración DNS del dominio; su ayuda tiene una guía de DMARC.",
+      "other": "Quien os lleve el correo o la web puede hacerlo en unos minutos.",
+      "none": "Quien os lleve el dominio puede hacerlo en unos minutos."
+    },
+    "cta": {
+      "title": "Vigilamos esto cada mes para tu equipo",
+      "body": "Desde {price}/mes: informe y vigilancia para cada persona del equipo, cartas RGPD, guardián contra estafas y este control del dominio, con aviso cuando algo cambia.",
+      "button": "Ver Rastro Equipos"
+    },
+    "method": {
+      "title": "Cómo se ha hecho este informe",
+      "body": "Todo son comprobaciones públicas desde fuera: los registros DNS del dominio, la portada de la web, si existen dominios parecidos, una búsqueda web y una pregunta a un asistente de IA. Nada intrusivo, nada dentro de vuestros sistemas y ningún dato de personas: los correos salen tapados. La nota resta puntos por cada hueco; empieza en 100."
+    },
+    "copy": {
+      "button": "Copiar texto para LinkedIn",
+      "done": "Copiado",
+      "title": "Informe de exposición de {domain}: {score}/100",
+      "actions": "Tres cosas que haría hoy:",
+      "footer": "Informe completo:"
+    },
+    "request": {
+      "title": "Pide el informe de {domain}",
+      "body": "Todavía no hay informe para este dominio. Déjanos un correo de contacto y lo preparamos; es gratis.",
+      "email": "Correo de contacto",
+      "button": "Pedir el informe",
+      "sent": "Recibido. Te avisamos en cuanto esté listo.",
+      "legal": "Usaremos el correo solo para enviarte este informe.",
+      "notice": "Piden el informe de exposición del dominio {domain}. Genéralo en /equipos/informe y respóndeles con el enlace."
+    },
+    "generate": {
+      "title": "Informe de dominio",
+      "body": "Genera el informe de exposición de una empresa para enviárselo. Solo comprobaciones públicas; los correos salen tapados.",
+      "label": "Dominio de la empresa",
+      "placeholder": "clinicadental-ejemplo.es",
+      "button": "Generar informe",
+      "hint": "Tarda unos 20 segundos. Si ya hay uno de los últimos 7 días, se vuelve a generar. Máximo 10 al día.",
+      "recent": "Informes recientes",
+      "forbidden": "Esta herramienta es para administradores y titulares de Rastro Equipos.",
+      "errors": {
+        "invalid": "Ese dominio no vale. Escribe algo como empresa.es.",
+        "limit": "Has llegado al máximo de 10 informes hoy.",
+        "failed": "No pudimos generar el informe. Prueba de nuevo en un momento.",
+        "forbidden": "Solo para administradores y titulares de Rastro Equipos."
+      }
+    },
+    "teamCard": {
+      "title": "Informe de dominio",
+      "body": "Genera el informe de exposición de una empresa (correo, web, dominios parecidos) para enviárselo.",
+      "cta": "Abrir"
+    },
+    "formErrors": {
+      "email": "Escribe un correo válido.",
+      "domain": "Ese dominio no vale."
+    }
   }
 }

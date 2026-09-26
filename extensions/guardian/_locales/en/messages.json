@@ -1,0 +1,101 @@
+{
+  "name": {
+    "message": "Rastro Guardian"
+  },
+  "description": {
+    "message": "A robot that reviews each site's cookies and sums them up, and helps you check suspicious messages. All in your browser."
+  },
+  "title": {
+    "message": "Something feels off?"
+  },
+  "intro": {
+    "message": "Review the text before taking it to Guardian."
+  },
+  "selected": {
+    "message": "Message to check"
+  },
+  "read": {
+    "message": "Use selected text"
+  },
+  "open": {
+    "message": "Copy and open Guardian"
+  },
+  "clear": {
+    "message": "Clear"
+  },
+  "note": {
+    "message": "We don’t read your inbox. Only the text you select is read when you press the button. Nothing is saved or sent automatically."
+  },
+  "copied": {
+    "message": "Text copied. Paste it into Guardian and press Analyze when you are ready."
+  },
+  "empty": {
+    "message": "Select text on the page or paste it here first."
+  },
+  "error": {
+    "message": "We couldn’t read this page. Copy the message and paste it here."
+  },
+  "copyError": {
+    "message": "We couldn’t copy it. Copy the text manually and open rastropro.com/guardian."
+  },
+  "truncated": {
+    "message": "The first 4,000 characters were selected. Review the text."
+  },
+  "limit": {
+    "message": "Maximum 4,000 characters. Remove codes, passwords or banking details before continuing."
+  },
+  "cookiesTitle": {
+    "message": "This site's cookies"
+  },
+  "cookiesEmpty": {
+    "message": "Open a regular site (http or https) to see its cookies."
+  },
+  "reject": {
+    "message": "Reject for me"
+  },
+  "hide": {
+    "message": "Hide here"
+  },
+  "more": {
+    "message": "Site guide"
+  },
+  "bubblePrivacy": {
+    "message": "Everything is checked in your browser. We don't send your cookies anywhere."
+  },
+  "waiting": {
+    "message": "Looking at this site…"
+  },
+  "rejected": {
+    "message": "Done: I clicked “reject” on the cookie banner. I'll count again in a moment."
+  },
+  "rejectMissing": {
+    "message": "I can't find a reject button on this page."
+  },
+  "robotLabel": {
+    "message": "Your robot"
+  },
+  "showRobot": {
+    "message": "Show the robot on pages"
+  },
+  "detail": {
+    "message": "See the cookies"
+  },
+  "goOfficial": {
+    "message": "Go to {site}"
+  },
+  "leave": {
+    "message": "Leave this site"
+  },
+  "trustSite": {
+    "message": "I trust it"
+  },
+  "blockTrackers": {
+    "message": "Block trackers"
+  },
+  "blockHint": {
+    "message": "Cuts ads that follow you and companies that trade in profiles. If a site stops working, turn it off."
+  },
+  "riskTitle": {
+    "message": "Security warning"
+  }
+}

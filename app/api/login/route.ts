@@ -7,6 +7,7 @@ import { sendLoginEmail } from "@/lib/email";
 import { serverEnv } from "@/lib/env";
 import { LOCALES } from "@/lib/i18n";
 import { allowRequest } from "@/lib/rate-limit";
+import { clientIpFrom } from "@/lib/client-ip";
 
 /**
  * Pide un enlace de acceso. Responde siempre {ok:true} exista o no la cuenta:
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
     const { email, locale } = parsed.data;
 
     const h = await headers();
-    const ip = h.get("x-forwarded-for")?.split(",")[0].trim() ?? h.get("x-real-ip") ?? "0.0.0.0";
+    const ip = clientIpFrom(h);
     if (!(await allowRequest(email, ip, "login"))) {
       return NextResponse.json({ ok: false, error: "formErrors.rateLimit" }, { status: 429 });
     }

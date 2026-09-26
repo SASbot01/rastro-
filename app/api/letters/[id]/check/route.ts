@@ -3,7 +3,8 @@ import { absoluteUrl } from "@/lib/env";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
-import { checkStillListed } from "@/lib/letters";
+import { checkListing, type LetterEvent } from "@/lib/letters";
+import { applyCheck } from "@/lib/removals";
 
 /** "Comprobar ahora": descarga la pagina de la carta y mira si el nombre sigue apareciendo. Guarda la prueba (fecha + resultado). */
 export const runtime = "nodejs";
@@ -22,15 +23,22 @@ export async function POST(_request: Request, ctx: RouteContext<"/api/letters/[i
   const supabase = supabaseAdmin();
   const { data: letter } = await supabase
     .from("letters")
-    .select("id, target_url, requests(full_name)")
+    .select("id, kind, mailbox_scan_id, target_url, still_listed, removed_at, check_count, events, requests(full_name)")
     .eq("id", id)
     .eq("user_id", user.id)
-    .maybeSingle<{ id: string; target_url: string; requests: { full_name: string } | { full_name: string }[] | null }>();
+    .maybeSingle<{ id: string; kind: string; mailbox_scan_id: string | null; target_url: string; still_listed: boolean | null; removed_at: string | null; check_count: number | null; events: LetterEvent[] | null; requests: { full_name: string } | { full_name: string }[] | null }>();
   if (!letter) return new NextResponse(null, { status: 404 });
+  // Solo tiene sentido en cartas sobre una pagina donde sale la persona. En las de IA (la URL es la web del proveedor) y en
+  // las de cierre de cuenta del buzon (la URL es la portada del servicio) el nombre no sale nunca, y la carta acababa
+  // diciendo "ya no apareces" sin que nadie hubiera retirado nada.
+  if (letter.kind === "ai" || letter.mailbox_scan_id) return NextResponse.redirect(absoluteUrl(`/cartas/${id}`), { status: 303 });
   const req = Array.isArray(letter.requests) ? letter.requests[0] : letter.requests;
   const name = req?.full_name ?? "";
 
-  const result = await checkStillListed(letter.target_url, name);
-  await supabase.from("letters").update({ last_check_at: new Date().toISOString(), still_listed: result }).eq("id", id);
+  const result = await checkListing(letter.target_url, name);
+  const { patch } = applyCheck(letter, result);
+  // Comprobacion manual: si no se pudo leer la pagina, que se vea "no se pudo comprobar" y no el resultado viejo.
+  if (result.listed === null) patch.still_listed = null;
+  await supabase.from("letters").update(patch).eq("id", id);
   return NextResponse.redirect(absoluteUrl(`/cartas/${id}`), { status: 303 });
 }

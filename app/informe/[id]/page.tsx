@@ -11,6 +11,7 @@ import { getSession, sessionOwns } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { isPro } from "@/lib/plan";
 
+import { track } from "@/lib/events";
 export const dynamic = "force-dynamic";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -41,7 +42,7 @@ function assistantsFrom(raw: RawAi | null | undefined): AssistantView[] {
   return out;
 }
 
-async function loadRequest(id: string): Promise<{ request: RequestRow; report: ReportData | null } | null> {
+async function loadRequest(id: string, ownerEmail: string): Promise<{ request: RequestRow; report: ReportData | null } | null> {
   if (!UUID.test(id)) return null;
   const supabase = supabaseAdmin();
 
@@ -49,6 +50,7 @@ async function loadRequest(id: string): Promise<{ request: RequestRow; report: R
     .from("requests")
     .select("id, email, full_name, locale, status, step, error")
     .eq("id", id)
+    .eq("email", ownerEmail)
     .maybeSingle<RequestRow>();
   if (!request) return null;
 
@@ -56,7 +58,7 @@ async function loadRequest(id: string): Promise<{ request: RequestRow; report: R
   if (request.status === "done") {
     const { data } = await supabase
       .from("reports")
-      .select("score, summary, findings, actions, created_at, generator, accounts, raw")
+      .select("score, summary, findings, actions, created_at, generator, accounts, site_checks, raw")
       .eq("request_id", id)
       .maybeSingle<ReportData & { raw: RawAi | null }>();
     if (data) {
@@ -69,13 +71,13 @@ async function loadRequest(id: string): Promise<{ request: RequestRow; report: R
 
 function Panel({ title, body, cta, href }: { title: string; body: string; cta: string; href: string }) {
   return (
-    <div className="rounded-card border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(26,26,25,0.04)] sm:p-8">
+    <div className="card p-6 sm:p-8">
       <span aria-hidden="true" className="mb-5 block h-1.5 w-10 rounded-full bg-line" />
-      <h1 className="text-[24px] font-semibold tracking-[-0.02em] text-ink">{title}</h1>
+      <h1 className="h2 text-ink">{title}</h1>
       <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{body}</p>
       <Link
         href={href}
-        className="mt-6 inline-block rounded-[10px] bg-accent px-5 py-3 text-[15px] font-semibold text-black transition-opacity hover:opacity-90"
+        className="mt-6 btn btn-primary"
       >
         {cta}
       </Link>
@@ -97,9 +99,11 @@ export async function generateMetadata({ params }: PageProps<"/informe/[id]">): 
   };
 }
 
-export default async function ReportPage({ params }: PageProps<"/informe/[id]">) {
+export default async function ReportPage({ params, searchParams }: PageProps<"/informe/[id]">) {
   const { id } = await params;
-  const loaded = await loadRequest(id);
+  const { reveal } = await searchParams;
+  const session = await getSession();
+  const loaded = session ? await loadRequest(id, session.email) : null;
 
   // El informe se muestra en el idioma con el que se pidio, no el del navegador.
   const locale: Locale =
@@ -111,9 +115,9 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
 
   // Privado: solo la sesion del correo que pidio el informe. El enlace del
   // correo crea esa sesion; desde otro dispositivo se entra por /entrar.
-  const session = await getSession();
-
-  if (!loaded) {
+  if (!session) {
+    body = <Panel title={tr("account.mustLoginTitle")} body={tr("account.mustLoginBody")} cta={tr("account.mustLoginCta")} href="/entrar" />;
+  } else if (!loaded) {
     body = (
       <Panel
         title={tr("waiting.notFoundTitle")}
@@ -132,6 +136,7 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
       />
     );
   } else if (loaded.request.status === "done" && loaded.report) {
+    void track("report_viewed", { subject: loaded.request.id, locale, props: { score: loaded.report.score } });
     body = (
       <ReportView
         report={loaded.report}
@@ -141,6 +146,7 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
         messages={messages}
         partial={loaded.report.generator !== "ai"}
         pro={isPro(session ? await findUserByEmail(session.email) : null)}
+        reveal={reveal === "1"}
       />
     );
   } else if (loaded.request.status === "error" || loaded.request.status === "done") {
@@ -168,7 +174,7 @@ export default async function ReportPage({ params }: PageProps<"/informe/[id]">)
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">{body}</main>
+      <main className="page py-10 sm:py-14">{body}</main>
       <SiteFooter messages={messages} />
     </>
   );

@@ -1,5 +1,17 @@
 # Tareas pendientes — Rastro
 
+## Mejora de experiencia · 16-09-2026 (rama, pendiente de publicación)
+
+- [x] Informe con revelación, stories, espejo, mapa de fuentes y respuestas de IA en chat.
+- [x] Captura anónima y descarga PNG, demo ES/EN de siete pantallas, tema claro/oscuro.
+- [x] Ayuda urgente, mejoras del Guardián, panel y cronología de cartas.
+- [x] Corregir rachas, privacidad de vigilancia en Equipos/CSV y autorización del polling.
+- [x] Extensión Guardián MVP y shortcuts PWA.
+- [ ] Revisar visualmente móvil/desktop y extensión en navegadores reales.
+- [ ] Probar con cuenta de ensayo los flujos privados y cartas, antes de publicar.
+- [ ] Publicar la rama en Rastro tras revisión. Servidor inspeccionado sin cambios.
+- Detalle y roadmap de nuevas aplicaciones: `docs/EXPERIENCIA-RASTRO-2026.md`.
+
 Estado a 10-09-2026. Producción: https://rastropro.com (servidor propio, ver README › Despliegue).
 
 ## Antes de abrir al público
@@ -97,3 +109,37 @@ Pendiente tuyo:
 - v5: Rastro Equipos (landing /equipos, panel /equipo, invitaciones, consentimiento del empleado, CSV, Stripe).
 - [ ] **Stripe Equipos**: Payment Links y price ids → `STRIPE_LINK_TEAM_SMALL/LARGE`, `STRIPE_PRICE_IDS_TEAM[_LARGE]`. Sin ellos, la landing muestra "Hablar con nosotros" (soporte).
 - [ ] Para probar un equipo sin Stripe: `update users set plan='pro', plan_until=now()+interval '1 year', plan_kind='team' where email='...'` y luego /equipo.
+
+## API pública (16-09-2026) — hecho
+- Claves en Perfil → API, docs en /api-docs, OpenAPI en /api/v1/openapi.json. Probado en producción con la cuenta demo (todos los endpoints).
+- [ ] Cuando haya usuarios de API: publicar ejemplos en GitHub (script Python + colección) y una entrada en la guía de sitios enlazando a la API.
+- Nota: el `pm2 startup` ya no hace falta; Rastro corre con systemd (unidades creadas en el servidor).
+
+## Extensión Rastro Guardián 0.2 (18-09-2026) — hecho
+- Robot de cookies (3 modelos, arrastrable, cuerpo con tambaleo), nota por web, empresas, aviso de publicidad antes de aceptar, «Rechazar por mí», popup con detalle. Probada en webs reales con Brave.
+- [ ] Publicar en Chrome Web Store / Edge Add-ons: **todo preparado** en `docs/marketing/store/` (guía paso a paso `CHROME-WEB-STORE.md`, iconos, 3 capturas 1280×800, mosaicos, textos ES/EN, justificación de permisos; política en `/extension/privacidad`). Falta: cuenta de desarrollador (5 $), subir `public/extension/rastro-guardian.zip` y, al aprobarla, poner `NEXT_PUBLIC_CHROME_STORE_URL` (y `NEXT_PUBLIC_EDGE_STORE_URL`) en el servidor: `/extension` pasa solo a «Añadir a Chrome». Un clic desde la web sin tienda no lo permite ningún navegador.
+- Siguiente fase de la extensión: aviso en sitios del catálogo ("aquí apareces tú"), webs dudosas (dominio recién creado / imita marca), política de privacidad resumida con IA, informe semanal de rastreo.
+
+
+## Bloque "de 8 a 10" (19-09-2026)
+
+Hecho por Claude: contador de datos retirados con recomprobación semanal, memoria de la IA (`/ia`), extensión 0.3 (aviso de webs falsas + bloqueo), comprobación real de sitios del catálogo, informe con resultados en vivo y métricas propias (`/admin/metricas`).
+
+Pendiente de Alejandro:
+- [ ] Poner `ADMIN_EMAILS` en el `.env.local` del servidor con tu correo de acceso para ver `/admin/metricas` (Claude lo dejó puesto con los correos Pro conocidos; revisa que sea el tuyo).
+- [ ] Claves de OpenAI y Gemini: sin ellas la memoria de la IA solo sigue a Perplexity.
+- [ ] Bot de Telegram para el Guardián: crear el bot en @BotFather y poner `TELEGRAM_BOT_TOKEN` en el servidor. WhatsApp exige cuenta de empresa verificada por Meta.
+- [ ] Fuente de filtraciones de malware (LeakCheck o plan superior de HIBP): contratar y poner la clave.
+- [ ] Conseguir 20 personas reales y mirar el embudo en `/admin/metricas` antes de construir más.
+- [ ] Subir la extensión 0.3.0 a la Chrome Web Store (guía en `docs/marketing/store/`).
+
+
+## Vender ya (26-09-2026)
+
+Hecho por Claude: página Pro alrededor de "datos retirados", origen del tráfico (`?ref=`) en el embudo y en `/admin/metricas`, secuencia de 3 correos tras el informe (día 1, 3 y 7; cron `nurture` a las 10:00; baja firmada en cada correo). Informe de exposición por dominio en curso (agente).
+
+Pendiente de Alejandro para el precio de lanzamiento (59 € el primer año, primeras 100 personas):
+- [ ] En Stripe: Productos → Rastro Pro → añadir precio **59 € / año** → crear **Payment Link** (con "permitir códigos" desactivado; el precio ya es la oferta).
+- [ ] Copiar el `price_…` del precio nuevo y añadirlo a `STRIPE_PRICE_IDS` en el `.env.local` del servidor (separado por comas).
+- [ ] Añadir `NEXT_PUBLIC_PRICE_LAUNCH_YEARLY=59 €` y `STRIPE_LINK_LAUNCH_YEARLY=https://buy.stripe.com/…` y reiniciar. La tarjeta de lanzamiento aparece sola y desaparece al llegar a 100 activaciones.
+- [ ] Hacer un pago de prueba real (y reembolsarlo desde Stripe) para verificar el webhook de punta a punta.

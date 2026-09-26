@@ -5,6 +5,10 @@ import { diffLines, diffReports, type ReportSnapshot } from "@/lib/report/diff";
 import { sendMonitorEmail } from "@/lib/email";
 import { createLoginLink } from "@/lib/login-link";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { worthAlert, type AiChange } from "@/lib/ai-watch";
+import { changeLines } from "@/lib/ai-watch-lines";
+import { track } from "@/lib/events";
+import { isCronSkipped } from "@/lib/demo-accounts";
 
 /**
  * Monitorizacion mensual (semana 2). Cron diario: coge hasta BATCH usuarios
@@ -21,7 +25,7 @@ const EVERY_DAYS = 30;
 
 interface DueUser { id: string; email: string; locale: string; monitor_last_at: string | null }
 interface LastRequest { id: string; full_name: string; city: string | null; occupation: string | null; consent_at: string; locale: string }
-interface ReportRow { score: number; raw: ReportSnapshot["raw"] }
+interface ReportRow { score: number; raw: ReportSnapshot["raw"]; site_checks: ReportSnapshot["site_checks"] }
 
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
@@ -57,6 +61,8 @@ export async function GET(request: Request) {
       .maybeSingle();
     if (claimError) console.error("[cron/monitor] reclamacion fallo:", claimError.message);
     if (!claimed) continue;
+    // Cuentas de demostracion: datos preparados a mano; procesarlas de verdad estropea la demo. Ya reclamada, no vuelve a salir hasta el siguiente ciclo.
+    if (isCronSkipped(user.email)) { results.push({ user: user.id, status: "demo: omitida" }); continue; }
 
     const locale: Locale = isLocale(user.locale) ? user.locale : "es";
 
@@ -74,7 +80,7 @@ export async function GET(request: Request) {
     }
     const { data: prevReport } = await supabase
       .from("reports")
-      .select("score, raw")
+      .select("score, raw, site_checks")
       .eq("request_id", last.id)
       .maybeSingle<ReportRow>();
 
@@ -106,7 +112,7 @@ export async function GET(request: Request) {
 
     const { data: nextReport } = await supabase
       .from("reports")
-      .select("score, raw")
+      .select("score, raw, site_checks")
       .eq("request_id", created.id)
       .maybeSingle<ReportRow>();
     if (!nextReport || !prevReport) {
@@ -115,9 +121,14 @@ export async function GET(request: Request) {
     }
 
     const diff = diffReports(prevReport, nextReport);
+    // Cambios en lo que dice cada IA (la foto la guarda el propio job del informe).
+    const { data: snap } = await supabase.from("ai_snapshots").select("changes").eq("request_id", created.id).order("taken_at", { ascending: true }).limit(1).maybeSingle<{ changes: AiChange[] }>();
+    const aiChanges = snap?.changes ?? [];
+    const aiAlert = worthAlert(aiChanges);
+    if (aiAlert) void track("ai_change_detected", { subject: user.id, locale, props: { changes: aiChanges.filter((c) => !c.minor).length, source: "monitor" } });
     await supabase.from("reports").update({ raw: { ...(nextReport.raw ?? {}), diff } }).eq("request_id", created.id);
 
-    if (diff.changed) {
+    if (diff.changed || aiAlert) {
       const reportUrl = await createLoginLink(user.email, locale, `/informe/${created.id}`);
       const unsubscribeUrl = await createLoginLink(user.email, locale, "/cuenta");
       try {
@@ -125,7 +136,7 @@ export async function GET(request: Request) {
           to: user.email,
           name: last.full_name.split(" ")[0],
           score: nextReport.score,
-          lines: diffLines(diff, locale),
+          lines: [...diffLines(diff, locale), ...changeLines(aiChanges, locale).slice(0, 5)],
           reportUrl,
           unsubscribeUrl,
           locale,
@@ -134,7 +145,7 @@ export async function GET(request: Request) {
         console.error("[cron/monitor] correo fallo:", err);
       }
     }
-    results.push({ user: user.id, status: "ok", changed: diff.changed });
+    results.push({ user: user.id, status: "ok", changed: diff.changed || aiAlert });
   }
 
   console.log(`[cron/monitor] procesados ${results.length}:`, JSON.stringify(results));

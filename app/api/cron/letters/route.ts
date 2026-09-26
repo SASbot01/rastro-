@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { sendDeadlineEmail, sendFollowUpNoticeEmail, sendLetterEmail } from "@/lib/email";
-import { buildFollowUp, withEvent, type LetterEvent } from "@/lib/letters";
+import { sendDeadlineEmail, sendFollowUpNoticeEmail, sendLetterEmail, sendNoticeEmail } from "@/lib/email";
+import { buildFollowUp, checkListing, withEvent, type LetterEvent } from "@/lib/letters";
+import { applyCheck } from "@/lib/removals";
+import { getMessages, translator } from "@/lib/i18n";
+import { track } from "@/lib/events";
+import { isCronSkipped } from "@/lib/demo-accounts";
 import { createLoginLink } from "@/lib/login-link";
 import { isLocale, type Locale } from "@/lib/i18n";
 
@@ -9,12 +13,14 @@ import { isLocale, type Locale } from "@/lib/i18n";
  * Calendario de plazos. Cron diario, dos pasadas:
  *  1) Recordatorio: cartas enviadas por Rastro hace >= 20 dias sin respuesta
  *     -> segunda solicitud al sitio (con copia al usuario) + aviso al usuario.
+ *  0) Recomprobacion: cada semana se vuelve a mirar la URL de cada carta enviada.
+ *     Si el dato ya no aparece, se marca como retirado, queda en la cronologia y se avisa.
  *  2) Vencimiento: cartas 'sent' cuyo plazo de un mes ya vencio y aun no se ha
  *     avisado -> correo con enlace a la carta. El estado lo decide la persona.
  * Protegido con Authorization: Bearer CRON_SECRET.
  */
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 const BATCH = 50;
 
@@ -41,6 +47,7 @@ export async function GET(request: Request) {
   const supabase = supabaseAdmin();
   const now = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
   const followUps = await sendFollowUps(supabase);
+  const rechecks = await recheckLetters(supabase);
   const { data: letters, error } = await supabase
     .from("letters")
     .select("id, host, sent_at, deadline_at, locale, users(email), requests(full_name)")
@@ -79,7 +86,7 @@ export async function GET(request: Request) {
   }
 
   console.log(`[cron/letters] avisos enviados: ${sent} de ${letters?.length ?? 0}`);
-  return NextResponse.json({ ok: true, due: letters?.length ?? 0, sent, followUps });
+  return NextResponse.json({ ok: true, due: letters?.length ?? 0, sent, followUps, rechecks });
 }
 
 const FOLLOW_UP_DAYS = 20;
@@ -137,4 +144,86 @@ async function sendFollowUps(supabase: ReturnType<typeof supabaseAdmin>): Promis
     }
   }
   return count;
+}
+
+
+const RECHECK_EVERY_DAYS = 7;
+const RECHECK_BATCH = 40;
+const RECHECK_PARALLEL = 5;
+
+interface RecheckLetter {
+  id: string;
+  host: string;
+  target_url: string;
+  locale: string;
+  still_listed: boolean | null;
+  removed_at: string | null;
+  check_count: number | null;
+  events: LetterEvent[] | null;
+  users: { email: string } | { email: string }[] | null;
+  requests: { full_name: string } | { full_name: string }[] | null;
+}
+
+/**
+ * Vuelve a mirar las URL de las cartas enviadas (la primera vez sirve de "antes";
+ * despues, cada semana). Cuando un dato que aparecia deja de aparecer, se da por
+ * retirado, se anota en la cronologia (prueba con fecha) y se avisa a la persona.
+ */
+async function recheckLetters(supabase: ReturnType<typeof supabaseAdmin>): Promise<{ checked: number; removed: number }> {
+  const cutoff = new Date(Date.now() - RECHECK_EVERY_DAYS * 86_400_000).toISOString().replace(/\.\d{3}Z$/, "Z");
+  const { data: letters, error } = await supabase
+    .from("letters")
+    .select("id, host, target_url, locale, still_listed, removed_at, check_count, events, users(email), requests(full_name)")
+    .in("status", ["sent", "answered", "no_answer"])
+    .in("kind", ["site", "image"])
+    .is("mailbox_scan_id", null) // las de cierre de cuenta apuntan a la portada del servicio: ahi no hay ficha que mirar
+    // Las ya retiradas se siguen mirando: si el dato reaparece, la carta se reabre (applyCheck -> 'reappeared').
+    .or(`last_check_at.is.null,last_check_at.lt.${cutoff}`)
+    .order("last_check_at", { ascending: true, nullsFirst: true })
+    .limit(RECHECK_BATCH)
+    .returns<RecheckLetter[]>();
+  if (error) console.error("[cron/letters] consulta de recomprobacion fallo:", error.message);
+
+  let checked = 0, removed = 0;
+  const queue = [...(letters ?? [])];
+  async function worker() {
+    for (let letter = queue.shift(); letter; letter = queue.shift()) {
+      const name = one(letter.requests)?.full_name ?? "";
+      const email = one(letter.users)?.email;
+      // La cuenta demo lleva URL inventadas: comprobarlas de verdad daria 404 y un "retirado" falso.
+      if (!name || !/^https?:\/\//i.test(letter.target_url) || isCronSkipped(email)) continue;
+      const result = await checkListing(letter.target_url, name);
+      const { patch, justRemoved, notify } = applyCheck(letter, result);
+      checked += 1;
+      if (!justRemoved) {
+        await supabase.from("letters").update(patch).eq("id", letter.id);
+        continue;
+      }
+      // Reclamar la retirada: si dos ejecuciones del cron se solapan (o la persona pulsa "Comprobar ahora" a la vez), solo una avisa.
+      const { data: claimed } = await supabase.from("letters").update(patch).eq("id", letter.id).is("removed_at", null).select("id").maybeSingle();
+      if (!claimed) continue;
+      removed += 1;
+      void track("removal_verified", { subject: letter.id });
+      if (!email || !notify) continue;
+      const locale: Locale = isLocale(letter.locale) ? letter.locale : "es";
+      const tr = translator(getMessages(locale));
+      try {
+        const url = await createLoginLink(email, locale, `/cartas/${letter.id}`);
+        await sendNoticeEmail({
+          to: email,
+          subject: tr("removedEmail.subject", { host: letter.host }),
+          greeting: tr("removedEmail.greeting", { name: name.split(" ")[0] }),
+          paragraphs: [tr("removedEmail.p1", { host: letter.host }), tr("removedEmail.p2")],
+          cta: tr("removedEmail.cta"),
+          url,
+          footer: tr("removedEmail.footer"),
+        });
+      } catch (e) {
+        console.error(`[cron/letters] aviso de retirada ${letter.id} fallo:`, e);
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: RECHECK_PARALLEL }, worker));
+  console.log(`[cron/letters] recomprobadas ${checked}, retiradas nuevas ${removed}`);
+  return { checked, removed };
 }

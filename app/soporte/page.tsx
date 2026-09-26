@@ -17,7 +17,7 @@ export default async function SupportPage({ searchParams }: PageProps<"/soporte"
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-10 sm:py-14">
+      <main className="page py-10 sm:py-14">
         <SupportForm messages={messages} locale={locale} email={session?.email ?? null} page={page} />
       </main>
       <SiteFooter messages={messages} />

@@ -1,18 +1,16 @@
 "use client";
 
+import { readRef } from "@/components/RefCapture";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 
 type Status = "idle" | "submitting" | "sent";
 
-const FIELD =
-  "w-full rounded-[10px] border border-line bg-surface px-3.5 py-3 text-[16px] text-ink " +
-  "placeholder:text-faint transition-colors hover:border-faint focus:border-accent " +
-  "focus:outline-none focus:ring-2 focus:ring-accent/25 disabled:opacity-60";
+const FIELD = "field";
 
-const LABEL = "block text-[13px] font-medium text-ink";
-const HELP = "mt-1.5 text-[12.5px] leading-relaxed text-faint";
-const ERROR = "mt-1.5 text-[12.5px] font-medium text-danger";
+const LABEL = "label";
+const HELP = "mt-2 text-[13px] leading-relaxed text-faint";
+const ERROR = "mt-2 flex items-center gap-1.5 text-[13px] font-medium text-danger";
 
 /**
  * Parte el texto de consentimiento por el marcador {privacy} y coloca
@@ -75,6 +73,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
       occupation: String(data.get("occupation") ?? "").trim(),
       consent: data.get("consent") === "on",
       locale,
+      ref: readRef() ?? undefined,
     };
 
     // Validacion en cliente: evita un viaje al servidor por un campo vacio.
@@ -124,10 +123,10 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
     return (
       <section
         aria-live="polite"
-        className="rounded-card border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(26,26,25,0.04)] sm:p-8"
+        className="card card-glow rise p-6 sm:p-8"
       >
-        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-accent-soft">
-          <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+        <div className="pop relative mb-5 flex h-14 w-14 items-center justify-center rounded-[18px] bg-accent-soft shadow-[inset_0_0_0_1px_rgb(77_252_95/0.3)]">
+          <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
             <path
               d="M3 7.5 12 13l9-5.5M4.5 5.5h15a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17V7a1.5 1.5 0 0 1 1.5-1.5Z"
               fill="none"
@@ -138,15 +137,15 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
             />
           </svg>
         </div>
-        <h2 className="text-[20px] font-semibold tracking-[-0.01em] text-ink">{tr("sent.title")}</h2>
-        <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("sent.body", { email })}</p>
+        <h2 className="text-[24px] font-semibold tracking-[-0.03em] text-ink">{tr("sent.title")}</h2>
+        <p className="mt-2 text-[15.5px] leading-relaxed text-muted">{tr("sent.body", { email })}</p>
         <p className={HELP}>{tr("sent.spam")}</p>
         <p className={HELP}>{tr("sent.expires")}</p>
 
-        <form onSubmit={onCode} noValidate className="mt-6 rounded-[10px] bg-paper p-4">
-          <p className="text-[14px] font-semibold text-ink">{tr("sent.codeTitle")}</p>
-          <p className="mt-1 text-[13px] text-muted">{tr("sent.codeBody")}</p>
-          <div className="mt-3 flex gap-2">
+        <form onSubmit={onCode} noValidate className="mt-6 rounded-[16px] border border-line bg-paper/60 p-4">
+          <p className="text-[15px] font-semibold text-ink">{tr("sent.codeTitle")}</p>
+          <p className="mt-1 text-[14px] text-muted">{tr("sent.codeBody")}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
             <input
               name="code"
               inputMode="numeric"
@@ -156,12 +155,12 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
               placeholder={tr("sent.codePlaceholder")}
               disabled={codeState === "busy"}
               aria-invalid={Boolean(codeError)}
-              className={FIELD + " max-w-[160px] text-center text-[20px] tracking-[0.2em]"}
+              className={FIELD + " num min-w-0 max-w-[180px] flex-1 text-center !text-[22px] !tracking-[0.25em]"}
             />
             <button
               type="submit"
               disabled={codeState === "busy"}
-              className="rounded-[10px] bg-accent px-4 py-3 text-[14px] font-semibold text-black hover:opacity-90 disabled:opacity-60"
+              className="btn btn-primary"
             >
               {codeState === "busy" ? tr("sent.codeChecking") : tr("sent.codeSubmit")}
             </button>
@@ -176,7 +175,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-5 text-[13px] font-medium text-accent underline underline-offset-4 hover:opacity-80"
+          className="link mt-5 inline-flex min-h-[44px] items-center text-[14px]"
         >
           {tr("sent.again")}
         </button>
@@ -190,10 +189,10 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
     <form
       onSubmit={onSubmit}
       noValidate
-      className="rounded-card border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(26,26,25,0.04)] sm:p-8"
+      className="card p-6 sm:p-8"
     >
-      <h2 className="text-[20px] font-semibold tracking-[-0.01em] text-ink">{tr("form.title")}</h2>
-      <p className="mt-1.5 text-[13px] text-faint">{tr("form.onlyYourself")}</p>
+      <h2 className="text-[21px] font-semibold tracking-[-0.025em] text-ink">{tr("form.title")}</h2>
+      <p className="mt-1.5 text-[14px] text-muted">{tr("form.onlyYourself")}</p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <div>
@@ -209,7 +208,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
             disabled={busy}
             aria-invalid={Boolean(errors.firstName)}
             aria-describedby={errors.firstName ? "firstName-error" : undefined}
-            className={`mt-1.5 ${FIELD}`}
+            className={`mt-2 ${FIELD}`}
           />
           {errors.firstName && (
             <p id="firstName-error" className={ERROR}>
@@ -231,7 +230,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
             disabled={busy}
             aria-invalid={Boolean(errors.lastName)}
             aria-describedby={errors.lastName ? "lastName-error" : undefined}
-            className={`mt-1.5 ${FIELD}`}
+            className={`mt-2 ${FIELD}`}
           />
           {errors.lastName && (
             <p id="lastName-error" className={ERROR}>
@@ -255,7 +254,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
           disabled={busy}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? "email-error" : "email-help"}
-          className={`mt-1.5 ${FIELD}`}
+          className={`mt-2 ${FIELD}`}
         />
         {errors.email ? (
           <p id="email-error" className={ERROR}>
@@ -281,7 +280,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
           required
           disabled={busy}
           aria-describedby="city-help"
-          className={`mt-1.5 ${FIELD}`}
+          className={`mt-2 ${FIELD}`}
         />
         <p id="city-help" className={HELP}>
           {tr("form.cityHelp")}
@@ -301,24 +300,24 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
           placeholder={tr("form.occupationPlaceholder")}
           disabled={busy}
           aria-describedby="occupation-help"
-          className={`mt-1.5 ${FIELD}`}
+          className={`mt-2 ${FIELD}`}
         />
         <p id="occupation-help" className={HELP}>
           {tr("form.occupationHelp")}
         </p>
       </div>
 
-      <div className="mt-6 rounded-[10px] bg-paper p-4">
-        <label htmlFor="consent" className="flex cursor-pointer items-start gap-3">
+      <div className={"mt-6 rounded-[16px] border p-4 transition-colors " + (errors.consent ? "border-danger/60 bg-danger/5" : "border-line bg-paper/60")}>
+        <label htmlFor="consent" className="flex cursor-pointer items-start gap-3.5">
           <input
             id="consent"
             name="consent"
             type="checkbox"
             disabled={busy}
             aria-invalid={Boolean(errors.consent)}
-            className="mt-0.5 h-[18px] w-[18px] shrink-0 cursor-pointer accent-accent"
+            className="mt-0.5 h-[22px] w-[22px] shrink-0 cursor-pointer rounded accent-accent"
           />
-          <span className="text-[13px] leading-relaxed text-muted">
+          <span className="text-[14px] leading-relaxed text-muted">
             {consentWithLink(
               tr("form.consent"),
               <a
@@ -338,18 +337,22 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
       </div>
 
       {formError && (
-        <p role="alert" className="mt-4 text-[13px] font-medium text-danger">
+        <p role="alert" className="mt-4 rounded-[12px] border border-danger/40 bg-danger/10 px-4 py-3 text-[14px] font-medium text-danger">
           {tr(formError)}
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={busy}
-        className="mt-5 w-full rounded-[10px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-      >
+      <button type="submit" disabled={busy} aria-busy={busy} className="btn btn-primary btn-lg mt-5 w-full">
+        {busy && <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" aria-hidden="true" />}
         {busy ? tr("form.submitting") : tr("form.submit")}
+        {!busy && (
+          <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        )}
       </button>
+      <p className="mt-3 flex items-start justify-center gap-2 text-center text-[13px] leading-relaxed text-faint">
+        <svg viewBox="0 0 20 20" className="mt-[3px] h-3.5 w-3.5 shrink-0 text-accent" aria-hidden="true"><path d="M6 9V7a4 4 0 0 1 8 0v2M5 9h10v7H5z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        {tr("landing.formSecure")}
+      </p>
     </form>
   );
 }
