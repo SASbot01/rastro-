@@ -1988,7 +1988,8 @@
       "email": "Contact email",
       "button": "Request the report",
       "sent": "Received. We will let you know as soon as it is ready.",
-      "legal": "We will use the email only to send you this report."
+      "legal": "We will use the email only to send you this report.",
+      "notice": "Someone requested the exposure report for {domain}. Generate it at /equipos/informe and reply with the link."
     },
     "generate": {
       "title": "Domain report",

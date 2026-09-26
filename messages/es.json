@@ -1988,7 +1988,8 @@
       "email": "Correo de contacto",
       "button": "Pedir el informe",
       "sent": "Recibido. Te avisamos en cuanto esté listo.",
-      "legal": "Usaremos el correo solo para enviarte este informe."
+      "legal": "Usaremos el correo solo para enviarte este informe.",
+      "notice": "Piden el informe de exposición del dominio {domain}. Genéralo en /equipos/informe y respóndeles con el enlace."
     },
     "generate": {
       "title": "Informe de dominio",
