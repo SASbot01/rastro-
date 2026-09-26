@@ -21,7 +21,7 @@ const LABEL: Record<EventName, string> = {
   letter_created: "Carta creada", letter_sent: "Carta enviada", removal_verified: "Retirada comprobada",
   checkout_started: "Fue a pagar", pro_activated: "Pro activado", monitoring_on: "Vigilancia activada",
   guardian_used: "Guardián usado", simulator_used: "Simulador usado", images_used: "Imágenes usado", mailbox_scanned: "Buzón escaneado",
-  ai_change_detected: "Cambio en la IA detectado", site_check_listed: "Informe con sitios de datos", extension_page_viewed: "Página de extensión vista", extension_download: "Extensión descargada",
+  ai_change_detected: "Cambio en la IA detectado", site_check_listed: "Informe con sitios de datos", extension_page_viewed: "Página de extensión vista", extension_download: "Extensión descargada", nurture_sent: "Correo de seguimiento enviado",
 };
 
 interface Count { name: string; total: number; uniques: number }
@@ -42,13 +42,18 @@ export default async function MetricsPage({ searchParams }: { searchParams: Prom
   const now = Date.now();
   const since = new Date(now - days * 86_400_000).toISOString();
   const supabase = supabaseAdmin();
-  const [{ data: counts }, { data: daily }, { data: speed }, users, pros] = await Promise.all([
+  const [{ data: counts }, { data: daily }, { data: speed }, users, pros, { data: refRows }] = await Promise.all([
     supabase.rpc("product_event_counts", { since }),
     supabase.rpc("product_event_daily", { since }),
     supabase.from("product_events").select("props").eq("name", "report_ready").gte("at", since).order("at", { ascending: false }).limit(200).returns<Array<{ props: { seconds?: number } }>>(),
     supabase.from("users").select("id", { count: "exact", head: true }),
     supabase.from("users").select("id", { count: "exact", head: true }).eq("plan", "pro"),
+    supabase.from("product_events").select("name, props").in("name", ["form_submitted", "report_ready"]).gte("at", since).limit(5000).returns<Array<{ name: string; props: { ref?: string } }>>(),
   ]);
+  // Origen del trafico (?ref=ig, tiktok...): formularios e informes por canal.
+  const byRef = new Map<string, { forms: number; reports: number }>();
+  for (const r of refRows ?? []) { const k = r.props?.ref || "directo"; const cur = byRef.get(k) ?? { forms: 0, reports: 0 }; if (r.name === "form_submitted") cur.forms += 1; else cur.reports += 1; byRef.set(k, cur); }
+  const refs = [...byRef.entries()].sort((a, b) => b[1].forms - a[1].forms).slice(0, 12);
   const by = new Map(((counts ?? []) as Count[]).map((c) => [c.name, c]));
   const n = (name: EventName) => Number(by.get(name)?.uniques ?? 0);
   const top = Math.max(1, n(FUNNEL[0]));
@@ -109,6 +114,15 @@ export default async function MetricsPage({ searchParams }: { searchParams: Prom
             })}
           </ol>
           <p className="mt-3 text-[12px] text-faint">El porcentaje es la conversión desde el paso anterior. En rojo, el paso donde más gente se cae.</p>
+        </section>
+
+        <section className={CARD + " mt-4"}>
+          <h2 className="text-[16px] font-semibold text-ink">De dónde viene la gente</h2>
+          <p className="mt-1 text-[12.5px] text-faint">Enlace en bio con <code>?ref=ig</code>, <code>?ref=tiktok</code>, <code>?ref=li</code>, o uno por reel (<code>?ref=ig-estafa1</code>). Se guarda 30 días en el navegador.</p>
+          {refs.length === 0 ? <p className="mt-3 text-[13px] text-muted">Todavía sin datos.</p> : (
+            <table className="mt-3 w-full text-left text-[13px]"><thead><tr className="text-faint"><th className="py-1 font-medium">Origen</th><th className="py-1 text-right font-medium">Formularios</th><th className="py-1 text-right font-medium">Informes</th></tr></thead>
+              <tbody>{refs.map(([k, v]) => <tr key={k} className="border-t border-line"><td className="py-1.5 text-ink">{k}</td><td className="py-1.5 text-right text-ink">{v.forms}</td><td className="py-1.5 text-right text-ink">{v.reports}</td></tr>)}</tbody></table>
+          )}
         </section>
 
         <section className={CARD + " mt-4"}>

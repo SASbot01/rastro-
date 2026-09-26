@@ -3,6 +3,7 @@
     { "path": "/api/cron/purge", "schedule": "0 4 * * *" },
     { "path": "/api/cron/monitor", "schedule": "0 5 * * *" },
     { "path": "/api/cron/letters", "schedule": "0 6 * * *" },
-    { "path": "/api/cron/ai-watch", "schedule": "30 6 * * *" }
+    { "path": "/api/cron/ai-watch", "schedule": "30 6 * * *" },
+    { "path": "/api/cron/nurture", "schedule": "0 10 * * *" }
   ]
 }

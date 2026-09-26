@@ -1824,5 +1824,32 @@
     "dashChanged": "{n} cambios desde la última vez",
     "dashSame": "Sin cambios desde la última vez",
     "dashOpen": "Ver qué dice cada IA"
+  },
+  "nurture": {
+    "greeting": "Hola, {name}:",
+    "ctaReport": "Abrir mi informe",
+    "ctaTools": "Ver mis herramientas",
+    "ctaPro": "Ver Rastro Pro",
+    "footer": "Recibes este correo porque pediste tu informe en Rastro. Son tres correos en total. Si no quieres más: {stop}",
+    "d1": {
+      "subject": "Tu informe: por dónde empezar hoy",
+      "p1": "Ayer viste lo que se sabe de ti. Estas son las tres cosas que más cambian tu puntuación, en orden:",
+      "p2": "La primera se hace en cinco minutos. Cuando la marques como hecha en la guía de tu informe, tu puntuación se actualiza."
+    },
+    "d3": {
+      "subject": "Cómo retiramos tus datos (y cómo lo comprobamos)",
+      "p1Found": "Apareces en {n} sitios que publican o venden datos personales. Cada uno tiene la obligación legal de retirarlos si se lo pides.",
+      "p1None": "En tu informe no encontramos sitios que vendan tus datos. Buena noticia, pero cambian cada mes.",
+      "p2": "Con Pro, Rastro envía la carta por ti desde cartas@rastropro.com, la reclama al día 20 si no contestan y vuelve a mirar la página cada semana. Cuando tu nombre deja de aparecer, te avisamos y queda como prueba con fecha.",
+      "p3": "No prometemos borrar. Prometemos medirlo: en tu panel verás cuántos datos se han retirado de cuántos encontramos."
+    },
+    "d7": {
+      "subject": "Una semana después: ¿sigue todo igual?",
+      "p1Found": "Hace una semana apareciste en {n} sitios de venta de datos. Si no has pedido la retirada, siguen ahí.",
+      "p1None": "Hace una semana tu puntuación estaba bien. Lo que cambia con el tiempo son las filtraciones nuevas y lo que la IA aprende de ti.",
+      "p2": "Pro vigila cada mes, envía las cartas por ti y guarda lo que cada IA dice de ti para avisarte si cambia.",
+      "launch": "Precio de lanzamiento: {price} el primer año en vez de {yearly}, para las primeras 100 personas. Se cancela cuando quieras.",
+      "price": "Cuesta {monthly} al mes o {yearly} al año, y se cancela cuando quieras."
+    }
   }
 }

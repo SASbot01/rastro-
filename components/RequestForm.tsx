@@ -1,5 +1,6 @@
 "use client";
 
+import { readRef } from "@/components/RefCapture";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 
@@ -72,6 +73,7 @@ export function RequestForm({ messages, locale }: { messages: Messages; locale: 
       occupation: String(data.get("occupation") ?? "").trim(),
       consent: data.get("consent") === "on",
       locale,
+      ref: readRef() ?? undefined,
     };
 
     // Validacion en cliente: evita un viaje al servidor por un campo vacio.

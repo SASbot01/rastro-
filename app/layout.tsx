@@ -1,3 +1,4 @@
+import { RefCapture } from "@/components/RefCapture";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
@@ -57,7 +58,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <a className="ex-skip" href="#page-content">{messages.experience.skipContent}</a>
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px]">
           <SideNav messages={getMessages(locale)} />
-          <div id="page-content" tabIndex={-1} className="flex min-h-screen min-w-0 flex-1 flex-col">{children}</div>
+          <div id="page-content" tabIndex={-1} className="flex min-h-screen min-w-0 flex-1 flex-col"><RefCapture />
+        {children}</div>
         </div>
         <BottomNav messages={getMessages(locale)} />
         <AskRastro messages={getMessages(locale)} locale={locale} />
