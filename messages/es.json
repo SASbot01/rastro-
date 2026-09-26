@@ -1936,5 +1936,199 @@
       "launch": "Precio de lanzamiento: {price} el primer año en vez de {yearly}, para las primeras 100 personas. Se cancela cuando quieras.",
       "price": "Cuesta {monthly} al mes o {yearly} al año, y se cancela cuando quieras."
     }
+  },
+  "domainReport": {
+    "eyebrow": "Rastro Equipos",
+    "title": "Informe de exposición de {domain}",
+    "subtitle": "Lo que cualquiera puede comprobar desde fuera sobre el correo, la web y el nombre de la empresa. Sin datos de personas: solo lo que ve un estafador antes de actuar.",
+    "scoreLabel": "Nota de exposición",
+    "generated": "Comprobado el {date}",
+    "level": {
+      "green": "Buena protección",
+      "orange": "Hay cosas que arreglar",
+      "red": "Riesgo alto"
+    },
+    "levelBody": {
+      "green": "El correo y la web están razonablemente protegidos. Quedan detalles, pero suplantar a la empresa cuesta trabajo.",
+      "orange": "Hay huecos que un estafador aprovecharía con poco esfuerzo. Las tres acciones de abajo los cierran en una tarde.",
+      "red": "Hoy es fácil hacerse pasar por la empresa. Conviene empezar por la primera acción esta misma semana."
+    },
+    "sections": {
+      "email": "Correo: ¿pueden suplantaros?",
+      "web": "Web: qué ve el visitante",
+      "lookalikes": "Dominios parecidos",
+      "emails": "Correos del dominio a la vista",
+      "ai": "Lo que dice la IA de la empresa"
+    },
+    "email": {
+      "spf": {
+        "missing": "Sin SPF: el dominio no dice qué servidores pueden enviar correo en su nombre.",
+        "hard": "SPF publicado y estricto (-all): solo los servidores autorizados pueden enviar como @{domain}.",
+        "soft": "SPF publicado pero blando (~all): los correos falsos pasan como \"dudosos\" en vez de rechazarse.",
+        "neutral": "SPF publicado pero sin efecto (?all): no protege.",
+        "open": "SPF publicado sin regla final: no dice qué hacer con el resto de servidores."
+      },
+      "dmarc": {
+        "missing": "Sin DMARC: nada le dice a Gmail u Outlook qué hacer con un correo falso que diga venir de @{domain}.",
+        "none": "DMARC en modo observación (p=none): recibe informes pero no bloquea ningún correo falso.",
+        "quarantine": "DMARC en p=quarantine: los correos falsos van a spam. Bien; el siguiente paso es p=reject.",
+        "reject": "DMARC en p=reject: los correos falsos se rechazan. Es la mejor configuración."
+      },
+      "dkim": {
+        "found": "Firma DKIM publicada ({list}).",
+        "missing": "No encontramos firma DKIM en los selectores habituales. Puede existir con otro nombre; conviene confirmarlo con el proveedor."
+      },
+      "provider": "Proveedor de correo: {provider}.",
+      "providers": {
+        "google": "Google Workspace",
+        "microsoft": "Microsoft 365",
+        "ovh": "OVHcloud",
+        "ionos": "IONOS",
+        "other": "otro",
+        "none": "ninguno (el dominio no recibe correo)"
+      },
+      "why": "Por qué importa: sin DMARC, cualquiera puede enviar un correo que parezca venir de @{domain} (a un cliente, a un empleado, al banco) y el receptor no tiene forma de saber que es falso. Con DMARC en quarantine o reject, Gmail y Outlook lo mandan a spam o lo rechazan."
+    },
+    "web": {
+      "unreachable": "La web no respondió ni por https:// ni por http:// (probamos también con www.). Puede estar en otro dominio o caída en este momento.",
+      "blocked": "La web respondió con el código {status}: probablemente bloquea robots. Solo pudimos comprobar lo que dejó ver.",
+      "https": {
+        "ok": "La web carga con candado (HTTPS).",
+        "missing": "La web no carga por HTTPS: la conexión va sin cifrar y los navegadores la marcan como \"No es segura\"."
+      },
+      "redirect": {
+        "ok": "http:// redirige a https://.",
+        "missing": "http:// no redirige a https://: quien escriba el dominio a mano puede quedarse en la versión sin cifrar.",
+        "unknown": "No pudimos comprobar si http:// redirige a https://."
+      },
+      "hsts": {
+        "ok": "HSTS activo: el navegador recordará usar siempre HTTPS.",
+        "missing": "Sin HSTS: nada obliga al navegador a usar siempre la versión segura."
+      },
+      "csp": {
+        "ok": "Con política de contenido (CSP).",
+        "missing": "Sin política de contenido (CSP), la barrera contra scripts inyectados. Es menor, pero recomendable."
+      },
+      "frame": {
+        "ok": "Protegida contra ser incrustada en otras webs.",
+        "missing": "Otra web puede incrustarla en un marco invisible (clickjacking)."
+      },
+      "leak": "El servidor anuncia su versión ({server}): a un atacante le ahorra el primer paso, buscar fallos conocidos de esa versión.",
+      "noLeak": "El servidor no anuncia versiones de software.",
+      "cms": "Hecha con {cms}.",
+      "cmsVersion": "Hecha con {cms} {version}: la versión es visible. Conviene ocultarla y tenerla al día.",
+      "trackers": {
+        "one": "1 empresa recibe datos de cada visita a la portada: {list}.",
+        "none": "No detectamos rastreadores de terceros en la portada.",
+        "some": "{n} empresas reciben datos de cada visita a la portada: {list}."
+      },
+      "banner": {
+        "found": "Hay aviso de cookies ({name}).",
+        "generic": "Hay aviso de cookies.",
+        "missing": "No detectamos aviso de cookies. Con rastreadores, la ley exige pedir permiso antes de cargarlos.",
+        "missingNoTrackers": "No detectamos aviso de cookies; sin rastreadores no hace falta."
+      },
+      "why": "Por qué importa: la web es la cara de la empresa. Sin candado o con versiones a la vista, un cliente desconfía y un atacante sabe por dónde empezar."
+    },
+    "lookalikes": {
+      "none": "Ninguno de los {n} dominios parecidos que probamos está registrado. Buena señal: nadie se ha adelantado, todavía.",
+      "some": "{n} de los {total} dominios parecidos que probamos están registrados:",
+      "registered": "Alguien ha registrado {domain}.",
+      "yours": "{domain} apunta a vuestros mismos servidores de nombres: probablemente es vuestro.",
+      "free": "Libres: {list}.",
+      "why": "Por qué importa: un dominio casi igual es lo primero que compra un estafador para enviar facturas falsas o clonar la web. Si es vuestro, perfecto; si no, conviene saberlo y avisar al equipo."
+    },
+    "emails": {
+      "none": "No encontramos direcciones @{domain} en los resultados de búsqueda. Menos superficie para el phishing.",
+      "some": "{n} direcciones @{domain} aparecen en resultados públicos: {personal} parecen de personas y {generic} genéricas (info@, contacto@…).",
+      "masked": "Las mostramos tapadas y así se guardan: este informe no recoge datos de personas.",
+      "why": "Por qué importa: cada dirección con nombre y apellido a la vista es un objetivo. \"Hola Ana, te paso la factura\" funciona mucho mejor que \"Estimado cliente\".",
+      "unchecked": "No pudimos consultar el buscador esta vez."
+    },
+    "ai": {
+      "intro": "Preguntamos a un asistente de IA con búsqueda web qué es {domain}. Respuesta literal:",
+      "question": "¿Qué es {domain}? ¿Qué empresa hay detrás, dónde está y a qué se dedica? Responde en 5 líneas como mucho.",
+      "sources": "Fuentes",
+      "empty": "La IA no dio respuesta esta vez.",
+      "why": "Por qué importa: es lo que un atacante usa para escribir un correo creíble en dos minutos, y lo que un cliente lee antes de llamar. Si hay errores, se pueden corregir."
+    },
+    "recTitle": "Tres cosas que hacer, por orden de impacto",
+    "recs": {
+      "dmarc_missing": "Publicar un registro DMARC empezando por p=quarantine. Es una línea en el DNS y corta la suplantación del correo de la empresa.",
+      "dmarc_none": "Subir DMARC de p=none a p=quarantine: ahora mismo solo observa, no bloquea ningún correo falso.",
+      "dmarc_quarantine": "Pasar DMARC de p=quarantine a p=reject cuando comprobéis que todo el correo legítimo pasa.",
+      "https_missing": "Activar HTTPS en la web (certificado gratuito; casi todos los alojamientos lo dan en un clic) y redirigir http:// a https://.",
+      "unreachable": "Comprobar que la web responde en {domain} y no solo en www.: hoy no cargó desde fuera.",
+      "spf_missing": "Publicar un registro SPF que diga qué servidores pueden enviar correo en vuestro nombre, terminado en -all.",
+      "spf_soft": "Endurecer el SPF: cambiar ~all (o nada) por -all para que los correos falsos se rechacen en vez de pasar como dudosos.",
+      "lookalikes": "Revisar los dominios parecidos ya registrados: si no son vuestros, avisar al equipo y valorar registrar los más obvios (unos 10 € al año cada uno).",
+      "dkim_missing": "Activar la firma DKIM en el proveedor de correo: es la firma digital de cada mensaje y suele ser un interruptor en el panel.",
+      "hsts_missing": "Añadir la cabecera HSTS para que el navegador use siempre la versión segura de la web.",
+      "version_leak": "Ocultar la versión del servidor en las cabeceras (Server / X-Powered-By) y comprobar que está actualizado.",
+      "public_emails": "Sustituir en la web y en directorios los correos con nombre por buzones genéricos (info@, citas@) y avisar a esas personas de que son objetivo probable de phishing.",
+      "trackers": "Revisar los rastreadores de la web: quitar los que no se usan y que el aviso de cookies pida permiso antes de cargarlos.",
+      "csp_missing": "Añadir una política de contenido (CSP) a la web, aunque sea básica.",
+      "mfa": "Activar la verificación en dos pasos en todas las cuentas de correo de la empresa: frena casi todos los accesos con contraseña robada.",
+      "passwords": "Comprobar si las contraseñas del equipo aparecen en filtraciones conocidas y cambiar las que se repiten.",
+      "access_review": "Revisar cada trimestre quién tiene acceso al correo, a la web y al dominio, y dar de baja a quien ya no está en la empresa."
+    },
+    "providerHint": {
+      "google": "Google Workspace lo explica paso a paso en su ayuda: support.google.com/a/answer/2466563.",
+      "microsoft": "Microsoft 365 tiene la guía \"Configurar DMARC\" en learn.microsoft.com.",
+      "ovh": "En OVHcloud se hace desde la zona DNS del dominio; su ayuda tiene una guía de DMARC.",
+      "ionos": "En IONOS se hace desde la configuración DNS del dominio; su ayuda tiene una guía de DMARC.",
+      "other": "Quien os lleve el correo o la web puede hacerlo en unos minutos.",
+      "none": "Quien os lleve el dominio puede hacerlo en unos minutos."
+    },
+    "cta": {
+      "title": "Vigilamos esto cada mes para tu equipo",
+      "body": "Desde {price}/mes: informe y vigilancia para cada persona del equipo, cartas RGPD, guardián contra estafas y este control del dominio, con aviso cuando algo cambia.",
+      "button": "Ver Rastro Equipos"
+    },
+    "method": {
+      "title": "Cómo se ha hecho este informe",
+      "body": "Todo son comprobaciones públicas desde fuera: los registros DNS del dominio, la portada de la web, si existen dominios parecidos, una búsqueda web y una pregunta a un asistente de IA. Nada intrusivo, nada dentro de vuestros sistemas y ningún dato de personas: los correos salen tapados. La nota resta puntos por cada hueco; empieza en 100."
+    },
+    "copy": {
+      "button": "Copiar texto para LinkedIn",
+      "done": "Copiado",
+      "title": "Informe de exposición de {domain}: {score}/100",
+      "actions": "Tres cosas que haría hoy:",
+      "footer": "Informe completo:"
+    },
+    "request": {
+      "title": "Pide el informe de {domain}",
+      "body": "Todavía no hay informe para este dominio. Déjanos un correo de contacto y lo preparamos; es gratis.",
+      "email": "Correo de contacto",
+      "button": "Pedir el informe",
+      "sent": "Recibido. Te avisamos en cuanto esté listo.",
+      "legal": "Usaremos el correo solo para enviarte este informe.",
+      "notice": "Piden el informe de exposición del dominio {domain}. Genéralo en /equipos/informe y respóndeles con el enlace."
+    },
+    "generate": {
+      "title": "Informe de dominio",
+      "body": "Genera el informe de exposición de una empresa para enviárselo. Solo comprobaciones públicas; los correos salen tapados.",
+      "label": "Dominio de la empresa",
+      "placeholder": "clinicadental-ejemplo.es",
+      "button": "Generar informe",
+      "hint": "Tarda unos 20 segundos. Si ya hay uno de los últimos 7 días, se vuelve a generar. Máximo 10 al día.",
+      "recent": "Informes recientes",
+      "forbidden": "Esta herramienta es para administradores y titulares de Rastro Equipos.",
+      "errors": {
+        "invalid": "Ese dominio no vale. Escribe algo como empresa.es.",
+        "limit": "Has llegado al máximo de 10 informes hoy.",
+        "failed": "No pudimos generar el informe. Prueba de nuevo en un momento.",
+        "forbidden": "Solo para administradores y titulares de Rastro Equipos."
+      }
+    },
+    "teamCard": {
+      "title": "Informe de dominio",
+      "body": "Genera el informe de exposición de una empresa (correo, web, dominios parecidos) para enviárselo.",
+      "cta": "Abrir"
+    },
+    "formErrors": {
+      "email": "Escribe un correo válido.",
+      "domain": "Ese dominio no vale."
+    }
   }
 }

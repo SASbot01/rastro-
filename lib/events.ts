@@ -14,6 +14,7 @@ export const EVENTS = [
   "checkout_started", "pro_activated", "monitoring_on",
   "guardian_used", "simulator_used", "images_used", "mailbox_scanned",
   "ai_change_detected", "site_check_listed", "extension_page_viewed", "extension_download", "nurture_sent",
+  "domain_report_requested", "domain_report_generated", "domain_report_viewed",
 ] as const;
 export type EventName = (typeof EVENTS)[number];
 

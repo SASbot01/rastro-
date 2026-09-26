@@ -6,6 +6,7 @@ import { getLocale } from "@/lib/locale";
 import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { teamLinks, teamPrices } from "@/lib/plan";
+import { canGenerateDomainReport } from "@/lib/domain-report";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +40,7 @@ export default async function TeamsLanding() {
   const links = teamLinks(user?.email ?? session?.email, user?.id);
   const price = teamPrices();
   const features = messages.team.features as string[];
+  const canDomainReport = canGenerateDomainReport(user, session?.email);
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
@@ -53,6 +55,15 @@ export default async function TeamsLanding() {
             <Card name={tr("team.smallName")} p={price.small} per={tr("team.per", { n: price.smallSeats })} cta={tr("team.cta")} contact={tr("team.contact")} href={links.small} />
             <Card name={tr("team.largeName")} p={price.large} per={tr("team.per", { n: price.largeSeats })} cta={tr("team.cta")} contact={tr("team.contact")} href={links.large} />
           </div>
+        )}
+        {canDomainReport && (
+          <Link href="/equipos/informe" className="mt-6 card card-link flex items-center gap-4 p-5">
+            <span className="min-w-0 flex-1">
+              <span className="block text-[15px] font-semibold text-ink">{tr("domainReport.teamCard.title")}</span>
+              <span className="mt-1 block text-[13.5px] leading-relaxed text-muted">{tr("domainReport.teamCard.body")}</span>
+            </span>
+            <span className="shrink-0 text-[13.5px] font-semibold text-accent">{tr("domainReport.teamCard.cta")} →</span>
+          </Link>
         )}
         <ul className="mt-8 grid gap-3">
           {features.map((f) => (
