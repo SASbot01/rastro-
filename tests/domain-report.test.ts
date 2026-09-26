@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   detectCms, detectCookieBanner, detectTrackers, evaluateHeaders, extractEmails, generateLookalikes, isGenericLocal, linkedinSummary,
-  mailProviderFor, maskEmail, normalizeDomain, parseDmarc, parseSpf, recommendationsFor, registrableDomain, scoreDomain, summarizeEmails, thirdPartyHosts,
+  likelyOwned, mailProviderFor, maskEmail, normalizeDomain, parseDmarc, parseSpf, plainAnswer, recommendationsFor, registrableDomain, scoreDomain, summarizeEmails, thirdPartyHosts,
   type DomainScoreSignals,
 } from "../lib/domain-report-core.ts";
 import { TRACKER_DOMAINS } from "../extensions/guardian/lib/trackers.js";
@@ -46,6 +46,15 @@ test("los dominios parecidos son validos, distintos del original y mezclan termi
   assert.ok(list.some((l) => l.domain === "clinicadental.com" && l.kind === "tld"));
   assert.ok(list.some((l) => l.domain === "clinicadental-clientes.es" && l.kind === "suffix"));
   assert.ok(list.some((l) => l.kind === "typo"));
+});
+
+test("un dominio parecido es 'vuestro' si comparte NS, sus NS llevan el nombre o apunta a la misma IP", () => {
+  const own = { domain: "mapfre.es", ownNs: ["esdns1.mapfre.net"], ownA: ["195.53.217.36"] };
+  assert.equal(likelyOwned({ ...own, ns: ["esdns1.mapfre.com"], a: ["54.1.1.1"] }), true);
+  assert.equal(likelyOwned({ ...own, ns: ["esdns1.mapfre.net"], a: [] }), true);
+  assert.equal(likelyOwned({ ...own, ns: ["ns1.hostinger.com"], a: ["195.53.217.36"] }), true);
+  assert.equal(likelyOwned({ ...own, ns: ["ns1.hostinger.com"], a: ["1.2.3.4"] }), false);
+  assert.equal(plainAnswer("**MAPFRE** es una aseguradora.[1]  \n## Sede\n- Madrid"), "MAPFRE es una aseguradora.[1]\nSede\n· Madrid");
 });
 
 test("los correos se extraen solo del dominio, se clasifican y se tapan; nunca sale la direccion entera", () => {
@@ -107,7 +116,7 @@ test("las recomendaciones van por impacto y siempre son tres", () => {
   const r = recommendationsFor({ ...OK, dmarc: "missing", spf: "soft", lookalikesRegistered: 1 }, "google");
   assert.deepEqual(r.map((x) => x.key), ["dmarc_missing", "spf_soft", "lookalikes"]);
   assert.equal(r[0].provider, "google");
-  assert.deepEqual(recommendationsFor(OK, "other").map((x) => x.key), ["mfa", "passwords"]);
+  assert.deepEqual(recommendationsFor(OK, "other").map((x) => x.key), ["mfa", "passwords", "access_review"]);
   assert.deepEqual(recommendationsFor({ ...OK, dmarc: "quarantine" }, "other").map((x) => x.key), ["dmarc_quarantine", "mfa", "passwords"]);
 });
 

@@ -1956,7 +1956,8 @@
       "trackers": "Revisar los rastreadores de la web: quitar los que no se usan y que el aviso de cookies pida permiso antes de cargarlos.",
       "csp_missing": "Añadir una política de contenido (CSP) a la web, aunque sea básica.",
       "mfa": "Activar la verificación en dos pasos en todas las cuentas de correo de la empresa: frena casi todos los accesos con contraseña robada.",
-      "passwords": "Comprobar si las contraseñas del equipo aparecen en filtraciones conocidas y cambiar las que se repiten."
+      "passwords": "Comprobar si las contraseñas del equipo aparecen en filtraciones conocidas y cambiar las que se repiten.",
+      "access_review": "Revisar cada trimestre quién tiene acceso al correo, a la web y al dominio, y dar de baja a quien ya no está en la empresa."
     },
     "providerHint": {
       "google": "Google Workspace lo explica paso a paso en su ayuda: support.google.com/a/answer/2466563.",

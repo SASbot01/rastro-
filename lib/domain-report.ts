@@ -7,8 +7,8 @@ import { isPublicHttpUrl } from "@/lib/removal-stats";
 import type { UserRow } from "@/lib/users";
 import { TRACKER_DOMAINS } from "@/extensions/guardian/lib/trackers.js";
 import {
-  detectCms, detectCookieBanner, detectTrackers, evaluateHeaders, extractEmails, generateLookalikes, mailProviderFor, parseDmarc, parseSpf,
-  recommendationsFor, scoreDomain, signalsFrom, summarizeEmails, thirdPartyHosts,
+  detectCms, detectCookieBanner, detectTrackers, evaluateHeaders, extractEmails, generateLookalikes, likelyOwned, mailProviderFor, parseDmarc, parseSpf,
+  plainAnswer, recommendationsFor, scoreDomain, signalsFrom, summarizeEmails, thirdPartyHosts,
   type DomainAiAnswer, type DomainReport, type EmailChecks, type Lookalike, type PublicEmails, type Recommendation, type WebChecks,
 } from "@/lib/domain-report-core";
 
@@ -149,11 +149,13 @@ export async function checkWeb(domain: string): Promise<WebChecks> {
 
 export async function checkLookalikes(domain: string): Promise<Lookalike[]> {
   const candidates = generateLookalikes(domain);
-  const [own, ...others] = await Promise.all([nameservers(domain), ...candidates.map((c) => nameservers(c.domain))]);
-  const ownSet = new Set(own ?? []);
+  const a4 = (name: string) => resolver.resolve4(name).catch(() => [] as string[]);
+  const [ownNs, ownA, ...rest] = await Promise.all([nameservers(domain), a4(domain), ...candidates.flatMap((c) => [nameservers(c.domain), a4(c.domain)])]);
   return candidates.map((c, i) => {
-    const ns = others[i];
-    return { ...c, registered: ns !== null, likelyYours: ns !== null && ns.length > 0 && ns.some((h) => ownSet.has(h)) };
+    const ns = rest[i * 2] as string[] | null;
+    const a = rest[i * 2 + 1] as string[];
+    const registered = ns !== null;
+    return { ...c, registered, likelyYours: registered && likelyOwned({ domain, ownNs: ownNs ?? [], ownA, ns: ns ?? [], a }) };
   });
 }
 
@@ -173,7 +175,7 @@ export async function askAboutDomain(domain: string, locale: Locale): Promise<Do
   const question = t(getMessages(locale), "domainReport.ai.question", { domain });
   const a = await askPerplexity(question, locale);
   if (!a || !a.answer) return null;
-  return { question, answer: a.answer, sources: a.sources.slice(0, 6) };
+  return { question, answer: plainAnswer(a.answer), sources: a.sources.slice(0, 6) };
 }
 
 // ---------- Informe completo ----------
@@ -217,11 +219,14 @@ export async function buildDomainReport(domain: string, locale: Locale): Promise
 
 const MAIL_RECS = new Set<Recommendation["key"]>(["dmarc_missing", "dmarc_none", "dmarc_quarantine", "spf_missing", "spf_soft", "dkim_missing"]);
 
-/** Texto de cada recomendacion en el idioma dado; las de correo llevan detras la pista del proveedor. */
+/** Texto de cada recomendacion en el idioma dado; la primera de correo lleva detras la pista del proveedor. */
 export function recommendationTexts(report: DomainReport, tr: ReturnType<typeof translator>): string[] {
+  let hinted = false;
   return report.recommendations.map((r) => {
     const base = tr(`domainReport.recs.${r.key}`, { domain: report.domain, n: report.web.trackers.length });
-    return MAIL_RECS.has(r.key) ? `${base} ${tr(`domainReport.providerHint.${r.provider}`)}` : base;
+    if (!MAIL_RECS.has(r.key) || hinted) return base;
+    hinted = true;
+    return `${base} ${tr(`domainReport.providerHint.${r.provider}`)}`;
   });
 }
 

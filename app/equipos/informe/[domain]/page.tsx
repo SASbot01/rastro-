@@ -218,7 +218,7 @@ export default async function DomainReportPage({ params, searchParams }: PagePro
                 {r.ai.sources.length > 0 && (
                   <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[12.5px] text-faint">
                     <span>{tr("domainReport.ai.sources")}:</span>
-                    {r.ai.sources.map((s) => <a key={s.url} href={s.url} rel="noopener noreferrer nofollow" target="_blank" className="link-muted">{hostOf(s.url)}</a>)}
+                    {r.ai.sources.map((s, i) => <a key={`${i}-${s.url}`} href={s.url} rel="noopener noreferrer nofollow" target="_blank" className="link-muted">[{i + 1}] {hostOf(s.url)}</a>)}
                   </p>
                 )}
               </>

@@ -102,7 +102,7 @@ export interface DomainReport {
 export interface Recommendation { key: RecommendationKey; provider: MailProvider }
 export type RecommendationKey =
   | "dmarc_missing" | "dmarc_none" | "dmarc_quarantine" | "https_missing" | "unreachable" | "spf_missing" | "spf_soft"
-  | "lookalikes" | "dkim_missing" | "hsts_missing" | "version_leak" | "public_emails" | "trackers" | "csp_missing" | "mfa" | "passwords";
+  | "lookalikes" | "dkim_missing" | "hsts_missing" | "version_leak" | "public_emails" | "trackers" | "csp_missing" | "mfa" | "passwords" | "access_review";
 
 // ---------- Dominio ----------
 
@@ -203,6 +203,33 @@ export function generateLookalikes(domain: string): Array<{ domain: string; kind
     if (name.includes("o")) push(`${name.replace("o", "0")}.${tld}`, "typo");
   }
   return out.slice(0, 14);
+}
+
+/**
+ * ¿El dominio parecido es de la propia empresa? Si: comparte servidores de
+ * nombres, sus servidores de nombres llevan el nombre de la empresa
+ * (esdns1.mapfre.com para mapfre.es) o apunta a las mismas IP.
+ */
+export function likelyOwned(opts: { domain: string; ownNs: string[]; ownA: string[]; ns: string[]; a: string[] }): boolean {
+  const name = opts.domain.slice(0, opts.domain.indexOf("."));
+  const ownNs = new Set(opts.ownNs.map((h) => h.toLowerCase()));
+  const ownA = new Set(opts.ownA);
+  if (opts.ns.some((h) => ownNs.has(h.toLowerCase()))) return true;
+  if (name.length >= 4 && opts.ns.some((h) => h.toLowerCase().split(".").includes(name))) return true;
+  if (ownNs.size > 0 && opts.ns.some((h) => registrableDomain(h) === registrableDomain(opts.domain))) return true;
+  return opts.a.some((ip) => ownA.has(ip));
+}
+
+/** Quita el formato Markdown que devuelve la IA (negritas, titulos) dejando las citas [n]. */
+export function plainAnswer(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^\s*[-*]\s+/gm, "· ")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 // ---------- Correos publicos: extraer, clasificar y tapar ----------
@@ -405,7 +432,7 @@ export function recommendationsFor(s: DomainScoreSignals, provider: MailProvider
   if (s.trackers >= 5) keys.push("trackers");
   if (s.https && !s.csp) keys.push("csp_missing");
   if (s.dmarc === "quarantine") keys.push("dmarc_quarantine");
-  keys.push("mfa", "passwords");
+  keys.push("mfa", "passwords", "access_review");
   return keys.slice(0, 3).map((key) => ({ key, provider }));
 }
 

@@ -1956,7 +1956,8 @@
       "trackers": "Review the website's trackers: remove the ones you do not use and make the cookie notice ask permission before loading them.",
       "csp_missing": "Add a content security policy (CSP) to the website, even a basic one.",
       "mfa": "Turn on two-step verification for every company email account: it stops almost every login with a stolen password.",
-      "passwords": "Check whether the team's passwords appear in known breaches and change the ones that are reused."
+      "passwords": "Check whether the team's passwords appear in known breaches and change the ones that are reused.",
+      "access_review": "Review every quarter who has access to email, the website and the domain, and remove anyone who has left the company."
     },
     "providerHint": {
       "google": "Google Workspace explains it step by step in its help centre: support.google.com/a/answer/2466563.",
