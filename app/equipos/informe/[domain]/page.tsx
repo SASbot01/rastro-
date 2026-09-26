@@ -144,7 +144,7 @@ export default async function DomainReportPage({ params, searchParams }: PagePro
     webLines.push(w.xFrame ? { tone: "ok", text: tr("domainReport.web.frame.ok") } : { tone: "info", text: tr("domainReport.web.frame.missing") });
     webLines.push(w.versionLeak ? { tone: "bad", text: tr("domainReport.web.leak", { server: [w.serverHeader, w.poweredBy].filter(Boolean).join(", ") }) } : { tone: "ok", text: tr("domainReport.web.noLeak") });
     if (w.cms) webLines.push(w.cmsVersion ? { tone: "warn", text: tr("domainReport.web.cmsVersion", { cms: w.cms, version: w.cmsVersion }) } : { tone: "info", text: tr("domainReport.web.cms", { cms: w.cms }) });
-    webLines.push(w.trackers.length ? { tone: w.trackers.length >= 5 ? "warn" : "info", text: tr("domainReport.web.trackers.some", { n: w.trackers.length, list: w.trackers.map((x) => x.company).join(", ") }) } : { tone: "ok", text: tr("domainReport.web.trackers.none") });
+    webLines.push(w.trackers.length ? { tone: w.trackers.length >= 5 ? "warn" : "info", text: tr(w.trackers.length === 1 ? "domainReport.web.trackers.one" : "domainReport.web.trackers.some", { n: w.trackers.length, list: w.trackers.map((x) => x.company).join(", ") }) } : { tone: "ok", text: tr("domainReport.web.trackers.none") });
     if (w.cookieBanner) webLines.push({ tone: "info", text: w.cookieBanner === "generic" ? tr("domainReport.web.banner.generic") : tr("domainReport.web.banner.found", { name: w.cookieBanner }) });
     else webLines.push(w.trackers.length ? { tone: "warn", text: tr("domainReport.web.banner.missing") } : { tone: "info", text: tr("domainReport.web.banner.missingNoTrackers") });
   }

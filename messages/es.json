@@ -1906,6 +1906,7 @@
       "cms": "Hecha con {cms}.",
       "cmsVersion": "Hecha con {cms} {version}: la versión es visible. Conviene ocultarla y tenerla al día.",
       "trackers": {
+        "one": "1 empresa recibe datos de cada visita a la portada: {list}.",
         "none": "No detectamos rastreadores de terceros en la portada.",
         "some": "{n} empresas reciben datos de cada visita a la portada: {list}."
       },

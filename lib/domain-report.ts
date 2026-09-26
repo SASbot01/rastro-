@@ -219,10 +219,14 @@ export async function buildDomainReport(domain: string, locale: Locale): Promise
 
 const MAIL_RECS = new Set<Recommendation["key"]>(["dmarc_missing", "dmarc_none", "dmarc_quarantine", "spf_missing", "spf_soft", "dkim_missing"]);
 
-/** Texto de cada recomendacion en el idioma dado; la primera de correo lleva detras la pista del proveedor. */
+/**
+ * Texto de cada recomendacion en el idioma dado; la primera de correo lleva detras la pista del proveedor.
+ * Se recalculan a partir de las senales guardadas (es determinista) para que las mejoras de texto y de reglas
+ * lleguen tambien a los informes en cache.
+ */
 export function recommendationTexts(report: DomainReport, tr: ReturnType<typeof translator>): string[] {
   let hinted = false;
-  return report.recommendations.map((r) => {
+  return recommendationsFor(signalsFrom(report), report.email.mxProvider).map((r) => {
     const base = tr(`domainReport.recs.${r.key}`, { domain: report.domain, n: report.web.trackers.length });
     if (!MAIL_RECS.has(r.key) || hinted) return base;
     hinted = true;

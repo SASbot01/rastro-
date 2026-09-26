@@ -1906,6 +1906,7 @@
       "cms": "Built with {cms}.",
       "cmsVersion": "Built with {cms} {version}: the version is visible. Hide it and keep it up to date.",
       "trackers": {
+        "one": "1 company receives data from every visit to the homepage: {list}.",
         "none": "We detected no third-party trackers on the homepage.",
         "some": "{n} companies receive data from every visit to the homepage: {list}."
       },
