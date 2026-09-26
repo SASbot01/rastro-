@@ -13,6 +13,8 @@ export const requestSchema = z.object({
   occupation: z.string().trim().max(120).optional().or(z.literal("")),
   consent: z.literal(true, { error: "formErrors.consent" }),
   locale: z.enum(LOCALES).default("es"),
+  /** Origen del trafico (?ref=ig). Una palabra corta; nada personal. */
+  ref: z.string().trim().regex(/^[a-z0-9_-]{1,24}$/i).optional().or(z.literal("")),
 });
 
 export type RequestInput = z.infer<typeof requestSchema>;

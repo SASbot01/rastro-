@@ -46,6 +46,7 @@ async function handleRequest(request: Request) {
   }
 
   const { firstName, lastName, email, city, occupation, locale } = parsed.data;
+  const ref = parsed.data.ref ? parsed.data.ref.toLowerCase() : null;
   const fullName = `${firstName} ${lastName}`.replace(/\s+/g, " ").trim();
 
   const h = await headers();
@@ -69,6 +70,7 @@ async function handleRequest(request: Request) {
       city: city || null,
       occupation: occupation || null,
       locale,
+      ref,
       consent_at: now.toISOString(),
       status: "pending",
       ip_hash: hashIp(ip),
@@ -100,6 +102,6 @@ async function handleRequest(request: Request) {
     return NextResponse.json({ ok: false, error: "formErrors.generic" }, { status: 502 });
   }
 
-  void track("form_submitted", { subject: inserted.id, locale, props: { has_occupation: Boolean(occupation) } });
+  void track("form_submitted", { subject: inserted.id, locale, props: { has_occupation: Boolean(occupation), ref: ref ?? "directo" } });
   return NextResponse.json({ ok: true });
 }

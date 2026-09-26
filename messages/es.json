@@ -944,8 +944,8 @@
   },
   "pro": {
     "badge": "Pro",
-    "title": "Rastro Pro",
-    "subtitle": "El informe es y seguirá siendo gratis. Pro es para quien quiere que Rastro siga mirando por ti cada mes y te ayude a retirar lo que sobra.",
+    "title": "Que Rastro pida la retirada por ti. Y lo compruebe.",
+    "subtitle": "El informe es y seguirá siendo gratis. Pro es para que no tengas que perseguir a nadie: enviamos las cartas, reclamamos, comprobamos cada semana y te enseñamos cuántos datos han desaparecido.",
     "monthly": "Mensual",
     "monthlyPrice": "19 €",
     "monthlyPer": "al mes",
@@ -956,10 +956,11 @@
     "cta": "Elegir",
     "ctaLogin": "Entra para suscribirte",
     "features": [
-      "Vigilancia mensual: te avisamos solo si algo cambia",
-      "Cartas de supresión RGPD listas para enviar, con el contacto del sitio",
-      "Calendario de plazos legales y aviso al vencer",
-      "Escrito de reclamación ante la AEPD y guía paso a paso",
+      "Cartas de supresión enviadas por Rastro, con reclamación al día 20 y pruebas guardadas",
+      "Comprobación semanal de cada retirada y aviso cuando el dato desaparece",
+      "Vigilancia mensual de filtraciones, sitios de datos y lo que dice la IA",
+      "Memoria de lo que cada IA dice de ti, con aviso si cambia",
+      "Escrito de reclamación ante la AEPD listo con tus pruebas",
       "Cancela cuando quieras desde tu cuenta"
     ],
     "note": "Pago seguro con Stripe. No guardamos tu tarjeta. Sin permanencia.",
@@ -975,7 +976,91 @@
     "family": "Familiar",
     "familyPer": "al mes · hasta {n} personas",
     "familyYearlyPer": "al año · hasta {n} personas",
-    "familyHint": "Cada persona con su cuenta, su informe y su vigilancia."
+    "familyHint": "Cada persona con su cuenta, su informe y su vigilancia.",
+    "personalFound": "Apareces en {n} sitios que publican o venden tus datos. Con Pro pedimos la retirada de los {n} hoy mismo.",
+    "personalClean": "Hoy no apareces en sitios de venta de datos. Pro vigila para que siga así y te avisa si algo cambia.",
+    "launchBadge": "Lanzamiento · quedan {n} de {total}",
+    "launchName": "Anual de lanzamiento",
+    "launchPer": "el primer año · después {yearly}",
+    "launchSave": "En vez de {yearly}",
+    "howTitle": "Cómo funciona",
+    "how": [
+      {
+        "t": "Encontramos",
+        "d": "Buscamos tu nombre en los sitios que venden datos, tus filtraciones y lo que dice cada IA de ti. Cada mes, sin que hagas nada."
+      },
+      {
+        "t": "Pedimos",
+        "d": "Enviamos la carta legal por ti desde cartas@rastropro.com, con copia para ti. Si no contestan en 20 días, reclamamos. Si se niegan, preparamos la queja a la AEPD con todas las pruebas."
+      },
+      {
+        "t": "Comprobamos",
+        "d": "Volvemos a mirar cada página una vez por semana. Cuando tu nombre deja de aparecer, te avisamos y queda como prueba con fecha. Si vuelve, lo reabrimos."
+      }
+    ],
+    "measureTitle": "Lo que mides, no lo que te prometen",
+    "measureBody": "En tu panel ves un solo número: datos retirados y comprobados sobre datos encontrados. Nadie puede prometer borrar; nosotros lo medimos.",
+    "compareTitle": "Gratis o Pro",
+    "compare": [
+      {
+        "f": "Informe de exposición con puntuación",
+        "free": "Sí",
+        "pro": "Sí, cada mes"
+      },
+      {
+        "f": "Sitios de venta de datos comprobados",
+        "free": "Se ven",
+        "pro": "Se pide la retirada por ti"
+      },
+      {
+        "f": "Cartas RGPD",
+        "free": "Plantilla para enviarla tú",
+        "pro": "Las envía Rastro, reclama y guarda las pruebas"
+      },
+      {
+        "f": "Comprobación de que el dato ya no está",
+        "free": "Manual",
+        "pro": "Cada semana, con aviso"
+      },
+      {
+        "f": "Lo que dice cada IA de ti",
+        "free": "Hoy",
+        "pro": "Memoria y aviso si cambia"
+      },
+      {
+        "f": "Filtraciones nuevas de tu correo",
+        "free": "Al pedir informe",
+        "pro": "Aviso diario"
+      },
+      {
+        "f": "Guardián de estafas",
+        "free": "5 al día",
+        "pro": "Sin límite y cruzado con tu informe"
+      },
+      {
+        "f": "Reclamación a la AEPD",
+        "free": "Guía",
+        "pro": "Escrito listo con tus pruebas"
+      }
+    ],
+    "faqTitle": "Preguntas rápidas",
+    "faq": [
+      {
+        "q": "¿Borráis mis datos de internet?",
+        "a": "No podemos prometerlo, y quien lo prometa te engaña. Lo que hacemos es ejercer tu derecho por ti, insistir y comprobar el resultado. La mayoría de sitios españoles retiran en menos de un mes."
+      },
+      {
+        "q": "¿Y si me doy de baja?",
+        "a": "Se cancela desde tu cuenta en un clic y sigues con Pro hasta el final del periodo pagado. Tus cartas y pruebas se quedan en tu cuenta."
+      },
+      {
+        "q": "¿Qué datos usáis para las cartas?",
+        "a": "Tu nombre, tu correo y la URL exacta donde apareces. Nada más. Las cartas salen de nuestro correo y tú recibes copia de todo."
+      }
+    ],
+    "colFree": "Gratis",
+    "colPro": "Pro",
+    "personalFoundOne": "Apareces en un sitio que publica o vende tus datos. Con Pro pedimos la retirada hoy mismo."
   },
   "mailbox": {
     "title": "Escáner de buzón",
@@ -1824,5 +1909,32 @@
     "dashChanged": "{n} cambios desde la última vez",
     "dashSame": "Sin cambios desde la última vez",
     "dashOpen": "Ver qué dice cada IA"
+  },
+  "nurture": {
+    "greeting": "Hola, {name}:",
+    "ctaReport": "Abrir mi informe",
+    "ctaTools": "Ver mis herramientas",
+    "ctaPro": "Ver Rastro Pro",
+    "footer": "Recibes este correo porque pediste tu informe en Rastro. Son tres correos en total. Si no quieres más: {stop}",
+    "d1": {
+      "subject": "Tu informe: por dónde empezar hoy",
+      "p1": "Ayer viste lo que se sabe de ti. Estas son las tres cosas que más cambian tu puntuación, en orden:",
+      "p2": "La primera se hace en cinco minutos. Cuando la marques como hecha en la guía de tu informe, tu puntuación se actualiza."
+    },
+    "d3": {
+      "subject": "Cómo retiramos tus datos (y cómo lo comprobamos)",
+      "p1Found": "Apareces en {n} sitios que publican o venden datos personales. Cada uno tiene la obligación legal de retirarlos si se lo pides.",
+      "p1None": "En tu informe no encontramos sitios que vendan tus datos. Buena noticia, pero cambian cada mes.",
+      "p2": "Con Pro, Rastro envía la carta por ti desde cartas@rastropro.com, la reclama al día 20 si no contestan y vuelve a mirar la página cada semana. Cuando tu nombre deja de aparecer, te avisamos y queda como prueba con fecha.",
+      "p3": "No prometemos borrar. Prometemos medirlo: en tu panel verás cuántos datos se han retirado de cuántos encontramos."
+    },
+    "d7": {
+      "subject": "Una semana después: ¿sigue todo igual?",
+      "p1Found": "Hace una semana apareciste en {n} sitios de venta de datos. Si no has pedido la retirada, siguen ahí.",
+      "p1None": "Hace una semana tu puntuación estaba bien. Lo que cambia con el tiempo son las filtraciones nuevas y lo que la IA aprende de ti.",
+      "p2": "Pro vigila cada mes, envía las cartas por ti y guarda lo que cada IA dice de ti para avisarte si cambia.",
+      "launch": "Precio de lanzamiento: {price} el primer año en vez de {yearly}, para las primeras 100 personas. Se cancela cuando quieras.",
+      "price": "Cuesta {monthly} al mes o {yearly} al año, y se cancela cuando quieras."
+    }
   }
 }

@@ -58,6 +58,7 @@ interface RequestRow {
   finished_at: string | null;
   origin: "user" | "monitor";
   user_id: string | null;
+  ref: string | null;
 }
 
 interface CachedReport {
@@ -97,7 +98,7 @@ async function findCached(row: RequestRow): Promise<{ request: RequestRow; repor
   const since = new Date(Date.now() - CACHE_DAYS * 86_400_000).toISOString();
   const { data: prev } = await supabase
     .from("requests")
-    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin, user_id")
+    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin, user_id, ref")
     .ilike("email", ilikeExact(normalizeEmail(row.email))) // escapado: "_" es comodin en ILIKE (otro correo = otra persona)
     .eq("status", "done")
     .neq("id", row.id)
@@ -141,7 +142,7 @@ export async function runReportJob(requestId: string): Promise<void> {
 
   const { data: row, error } = await supabase
     .from("requests")
-    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin, user_id")
+    .select("id, email, full_name, city, occupation, locale, status, finished_at, origin, user_id, ref")
     .eq("id", requestId)
     .maybeSingle<RequestRow>();
 
@@ -284,7 +285,7 @@ export async function runReportJob(requestId: string): Promise<void> {
     if (row.user_id) {
       await saveSnapshot({ userId: row.user_id, requestId: row.id, source: "report", person: { full_name: row.full_name, city: row.city, occupation: row.occupation }, locale, answers: answersFromRaw(perplexity, assistants.answers) }).catch((e) => console.warn("[job] foto de IA fallo:", String(e).slice(0, 160)));
     }
-    void track("report_ready", { subject: row.id, locale, props: { origin: row.origin, generator: content.generator, seconds: Math.round((Date.now() - startedAt) / 1000), score } });
+    void track("report_ready", { subject: row.id, locale, props: { origin: row.origin, generator: content.generator, seconds: Math.round((Date.now() - startedAt) / 1000), score, ref: row.ref ?? "directo" } });
 
     const tokens = ai.ok ? `${ai.usage.input_tokens}in/${ai.usage.output_tokens}out` : "sin IA";
     console.log(`[job] informe ${row.id} listo en ${Date.now() - startedAt} ms, score ${score}, ${content.generator} (${tokens})`);

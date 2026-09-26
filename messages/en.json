@@ -944,8 +944,8 @@
   },
   "pro": {
     "badge": "Pro",
-    "title": "Rastro Pro",
-    "subtitle": "The report is and will stay free. Pro is for people who want Rastro to keep watching for them every month and help remove what shouldn't be there.",
+    "title": "Let Rastro request the removal for you. And verify it.",
+    "subtitle": "The report is and will stay free. Pro means you don't chase anyone: we send the letters, follow up, check every week and show you how much data has disappeared.",
     "monthly": "Monthly",
     "monthlyPrice": "€19",
     "monthlyPer": "per month",
@@ -956,10 +956,11 @@
     "cta": "Choose",
     "ctaLogin": "Sign in to subscribe",
     "features": [
-      "Monthly monitoring: we alert you only if something changes",
-      "Ready-to-send GDPR erasure letters, with the site's contact",
-      "Legal deadline calendar and alert when it expires",
-      "Complaint text for the data protection authority and step-by-step guide",
+      "Erasure letters sent by Rastro, with a day-20 follow-up and saved evidence",
+      "Weekly check of every removal and an alert when the data disappears",
+      "Monthly watch over breaches, data sites and what AI says",
+      "Memory of what each AI says about you, with alerts on change",
+      "Complaint to the AEPD ready with your evidence",
       "Cancel anytime from your account"
     ],
     "note": "Secure payment with Stripe. We don't store your card. No lock-in.",
@@ -975,7 +976,91 @@
     "family": "Family",
     "familyPer": "per month · up to {n} people",
     "familyYearlyPer": "per year · up to {n} people",
-    "familyHint": "Each person with their own account, report and monitoring."
+    "familyHint": "Each person with their own account, report and monitoring.",
+    "personalFound": "You appear on {n} sites that publish or sell your data. With Pro we request removal from all {n} today.",
+    "personalClean": "Today you don't appear on data-selling sites. Pro keeps watch so it stays that way and alerts you if anything changes.",
+    "launchBadge": "Launch · {n} of {total} left",
+    "launchName": "Launch yearly",
+    "launchPer": "first year · then {yearly}",
+    "launchSave": "Instead of {yearly}",
+    "howTitle": "How it works",
+    "how": [
+      {
+        "t": "We find",
+        "d": "We search your name on data-selling sites, your breaches and what each AI says about you. Every month, without you doing anything."
+      },
+      {
+        "t": "We request",
+        "d": "We send the legal letter for you from cartas@rastropro.com, with a copy to you. If they don't answer in 20 days, we follow up. If they refuse, we prepare the complaint to the AEPD with all the evidence."
+      },
+      {
+        "t": "We verify",
+        "d": "We check each page again once a week. When your name stops appearing, we tell you and it's kept as dated evidence. If it comes back, we reopen it."
+      }
+    ],
+    "measureTitle": "What you measure, not what you're promised",
+    "measureBody": "Your dashboard shows one number: data removed and verified out of data found. Nobody can promise deletion; we measure it.",
+    "compareTitle": "Free or Pro",
+    "compare": [
+      {
+        "f": "Exposure report with score",
+        "free": "Yes",
+        "pro": "Yes, every month"
+      },
+      {
+        "f": "Data-selling sites checked",
+        "free": "Shown",
+        "pro": "Removal requested for you"
+      },
+      {
+        "f": "GDPR letters",
+        "free": "Template for you to send",
+        "pro": "Rastro sends, follows up and keeps evidence"
+      },
+      {
+        "f": "Verification that the data is gone",
+        "free": "Manual",
+        "pro": "Weekly, with alert"
+      },
+      {
+        "f": "What each AI says about you",
+        "free": "Today",
+        "pro": "Memory and alert on change"
+      },
+      {
+        "f": "New breaches of your email",
+        "free": "When you request a report",
+        "pro": "Daily alert"
+      },
+      {
+        "f": "Scam guardian",
+        "free": "5 a day",
+        "pro": "Unlimited and cross-checked with your report"
+      },
+      {
+        "f": "Complaint to the AEPD",
+        "free": "Guide",
+        "pro": "Ready document with your evidence"
+      }
+    ],
+    "faqTitle": "Quick questions",
+    "faq": [
+      {
+        "q": "Do you delete my data from the internet?",
+        "a": "We can't promise that, and anyone who does is misleading you. What we do is exercise your right for you, insist and verify the result. Most Spanish sites remove within a month."
+      },
+      {
+        "q": "What if I cancel?",
+        "a": "Cancel from your account in one click and keep Pro until the end of the paid period. Your letters and evidence stay in your account."
+      },
+      {
+        "q": "What data do you use for the letters?",
+        "a": "Your name, your email and the exact URL where you appear. Nothing else. Letters go out from our email and you get a copy of everything."
+      }
+    ],
+    "colFree": "Free",
+    "colPro": "Pro",
+    "personalFoundOne": "You appear on one site that publishes or sells your data. With Pro we request removal today."
   },
   "mailbox": {
     "title": "Inbox scanner",
@@ -1824,5 +1909,32 @@
     "dashChanged": "{n} changes since last time",
     "dashSame": "No changes since last time",
     "dashOpen": "See what each AI says"
+  },
+  "nurture": {
+    "greeting": "Hi {name},",
+    "ctaReport": "Open my report",
+    "ctaTools": "See my tools",
+    "ctaPro": "See Rastro Pro",
+    "footer": "You get this email because you requested your report on Rastro. It's three emails in total. To stop them: {stop}",
+    "d1": {
+      "subject": "Your report: where to start today",
+      "p1": "Yesterday you saw what is known about you. These are the three things that change your score the most, in order:",
+      "p2": "The first takes five minutes. When you mark it done in your report's guide, your score updates."
+    },
+    "d3": {
+      "subject": "How we remove your data (and how we verify it)",
+      "p1Found": "You appear on {n} sites that publish or sell personal data. Each one is legally obliged to remove it if you ask.",
+      "p1None": "Your report found no sites selling your data. Good news, but they change every month.",
+      "p2": "With Pro, Rastro sends the letter for you from cartas@rastropro.com, follows up on day 20 if they don't answer and checks the page again every week. When your name stops appearing, we tell you and it is kept as dated evidence.",
+      "p3": "We don't promise to delete. We promise to measure it: your dashboard shows how much data was removed out of what we found."
+    },
+    "d7": {
+      "subject": "One week later: is everything the same?",
+      "p1Found": "A week ago you appeared on {n} data-selling sites. If you haven't requested removal, they're still there.",
+      "p1None": "A week ago your score was fine. What changes over time are new breaches and what AI learns about you.",
+      "p2": "Pro watches every month, sends the letters for you and keeps what each AI says about you to alert you if it changes.",
+      "launch": "Launch price: {price} for the first year instead of {yearly}, for the first 100 people. Cancel anytime.",
+      "price": "It costs {monthly} a month or {yearly} a year, cancel anytime."
+    }
   }
 }

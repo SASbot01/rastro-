@@ -132,3 +132,14 @@ Pendiente de Alejandro:
 - [ ] Fuente de filtraciones de malware (LeakCheck o plan superior de HIBP): contratar y poner la clave.
 - [ ] Conseguir 20 personas reales y mirar el embudo en `/admin/metricas` antes de construir más.
 - [ ] Subir la extensión 0.3.0 a la Chrome Web Store (guía en `docs/marketing/store/`).
+
+
+## Vender ya (26-09-2026)
+
+Hecho por Claude: página Pro alrededor de "datos retirados", origen del tráfico (`?ref=`) en el embudo y en `/admin/metricas`, secuencia de 3 correos tras el informe (día 1, 3 y 7; cron `nurture` a las 10:00; baja firmada en cada correo). Informe de exposición por dominio en curso (agente).
+
+Pendiente de Alejandro para el precio de lanzamiento (59 € el primer año, primeras 100 personas):
+- [ ] En Stripe: Productos → Rastro Pro → añadir precio **59 € / año** → crear **Payment Link** (con "permitir códigos" desactivado; el precio ya es la oferta).
+- [ ] Copiar el `price_…` del precio nuevo y añadirlo a `STRIPE_PRICE_IDS` en el `.env.local` del servidor (separado por comas).
+- [ ] Añadir `NEXT_PUBLIC_PRICE_LAUNCH_YEARLY=59 €` y `STRIPE_LINK_LAUNCH_YEARLY=https://buy.stripe.com/…` y reiniciar. La tarjeta de lanzamiento aparece sola y desaparece al llegar a 100 activaciones.
+- [ ] Hacer un pago de prueba real (y reembolsarlo desde Stripe) para verificar el webhook de punta a punta.
