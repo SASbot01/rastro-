@@ -3,9 +3,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import {
-  CHEAT_TOOLS, FAMILIES, FINDING_STATES, HYPOTHESIS_STATES, SEVERITIES,
-  cheatSheet, isLegacy, newProject, progressOf, toMarkdown,
-  type CheatTool, type Family, type FindingState, type HypothesisState, type LabProject, type LabWorkspace as Workspace, type ReportLabels, type Severity,
+  CHEAT_TOOLS, CVE_STATES, FAMILIES, FINDING_STATES, HYPOTHESIS_STATES, SEVERITIES,
+  cheatSheet, cveRef, isLegacy, newProject, normalizeCveId, progressOf, toMarkdown,
+  type CheatTool, type CveState, type Family, type FindingState, type HypothesisState, type LabCve, type LabProject, type LabWorkspace as Workspace, type ReportLabels, type Severity,
 } from "@/lib/lab-core";
 
 /**
@@ -103,11 +103,12 @@ export function LabWorkspace({ initial, initialUpdatedAt, messages, locale }: { 
   const labels: ReportLabels = {
     target: tr("lab.report.target"), host: tr("lab.report.host"), scope: tr("lab.report.scope"), started: tr("lab.report.started"),
     findings: tr("lab.find.title"), none: tr("lab.report.none"), severity: tr("lab.find.severity"), family: tr("lab.find.family"), where: tr("lab.find.where"), status: tr("lab.find.status"),
-    hypotheses: tr("lab.hyp.title"), steps: tr("lab.steps.title"), tools: tr("lab.tools.title"),
+    hypotheses: tr("lab.hyp.title"), steps: tr("lab.steps.title"), tools: tr("lab.tools.title"), cves: tr("lab.cve.title"), cveSoftware: tr("lab.cve.software"),
     families: Object.fromEntries(FAMILIES.map((f) => [f, tr(`lab.find.families.${f}`)])) as Record<Family, string>,
     severities: Object.fromEntries(SEVERITIES.map((s) => [s, tr(`lab.find.severities.${s}`)])) as Record<Severity, string>,
     states: Object.fromEntries(FINDING_STATES.map((s) => [s, tr(`lab.find.states.${s}`)])) as Record<FindingState, string>,
     hypothesisStates: Object.fromEntries(HYPOTHESIS_STATES.map((s) => [s, tr(`lab.hyp.states.${s}`)])) as Record<HypothesisState, string>,
+    cveStates: Object.fromEntries(CVE_STATES.map((s) => [s, tr(`lab.cve.states.${s}`)])) as Record<CveState, string>,
   };
 
   async function importFile(file: File) {
@@ -263,6 +264,38 @@ export function LabWorkspace({ initial, initialUpdatedAt, messages, locale }: { 
         </section>
       </div>
 
+      {/* CVE / vulnerabilidades conocidas */}
+      <section className={CARD}>
+        <h2 className="h3 text-ink">{tr("lab.cve.title")}</h2>
+        <p className="note mt-1">{tr("lab.cve.hint")}</p>
+        <ul className="mt-4 grid gap-2">
+          {p.cves.length === 0 && <li className="text-[13.5px] text-muted">{tr("lab.cve.empty")}</li>}
+          {p.cves.map((c, i) => {
+            const ref = cveRef(c);
+            return (
+              <li key={i} className="rounded-[14px] border border-line bg-surface-2 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="font-mono text-[14.5px] font-semibold text-ink">{c.id || "—"}{c.software && <span className="ml-2 font-sans text-muted">{c.software}{c.version ? ` ${c.version}` : ""}</span>}</p>
+                  </div>
+                  <span className={"badge shrink-0 " + SEVERITY_TONE[c.severity]}>{tr(`lab.find.severities.${c.severity}`)}</span>
+                </div>
+                {c.notes && <p className="mt-2 whitespace-pre-wrap break-words text-[14px] leading-relaxed text-muted">{c.notes}</p>}
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <select className="field !w-auto !py-1.5 text-[13px]" value={c.state} aria-label={tr("lab.find.status")} onChange={(e) => project((pr) => { pr.cves[i].state = e.target.value as CveState; })}>
+                    {CVE_STATES.map((st) => <option key={st} value={st}>{tr(`lab.cve.states.${st}`)}</option>)}
+                  </select>
+                  {ref && <a href={ref} target="_blank" rel="noreferrer nofollow" className="link text-[13px]">{tr("lab.cve.advisory")} ↗</a>}
+                  {c.id && <button type="button" className="btn btn-ghost btn-sm !min-h-[34px] !px-2.5" onClick={() => copy(c.id, `cve-${i}`)}>{copied === `cve-${i}` ? "✓" : tr("lab.cve.copyId")}</button>}
+                  <button type="button" className="btn btn-ghost btn-sm !min-h-[34px] !px-2.5" onClick={() => project((pr) => { pr.cves.splice(i, 1); })}>{tr("lab.cve.remove")}</button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <CveForm tr={tr} onAdd={(c) => project((pr) => { pr.cves.unshift(c); })} />
+      </section>
+
       {/* Hallazgos */}
       <section className={CARD}>
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -378,6 +411,36 @@ function FindingForm({ tr, onAdd }: { tr: (key: string, vars?: Record<string, st
       </div>
       <div><label className={LABEL} htmlFor="lab-f-notes">{tr("lab.find.notes")}</label><textarea id="lab-f-notes" className="field min-h-[96px]" value={notes} onChange={(e) => setNotes(e.target.value)} /></div>
       <button type="button" className="btn btn-primary self-start" onClick={add}>{tr("lab.find.save")}</button>
+    </div>
+  );
+}
+
+function CveForm({ tr, onAdd }: { tr: (key: string, vars?: Record<string, string | number>) => string; onAdd: (c: LabCve) => void }) {
+  const [id, setId] = useState("");
+  const [software, setSoftware] = useState("");
+  const [version, setVersion] = useState("");
+  const [severity, setSeverity] = useState<Severity>("high");
+  const [notes, setNotes] = useState("");
+  const [ref, setRef] = useState("");
+  const add = () => {
+    const nid = normalizeCveId(id);
+    if (!nid && !software.trim()) return;
+    onAdd({ id: nid, software: software.trim(), version: version.trim(), severity, state: "investigating", notes, ref: ref.trim() });
+    setId(""); setSoftware(""); setVersion(""); setNotes(""); setRef("");
+  };
+  return (
+    <div className="mt-4 grid gap-3 border-t border-line pt-4">
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div><label className={LABEL} htmlFor="lab-cve-id">{tr("lab.cve.id")}</label><input id="lab-cve-id" className="field font-mono text-[13px]" value={id} placeholder={tr("lab.cve.idPlaceholder")} autoCapitalize="characters" spellCheck={false} onChange={(e) => setId(e.target.value)} /></div>
+        <div><label className={LABEL} htmlFor="lab-cve-sw">{tr("lab.cve.software")}</label><input id="lab-cve-sw" className="field" value={software} placeholder={tr("lab.cve.softwarePlaceholder")} onChange={(e) => setSoftware(e.target.value)} /></div>
+        <div><label className={LABEL} htmlFor="lab-cve-ver">{tr("lab.cve.version")}</label><input id="lab-cve-ver" className="field" value={version} onChange={(e) => setVersion(e.target.value)} /></div>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div><label className={LABEL} htmlFor="lab-cve-sev">{tr("lab.find.severity")}</label><select id="lab-cve-sev" className="field" value={severity} onChange={(e) => setSeverity(e.target.value as Severity)}>{SEVERITIES.map((sv) => <option key={sv} value={sv}>{tr(`lab.find.severities.${sv}`)}</option>)}</select></div>
+        <div><label className={LABEL} htmlFor="lab-cve-ref">{tr("lab.cve.ref")}</label><input id="lab-cve-ref" className="field font-mono text-[12.5px]" value={ref} placeholder="https://…" spellCheck={false} onChange={(e) => setRef(e.target.value)} /></div>
+      </div>
+      <div><label className={LABEL} htmlFor="lab-cve-notes">{tr("lab.cve.notes")}</label><textarea id="lab-cve-notes" className="field min-h-[76px]" value={notes} onChange={(e) => setNotes(e.target.value)} /></div>
+      <button type="button" className="btn btn-primary self-start" onClick={add}>{tr("lab.cve.add")}</button>
     </div>
   );
 }
