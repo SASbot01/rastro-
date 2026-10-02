@@ -2133,5 +2133,158 @@
       "email": "Escribe un correo válido.",
       "domain": "Ese dominio no vale."
     }
+  },
+  "lab": {
+    "eyebrow": "Rastro Lab",
+    "title": "Tu cuaderno de laboratorios y bug bounty",
+    "subtitle": "Un trabajo por objetivo: hipótesis por prioridad, pasos, herramientas y hallazgos listos para el informe. Se guarda solo en tu cuenta.",
+    "hubTitle": "Rastro Lab",
+    "hubBody": "Cuaderno para laboratorios y bug bounty: hipótesis, pasos, hallazgos e informe en Markdown.",
+    "hubTag": "Para profesionales",
+    "locked": "Rastro Lab es parte del plan Pro.",
+    "lockedCta": "Ver Rastro Pro",
+    "login": "Entra para abrir tu cuaderno",
+    "job": "Trabajo",
+    "created": "creado el {date}",
+    "new": "Nuevo",
+    "newPrompt": "Nombre del trabajo (por ejemplo, la máquina o el programa):",
+    "rename": "Renombrar",
+    "delete": "Borrar",
+    "deleteConfirm": "¿Borrar el trabajo «{name}»? No se puede deshacer.",
+    "deleteLast": "Es el único trabajo. Crea otro antes de borrar este.",
+    "saved": "Guardado",
+    "saving": "Guardando…",
+    "saveError": "No se pudo guardar. Reintentando…",
+    "target": {
+      "title": "Objetivo",
+      "name": "Nombre",
+      "host": "IP o host",
+      "started": "Inicio",
+      "scope": "Programa y alcance autorizado",
+      "scopeHint": "Qué está dentro y fuera de alcance, y de dónde viene el permiso.",
+      "authorized": "Tengo permiso para probar este objetivo",
+      "warn": "Trabaja solo sobre objetivos con permiso: laboratorios, programas de bug bounty o sistemas tuyos."
+    },
+    "progress": "{done} de {total} pasos",
+    "hyp": {
+      "title": "Hipótesis",
+      "hint": "La #1 es la que estás probando ahora.",
+      "empty": "Sin hipótesis todavía.",
+      "placeholder": "Escribe una hipótesis…",
+      "add": "Añadir hipótesis",
+      "up": "Subir",
+      "remove": "Quitar",
+      "states": {
+        "open": "abierta",
+        "confirmed": "confirmada",
+        "discarded": "descartada"
+      }
+    },
+    "steps": {
+      "title": "Pasos",
+      "add": "Añadir paso",
+      "placeholder": "Paso nuevo…"
+    },
+    "tools": {
+      "title": "Herramientas usadas",
+      "placeholder": "nmap, ffuf, Burp…",
+      "add": "Añadir"
+    },
+    "words": {
+      "title": "Diccionarios",
+      "hint": "Rutas en tu máquina o tu VPS. La chuleta las usa en los comandos.",
+      "cat": "categoría",
+      "path": "/ruta/al/diccionario.txt",
+      "add": "Añadir",
+      "copy": "Copiar"
+    },
+    "servers": {
+      "title": "Accesos rápidos",
+      "hint": "Comandos que copias de un toque: tu VPS, tu máquina de pruebas.",
+      "name": "nombre",
+      "cmd": "ssh mi-vps",
+      "add": "Añadir",
+      "copy": "Copiar comando",
+      "empty": "Añade aquí tus accesos por SSH."
+    },
+    "cheat": {
+      "title": "Chuleta de herramientas",
+      "hint": "Comandos con el host de este trabajo y tus diccionarios. Toca para copiar.",
+      "copied": "Copiado",
+      "close": "Cerrar",
+      "labels": {
+        "allPorts": "Todos los puertos, rápido",
+        "versions": "Versiones y scripts en los puertos abiertos",
+        "udp": "Puertos UDP más comunes",
+        "help": "Ayuda",
+        "dirs": "Directorios y ficheros",
+        "vhosts": "Virtual hosts",
+        "raft": "Diccionario raft (alternativo)",
+        "basic": "Básico",
+        "ext": "Con extensiones"
+      }
+    },
+    "find": {
+      "title": "Hallazgos",
+      "titleField": "Título",
+      "where": "Dónde (URL o endpoint)",
+      "family": "Familia",
+      "severity": "Gravedad",
+      "status": "Estado",
+      "notes": "Notas: pasos para reproducir, impacto, evidencia",
+      "save": "Guardar hallazgo",
+      "empty": "Aún no hay hallazgos en este trabajo.",
+      "remove": "Borrar",
+      "families": {
+        "access": "Control de acceso / IDOR",
+        "logic": "Lógica de negocio",
+        "auth": "Autenticación",
+        "ssrf": "SSRF",
+        "injection": "Inyección",
+        "xss": "XSS",
+        "info": "Exposición de información",
+        "config": "Configuración",
+        "other": "Otra"
+      },
+      "severities": {
+        "critical": "Crítica",
+        "high": "Alta",
+        "medium": "Media",
+        "low": "Baja",
+        "info": "Informativa"
+      },
+      "states": {
+        "draft": "Borrador",
+        "reported": "Reportado",
+        "accepted": "Aceptado",
+        "duplicate": "Duplicado",
+        "rejected": "Rechazado"
+      }
+    },
+    "report": {
+      "title": "Informe",
+      "copy": "Copiar informe en Markdown",
+      "copied": "Informe copiado",
+      "none": "Sin hallazgos todavía.",
+      "target": "Objetivo",
+      "host": "Host",
+      "scope": "Alcance",
+      "started": "Inicio"
+    },
+    "import": {
+      "title": "Traer mi historial del Mac",
+      "body": "Si usabas la app Sistema Bug Bounty, sube su archivo datos.json y tus trabajos aparecen aquí.",
+      "pick": "Elegir datos.json",
+      "done": "Historial importado.",
+      "bad": "Ese archivo no es un datos.json válido.",
+      "confirm": "Esto sustituye lo que hay ahora en tu cuaderno por el contenido del archivo. ¿Seguir?",
+      "path": "Está en ~/Library/Application Support/SistemaBugBounty/datos.json"
+    },
+    "privacy": "Tus notas se guardan en tu cuenta de Rastro y solo las ves tú. No salen por la API ni se comparten con tu equipo.",
+    "errors": {
+      "tooBig": "El cuaderno es demasiado grande. Borra trabajos antiguos o recorta notas.",
+      "conflict": "Has cambiado el cuaderno desde otro dispositivo. Recarga para ver la última versión."
+    },
+    "reload": "Recargar"
   }
 }
