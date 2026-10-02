@@ -150,3 +150,13 @@ Pendiente de Alejandro para el precio de lanzamiento (59 € el primer año, pri
 Hecho por Claude: `/lab`, cuaderno de laboratorios y bug bounty con la marca de Rastro (trabajos, hipótesis por prioridad, pasos, herramientas, chuleta de nmap/ffuf/gobuster/dirb con el host del trabajo, hallazgos con gravedad/familia/estado, informe en Markdown). Importa el `datos.json` de la app local "Sistema Bug Bounty" (~/Library/Application Support/SistemaBugBounty/). Solo Pro y administradores. Guardado automático en la cuenta, privado (nunca sale por la API pública).
 
 Para usarlo tú: entra con una cuenta Pro (o un correo de ADMIN_EMAILS) en rastropro.com/lab y, en "Traer mi historial del Mac", sube tu datos.json.
+
+
+## MCP de Rastro (02-10-2026)
+
+Hecho por Claude: servidor MCP sin dependencias en `mcp/rastro-mcp.mjs` (+ `mcp/README.md`) y API v1 nueva: `POST/GET /api/v1/lab` (listar/crear trabajos, añadir hallazgos, CVE e hipótesis, informe en Markdown — solo tu cuenta, requiere Pro) y `POST /api/v1/domain-report` (informe de dominio para defensa). Herramientas MCP: lab_list_jobs, lab_get_job, lab_create_job, lab_add_finding, lab_add_cve, lab_add_hypothesis, lab_report_markdown, domain_report, guardian_check, sites_catalog.
+
+Para usarlo tú:
+1. En rastropro.com → Perfil → API → crea una clave `rk_live_…`.
+2. Añade a Claude (Desktop o Code) el MCP con `node /ruta/a/rastro/mcp/rastro-mcp.mjs` y `RASTRO_API_KEY` en `env` (ejemplo en `mcp/README.md`).
+3. Pídele a Claude que lleve tus trabajos del Lab o que te saque el informe de un dominio.
