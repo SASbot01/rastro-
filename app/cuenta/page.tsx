@@ -8,6 +8,7 @@ import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import { levelFor } from "@/lib/report/score";
 import { FAMILY_SEATS, isPro, prices } from "@/lib/plan";
+import { canUseLab } from "@/lib/lab";
 import { VigilCalendar } from "@/components/VigilCalendar";
 import { ProfileEditor } from "@/components/ProfileEditor";
 
@@ -203,6 +204,17 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
               </>
             )}
           </section>
+
+          {/* Rastro Lab (herramienta profesional) */}
+          {canUseLab(user) && (
+            <Link href="/lab" className={CARD + " flex items-center justify-between gap-3 hover:border-accent"}>
+              <span className="min-w-0">
+                <span className="flex items-center gap-2"><h2 className="text-[15px] font-semibold text-ink">{tr("lab.hubTitle")}</h2><span className="badge tone-ok shrink-0">{tr("lab.hubTag")}</span></span>
+                <span className="mt-1 block text-[13.5px] leading-relaxed text-muted">{tr("lab.hubBody")}</span>
+              </span>
+              <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0 text-faint" aria-hidden="true"><path d="m7.5 5 5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </Link>
+          )}
 
           {/* API */}
           <section id="api" className={CARD}>

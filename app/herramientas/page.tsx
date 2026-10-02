@@ -39,7 +39,6 @@ const TOOLS: Array<{ href: string; eyebrow: string; title: string; body: string;
   { href: "/simulador", eyebrow: "sim.eyebrow", title: "sim.title", body: "sim.hubBody", icon: "M4 6.5h16v9H9l-5 4v-13zM8.5 10.5h7M8.5 13h4" },
   { href: "/imagenes", eyebrow: "images.eyebrow", title: "images.title", body: "images.hubBody", icon: "M4 5.5h16v13H4zM4 15l4.5-4.5 4 4 2.5-2.5 5 5M15 9.5v.01" },
   { href: "/extension", eyebrow: "ext.eyebrow", title: "ext.title", body: "ext.hubBody", icon: "M9 4.5h6v3a2 2 0 1 0 4 0V7h.5v6H17a2 2 0 1 0 0 4h2.5v2.5h-15V14H7a2 2 0 1 0 0-4H4.5V4.5H9z" },
-  { href: "/lab", eyebrow: "lab.eyebrow", title: "lab.hubTitle", body: "lab.hubBody", icon: "M9 3v5.5L4.5 17a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L15 8.5V3M8 3h8M8.5 13h7" },
   { href: "/guardian", eyebrow: "guardian.eyebrow", title: "guardian.title", body: "sim.guardianHubBody", icon: "M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3zM9 12l2 2 4-4" },
 ];
 
