@@ -143,3 +143,10 @@ Pendiente de Alejandro para el precio de lanzamiento (59 € el primer año, pri
 - [ ] Copiar el `price_…` del precio nuevo y añadirlo a `STRIPE_PRICE_IDS` en el `.env.local` del servidor (separado por comas).
 - [ ] Añadir `NEXT_PUBLIC_PRICE_LAUNCH_YEARLY=59 €` y `STRIPE_LINK_LAUNCH_YEARLY=https://buy.stripe.com/…` y reiniciar. La tarjeta de lanzamiento aparece sola y desaparece al llegar a 100 activaciones.
 - [ ] Hacer un pago de prueba real (y reembolsarlo desde Stripe) para verificar el webhook de punta a punta.
+
+
+## Rastro Lab (02-10-2026)
+
+Hecho por Claude: `/lab`, cuaderno de laboratorios y bug bounty con la marca de Rastro (trabajos, hipótesis por prioridad, pasos, herramientas, chuleta de nmap/ffuf/gobuster/dirb con el host del trabajo, hallazgos con gravedad/familia/estado, informe en Markdown). Importa el `datos.json` de la app local "Sistema Bug Bounty" (~/Library/Application Support/SistemaBugBounty/). Solo Pro y administradores. Guardado automático en la cuenta, privado (nunca sale por la API pública).
+
+Para usarlo tú: entra con una cuenta Pro (o un correo de ADMIN_EMAILS) en rastropro.com/lab y, en "Traer mi historial del Mac", sube tu datos.json.
