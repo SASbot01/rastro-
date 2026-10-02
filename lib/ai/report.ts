@@ -1,3 +1,4 @@
+import type { StealerLogsResult } from "@/lib/hibp";
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
@@ -83,7 +84,8 @@ TONO (obligatorio)
 - Ejemplo del estilo buscado: "Tu correo apareció en la filtración de LinkedIn (2021) con contraseña. Si la sigues usando en algún sitio, cámbiala hoy."
 
 CATEGORÍAS
-- "breaches": filtraciones de datos donde aparece el correo. Una entrada por filtración. Severidad high si incluía contraseñas, medium si no. Los "pastes" (volcados públicos con el correo) van aquí también, severidad medium, explicando que el correo circula en listas públicas.
+- "breaches": filtraciones de datos donde aparece el correo. Si viene stealer_logs.sites_with_captured_password, es lo MAS grave del informe: un virus en un dispositivo de la persona capturó su contraseña REAL de esos sitios (un hallazgo por sitio, severity high, categoría breaches, título "Contraseña de X robada por un virus"); primera acción siempre: cambiar esas contraseñas desde otro dispositivo, activar verificación en dos pasos y pasar un antivirus. Si stealer_logs es "not_checked", no lo menciones.
+- "breaches" (resto): filtraciones de datos donde aparece el correo. Una entrada por filtración. Severidad high si incluía contraseñas, medium si no. Los "pastes" (volcados públicos con el correo) van aquí también, severidad medium, explicando que el correo circula en listas públicas.
 - known_accounts es la lista de servicios donde consta que el correo ha tenido cuenta (por las filtraciones) o que la persona enlazó en Gravatar: la aplicación la muestra aparte; no la repitas como hallazgos, pero úsala en el resumen si aporta ("tu correo ha tenido cuenta en al menos N servicios").
 - gravatar_profile, si existe, es un perfil público ligado al correo (nombre, foto, ubicación, enlaces): va en "profiles" con severidad medium (o high si expone ubicación o teléfono), y cuenta como perfil atribuido con confianza alta, porque está ligado al correo y no al nombre.
 - "ai": lo que el asistente de IA dice de la persona: dónde trabaja, dónde vive, a qué se dedica, datos de contacto. Una entrada por dato relevante que la IA acierta. Severidad high para teléfono/dirección, medium para empleo o ciudad, low para el resto.
@@ -112,6 +114,7 @@ export interface InputData {
   /** Respuestas de otros asistentes (OpenAI, Gemini) a "quien es X", si estan configurados. */
   assistants?: AssistantAnswer[];
   pastes?: PastesResult;
+  stealerLogs?: StealerLogsResult;
   gravatar?: GravatarResult;
   accounts?: KnownAccount[];
   previous?: PreviousAi | null;
@@ -150,6 +153,7 @@ function compactInput(d: InputData) {
     ai_answers_status: d.perplexity.ok ? "ok" : `failed: ${d.perplexity.reason}`,
     other_assistants: (d.assistants ?? []).map((a) => ({ provider: a.provider, answer: a.answer.slice(0, 1500), sources: a.sources.slice(0, 5).map((s) => s.url) })),
     pastes: d.pastes?.checked ? d.pastes.pastes.map((p) => ({ source: p.source, title: p.title, date: p.date, emails_in_dump: p.emailCount })) : undefined,
+    stealer_logs: d.stealerLogs?.checked ? { sites_with_captured_password: d.stealerLogs.domains } : d.stealerLogs?.reason === "not_entitled" ? "not_checked" : undefined,
     gravatar_profile: d.gravatar?.checked && d.gravatar.profile
       ? { name: d.gravatar.profile.displayName, about: d.gravatar.profile.aboutMe, location: d.gravatar.profile.location, url: d.gravatar.profile.profileUrl, links: d.gravatar.profile.urls, accounts: d.gravatar.profile.accounts }
       : null,

@@ -15,6 +15,8 @@ export interface ScoreSignals {
   contactDataPublic: boolean;
   /** Dia 3 (IA): la IA afirma cosas falsas sobre la persona. */
   aiFalseData: boolean;
+  /** Sitios cuya contrasena capturo un virus roba-contrasenas en el ordenador de la persona (stealer logs). */
+  stealerLogs?: number;
 }
 
 export type Breakdown = Record<string, number>;
@@ -29,6 +31,8 @@ const RULES = {
   aiKnowsCity: -5,
   contactDataPublic: -15,
   aiFalseData: -5,
+  // Contrasena actual en claro en manos de delincuentes: lo mas grave que puede pasar. -20 por sitio, tope -40.
+  stealerLog: { each: -20, max: -40 },
 } as const;
 
 function capped(count: number, rule: { each: number; max: number }): number {
@@ -51,6 +55,7 @@ export function computeScore(s: ScoreSignals): { score: number; breakdown: Break
   if (s.aiKnowsCity) breakdown.aiKnowsCity = RULES.aiKnowsCity;
   if (s.contactDataPublic) breakdown.contactDataPublic = RULES.contactDataPublic;
   if (s.aiFalseData) breakdown.aiFalseData = RULES.aiFalseData;
+  if ((s.stealerLogs ?? 0) > 0) breakdown.stealerLog = capped(s.stealerLogs ?? 0, RULES.stealerLog);
 
   const total = Object.values(breakdown).reduce((acc, n) => acc + n, 0);
   const score = Math.max(0, Math.min(100, 100 + total));

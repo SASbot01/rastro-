@@ -38,6 +38,7 @@ const RULE_COLOR: Record<string, string> = {
   aiKnowsCity: "#b8c4b4",
   contactDataPublic: "#ffb020",
   aiFalseData: "#d0b87a",
+  stealerLog: "#ff5f5f",
 };
 const SEVERITY_RANK = { high: 0, medium: 1, low: 2, info: 3 } as const;
 const SEVERITY_CLS = { high: "tone-bad", medium: "tone-warn", low: "", info: "" } as const;

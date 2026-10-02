@@ -390,7 +390,9 @@
       "assistants": "Already answered: {names}.",
       "prelim": "provisional score. The final one arrives when the AI finishes reading everything.",
       "prelimLabel": "Provisional score",
-      "prelimNote": "The final one arrives when the AI finishes reading everything."
+      "prelimNote": "The final one arrives when the AI finishes reading everything.",
+      "noStealer": "No password-stealing malware has captured your credentials, as far as we know.",
+      "stealer": "Malware captured your password for {n} sites: {names}. Change them today from another device."
     },
     "progress": "{done} of {total} steps",
     "searching": "Searching…"
@@ -1337,7 +1339,8 @@
       "aiKnowsEmployer": "AI knows where you work",
       "aiKnowsCity": "AI knows your city",
       "contactDataPublic": "Phone or address public",
-      "aiFalseData": "False claims in AI"
+      "aiFalseData": "False claims in AI",
+      "stealerLog": "Passwords stolen by malware"
     },
     "clean": "Right now you're not losing points for anything. Keep it up.",
     "topTitle": "Top findings",
@@ -2130,5 +2133,158 @@
       "email": "Enter a valid email.",
       "domain": "That domain is not valid."
     }
+  },
+  "lab": {
+    "eyebrow": "Rastro Lab",
+    "title": "Your notebook for labs and bug bounty",
+    "subtitle": "One job per target: hypotheses by priority, steps, tools and findings ready for the report. Saved only in your account.",
+    "hubTitle": "Rastro Lab",
+    "hubBody": "Notebook for labs and bug bounty: hypotheses, steps, findings and a Markdown report.",
+    "hubTag": "For professionals",
+    "locked": "Rastro Lab is part of the Pro plan.",
+    "lockedCta": "See Rastro Pro",
+    "login": "Sign in to open your notebook",
+    "job": "Job",
+    "created": "created on {date}",
+    "new": "New",
+    "newPrompt": "Job name (for example, the machine or the program):",
+    "rename": "Rename",
+    "delete": "Delete",
+    "deleteConfirm": "Delete the job “{name}”? This cannot be undone.",
+    "deleteLast": "It's the only job. Create another before deleting this one.",
+    "saved": "Saved",
+    "saving": "Saving…",
+    "saveError": "Couldn't save. Retrying…",
+    "target": {
+      "title": "Target",
+      "name": "Name",
+      "host": "IP or host",
+      "started": "Started",
+      "scope": "Program and authorized scope",
+      "scopeHint": "What is in and out of scope, and where the permission comes from.",
+      "authorized": "I have permission to test this target",
+      "warn": "Only work on targets you have permission for: labs, bug bounty programs or your own systems."
+    },
+    "progress": "{done} of {total} steps",
+    "hyp": {
+      "title": "Hypotheses",
+      "hint": "#1 is the one you are testing now.",
+      "empty": "No hypotheses yet.",
+      "placeholder": "Write a hypothesis…",
+      "add": "Add hypothesis",
+      "up": "Move up",
+      "remove": "Remove",
+      "states": {
+        "open": "open",
+        "confirmed": "confirmed",
+        "discarded": "discarded"
+      }
+    },
+    "steps": {
+      "title": "Steps",
+      "add": "Add step",
+      "placeholder": "New step…"
+    },
+    "tools": {
+      "title": "Tools used",
+      "placeholder": "nmap, ffuf, Burp…",
+      "add": "Add"
+    },
+    "words": {
+      "title": "Wordlists",
+      "hint": "Paths on your machine or your VPS. The cheat sheet uses them in commands.",
+      "cat": "category",
+      "path": "/path/to/wordlist.txt",
+      "add": "Add",
+      "copy": "Copy"
+    },
+    "servers": {
+      "title": "Quick access",
+      "hint": "Commands you copy with one tap: your VPS, your test box.",
+      "name": "name",
+      "cmd": "ssh my-vps",
+      "add": "Add",
+      "copy": "Copy command",
+      "empty": "Add your SSH shortcuts here."
+    },
+    "cheat": {
+      "title": "Tool cheat sheet",
+      "hint": "Commands with this job's host and your wordlists. Tap to copy.",
+      "copied": "Copied",
+      "close": "Close",
+      "labels": {
+        "allPorts": "All ports, fast",
+        "versions": "Versions and scripts on open ports",
+        "udp": "Most common UDP ports",
+        "help": "Help",
+        "dirs": "Directories and files",
+        "vhosts": "Virtual hosts",
+        "raft": "Raft wordlist (alternative)",
+        "basic": "Basic",
+        "ext": "With extensions"
+      }
+    },
+    "find": {
+      "title": "Findings",
+      "titleField": "Title",
+      "where": "Where (URL or endpoint)",
+      "family": "Family",
+      "severity": "Severity",
+      "status": "Status",
+      "notes": "Notes: steps to reproduce, impact, evidence",
+      "save": "Save finding",
+      "empty": "No findings in this job yet.",
+      "remove": "Delete",
+      "families": {
+        "access": "Access control / IDOR",
+        "logic": "Business logic",
+        "auth": "Authentication",
+        "ssrf": "SSRF",
+        "injection": "Injection",
+        "xss": "XSS",
+        "info": "Information exposure",
+        "config": "Configuration",
+        "other": "Other"
+      },
+      "severities": {
+        "critical": "Critical",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low",
+        "info": "Informational"
+      },
+      "states": {
+        "draft": "Draft",
+        "reported": "Reported",
+        "accepted": "Accepted",
+        "duplicate": "Duplicate",
+        "rejected": "Rejected"
+      }
+    },
+    "report": {
+      "title": "Report",
+      "copy": "Copy report as Markdown",
+      "copied": "Report copied",
+      "none": "No findings yet.",
+      "target": "Target",
+      "host": "Host",
+      "scope": "Scope",
+      "started": "Started"
+    },
+    "import": {
+      "title": "Bring my history from the Mac",
+      "body": "If you used the Sistema Bug Bounty app, upload its datos.json file and your jobs appear here.",
+      "pick": "Choose datos.json",
+      "done": "History imported.",
+      "bad": "That file is not a valid datos.json.",
+      "confirm": "This replaces what is in your notebook now with the file's content. Continue?",
+      "path": "It lives at ~/Library/Application Support/SistemaBugBounty/datos.json"
+    },
+    "privacy": "Your notes are saved in your Rastro account and only you see them. They never leave through the API and are not shared with your team.",
+    "errors": {
+      "tooBig": "The notebook is too large. Delete old jobs or trim notes.",
+      "conflict": "You changed the notebook from another device. Reload to see the latest version."
+    },
+    "reload": "Reload"
   }
 }
