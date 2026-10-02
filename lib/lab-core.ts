@@ -17,17 +17,20 @@ export const FINDING_STATES = ["draft", "reported", "accepted", "duplicate", "re
 export type FindingState = (typeof FINDING_STATES)[number];
 export const HYPOTHESIS_STATES = ["open", "confirmed", "discarded"] as const;
 export type HypothesisState = (typeof HYPOTHESIS_STATES)[number];
+export const CVE_STATES = ["investigating", "vulnerable", "exploited", "patched", "not_applicable"] as const;
+export type CveState = (typeof CVE_STATES)[number];
 
 export interface LabStep { t: string; ok: boolean }
 export interface LabHypothesis { txt: string; state: HypothesisState }
 export interface LabFinding { title: string; where: string; family: Family; severity: Severity; status: FindingState; notes: string; at: string }
 export interface LabTarget { name: string; host: string; scope: string; started: string; authorized: boolean }
-export interface LabProject { name: string; created: string; target: LabTarget; steps: LabStep[]; hypotheses: LabHypothesis[]; tools: string[]; findings: LabFinding[] }
+export interface LabCve { id: string; software: string; version: string; severity: Severity; state: CveState; notes: string; ref: string }
+export interface LabProject { name: string; created: string; target: LabTarget; steps: LabStep[]; hypotheses: LabHypothesis[]; cves: LabCve[]; tools: string[]; findings: LabFinding[] }
 export interface LabWordlist { id: string; cat: string; path: string }
 export interface LabServer { name: string; cmd: string }
 export interface LabWorkspace { v: 1; active: string; projects: Record<string, LabProject>; wordlists: LabWordlist[]; servers: LabServer[] }
 
-export const LIMITS = { projects: 100, steps: 40, hypotheses: 60, tools: 60, findings: 200, wordlists: 40, servers: 12, bytes: 800_000 } as const;
+export const LIMITS = { projects: 100, steps: 40, hypotheses: 60, cves: 80, tools: 60, findings: 200, wordlists: 40, servers: 12, bytes: 1_200_000 } as const;
 
 export const DEFAULT_STEPS: Record<"es" | "en", string[]> = {
   es: ["Escaneo de puertos y servicios", "Identificar tecnología web", "Enumerar vhosts / subdominios", "Directorios y ficheros (ffuf)", "Mapear la app por Burp", "Explotación", "Redactar el informe"],
@@ -39,6 +42,26 @@ const oneOf = <T extends string>(v: unknown, list: readonly T[], fallback: T): T
 const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : []);
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
 
+/** CVE-AAAA-NNNN (o solo el numero suelto). Mayusculas y guiones; vacio si no encaja. */
+export function normalizeCveId(raw: string): string {
+  const t = raw.trim().toUpperCase().replace(/\s+/g, "");
+  const m = t.match(/^(?:CVE[-\s]?)?(\d{4})[-\s]?(\d{4,7})$/);
+  return m ? `CVE-${m[1]}-${m[2]}` : (/^[A-Z0-9][A-Z0-9.\-]{0,39}$/.test(t) ? t : "");
+}
+
+/** Solo http(s). Cualquier otra cosa (javascript:, data:...) se descarta. */
+export function cleanUrl(raw: string): string {
+  const t = raw.trim();
+  if (!t) return "";
+  try { const u = new URL(t); return u.protocol === "http:" || u.protocol === "https:" ? u.toString() : ""; } catch { return ""; }
+}
+
+/** Enlace al aviso oficial: el que guardo el usuario, o la ficha del CVE en NVD. */
+export function cveRef(c: { id: string; ref: string }): string {
+  if (c.ref) return c.ref;
+  return /^CVE-\d{4}-\d{4,7}$/.test(c.id) ? `https://nvd.nist.gov/vuln/detail/${c.id}` : "";
+}
+
 export function newProject(name: string, locale: "es" | "en", now = new Date()): LabProject {
   return {
     name: str(name, 120) || (locale === "es" ? "Trabajo" : "Job"),
@@ -46,6 +69,7 @@ export function newProject(name: string, locale: "es" | "en", now = new Date()):
     target: { name: "", host: "", scope: "", started: "", authorized: false },
     steps: DEFAULT_STEPS[locale].map((t) => ({ t, ok: false })),
     hypotheses: [],
+    cves: [],
     tools: [],
     findings: [],
   };
@@ -75,6 +99,10 @@ function cleanProject(raw: unknown, locale: "es" | "en"): LabProject {
     target: { name: str(t.name, 160), host: str(t.host, 255), scope: str(t.scope, 2000), started: str(t.started, 40), authorized: t.authorized === true },
     steps: arr(p.steps).slice(0, LIMITS.steps).map((s) => ({ t: str(obj(s).t, 200), ok: obj(s).ok === true })).filter((s) => s.t),
     hypotheses: arr(p.hypotheses).slice(0, LIMITS.hypotheses).map((h) => ({ txt: str(obj(h).txt, 2000), state: oneOf(obj(h).state, HYPOTHESIS_STATES, "open") })).filter((h) => h.txt),
+    cves: arr(p.cves).slice(0, LIMITS.cves).map((c) => {
+      const o = obj(c);
+      return { id: normalizeCveId(str(o.id, 40)), software: str(o.software, 120), version: str(o.version, 60), severity: oneOf(o.severity, SEVERITIES, "medium"), state: oneOf(o.state, CVE_STATES, "investigating"), notes: str(o.notes, 6000), ref: cleanUrl(str(o.ref, 500)) };
+    }).filter((c) => c.id || c.software),
     tools: [...new Set(arr(p.tools).map((x) => str(x, 60).trim()).filter(Boolean))].slice(0, LIMITS.tools),
     findings: arr(p.findings).slice(0, LIMITS.findings).map((f) => {
       const o = obj(f);
@@ -169,7 +197,7 @@ export function cheatSheet(tool: CheatTool, wordlists: LabWordlist[], host: stri
   return C[tool];
 }
 
-export interface ReportLabels { target: string; host: string; scope: string; started: string; findings: string; none: string; severity: string; family: string; where: string; status: string; hypotheses: string; steps: string; tools: string; families: Record<Family, string>; severities: Record<Severity, string>; states: Record<FindingState, string>; hypothesisStates: Record<HypothesisState, string> }
+export interface ReportLabels { target: string; host: string; scope: string; started: string; findings: string; none: string; severity: string; family: string; where: string; status: string; hypotheses: string; steps: string; tools: string; cves: string; cveSoftware: string; families: Record<Family, string>; severities: Record<Severity, string>; states: Record<FindingState, string>; hypothesisStates: Record<HypothesisState, string>; cveStates: Record<CveState, string> }
 
 const SEVERITY_ORDER: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
 
@@ -189,6 +217,17 @@ export function toMarkdown(p: LabProject, L: ReportLabels): string {
     lines.push(`- **${L.status}:** ${L.states[f.status]}`, "");
     if (f.notes) lines.push(f.notes, "");
   });
+  if (p.cves.length) {
+    lines.push(`## ${L.cves}`, "");
+    [...p.cves].sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity]).forEach((c) => {
+      const head = [c.id, c.software && `${c.software}${c.version ? " " + c.version : ""}`].filter(Boolean).join(" — ");
+      lines.push(`- **${head}** · ${L.severities[c.severity]} · ${L.cveStates[c.state]}`);
+      const ref = cveRef(c);
+      if (ref) lines.push(`  - ${ref}`);
+      if (c.notes) lines.push(`  - ${c.notes.replace(/\n+/g, " ")}`);
+    });
+    lines.push("");
+  }
   if (p.hypotheses.length) lines.push(`## ${L.hypotheses}`, "", ...p.hypotheses.map((h, i) => `${i + 1}. ${h.txt} (${L.hypothesisStates[h.state]})`), "");
   if (p.steps.length) lines.push(`## ${L.steps}`, "", ...p.steps.map((s) => `- [${s.ok ? "x" : " "}] ${s.t}`), "");
   if (p.tools.length) lines.push(`## ${L.tools}`, "", p.tools.join(", "), "");

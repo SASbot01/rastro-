@@ -53,9 +53,9 @@ test("la chuleta usa el host del trabajo y nunca mete texto raro en el comando",
 });
 
 test("el informe en Markdown ordena los hallazgos por gravedad", () => {
-  const L: ReportLabels = { target: "Objetivo", host: "Host", scope: "Alcance", started: "Inicio", findings: "Hallazgos", none: "Sin hallazgos.", severity: "Gravedad", family: "Familia", where: "Dónde", status: "Estado", hypotheses: "Hipótesis", steps: "Pasos", tools: "Herramientas",
+  const L: ReportLabels = { target: "Objetivo", host: "Host", scope: "Alcance", started: "Inicio", findings: "Hallazgos", none: "Sin hallazgos.", severity: "Gravedad", family: "Familia", where: "Dónde", status: "Estado", hypotheses: "Hipótesis", steps: "Pasos", tools: "Herramientas", cves: "CVE", cveSoftware: "Software",
     families: { access: "Control de acceso", logic: "Lógica", auth: "Autenticación", ssrf: "SSRF", injection: "Inyección", xss: "XSS", info: "Información", config: "Configuración", other: "Otra" },
-    severities: { critical: "Crítica", high: "Alta", medium: "Media", low: "Baja", info: "Informativa" }, states: { draft: "Borrador", reported: "Reportado", accepted: "Aceptado", duplicate: "Duplicado", rejected: "Rechazado" }, hypothesisStates: { open: "abierta", confirmed: "confirmada", discarded: "descartada" } };
+    severities: { critical: "Crítica", high: "Alta", medium: "Media", low: "Baja", info: "Informativa" }, states: { draft: "Borrador", reported: "Reportado", accepted: "Aceptado", duplicate: "Duplicado", rejected: "Rechazado" }, hypothesisStates: { open: "abierta", confirmed: "confirmada", discarded: "descartada" }, cveStates: { investigating: "investigando", vulnerable: "vulnerable", exploited: "explotado", patched: "parcheado", not_applicable: "no aplica" } };
   const w = importLegacy(LEGACY, "es")!;
   const p = w.projects.p20260901;
   p.findings.push({ title: "RCE", where: "/upload", family: "injection", severity: "critical", status: "reported", notes: "", at: "" });
@@ -63,4 +63,22 @@ test("el informe en Markdown ordena los hallazgos por gravedad", () => {
   assert.ok(md.indexOf("### 1. RCE") < md.indexOf("### 2. IDOR en /api/user"));
   assert.match(md, /- \[x\] Escaneo de puertos y servicios/);
   assert.match(md, /1\. Samba vulnerable \(confirmada\)/);
+});
+
+import { cleanUrl, cveRef, normalizeCveId, sanitizeWorkspace as sw2 } from "../lib/lab-core.ts";
+test("normaliza el id del CVE y enlaza a NVD cuando no hay referencia propia", () => {
+  assert.equal(normalizeCveId("cve 2025 64512"), "CVE-2025-64512");
+  assert.equal(normalizeCveId("CVE-2025-64512"), "CVE-2025-64512");
+  assert.equal(normalizeCveId("2021-44228"), "CVE-2021-44228");
+  assert.equal(normalizeCveId("GHSA-xxxx-yyyy"), "GHSA-XXXX-YYYY");
+  assert.equal(cveRef({ id: "CVE-2025-64512", ref: "" }), "https://nvd.nist.gov/vuln/detail/CVE-2025-64512");
+  assert.equal(cveRef({ id: "CVE-2025-64512", ref: "https://pdfminer.example/advisory" }), "https://pdfminer.example/advisory");
+});
+test("las URL peligrosas de los CVE se descartan al limpiar", () => {
+  assert.equal(cleanUrl("javascript:alert(1)"), "");
+  assert.equal(cleanUrl("https://nvd.nist.gov/vuln/detail/CVE-2025-64512"), "https://nvd.nist.gov/vuln/detail/CVE-2025-64512");
+  const w = sw2({ projects: { a: { name: "a", cves: [{ id: "cve-2025-64512", software: "pdfminer.six", severity: "muy", state: "nope", ref: "javascript:1" }, { id: "", software: "" }] } } }, "es")!;
+  const cve = w.projects.a.cves;
+  assert.equal(cve.length, 1);
+  assert.deepEqual([cve[0].id, cve[0].severity, cve[0].state, cve[0].ref], ["CVE-2025-64512", "medium", "investigating", ""]);
 });

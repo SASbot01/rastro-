@@ -2285,6 +2285,29 @@
       "tooBig": "The notebook is too large. Delete old jobs or trim notes.",
       "conflict": "You changed the notebook from another device. Reload to see the latest version."
     },
-    "reload": "Reload"
+    "reload": "Reload",
+    "cve": {
+      "title": "CVE / known vulnerabilities",
+      "hint": "Log the CVE of software the target runs. The link goes to the official advisory (NVD). The notes are yours.",
+      "empty": "No CVEs logged in this job.",
+      "id": "CVE or identifier",
+      "idPlaceholder": "CVE-2025-64512",
+      "software": "Software",
+      "softwarePlaceholder": "pdfminer.six",
+      "version": "Version",
+      "notes": "Notes: how it triggers, what it gives, link to your PoC",
+      "ref": "Advisory link (optional)",
+      "add": "Add CVE",
+      "remove": "Remove",
+      "advisory": "Official advisory",
+      "copyId": "Copy id",
+      "states": {
+        "investigating": "investigating",
+        "vulnerable": "vulnerable",
+        "exploited": "exploited",
+        "patched": "patched",
+        "not_applicable": "not applicable"
+      }
+    }
   }
 }

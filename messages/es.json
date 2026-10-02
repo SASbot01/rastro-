@@ -2285,6 +2285,29 @@
       "tooBig": "El cuaderno es demasiado grande. Borra trabajos antiguos o recorta notas.",
       "conflict": "Has cambiado el cuaderno desde otro dispositivo. Recarga para ver la última versión."
     },
-    "reload": "Recargar"
+    "reload": "Recargar",
+    "cve": {
+      "title": "CVE / vulnerabilidades conocidas",
+      "hint": "Apunta el CVE del software que corre el objetivo. El enlace va al aviso oficial (NVD). Las notas son tuyas.",
+      "empty": "Sin CVE anotados en este trabajo.",
+      "id": "CVE o identificador",
+      "idPlaceholder": "CVE-2025-64512",
+      "software": "Software",
+      "softwarePlaceholder": "pdfminer.six",
+      "version": "Versión",
+      "notes": "Notas: cómo se dispara, qué da, enlace a tu PoC",
+      "ref": "Enlace al aviso (opcional)",
+      "add": "Añadir CVE",
+      "remove": "Quitar",
+      "advisory": "Aviso oficial",
+      "copyId": "Copiar id",
+      "states": {
+        "investigating": "investigando",
+        "vulnerable": "vulnerable",
+        "exploited": "explotado",
+        "patched": "parcheado",
+        "not_applicable": "no aplica"
+      }
+    }
   }
 }
