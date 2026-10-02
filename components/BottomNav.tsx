@@ -11,8 +11,8 @@ import { translator, type Messages } from "@/lib/i18n";
 const TABS = [
   { key: "home", href: "/", match: (p: string) => p === "/" },
   { key: "report", href: "/informe", match: (p: string) => p.startsWith("/informe") },
-  { key: "tools", href: "/herramientas", match: (p: string) => ["/herramientas", "/cartas", "/cuenta/buzon", "/guardian", "/simulador", "/imagenes", "/ayuda-urgente", "/lab", "/ia"].some((route) => p.startsWith(route)) },
-  { key: "profile", href: "/cuenta", match: (p: string) => p === "/cuenta" || p.startsWith("/entrar") || p.startsWith("/pro") },
+  { key: "tools", href: "/herramientas", match: (p: string) => ["/herramientas", "/cartas", "/cuenta/buzon", "/guardian", "/simulador", "/imagenes", "/ayuda-urgente", "/ia"].some((route) => p.startsWith(route)) },
+  { key: "profile", href: "/cuenta", match: (p: string) => p === "/cuenta" || p.startsWith("/entrar") || p.startsWith("/pro") || p.startsWith("/lab") },
 ] as const;
 
 function Icon({ name, active }: { name: (typeof TABS)[number]["key"]; active: boolean }) {
