@@ -27,7 +27,8 @@ export interface LabTarget { name: string; host: string; scope: string; started:
 export interface LabCve { id: string; software: string; version: string; severity: Severity; state: CveState; notes: string; ref: string }
 export interface LabService { port: number; proto: "tcp" | "udp"; name: string; version: string; notes: string }
 export interface LabLog { at: string; tool: string; cmd: string; output: string }
-export interface LabProject { name: string; created: string; target: LabTarget; steps: LabStep[]; hypotheses: LabHypothesis[]; cves: LabCve[]; services: LabService[]; logs: LabLog[]; tools: string[]; findings: LabFinding[] }
+export interface LabAttacker { lhost: string; lport: number }
+export interface LabProject { name: string; created: string; target: LabTarget; attacker: LabAttacker; steps: LabStep[]; hypotheses: LabHypothesis[]; cves: LabCve[]; services: LabService[]; logs: LabLog[]; tools: string[]; findings: LabFinding[] }
 export interface LabWordlist { id: string; cat: string; path: string }
 export interface LabServer { name: string; cmd: string }
 export interface LabWorkspace { v: 1; active: string; projects: Record<string, LabProject>; wordlists: LabWordlist[]; servers: LabServer[] }
@@ -69,6 +70,7 @@ export function newProject(name: string, locale: "es" | "en", now = new Date()):
     name: str(name, 120) || (locale === "es" ? "Trabajo" : "Job"),
     created: now.toISOString(),
     target: { name: "", host: "", scope: "", started: "", authorized: false },
+    attacker: { lhost: "", lport: 4444 },
     steps: DEFAULT_STEPS[locale].map((t) => ({ t, ok: false })),
     hypotheses: [],
     cves: [],
@@ -101,6 +103,7 @@ function cleanProject(raw: unknown, locale: "es" | "en"): LabProject {
     name: str(p.name, 120) || (locale === "es" ? "Trabajo" : "Job"),
     created: str(p.created, 40),
     target: { name: str(t.name, 160), host: str(t.host, 255), scope: str(t.scope, 2000), started: str(t.started, 40), authorized: t.authorized === true },
+    attacker: (() => { const a = obj(p.attacker); const lh = str(a.lhost, 255); const lp = Number(a.lport); return { lhost: /^[a-z0-9.-]{0,255}$/i.test(lh) ? lh : "", lport: Number.isInteger(lp) && lp > 0 && lp < 65536 ? lp : 4444 }; })(),
     steps: arr(p.steps).slice(0, LIMITS.steps).map((s) => ({ t: str(obj(s).t, 200), ok: obj(s).ok === true })).filter((s) => s.t),
     hypotheses: arr(p.hypotheses).slice(0, LIMITS.hypotheses).map((h) => ({ txt: str(obj(h).txt, 2000), state: oneOf(obj(h).state, HYPOTHESIS_STATES, "open") })).filter((h) => h.txt),
     cves: arr(p.cves).slice(0, LIMITS.cves).map((c) => {

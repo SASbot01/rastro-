@@ -2323,6 +2323,19 @@
       "empty": "No logs yet.",
       "remove": "Delete",
       "clear": "Clear"
+    },
+    "pay": {
+      "title": "Payloads (cheatsheet)",
+      "hint": "Reverse shells, listener, TTY and file transfer, prefilled with your IP and port. Tap to copy. Authorized targets only.",
+      "lhost": "Your IP (LHOST)",
+      "lport": "Port (LPORT)",
+      "copied": "Copied",
+      "cats": {
+        "revshell": "Reverse shells",
+        "listener": "Listener",
+        "upgrade": "Upgrade TTY",
+        "transfer": "Transfer files"
+      }
     }
   },
   "toolkit": {

@@ -107,6 +107,18 @@ const TOOLS = [
     run: (a) => api("POST", "/api/v1/lab", { action: "set_step", ...a }),
   },
   {
+    name: "lab_set_attacker",
+    description: "Fija tu máquina de ataque para el trabajo: lhost (tu IP, p. ej. la tun0 de la VPN) y lport (puerto de escucha). Se usa para rellenar los payloads.",
+    schema: S("Máquina de ataque.", { job: str("id del trabajo"), lhost: str("tu IP (LHOST)"), lport: { type: "integer", description: "puerto de escucha (LPORT)" } }, ["job"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "set_attacker", job: a.job, lhost: a.lhost, lport: a.lport }),
+  },
+  {
+    name: "lab_payloads",
+    description: "Chuleta de payloads ya rellenada con tu IP/puerto del trabajo: reverse shells en varios lenguajes/sistemas, listener, mejora de TTY y transferencia de ficheros. Para copiar y usar en laboratorios autorizados; Rastro no los ejecuta.",
+    schema: S("Payloads.", { job: str("id del trabajo"), cat: { type: "string", enum: ["revshell", "listener", "upgrade", "transfer"], description: "categoría (opcional)" }, os: { type: "string", enum: ["linux", "windows"], description: "sistema (opcional)" }, file: str("fichero para transferencia (opcional)"), port: { type: "integer", description: "puerto http para servir (opcional)" } }, ["job"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "payloads", job: a.job, cat: a.cat, os: a.os, file: a.file, port: a.port }),
+  },
+  {
     name: "lab_report_markdown",
     description: "Devuelve el informe del trabajo en Markdown (hallazgos ordenados por gravedad, CVE, hipótesis, pasos), listo para pegar en la plataforma de bug bounty.",
     schema: S("Identifica el trabajo.", { job: str("id del trabajo") }, ["job"]),

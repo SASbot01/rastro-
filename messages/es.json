@@ -2323,6 +2323,19 @@
       "empty": "Sin registros todavía.",
       "remove": "Borrar",
       "clear": "Vaciar"
+    },
+    "pay": {
+      "title": "Payloads (chuleta)",
+      "hint": "Reverse shells, listener, TTY y transferencia, ya con tu IP y puerto. Toca para copiar. Solo para objetivos con permiso.",
+      "lhost": "Tu IP (LHOST)",
+      "lport": "Puerto (LPORT)",
+      "copied": "Copiado",
+      "cats": {
+        "revshell": "Reverse shells",
+        "listener": "Escucha",
+        "upgrade": "Mejorar TTY",
+        "transfer": "Transferir ficheros"
+      }
     }
   },
   "toolkit": {
