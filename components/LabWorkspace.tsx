@@ -296,6 +296,7 @@ export function LabWorkspace({ initial, initialUpdatedAt, messages, locale }: { 
           })}
         </ul>
         <CveForm tr={tr} onAdd={(c) => project((pr) => { pr.cves.unshift(c); })} />
+        <CveSearch tr={tr} onAdd={(c) => project((pr) => { if (!pr.cves.some((x) => x.id && x.id === c.id)) pr.cves.unshift(c); })} />
       </section>
 
       {/* Servicios / puertos */}
@@ -529,6 +530,58 @@ function AddService({ tr, onAdd }: { tr: (key: string, vars?: Record<string, str
       <input className="field sm:w-[30%]" value={name} placeholder={tr("lab.svc.name")} onChange={(e) => setName(e.target.value)} />
       <input className="field flex-1" value={version} placeholder={tr("lab.svc.version")} onChange={(e) => setVersion(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); add(); } }} />
       <button type="button" className="btn btn-secondary btn-sm shrink-0" onClick={add}>{tr("lab.svc.add")}</button>
+    </div>
+  );
+}
+
+function CveSearch({ tr, onAdd }: { tr: (key: string, vars?: Record<string, string | number>) => string; onAdd: (c: { id: string; software: string; version: string; severity: "critical" | "high" | "medium" | "low" | "info"; state: "investigating"; notes: string; ref: string }) => void }) {
+  const [q, setQ] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [info, setInfo] = useState<null | { id?: string; description?: string; cvss?: number | null; severity?: string | null; references?: Array<{ url: string; tags: string[] }>; exploitRefs?: string[]; links?: Record<string, string>; query?: string; linksList?: Array<{ source: string; url: string }> }>(null);
+  const [added, setAdded] = useState(false);
+  async function search() {
+    const term = q.trim(); if (!term || busy) return;
+    setBusy(true); setInfo(null); setAdded(false);
+    const isCve = /^(cve[-\s]?)?\d{4}[-\s]?\d{4,7}$/i.test(term);
+    try {
+      const res = await fetch("/api/lab-cve", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(isCve ? { cve: term } : { q: term }) });
+      const j = await res.json();
+      if (j && j.links && Array.isArray(j.links)) setInfo({ query: j.query, linksList: j.links });
+      else if (j && j.id) setInfo(j);
+      else setInfo({ query: term, linksList: [] });
+    } catch { setInfo({ query: term, linksList: [] }); }
+    setBusy(false);
+  }
+  const sevMap: Record<string, "critical" | "high" | "medium" | "low" | "info"> = { critical: "critical", high: "high", medium: "medium", low: "low" };
+  return (
+    <div className="mt-4 border-t border-line pt-4">
+      <h3 className="text-[14px] font-semibold text-ink">{tr("lab.find_cve.title")}</h3>
+      <p className="note mt-1">{tr("lab.find_cve.hint")}</p>
+      <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+        <input className="field flex-1 font-mono text-[13px]" value={q} placeholder={tr("lab.find_cve.ph")} spellCheck={false} autoCapitalize="none" onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void search(); } }} />
+        <button type="button" className="btn btn-secondary btn-sm shrink-0" disabled={busy} onClick={() => void search()}>{busy ? tr("lab.find_cve.searching") : tr("lab.find_cve.search")}</button>
+      </div>
+      {info && info.id && (
+        <div className="mt-3 rounded-[14px] border border-line bg-surface-2 p-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="font-mono text-[14px] font-semibold text-ink">{info.id}{typeof info.cvss === "number" && <span className="ml-2 font-sans text-faint">CVSS {info.cvss}{info.severity ? ` · ${info.severity}` : ""}</span>}</p>
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => { onAdd({ id: info.id!, software: "", version: "", severity: sevMap[(info.severity ?? "").toLowerCase()] ?? "medium", state: "investigating", notes: (info.description ?? "").slice(0, 600), ref: info.links?.nvd ?? "" }); setAdded(true); }}>{added ? tr("lab.find_cve.added") : tr("lab.find_cve.add")}</button>
+          </div>
+          {info.description ? <p className="mt-2 text-[13px] leading-relaxed text-muted">{info.description.slice(0, 500)}</p> : <p className="mt-2 text-[13px] text-faint">{tr("lab.find_cve.none")}</p>}
+          {info.exploitRefs && info.exploitRefs.length > 0 && (
+            <p className="mt-2 text-[12.5px]"><span className="font-semibold text-accent">{tr("lab.find_cve.poc")}:</span> {info.exploitRefs.slice(0, 4).map((u, i) => <span key={u}>{i > 0 && " · "}<a href={u} target="_blank" rel="noreferrer nofollow" className="link break-all">{(() => { try { return new URL(u).hostname; } catch { return u; } })()}</a></span>)}</p>
+          )}
+          {info.links && (
+            <p className="mt-2 text-[12.5px] text-faint">{tr("lab.find_cve.sources")}: <a className="link" target="_blank" rel="noreferrer nofollow" href={info.links.exploitdb}>Exploit-DB</a> · <a className="link" target="_blank" rel="noreferrer nofollow" href={info.links.github}>GitHub</a> · <a className="link" target="_blank" rel="noreferrer nofollow" href={info.links.nvd}>NVD</a></p>
+          )}
+        </div>
+      )}
+      {info && info.linksList && (
+        <div className="mt-3 rounded-[14px] border border-line bg-surface-2 p-4">
+          <p className="text-[12.5px] text-faint">{tr("lab.find_cve.sources")} «{info.query}»:</p>
+          <p className="mt-1 text-[13px]">{info.linksList.map((l, i) => <span key={l.url}>{i > 0 && " · "}<a className="link" target="_blank" rel="noreferrer nofollow" href={l.url}>{l.source}</a></span>)}</p>
+        </div>
+      )}
     </div>
   );
 }
