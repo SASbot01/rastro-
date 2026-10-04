@@ -93,5 +93,7 @@ async function handle(msg) {
   }
   if (id !== undefined) send({ jsonrpc: "2.0", id, error: { code: -32601, message: `Método no soportado: ${method}` } });
 }
+// Procesa las peticiones EN ORDEN (una tras otra): evita que dos escrituras del cuaderno compitan.
+let chain = Promise.resolve();
 const rl = createInterface({ input: process.stdin });
-rl.on("line", (line) => { const t = line.trim(); if (!t) return; let m; try { m = JSON.parse(t); } catch { return; } Promise.resolve(handle(m)).catch(() => {}); });
+rl.on("line", (line) => { const t = line.trim(); if (!t) return; let m; try { m = JSON.parse(t); } catch { return; } chain = chain.then(() => handle(m)).catch(() => {}); });

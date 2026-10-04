@@ -162,10 +162,11 @@ async function handle(msg) {
   if (id !== undefined) fail(id, -32601, `Método no soportado: ${method}`);
 }
 
+let chain = Promise.resolve();
 const rl = createInterface({ input: process.stdin });
 rl.on("line", (line) => {
   const t = line.trim();
   if (!t) return;
   let msg; try { msg = JSON.parse(t); } catch { return; }
-  Promise.resolve(handle(msg)).catch((e) => { if (msg?.id !== undefined) fail(msg.id, -32603, String(e?.message || e)); });
+  chain = chain.then(() => handle(msg)).catch((e) => { if (msg?.id !== undefined) fail(msg.id, -32603, String(e?.message || e)); });
 });
