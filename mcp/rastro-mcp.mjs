@@ -137,6 +137,36 @@ const TOOLS = [
     run: (a) => api("POST", "/api/v1/cve", { q: a.q }),
   },
   {
+    name: "lab_autoenrich",
+    description: "Encadenado automático: por cada servicio con versión del trabajo, busca CVEs en NVD y los añade como candidatos (estado investigando) si no están. No explota nada; solo propone qué mirar.",
+    schema: S("Trabajo.", { job: str("id del trabajo") }, ["job"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "autoenrich", job: a.job }),
+  },
+  {
+    name: "lab_playbook",
+    description: "Guía de enumeración para los servicios del trabajo (recon, no explotación): comandos típicos por servicio (http, smb, ssh, ldap, dns...) con el host puesto. Sin name/port, devuelve las guías de todos los servicios encontrados.",
+    schema: S("Guía.", { job: str("id del trabajo"), name: str("servicio, p. ej. http, smb (opcional)"), port: { type: "integer", description: "puerto (opcional)" } }, ["job"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "playbook", job: a.job, name: a.name, port: a.port }),
+  },
+  {
+    name: "lab_stats",
+    description: "Métricas del cuaderno: trabajos, hallazgos por gravedad, servicios y CVEs (cuántos explotados). Para que el equipo mida su avance.",
+    schema: S("Sin parámetros."),
+    run: () => api("POST", "/api/v1/lab", { action: "stats" }),
+  },
+  {
+    name: "lesson_add",
+    description: "Guarda una lección reutilizable (qué funcionó, truco, gotcha) en la memoria del equipo. La siguiente máquina parecida empieza más lista.",
+    schema: S("Lección.", { text: str("la lección, concreta"), service: str("servicio relacionado (opcional)"), tags: { type: "array", items: { type: "string" }, description: "etiquetas (opcional)" } }, ["text"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "lesson_add", text: a.text, service: a.service, tags: a.tags }),
+  },
+  {
+    name: "lesson_search",
+    description: "Busca en la memoria del equipo lecciones por servicio o palabra, antes de atacar una máquina parecida.",
+    schema: S("Búsqueda.", { q: str("palabra (opcional)"), service: str("servicio (opcional)") }),
+    run: (a) => api("POST", "/api/v1/lab", { action: "lesson_search", q: a.q, service: a.service }),
+  },
+  {
     name: "domain_report",
     description: "Defensa: informe de exposición de un DOMINIO de empresa — correo (SPF/DMARC), seguridad web, dominios parecidos registrados y qué dice la IA. Nivel empresa, sin datos personales. Úsalo sobre dominios tuyos o de clientes con permiso.",
     schema: S("Dominio a analizar.", { domain: str("dominio, p. ej. ejemplo.es"), refresh: { type: "boolean", description: "fuerza regenerar en vez de usar la caché de 7 días" } }, ["domain"]),

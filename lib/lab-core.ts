@@ -197,7 +197,7 @@ export function safeHost(host: string): string {
   return /^[a-z0-9.:_-]{1,255}$/i.test(h) ? h : "";
 }
 
-export const CHEAT_TOOLS = ["nmap", "ffuf", "gobuster", "dirb"] as const;
+export const CHEAT_TOOLS = ["vpn", "nmap", "ffuf", "gobuster", "dirb"] as const;
 export type CheatTool = (typeof CHEAT_TOOLS)[number];
 /** Chuleta: [clave del titulo, comando]. Usa el host del trabajo y las rutas de diccionario guardadas. */
 export function cheatSheet(tool: CheatTool, wordlists: LabWordlist[], host: string): Array<[string, string]> {
@@ -205,6 +205,13 @@ export function cheatSheet(tool: CheatTool, wordlists: LabWordlist[], host: stri
   const H = safeHost(host) || "<host>";
   const DIR = wl("dir"), SUB = wl("sub"), FFUF = wl("ffuf");
   const C: Record<CheatTool, Array<[string, string]>> = {
+    vpn: [
+      ["connect", "sudo openvpn ~/htb.ovpn"],
+      ["background", "sudo openvpn --config ~/htb.ovpn --daemon --log ~/htb-vpn.log"],
+      ["myip", "ip addr show tun0 | grep -oP 'inet \\K[0-9.]+'  # tu LHOST para las reverse shells"],
+      ["check", "ping -c1 10.10.10.1  # ¿llega a la red de HTB?"],
+      ["down", "sudo pkill openvpn"],
+    ],
     nmap: [["allPorts", `nmap -p- --min-rate 5000 -T4 -oN nmap-allports.txt ${H}`], ["versions", `nmap -sVC -p <puertos> -oN nmap-serv.txt ${H}`], ["udp", `nmap -sU --top-ports 50 ${H}`], ["help", "nmap -h"]],
     ffuf: [["dirs", `ffuf -w ${DIR}:FUZZ -u http://${H}/FUZZ -e .php,.txt,.html -ic -o ffuf.json`], ["vhosts", `ffuf -w ${SUB}:FUZZ -u http://${H}/ -H "Host: FUZZ.<dominio>" -fs <tam>`], ["raft", `ffuf -w ${FFUF}:FUZZ -u http://${H}/FUZZ -ic`], ["help", "ffuf -h"]],
     gobuster: [["dirs", `gobuster dir -u http://${H} -w ${DIR} -x php,txt,html -o gobuster.txt`], ["vhosts", `gobuster vhost -u http://${H} -w ${SUB} --append-domain`], ["help", "gobuster dir -h"]],
