@@ -25,12 +25,14 @@ export interface LabHypothesis { txt: string; state: HypothesisState }
 export interface LabFinding { title: string; where: string; family: Family; severity: Severity; status: FindingState; notes: string; at: string }
 export interface LabTarget { name: string; host: string; scope: string; started: string; authorized: boolean }
 export interface LabCve { id: string; software: string; version: string; severity: Severity; state: CveState; notes: string; ref: string }
-export interface LabProject { name: string; created: string; target: LabTarget; steps: LabStep[]; hypotheses: LabHypothesis[]; cves: LabCve[]; tools: string[]; findings: LabFinding[] }
+export interface LabService { port: number; proto: "tcp" | "udp"; name: string; version: string; notes: string }
+export interface LabLog { at: string; tool: string; cmd: string; output: string }
+export interface LabProject { name: string; created: string; target: LabTarget; steps: LabStep[]; hypotheses: LabHypothesis[]; cves: LabCve[]; services: LabService[]; logs: LabLog[]; tools: string[]; findings: LabFinding[] }
 export interface LabWordlist { id: string; cat: string; path: string }
 export interface LabServer { name: string; cmd: string }
 export interface LabWorkspace { v: 1; active: string; projects: Record<string, LabProject>; wordlists: LabWordlist[]; servers: LabServer[] }
 
-export const LIMITS = { projects: 100, steps: 40, hypotheses: 60, cves: 80, tools: 60, findings: 200, wordlists: 40, servers: 12, bytes: 1_200_000 } as const;
+export const LIMITS = { projects: 100, steps: 40, hypotheses: 60, cves: 80, services: 80, logs: 60, logBytes: 20_000, tools: 60, findings: 200, wordlists: 40, servers: 12, bytes: 4_000_000 } as const;
 
 export const DEFAULT_STEPS: Record<"es" | "en", string[]> = {
   es: ["Escaneo de puertos y servicios", "Identificar tecnología web", "Enumerar vhosts / subdominios", "Directorios y ficheros (ffuf)", "Mapear la app por Burp", "Explotación", "Redactar el informe"],
@@ -70,6 +72,8 @@ export function newProject(name: string, locale: "es" | "en", now = new Date()):
     steps: DEFAULT_STEPS[locale].map((t) => ({ t, ok: false })),
     hypotheses: [],
     cves: [],
+    services: [],
+    logs: [],
     tools: [],
     findings: [],
   };
@@ -103,6 +107,15 @@ function cleanProject(raw: unknown, locale: "es" | "en"): LabProject {
       const o = obj(c);
       return { id: normalizeCveId(str(o.id, 40)), software: str(o.software, 120), version: str(o.version, 60), severity: oneOf(o.severity, SEVERITIES, "medium"), state: oneOf(o.state, CVE_STATES, "investigating"), notes: str(o.notes, 6000), ref: cleanUrl(str(o.ref, 500)) };
     }).filter((c) => c.id || c.software),
+    services: arr(p.services).slice(0, LIMITS.services).map((sv) => {
+      const o = obj(sv);
+      const port = Number(o.port);
+      return { port: Number.isInteger(port) && port > 0 && port < 65536 ? port : 0, proto: oneOf(o.proto, ["tcp", "udp"] as const, "tcp"), name: str(o.name, 80), version: str(o.version, 160), notes: str(o.notes, 2000) };
+    }).filter((sv) => sv.port > 0 || sv.name),
+    logs: arr(p.logs).slice(-LIMITS.logs).map((l) => {
+      const o = obj(l);
+      return { at: str(o.at, 40), tool: str(o.tool, 40), cmd: str(o.cmd, 500), output: str(o.output, LIMITS.logBytes) };
+    }).filter((l) => l.cmd || l.output),
     tools: [...new Set(arr(p.tools).map((x) => str(x, 60).trim()).filter(Boolean))].slice(0, LIMITS.tools),
     findings: arr(p.findings).slice(0, LIMITS.findings).map((f) => {
       const o = obj(f);
@@ -197,7 +210,7 @@ export function cheatSheet(tool: CheatTool, wordlists: LabWordlist[], host: stri
   return C[tool];
 }
 
-export interface ReportLabels { target: string; host: string; scope: string; started: string; findings: string; none: string; severity: string; family: string; where: string; status: string; hypotheses: string; steps: string; tools: string; cves: string; cveSoftware: string; families: Record<Family, string>; severities: Record<Severity, string>; states: Record<FindingState, string>; hypothesisStates: Record<HypothesisState, string>; cveStates: Record<CveState, string> }
+export interface ReportLabels { target: string; host: string; scope: string; started: string; findings: string; none: string; severity: string; family: string; where: string; status: string; hypotheses: string; steps: string; tools: string; cves: string; cveSoftware: string; services: string; families: Record<Family, string>; severities: Record<Severity, string>; states: Record<FindingState, string>; hypothesisStates: Record<HypothesisState, string>; cveStates: Record<CveState, string> }
 
 const SEVERITY_ORDER: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
 
@@ -217,6 +230,14 @@ export function toMarkdown(p: LabProject, L: ReportLabels): string {
     lines.push(`- **${L.status}:** ${L.states[f.status]}`, "");
     if (f.notes) lines.push(f.notes, "");
   });
+  if (p.services.length) {
+    lines.push(`## ${L.services}`, "");
+    [...p.services].sort((a, b) => a.port - b.port).forEach((sv) => {
+      const head = [`${sv.port}/${sv.proto}`, sv.name, sv.version].filter(Boolean).join(" · ");
+      lines.push(`- ${head}${sv.notes ? ` — ${sv.notes.replace(/\n+/g, " ")}` : ""}`);
+    });
+    lines.push("");
+  }
   if (p.cves.length) {
     lines.push(`## ${L.cves}`, "");
     [...p.cves].sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity]).forEach((c) => {

@@ -41,3 +41,27 @@ Pídele a Claude cosas como:
 - El Lab y el guardián requieren Rastro Pro (o cuenta de administrador).
 - Rastro Lab es un cuaderno: no ejecuta escaneos ni exploits. Organiza y redacta. Los comandos los corres tú en tu terminal o tu VPS.
 - `domain_report` trabaja a nivel de empresa (dominio), sin datos personales. Úsalo sobre dominios tuyos o de clientes con permiso.
+
+## Ejecutor local de reconocimiento (opcional, avanzado)
+
+`mcp/rastro-runner.mjs` corre en **tu** máquina de ataque (tu VPS con la VPN del lab), no en Rastro. Deja que Claude lance reconocimiento sobre el objetivo del trabajo y guarde la salida en el Lab, para ir acumulando la info máquina tras máquina.
+
+- **Solo reconocimiento/enumeración** con lista blanca: `nmap_fast`, `nmap_services`, `nmap_udp`, `whatweb`, `curl_headers`, `ffuf_dirs`, `gobuster_dirs`. **No ejecuta exploits ni shells**: eso lo corres tú a mano.
+- Salvaguardas: el trabajo debe estar marcado **autorizado**, el host debe entrar en `RASTRO_RUNNER_SCOPE`, no pasa por shell (el host va como argumento atado) y, sin `RASTRO_RUNNER_ENABLE=1`, solo hace **simulacro** (te enseña el comando, no lo lanza).
+
+```json
+{
+  "mcpServers": {
+    "rastro-runner": {
+      "command": "node",
+      "args": ["/ruta/a/rastro/mcp/rastro-runner.mjs"],
+      "env": {
+        "RASTRO_API_KEY": "rk_live_tu_clave",
+        "RASTRO_RUNNER_SCOPE": "10.10.*,10.129.*,*.htb",
+        "RASTRO_RUNNER_ENABLE": "1"
+      }
+    }
+  }
+}
+```
+Flujo típico con Claude: "fija el objetivo 10.10.11.x como autorizado", "lanza un nmap", "guarda los servicios", "¿qué hipótesis tienes?", "añade el hallazgo y dame el informe". La explotación la razonáis juntos y la ejecutas tú.

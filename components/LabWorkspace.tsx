@@ -103,7 +103,7 @@ export function LabWorkspace({ initial, initialUpdatedAt, messages, locale }: { 
   const labels: ReportLabels = {
     target: tr("lab.report.target"), host: tr("lab.report.host"), scope: tr("lab.report.scope"), started: tr("lab.report.started"),
     findings: tr("lab.find.title"), none: tr("lab.report.none"), severity: tr("lab.find.severity"), family: tr("lab.find.family"), where: tr("lab.find.where"), status: tr("lab.find.status"),
-    hypotheses: tr("lab.hyp.title"), steps: tr("lab.steps.title"), tools: tr("lab.tools.title"), cves: tr("lab.cve.title"), cveSoftware: tr("lab.cve.software"),
+    hypotheses: tr("lab.hyp.title"), steps: tr("lab.steps.title"), tools: tr("lab.tools.title"), cves: tr("lab.cve.title"), cveSoftware: tr("lab.cve.software"), services: tr("lab.svc.title"),
     families: Object.fromEntries(FAMILIES.map((f) => [f, tr(`lab.find.families.${f}`)])) as Record<Family, string>,
     severities: Object.fromEntries(SEVERITIES.map((s) => [s, tr(`lab.find.severities.${s}`)])) as Record<Severity, string>,
     states: Object.fromEntries(FINDING_STATES.map((s) => [s, tr(`lab.find.states.${s}`)])) as Record<FindingState, string>,
@@ -296,6 +296,49 @@ export function LabWorkspace({ initial, initialUpdatedAt, messages, locale }: { 
         <CveForm tr={tr} onAdd={(c) => project((pr) => { pr.cves.unshift(c); })} />
       </section>
 
+      {/* Servicios / puertos */}
+      <section className={CARD}>
+        <h2 className="h3 text-ink">{tr("lab.svc.title")}{p.services.length > 0 && <span className="ml-2 text-faint">{p.services.length}</span>}</h2>
+        {p.services.length === 0 ? (
+          <p className="mt-2 text-[13.5px] text-muted">{tr("lab.svc.empty")}</p>
+        ) : (
+          <ul className="mt-3 grid gap-1.5">
+            {[...p.services].sort((a, b) => a.port - b.port).map((sv, i) => (
+              <li key={i} className="flex items-center gap-3 rounded-[12px] bg-surface-2 px-3.5 py-2.5 text-[13.5px]">
+                <span className="num shrink-0 font-mono text-accent">{sv.port}/{sv.proto}</span>
+                <span className="min-w-0 flex-1 truncate text-ink">{sv.name}{sv.version ? <span className="text-faint"> · {sv.version}</span> : null}</span>
+                <button type="button" aria-label={tr("lab.logs.remove")} className="shrink-0 px-1.5 text-[16px] text-faint hover:text-ink" onClick={() => project((pr) => { const idx = pr.services.findIndex((x) => x.port === sv.port && x.proto === sv.proto); if (idx >= 0) pr.services.splice(idx, 1); })}>×</button>
+              </li>
+            ))}
+          </ul>
+        )}
+        <AddService tr={tr} onAdd={(sv) => project((pr) => { if (pr.services.length < 80) pr.services.push(sv); })} />
+      </section>
+
+      {/* Registros de escaneo */}
+      {p.logs.length > 0 && (
+        <section className={CARD}>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="h3 text-ink">{tr("lab.logs.title")} <span className="text-faint">{p.logs.length}</span></h2>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => project((pr) => { pr.logs = []; })}>{tr("lab.logs.clear")}</button>
+          </div>
+          <p className="note mt-1">{tr("lab.logs.hint")}</p>
+          <ul className="mt-3 grid gap-2">
+            {[...p.logs].reverse().map((l, i) => (
+              <li key={i}>
+                <details className="card group !bg-surface-2 p-0">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3.5 py-2.5 [&::-webkit-details-marker]:hidden">
+                    <span className="min-w-0 font-mono text-[12.5px]"><span className="text-accent">{l.tool || "cmd"}</span> <span className="text-muted">{l.cmd}</span></span>
+                    <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0 text-faint transition-transform group-open:rotate-180" aria-hidden="true"><path d="m5 7.5 5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </summary>
+                  <pre className="overflow-x-auto border-t border-line px-3.5 py-3 font-mono text-[12px] leading-relaxed text-muted whitespace-pre-wrap break-words">{l.output}</pre>
+                </details>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* Hallazgos */}
       <section className={CARD}>
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -441,6 +484,21 @@ function CveForm({ tr, onAdd }: { tr: (key: string, vars?: Record<string, string
       </div>
       <div><label className={LABEL} htmlFor="lab-cve-notes">{tr("lab.cve.notes")}</label><textarea id="lab-cve-notes" className="field min-h-[76px]" value={notes} onChange={(e) => setNotes(e.target.value)} /></div>
       <button type="button" className="btn btn-primary self-start" onClick={add}>{tr("lab.cve.add")}</button>
+    </div>
+  );
+}
+
+function AddService({ tr, onAdd }: { tr: (key: string, vars?: Record<string, string | number>) => string; onAdd: (sv: { port: number; proto: "tcp" | "udp"; name: string; version: string; notes: string }) => void }) {
+  const [port, setPort] = useState("");
+  const [name, setName] = useState("");
+  const [version, setVersion] = useState("");
+  const add = () => { const n = parseInt(port, 10); if (!(n > 0 && n < 65536) && !name.trim()) return; onAdd({ port: n > 0 && n < 65536 ? n : 0, proto: "tcp", name: name.trim().slice(0, 80), version: version.trim().slice(0, 160), notes: "" }); setPort(""); setName(""); setVersion(""); };
+  return (
+    <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+      <input className="field font-mono sm:w-[22%]" value={port} inputMode="numeric" placeholder={tr("lab.svc.port")} onChange={(e) => setPort(e.target.value)} />
+      <input className="field sm:w-[30%]" value={name} placeholder={tr("lab.svc.name")} onChange={(e) => setName(e.target.value)} />
+      <input className="field flex-1" value={version} placeholder={tr("lab.svc.version")} onChange={(e) => setVersion(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); add(); } }} />
+      <button type="button" className="btn btn-secondary btn-sm shrink-0" onClick={add}>{tr("lab.svc.add")}</button>
     </div>
   );
 }

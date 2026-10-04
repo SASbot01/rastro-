@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { apiError, apiJson, authenticate, isIdentity, preflight } from "@/lib/api-auth";
-import { canUseLab, jobSummary, labAddCve, labAddFinding, labAddHypothesis, labCreateJob, loadWorkspace, reportLabels, saveWorkspace, toMarkdown } from "@/lib/lab";
+import { canUseLab, jobSummary, labAddCve, labAddFinding, labAddHypothesis, labAddLog, labAddService, labCreateJob, labSetStep, labSetTarget, loadWorkspace, reportLabels, saveWorkspace, toMarkdown } from "@/lib/lab";
 import { isLocale, type Locale } from "@/lib/i18n";
 
 /**
@@ -21,6 +21,10 @@ const body = z.discriminatedUnion("action", [
   z.object({ action: z.literal("add_finding"), job: z.string().min(1), title: z.string().trim().min(1).max(200), where: z.string().trim().max(500).optional(), family: z.string().optional(), severity: z.string().optional(), status: z.string().optional(), notes: z.string().max(8000).optional() }),
   z.object({ action: z.literal("add_cve"), job: z.string().min(1), id: z.string().trim().max(40).optional(), software: z.string().trim().max(120).optional(), version: z.string().trim().max(60).optional(), severity: z.string().optional(), state: z.string().optional(), notes: z.string().max(6000).optional(), ref: z.string().trim().max(500).optional() }),
   z.object({ action: z.literal("add_hypothesis"), job: z.string().min(1), text: z.string().trim().min(1).max(2000), state: z.string().optional() }),
+  z.object({ action: z.literal("set_target"), job: z.string().min(1), name: z.string().trim().max(160).optional(), host: z.string().trim().max(255).optional(), scope: z.string().trim().max(2000).optional(), started: z.string().trim().max(40).optional(), authorized: z.boolean().optional() }),
+  z.object({ action: z.literal("add_service"), job: z.string().min(1), port: z.number().int().min(1).max(65535).optional(), proto: z.enum(["tcp", "udp"]).optional(), name: z.string().trim().max(80).optional(), version: z.string().trim().max(160).optional(), notes: z.string().max(2000).optional() }),
+  z.object({ action: z.literal("add_log"), job: z.string().min(1), tool: z.string().trim().max(40).optional(), cmd: z.string().trim().max(500).optional(), output: z.string().max(20000).optional() }),
+  z.object({ action: z.literal("set_step"), job: z.string().min(1), text: z.string().trim().max(200).optional(), index: z.number().int().min(0).optional(), done: z.boolean().optional() }),
 ]);
 
 export async function GET(request: Request) {
@@ -57,6 +61,10 @@ export async function POST(request: Request) {
   else if (data.action === "add_finding") { ok = labAddFinding(workspace, data.job, data); jobId = data.job; }
   else if (data.action === "add_cve") { ok = labAddCve(workspace, data.job, data); jobId = data.job; }
   else if (data.action === "add_hypothesis") { ok = labAddHypothesis(workspace, data.job, data.text, data.state); jobId = data.job; }
+  else if (data.action === "set_target") { ok = labSetTarget(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "add_service") { ok = labAddService(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "add_log") { ok = labAddLog(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "set_step") { ok = labSetStep(workspace, data.job, data); jobId = data.job; }
   if (!ok || !jobId) return apiError(422, "not_applied", "No se pudo aplicar (trabajo inexistente o límite alcanzado).");
 
   const updatedAt = await saveWorkspace(auth.user.id, workspace, locale);

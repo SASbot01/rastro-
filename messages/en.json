@@ -2308,6 +2308,21 @@
         "patched": "patched",
         "not_applicable": "not applicable"
       }
+    },
+    "svc": {
+      "title": "Services / ports",
+      "empty": "No services yet. Recon (nmap) over MCP adds them, or do it by hand.",
+      "port": "Port",
+      "name": "Service",
+      "version": "Version/banner",
+      "add": "Add service"
+    },
+    "logs": {
+      "title": "Scan logs",
+      "hint": "Output from nmap, ffuf, curl… the runner stores here, machine after machine.",
+      "empty": "No logs yet.",
+      "remove": "Delete",
+      "clear": "Clear"
     }
   }
 }

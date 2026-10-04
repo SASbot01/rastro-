@@ -83,6 +83,30 @@ const TOOLS = [
     run: (a) => api("POST", "/api/v1/lab", { action: "add_hypothesis", job: a.job, text: a.text, state: a.state }),
   },
   {
+    name: "lab_set_target",
+    description: "Fija el objetivo del trabajo: host/IP, alcance y si está autorizado. Marca authorized solo en laboratorios o programas con permiso.",
+    schema: S("Objetivo.", { job: str("id del trabajo"), host: str("IP o host"), scope: str("alcance autorizado"), started: str("inicio"), authorized: { type: "boolean", description: "tienes permiso para probarlo" } }, ["job"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "set_target", ...a }),
+  },
+  {
+    name: "lab_add_service",
+    description: "Registra un servicio/puerto encontrado (de un nmap): puerto, protocolo, servicio y versión. Si el puerto ya existe, lo actualiza.",
+    schema: S("Servicio.", { job: str("id del trabajo"), port: { type: "integer", description: "puerto" }, proto: { type: "string", enum: ["tcp", "udp"] }, name: str("servicio, p. ej. http, ssh"), version: str("versión/banner"), notes: str("notas") }, ["job"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "add_service", ...a }),
+  },
+  {
+    name: "lab_add_log",
+    description: "Guarda la salida de un escaneo o comando en el trabajo (nmap, ffuf, curl...), para ir acumulando la info de la máquina. La salida se recorta.",
+    schema: S("Registro de escaneo.", { job: str("id del trabajo"), tool: str("herramienta, p. ej. nmap"), cmd: str("comando ejecutado"), output: str("salida (se guardan ~20 KB)") }, ["job"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "add_log", ...a }),
+  },
+  {
+    name: "lab_set_step",
+    description: "Marca un paso del plan como hecho (por índice o por texto) o añade un paso nuevo.",
+    schema: S("Paso.", { job: str("id del trabajo"), text: str("texto del paso (si es nuevo o para buscarlo)"), index: { type: "integer", description: "índice del paso" }, done: { type: "boolean", description: "hecho o no" } }, ["job"]),
+    run: (a) => api("POST", "/api/v1/lab", { action: "set_step", ...a }),
+  },
+  {
     name: "lab_report_markdown",
     description: "Devuelve el informe del trabajo en Markdown (hallazgos ordenados por gravedad, CVE, hipótesis, pasos), listo para pegar en la plataforma de bug bounty.",
     schema: S("Identifica el trabajo.", { job: str("id del trabajo") }, ["job"]),
