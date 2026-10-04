@@ -2336,6 +2336,19 @@
         "upgrade": "Mejorar TTY",
         "transfer": "Transferir ficheros"
       }
+    },
+    "find_cve": {
+      "title": "Buscar CVE / exploit",
+      "hint": "Escribe un CVE (CVE-2025-64512) o un software (pdfminer.six). Te traemos la ficha de NVD y los enlaces al PoC público. Rastro no aloja exploits.",
+      "ph": "CVE o software…",
+      "search": "Buscar",
+      "add": "Añadir al trabajo",
+      "added": "Añadido",
+      "poc": "PoC / exploit",
+      "refs": "Referencias",
+      "sources": "Buscar el exploit en",
+      "none": "Sin datos en NVD; usa los enlaces de abajo.",
+      "searching": "Buscando…"
     }
   },
   "toolkit": {

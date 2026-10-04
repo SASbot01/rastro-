@@ -125,6 +125,18 @@ const TOOLS = [
     run: (a) => api("POST", "/api/v1/lab", { action: "report", job: a.job }),
   },
   {
+    name: "cve_lookup",
+    description: "Busca un CVE (p. ej. CVE-2025-64512): descripción oficial (NVD), CVSS, referencias y enlaces a las fuentes públicas del PoC (Exploit-DB, GitHub, aviso). Rastro no aloja exploits; enlaza a donde ya son públicos. Para laboratorios/pentest autorizado.",
+    schema: S("CVE.", { cve: str("identificador, p. ej. CVE-2025-64512") }, ["cve"]),
+    run: (a) => api("POST", "/api/v1/cve", { cve: a.cve }),
+  },
+  {
+    name: "exploit_search",
+    description: "Busca exploits/PoC públicos por software o palabra (p. ej. \"pdfminer.six\", \"Apache 2.4.68\"): devuelve enlaces a Exploit-DB, GitHub, NVD y Vulners. No ejecuta nada.",
+    schema: S("Búsqueda.", { q: str("software o palabra clave") }, ["q"]),
+    run: (a) => api("POST", "/api/v1/cve", { q: a.q }),
+  },
+  {
     name: "domain_report",
     description: "Defensa: informe de exposición de un DOMINIO de empresa — correo (SPF/DMARC), seguridad web, dominios parecidos registrados y qué dice la IA. Nivel empresa, sin datos personales. Úsalo sobre dominios tuyos o de clientes con permiso.",
     schema: S("Dominio a analizar.", { domain: str("dominio, p. ej. ejemplo.es"), refresh: { type: "boolean", description: "fuerza regenerar en vez de usar la caché de 7 días" } }, ["domain"]),

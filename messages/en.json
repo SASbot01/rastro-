@@ -2336,6 +2336,19 @@
         "upgrade": "Upgrade TTY",
         "transfer": "Transfer files"
       }
+    },
+    "find_cve": {
+      "title": "Find CVE / exploit",
+      "hint": "Type a CVE (CVE-2025-64512) or software (pdfminer.six). We fetch the NVD entry and links to the public PoC. Rastro hosts no exploits.",
+      "ph": "CVE or software…",
+      "search": "Search",
+      "add": "Add to job",
+      "added": "Added",
+      "poc": "PoC / exploit",
+      "refs": "References",
+      "sources": "Find the exploit on",
+      "none": "No NVD data; use the links below.",
+      "searching": "Searching…"
     }
   },
   "toolkit": {
