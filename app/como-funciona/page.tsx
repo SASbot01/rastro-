@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { getMessages, translator } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
+import { Pillars, CtaBand, SectionLabel } from "@/components/landing/ToolSections";
 
 export async function generateMetadata(): Promise<Metadata> {
   const tr = translator(getMessages(await getLocale()));
@@ -24,9 +25,14 @@ export default async function HowPage() {
       <main className="page py-10 sm:py-14">
         <p className="eyebrow">Rastro</p>
         <h1 className="mt-2 h1 text-ink">{tr("how.pageTitle")}</h1>
-        <p className="mt-3 max-w-[60ch] text-[16px] leading-relaxed text-muted">{tr("how.pageSubtitle")}</p>
+        <p className="lead mt-3 max-w-[60ch]">{tr("how.pageSubtitle")}</p>
 
-        <div className="mt-8 grid gap-4">
+        <section className="mt-10">
+          <SectionLabel>{tr("toolkit.common.howItWorks")}</SectionLabel>
+          <div className="mt-4"><Pillars items={messages.toolkit.how.pillars} /></div>
+        </section>
+
+        <div className="mt-12 grid gap-4">
           {sections.map((sec) => (
             <section key={sec.t} className="card p-5 sm:p-6">
               <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-ink">{sec.t}</h2>
@@ -50,6 +56,8 @@ export default async function HowPage() {
             </div>
           </section>
         </div>
+
+        <div className="mt-12"><CtaBand title={tr("landing.formTitle")} body={tr("landing.formBody")} cta={tr("landing.ctaPrimary")} href="/#form" secondaryCta={tr("toolkit.hub.title")} secondaryHref="/herramientas" /></div>
       </main>
       <SiteFooter messages={messages} />
     </>
