@@ -12,6 +12,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { assistantsConfigured, AI_RECTIFY } from "@/lib/assistants";
 import { backfillSnapshots, knowledgeLevel, type Snapshot, type WatchProvider } from "@/lib/ai-watch";
 import { changeLine } from "@/lib/ai-watch-lines";
+import { Pillars, ToolFaq, TrustRow, SectionLabel, ExampleFrame } from "@/components/landing/ToolSections";
 
 export const maxDuration = 60;
 
@@ -70,6 +71,7 @@ export default async function AiMemoryPage({ searchParams }: { searchParams: Pro
         <p className="eyebrow">{tr("aiWatch.eyebrow")}</p>
         <h1 className="h1 mt-2.5 text-ink">{tr("aiWatch.title")}</h1>
         <p className="lead mt-3 max-w-[64ch] !text-[15.5px]">{tr("aiWatch.subtitle")}</p>
+        <TrustRow items={messages.toolkit.ia.trust} className="mt-5" />
 
         <div className={"card mt-6 flex flex-wrap items-center gap-3 px-5 py-4 " + (pro && user.monitoring ? "card-accent" : "")}>
           <p className="min-w-0 flex-1 basis-[220px] text-[14px] leading-relaxed text-muted">
@@ -86,10 +88,34 @@ export default async function AiMemoryPage({ searchParams }: { searchParams: Pro
         </div>
 
         {!latest ? (
-          <section className={CARD + " mt-5"}>
-            <p className="text-[15px] leading-relaxed text-muted">{tr("aiWatch.empty")}</p>
-            <Link href="/#form" className="mt-4 btn btn-primary">{tr("aiWatch.emptyCta")}</Link>
-          </section>
+          <>
+            <section className={CARD + " card-glow card-accent mt-5"}>
+              <p className="text-[15px] leading-relaxed text-ink">{messages.toolkit.ia.emptyLead}</p>
+              <Link href="/#form" className="mt-4 btn btn-primary">{tr("aiWatch.emptyCta")}</Link>
+            </section>
+
+            <section className="mt-12">
+              <SectionLabel>{tr("toolkit.common.howItWorks")}</SectionLabel>
+              <div className="mt-4"><Pillars items={messages.toolkit.ia.pillars} labels={[tr("toolkit.common.whatItDoes"), tr("toolkit.common.whyItMatters"), tr("toolkit.common.whatYouGet")]} /></div>
+            </section>
+
+            <section className="reveal mt-12">
+              <h2 className="h2 text-ink">{messages.toolkit.ia.sampleTitle}</h2>
+              <ExampleFrame label={tr("toolkit.common.example")} note={tr("toolkit.common.sample")} className="mt-6">
+                <ol className="card relative grid gap-3 p-5 pl-9 before:absolute before:bottom-6 before:left-[25px] before:top-6 before:w-px before:bg-gradient-to-b before:from-accent/60 before:via-line-strong before:to-transparent">
+                  {messages.toolkit.ia.sampleTimeline.map((row) => (
+                    <li key={row.date} className="relative">
+                      <span aria-hidden="true" className={"absolute -left-[22px] top-[5px] h-[11px] w-[11px] rounded-full border-2 border-paper " + (row.tone === "warn" ? "bg-warn" : row.tone === "ok" ? "bg-accent" : "bg-line-strong")} />
+                      <p className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">{row.date}</p>
+                      <p className={"mt-0.5 text-[14.5px] leading-relaxed " + (row.tone === "muted" ? "text-muted" : "text-ink")}>{row.change}</p>
+                    </li>
+                  ))}
+                </ol>
+              </ExampleFrame>
+            </section>
+
+            <section className="mt-12"><ToolFaq title={tr("toolkit.common.faqTitle")} items={messages.toolkit.ia.faq} /></section>
+          </>
         ) : (
           <>
             <h2 className={"mt-9 " + SECTION_LABEL}>{tr("aiWatch.now")} · {fmt.format(new Date(latest.taken_at))}</h2>

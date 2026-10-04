@@ -7,6 +7,7 @@ import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isPro } from "@/lib/plan";
 import type { Simulation } from "@/lib/ai/simulate";
+import { Pillars, ToolFaq, CtaBand, TrustRow, SectionLabel, ExampleFrame } from "@/components/landing/ToolSections";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,8 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
   const s = sim?.content ?? null;
   const level = s ? levelOf(s.attackability) : "low";
   const visiblePhishing = s ? (pro ? s.phishing : s.phishing.slice(0, 1)) : [];
+  const k = messages.toolkit.sim;
+  const pillarLabels = [tr("toolkit.common.whatItDoes"), tr("toolkit.common.whyItMatters"), tr("toolkit.common.whatYouGet")];
 
   return (
     <>
@@ -50,7 +53,8 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
       <main className="page py-8 sm:py-12">
         <p className="eyebrow">{tr("sim.eyebrow")}</p>
         <h1 className="mt-2 h1 text-ink">{tr("sim.title")}</h1>
-        <p className="mt-2 max-w-[60ch] text-[15px] leading-relaxed text-muted">{tr("sim.subtitle")}</p>
+        <p className="lead mt-3 max-w-[60ch]">{tr("sim.subtitle")}</p>
+        <TrustRow items={k.trust} className="mt-5" />
 
         {e === "failed" && <p role="alert" className="mt-4 text-[13.5px] font-medium text-danger">{tr("sim.failed")}</p>}
         {ok === "sent" && <p className="mt-4 rounded-[12px] bg-accent-soft px-4 py-3 text-[14px] font-medium text-accent">{tr("sim.sentOk")}</p>}
@@ -174,6 +178,50 @@ export default async function SimulatorPage({ searchParams }: PageProps<"/simula
               <p className="px-1 text-[11.5px] leading-relaxed text-faint">{tr("sim.disclaimer")}</p>
             </div>
           </div>
+        )}
+
+        {/* Landing persuasiva: visible mientras no hay una simulación generada a la vista. */}
+        {!s && (
+          <>
+            <section className="mt-14">
+              <SectionLabel>{tr("toolkit.common.howItWorks")}</SectionLabel>
+              <div className="mt-4"><Pillars items={k.pillars} labels={pillarLabels} /></div>
+            </section>
+
+            <section className="reveal mt-14">
+              <h2 className="h2 text-ink">{k.exampleTitle}</h2>
+              <div className="mt-6 grid gap-3 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
+                <ExampleFrame label={tr("toolkit.common.example")} note={tr("toolkit.common.sample")}>
+                  <div className="card card-glow glow-warn p-5">
+                    <p className="text-[13px] text-muted">{k.exampleLevel}</p>
+                    <div className="mt-2 flex items-center gap-4">
+                      <div className="relative h-[92px] w-[92px] shrink-0">
+                        <svg viewBox="0 0 104 104" className="h-full w-full -rotate-90" aria-hidden="true">
+                          <circle cx="52" cy="52" r="46" fill="none" stroke="#262626" strokeWidth="9" />
+                          <circle cx="52" cy="52" r="46" fill="none" stroke="#ffb020" strokeWidth="9" strokeLinecap="round" strokeDasharray={2 * Math.PI * 46} strokeDashoffset={2 * Math.PI * 46 * (1 - Number(k.exampleScore) / 100)} />
+                        </svg>
+                        <span className="absolute inset-0 flex items-center justify-center text-[28px] font-semibold tracking-[-0.04em] text-warn">{k.exampleScore}</span>
+                      </div>
+                      <p className="text-[18px] font-semibold text-warn">{k.exampleLevelLabel}</p>
+                    </div>
+                  </div>
+                </ExampleFrame>
+                <article className="overflow-hidden card">
+                  <div className="flex items-center justify-between gap-3 bg-accent px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-black">
+                    <span>{tr("sim.tag")} · {k.exampleChannel}</span><span>1/3</span>
+                  </div>
+                  <div className="p-5">
+                    <p className="text-[16px] font-semibold text-ink">{k.exampleSubject}</p>
+                    <p className="mt-3 rounded-[12px] bg-surface-2 p-4 text-[14px] leading-relaxed text-ink">{k.exampleBody}</p>
+                    <div className="mt-4"><p className="eyebrow">{tr("sim.clues")}</p><p className="mt-1 flex gap-2 text-[13.5px] leading-relaxed text-muted"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />{k.exampleClue}</p></div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section className="mt-14"><ToolFaq title={tr("toolkit.common.faqTitle")} items={k.faq} /></section>
+            <div className="mt-6"><CtaBand title={tr("landing.formTitle")} body={tr("sim.noReportBody")} cta={tr("account.newReport")} href="/#form" secondaryCta={tr("how.footerLink")} secondaryHref="/como-funciona" /></div>
+          </>
         )}
       </main>
       <SiteFooter messages={messages} />

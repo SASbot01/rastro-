@@ -7,6 +7,7 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { teamLinks, teamPrices } from "@/lib/plan";
 import { canGenerateDomainReport } from "@/lib/domain-report";
+import { Pillars, ToolFaq, TrustRow, SectionLabel } from "@/components/landing/ToolSections";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +48,19 @@ export default async function TeamsLanding() {
       <main className="page py-12 sm:py-16">
         <p className="eyebrow">{tr("team.eyebrow")}</p>
         <h1 className="mt-2 h1 text-ink">{tr("team.title")}</h1>
-        <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-muted">{tr("team.subtitle")}</p>
+        <p className="lead mt-3 max-w-[62ch]">{tr("team.subtitle")}</p>
+        <TrustRow items={messages.toolkit.team.trust} className="mt-5" />
+
+        {/* Prueba social: el riesgo humano en una cifra */}
+        <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+          {[[messages.toolkit.team.stat1, messages.toolkit.team.stat1Label], [messages.toolkit.team.stat2, messages.toolkit.team.stat2Label]].map(([v, l]) => (
+            <li key={l} className="card card-glow flex items-center gap-4 p-5">
+              <span className="num shrink-0 text-[40px] text-accent">{v}</span>
+              <span className="text-[14px] leading-relaxed text-muted">{l}</span>
+            </li>
+          ))}
+        </ul>
+
         {user?.plan_kind === "team" ? (
           <Link href="/equipo" className="mt-6 btn btn-primary">{tr("team.dashTitle")} →</Link>
         ) : (
@@ -65,11 +78,23 @@ export default async function TeamsLanding() {
             <span className="shrink-0 text-[13.5px] font-semibold text-accent">{tr("domainReport.teamCard.cta")} →</span>
           </Link>
         )}
-        <ul className="mt-8 grid gap-3">
-          {features.map((f) => (
-            <li key={f} className="flex gap-2.5 text-[15px] leading-relaxed text-ink"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />{f}</li>
-          ))}
-        </ul>
+        {/* Tres ideas fuerza */}
+        <section className="mt-12">
+          <SectionLabel>{tr("toolkit.common.howItWorks")}</SectionLabel>
+          <div className="mt-4"><Pillars items={messages.toolkit.team.pillars} labels={[tr("toolkit.common.whatItDoes"), tr("toolkit.common.whyItMatters"), tr("toolkit.common.whatYouGet")]} /></div>
+        </section>
+
+        {/* Todo lo que incluye */}
+        <section className="mt-12">
+          <SectionLabel>{tr("toolkit.common.whatYouGet")}</SectionLabel>
+          <ul className="mt-4 grid gap-3">
+            {features.map((f) => (
+              <li key={f} className="card flex gap-3 p-4 text-[15px] leading-relaxed text-ink"><span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />{f}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-12"><ToolFaq title={tr("toolkit.common.faqTitle")} items={messages.toolkit.team.faq} /></section>
       </main>
       <SiteFooter messages={messages} />
     </>
