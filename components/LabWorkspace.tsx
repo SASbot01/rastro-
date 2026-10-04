@@ -7,6 +7,7 @@ import {
   cheatSheet, cveRef, isLegacy, newProject, normalizeCveId, progressOf, toMarkdown,
   type CheatTool, type CveState, type Family, type FindingState, type HypothesisState, type LabCve, type LabProject, type LabWorkspace as Workspace, type ReportLabels, type Severity,
 } from "@/lib/lab-core";
+import { PAYLOAD_CATS, buildPayloads, type PayloadCat } from "@/lib/lab-payloads-core";
 
 /**
  * Rastro Lab: cuaderno de laboratorios y bug bounty. Todo el estado vive en un
@@ -26,6 +27,7 @@ export function LabWorkspace({ initial, initialUpdatedAt, messages, locale }: { 
   const [ws, setWs] = useState<Workspace>(initial);
   const [save, setSave] = useState<SaveState>("idle");
   const [cheat, setCheat] = useState<CheatTool | null>(null);
+  const [payCat, setPayCat] = useState<PayloadCat>("revshell");
   const [copied, setCopied] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const base = useRef<string | null>(initialUpdatedAt);
@@ -313,6 +315,34 @@ export function LabWorkspace({ initial, initialUpdatedAt, messages, locale }: { 
           </ul>
         )}
         <AddService tr={tr} onAdd={(sv) => project((pr) => { if (pr.services.length < 80) pr.services.push(sv); })} />
+      </section>
+
+      {/* Payloads (chuleta) */}
+      <section className={CARD}>
+        <h2 className="h3 text-ink">{tr("lab.pay.title")}</h2>
+        <p className="note mt-1">{tr("lab.pay.hint")}</p>
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+          <div className="sm:w-[45%]"><label className={LABEL} htmlFor="lab-lhost">{tr("lab.pay.lhost")}</label><input id="lab-lhost" className="field font-mono" value={p.attacker.lhost} placeholder="10.10.14.x" spellCheck={false} autoCapitalize="none" onChange={(e) => project((pr) => { pr.attacker.lhost = e.target.value.slice(0, 255); })} /></div>
+          <div className="sm:w-[30%]"><label className={LABEL} htmlFor="lab-lport">{tr("lab.pay.lport")}</label><input id="lab-lport" className="field font-mono" value={p.attacker.lport} inputMode="numeric" onChange={(e) => project((pr) => { const n = parseInt(e.target.value, 10); if (n > 0 && n < 65536) pr.attacker.lport = n; })} /></div>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {PAYLOAD_CATS.map((c) => (
+            <button key={c} type="button" aria-pressed={payCat === c} className={"btn btn-sm " + (payCat === c ? "btn-primary" : "btn-secondary")} onClick={() => setPayCat(c)}>{tr(`lab.pay.cats.${c}`)}</button>
+          ))}
+        </div>
+        <ul className="mt-3 grid gap-2">
+          {buildPayloads({ lhost: p.attacker.lhost, lport: p.attacker.lport }, { cat: payCat }).map((pl) => (
+            <li key={pl.id}>
+              <button type="button" className="block w-full rounded-[12px] border border-line bg-paper px-3.5 py-2.5 text-left hover:border-accent" onClick={() => copy(pl.cmd, `pay-${pl.id}`)}>
+                <span className="flex items-center justify-between gap-2">
+                  <span className="text-[12.5px] font-semibold text-ink">{pl.label}{pl.os !== "any" && <span className="ml-1.5 font-normal text-faint">{pl.os}</span>}</span>
+                  <span className="shrink-0 text-[11.5px] font-medium text-accent">{copied === `pay-${pl.id}` ? tr("lab.pay.copied") : "⧉"}</span>
+                </span>
+                <span className="mt-1 block overflow-x-auto whitespace-pre font-mono text-[11.5px] leading-relaxed text-muted">{pl.cmd}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Registros de escaneo */}

@@ -5,6 +5,7 @@ import type { UserRow } from "@/lib/users";
 import { defaultWorkspace, sanitizeWorkspace, type LabWorkspace } from "@/lib/lab-core";
 
 export * from "@/lib/lab-core";
+export * from "@/lib/lab-payloads-core";
 
 /** Rastro Lab es para cuentas Pro y administradores. */
 export function canUseLab(user: UserRow | null): boolean {
@@ -81,6 +82,13 @@ export function labSetTarget(ws: LabWorkspace, jobId: string, t: { name?: string
   if (t.authorized !== undefined) p.target.authorized = Boolean(t.authorized);
   return true;
 }
+export function labSetAttacker(ws: LabWorkspace, jobId: string, a: { lhost?: string; lport?: number | string }): boolean {
+  const p = ws.projects[jobId]; if (!p) return false;
+  if (a.lhost !== undefined) { const lh = String(a.lhost).trim(); p.attacker.lhost = /^[a-z0-9.-]{0,255}$/i.test(lh) ? lh : p.attacker.lhost; }
+  if (a.lport !== undefined) { const lp = Number(a.lport); if (Number.isInteger(lp) && lp > 0 && lp < 65536) p.attacker.lport = lp; }
+  return true;
+}
+
 export function labAddService(ws: LabWorkspace, jobId: string, sv: { port?: number | string; proto?: string; name?: string; version?: string; notes?: string }): boolean {
   const p = ws.projects[jobId]; if (!p) return false;
   const port = Number(sv.port);

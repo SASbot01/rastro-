@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { apiError, apiJson, authenticate, isIdentity, preflight } from "@/lib/api-auth";
-import { canUseLab, jobSummary, labAddCve, labAddFinding, labAddHypothesis, labAddLog, labAddService, labCreateJob, labSetStep, labSetTarget, loadWorkspace, reportLabels, saveWorkspace, toMarkdown } from "@/lib/lab";
+import { buildPayloads, canUseLab, jobSummary, labAddCve, labAddFinding, labAddHypothesis, labAddLog, labAddService, labCreateJob, labSetAttacker, labSetStep, labSetTarget, loadWorkspace, reportLabels, saveWorkspace, toMarkdown, type PayloadCat } from "@/lib/lab";
 import { isLocale, type Locale } from "@/lib/i18n";
 
 /**
@@ -25,6 +25,8 @@ const body = z.discriminatedUnion("action", [
   z.object({ action: z.literal("add_service"), job: z.string().min(1), port: z.number().int().min(1).max(65535).optional(), proto: z.enum(["tcp", "udp"]).optional(), name: z.string().trim().max(80).optional(), version: z.string().trim().max(160).optional(), notes: z.string().max(2000).optional() }),
   z.object({ action: z.literal("add_log"), job: z.string().min(1), tool: z.string().trim().max(40).optional(), cmd: z.string().trim().max(500).optional(), output: z.string().max(20000).optional() }),
   z.object({ action: z.literal("set_step"), job: z.string().min(1), text: z.string().trim().max(200).optional(), index: z.number().int().min(0).optional(), done: z.boolean().optional() }),
+  z.object({ action: z.literal("set_attacker"), job: z.string().min(1), lhost: z.string().trim().max(255).optional(), lport: z.number().int().min(1).max(65535).optional() }),
+  z.object({ action: z.literal("payloads"), job: z.string().min(1), cat: z.enum(["revshell", "listener", "upgrade", "transfer"]).optional(), os: z.enum(["linux", "windows"]).optional(), file: z.string().trim().max(64).optional(), port: z.number().int().min(1).max(65535).optional() }),
 ]);
 
 export async function GET(request: Request) {
@@ -55,6 +57,11 @@ export async function POST(request: Request) {
     const p = workspace.projects[data.job];
     return p ? apiJson({ id: data.job, name: p.name, markdown: toMarkdown(p, reportLabels(locale)) }) : apiError(404, "not_found", "Trabajo no encontrado.");
   }
+  if (data.action === "payloads") {
+    const p = workspace.projects[data.job];
+    if (!p) return apiError(404, "not_found", "Trabajo no encontrado.");
+    return apiJson({ id: data.job, attacker: p.attacker, payloads: buildPayloads({ lhost: p.attacker.lhost, lport: p.attacker.lport, file: data.file, port: data.port }, { cat: data.cat as PayloadCat | undefined, os: data.os }) });
+  }
 
   let jobId: string | null = null; let ok = false;
   if (data.action === "create_job") { jobId = labCreateJob(workspace, locale, data.name, data.host, data.scope); ok = Boolean(jobId); }
@@ -65,6 +72,7 @@ export async function POST(request: Request) {
   else if (data.action === "add_service") { ok = labAddService(workspace, data.job, data); jobId = data.job; }
   else if (data.action === "add_log") { ok = labAddLog(workspace, data.job, data); jobId = data.job; }
   else if (data.action === "set_step") { ok = labSetStep(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "set_attacker") { ok = labSetAttacker(workspace, data.job, data); jobId = data.job; }
   if (!ok || !jobId) return apiError(422, "not_applied", "No se pudo aplicar (trabajo inexistente o límite alcanzado).");
 
   const updatedAt = await saveWorkspace(auth.user.id, workspace, locale);
