@@ -2324,5 +2324,412 @@
       "remove": "Borrar",
       "clear": "Vaciar"
     }
+  },
+  "toolkit": {
+    "common": {
+      "whatItDoes": "Qué hace",
+      "whyItMatters": "Por qué importa",
+      "whatYouGet": "Qué te llevas",
+      "howItWorks": "Cómo funciona",
+      "example": "Ejemplo",
+      "sample": "Datos de muestra · no son tuyos",
+      "seeHow": "Ver cómo funciona",
+      "faqTitle": "Preguntas frecuentes",
+      "free": "Gratis",
+      "pro": "Con Pro",
+      "included": "Incluido en Pro",
+      "private": "Solo sobre ti",
+      "backToTools": "Todas las herramientas"
+    },
+    "hub": {
+      "eyebrow": "Tus herramientas",
+      "title": "Todo lo que Rastro hace por ti",
+      "subtitle": "Cada herramienta tiene su sitio y su para qué. Empieza por las gratuitas; la vigilancia y las reclamaciones llegan con el informe y con Pro.",
+      "groups": {
+        "now": {
+          "label": "Protégete ahora",
+          "body": "Rápidas y gratis. Para usar hoy mismo, con o sin cuenta."
+        },
+        "watch": {
+          "label": "Vigila y reclama",
+          "body": "Lo que ocurre después del informe: seguimiento mes a mes y cartas que enviamos por ti."
+        },
+        "guides": {
+          "label": "Guías y empresas",
+          "body": "Material abierto y la versión para equipos."
+        }
+      },
+      "meta": {
+        "guardian": "Pega un mensaje y en segundos sabes si es una estafa.",
+        "extension": "Un robot en tu navegador que avisa de webs falsas.",
+        "simulador": "Vive el ataque que te harían, sin riesgo.",
+        "ayuda": "¿Ya ha pasado? Pasos claros para las primeras horas.",
+        "ia": "La respuesta literal de cada IA, guardada cada mes.",
+        "imagenes": "Las fotos que salen con tu nombre, con carta por sitio.",
+        "sitios": "Los sitios que más salen, con el trámite exacto para darte de baja.",
+        "equipos": "Un panel del riesgo humano sin ver los datos de nadie.",
+        "como": "Qué miramos, dónde y qué nunca hacemos."
+      },
+      "accountEyebrow": "Tu cuenta",
+      "accountTitle": "Vigilancia, buzón, cartas y plazos",
+      "accountBody": "Lo que Rastro mantiene vivo por ti cuando tienes informe y plan Pro.",
+      "lockedEyebrow": "Con Pro",
+      "lockedTitle": "Lo que se activa con Pro",
+      "lockedBody": "Entra y pide tu informe gratis; el seguimiento y las reclamaciones se activan con Pro."
+    },
+    "guardian": {
+      "trust": [
+        "No guardamos el mensaje",
+        "Respuesta en segundos",
+        "5 gratis al día"
+      ],
+      "ctaPrimary": "Comprobar un mensaje",
+      "pillars": [
+        {
+          "icon": "scan",
+          "t": "Lee el mensaje por ti",
+          "b": "Pega el SMS, correo o WhatsApp tal cual. Analizamos remitente, enlaces y tono y te damos un veredicto claro: estafa, sospechoso o legítimo."
+        },
+        {
+          "icon": "shield",
+          "t": "Detecta lo que va dirigido a ti",
+          "b": "Con tu cuenta cruzamos el mensaje con tu informe: si usa un dato tuyo filtrado o un sitio donde tienes cuenta, lo marcamos."
+        },
+        {
+          "icon": "check",
+          "t": "Te dice qué hacer, paso a paso",
+          "b": "Nada de tecnicismos: qué no pulsar, cómo verificarlo por el canal oficial y qué hacer si ya hiciste clic."
+        }
+      ],
+      "exampleTitle": "Así se ve un veredicto",
+      "exampleMsgTitle": "Mensaje recibido",
+      "exampleSender": "Remitente: +34 611 02 48 90",
+      "exampleBody": "AVISO BANCO: hemos detectado un acceso no autorizado. Verifica tu identidad en el siguiente enlace o tu cuenta será bloqueada: http://seguridad-bbva-clientes.com",
+      "exampleVerdict": "Estafa",
+      "exampleConfidence": "Confianza 96 %",
+      "exampleHeadline": "Suplanta a tu banco para robarte las claves",
+      "exampleReasons": [
+        "El enlace no es el dominio oficial del banco",
+        "Mete prisa y amenaza con bloqueo",
+        "Ningún banco pide verificar por SMS"
+      ],
+      "exampleAction": "No abras el enlace. Entra en tu banco por su app oficial y, si dudas, llama al número del dorso de tu tarjeta.",
+      "telegramTitle": "También en Telegram",
+      "telegramBody": "Reenvía cualquier mensaje raro a nuestro bot y te contesta al momento. Gratis, 5 al día, sin guardar nada.",
+      "telegramHandle": "@RastroGuardianBot",
+      "telegramCta": "Abrir en Telegram",
+      "freeTitle": "Gratis para todos, sin límites con Pro",
+      "freeBody": "5 comprobaciones al día gratis. Con Rastro Pro son ilimitadas y usamos tu informe para detectar estafas dirigidas a ti.",
+      "faq": [
+        {
+          "q": "¿Guardáis el mensaje que pego?",
+          "a": "No. Se analiza en el momento y no se almacena. Aun así, no pegues contraseñas ni códigos de un solo uso."
+        },
+        {
+          "q": "¿En qué os basáis para el veredicto?",
+          "a": "En el remitente, los enlaces, el tono y las técnicas típicas de estafa. Si tienes cuenta, también en lo que es público y filtrado de ti."
+        },
+        {
+          "q": "¿Sirve para WhatsApp y correo?",
+          "a": "Sí. Vale para SMS, correo, WhatsApp o cualquier texto. Si es una captura, copia el texto y pégalo."
+        },
+        {
+          "q": "¿Es un consejo definitivo?",
+          "a": "Es orientación automática para que decidas con calma. Ante la duda, verifica siempre por el canal oficial."
+        }
+      ]
+    },
+    "ia": {
+      "trust": [
+        "Respuesta literal",
+        "Foto cada mes",
+        "Aviso solo si cambia"
+      ],
+      "pillars": [
+        {
+          "icon": "sparkle",
+          "t": "Pregunta a las IA por ti",
+          "b": "Consultamos a ChatGPT, Gemini y Perplexity «¿quién es…?» y guardamos su respuesta literal, con fuentes."
+        },
+        {
+          "icon": "chart",
+          "t": "Mide cuánto saben",
+          "b": "Una nota del 0 al 100 por asistente: si aciertan tu trabajo, tu ciudad o tu contacto, o si te confunden con otra persona."
+        },
+        {
+          "icon": "bell",
+          "t": "Avisa cuando cambia",
+          "b": "Comparamos cada foto con la anterior. Si una IA aprende algo nuevo sobre ti, te lo decimos; si no cambia nada, no te molestamos."
+        }
+      ],
+      "sampleTitle": "Así crece la cronología",
+      "sampleTimeline": [
+        {
+          "date": "Marzo",
+          "change": "Primera foto: a partir de aquí comparamos.",
+          "tone": "muted"
+        },
+        {
+          "date": "Abril",
+          "change": "ChatGPT ahora dice dónde trabajas: Nortia Consulting.",
+          "tone": "warn"
+        },
+        {
+          "date": "Mayo",
+          "change": "Gemini ya no te mezcla con otra persona con tu nombre.",
+          "tone": "ok"
+        },
+        {
+          "date": "Junio",
+          "change": "Perplexity muestra un perfil de LinkedIn tuyo nuevo.",
+          "tone": "warn"
+        }
+      ],
+      "emptyLead": "Aún no hay ninguna foto tuya. Se crea con tu próximo informe y, a partir de ahí, vemos cómo cambia mes a mes.",
+      "faq": [
+        {
+          "q": "¿Qué le preguntáis a la IA?",
+          "a": "Lo mismo que preguntaría cualquiera: quién eres, dónde trabajas y vives, y qué datos de contacto tuyos hay públicos. Guardamos la respuesta tal cual."
+        },
+        {
+          "q": "¿Podéis borrar lo que dice de mí?",
+          "a": "No prometemos borrar. Te damos la respuesta literal y el enlace para pedir al proveedor que lo corrija o lo retire, y con Pro preparamos esa petición."
+        },
+        {
+          "q": "¿Cada cuánto lo revisáis?",
+          "a": "Con Pro y la vigilancia activa, cada semana en segundo plano. También puedes preguntar tú una vez al día."
+        }
+      ]
+    },
+    "sim": {
+      "trust": [
+        "Solo sobre ti",
+        "Enlaces ficticios",
+        "No se envía a nadie"
+      ],
+      "pillars": [
+        {
+          "icon": "bolt",
+          "t": "Recrea el ataque real",
+          "b": "Con lo que ya es público de ti montamos los mensajes y la llamada que usaría un estafador de verdad para colártela."
+        },
+        {
+          "icon": "eye",
+          "t": "Te enseña a verlo venir",
+          "b": "Cada mensaje viene con el pretexto, las pistas que lo delatan y una nota de lo fácil que sería engañarte."
+        },
+        {
+          "icon": "shield",
+          "t": "Te da tus 3 defensas",
+          "b": "Acciones concretas, en orden, para cerrarle la puerta. Con Pro puedes recibirlos en tu correo y vivir la experiencia."
+        }
+      ],
+      "exampleTitle": "Un vistazo a la simulación",
+      "exampleLevel": "Facilidad para engañarte",
+      "exampleScore": "64",
+      "exampleLevelLabel": "Posible",
+      "exampleChannel": "Correo",
+      "exampleSubject": "Tu paquete está retenido en aduana",
+      "exampleBody": "Hola Marta, tu envío #ES-4471 está retenido. Paga la tasa de 2,99 € para liberarlo antes de 24 h.",
+      "exampleClue": "Usa tu nombre real y mete prisa con una cifra pequeña para que no lo pienses.",
+      "faq": [
+        {
+          "q": "¿Esto es seguro?",
+          "a": "Sí. Es una simulación educativa sobre ti mismo. Los enlaces y números son ficticios y no se envía nada a terceros."
+        },
+        {
+          "q": "¿Por qué necesito un informe antes?",
+          "a": "La simulación se construye con tu informe de exposición: sin saber qué es público de ti, no podríamos recrear un ataque realista."
+        },
+        {
+          "q": "¿Qué suma el plan Pro?",
+          "a": "Los tres mensajes completos, la llamada simulada, poder recibirlos en tu correo y regenerarlo con cada informe nuevo."
+        }
+      ]
+    },
+    "images": {
+      "trust": [
+        "Tú marcas cuáles eres",
+        "Carta por sitio",
+        "Derecho a tu imagen"
+      ],
+      "pillars": [
+        {
+          "icon": "image",
+          "t": "Encuentra tu cara pública",
+          "b": "Buscamos las imágenes que salen al poner tu nombre y tu ciudad en un buscador, agrupadas por la página donde están."
+        },
+        {
+          "icon": "eye",
+          "t": "Tú decides qué es tuyo",
+          "b": "Marca las que seas tú e ignora el resto. Nada se asume: el control es tuyo."
+        },
+        {
+          "icon": "letter",
+          "t": "Pide la retirada",
+          "b": "Para cada página preparamos una carta al sitio que la aloja, apoyada en tu derecho de supresión y a la propia imagen."
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Buscáis mi cara con reconocimiento facial?",
+          "a": "No. Buscamos por tu nombre y ciudad, como haría cualquiera. Tú decides qué imágenes son realmente tuyas."
+        },
+        {
+          "q": "¿Podéis quitar la foto de Google?",
+          "a": "Creamos la carta al sitio que la aloja. Para quitarla además del buscador, te enlazamos el formulario oficial de retirada de imágenes."
+        },
+        {
+          "q": "¿Necesito algo para empezar?",
+          "a": "Un informe con tu ciudad. La búsqueda de imágenes y las cartas forman parte del plan Pro."
+        }
+      ]
+    },
+    "ext": {
+      "trust": [
+        "Sin cuenta",
+        "Nada sale de tu equipo",
+        "Gratis"
+      ],
+      "pillars": [
+        {
+          "icon": "shield",
+          "t": "Avisa de webs falsas",
+          "b": "Si una página imita a tu banco, a Correos, a la DGT o a Hacienda, el robot se pone en rojo antes de que escribas nada y te lleva a la oficial."
+        },
+        {
+          "icon": "eye",
+          "t": "Audita cada web",
+          "b": "Una nota de privacidad del 0 al 100, cuántas cookies hay y de qué empresas, y un botón para rechazarlas por ti."
+        },
+        {
+          "icon": "lock",
+          "t": "Todo en tu navegador",
+          "b": "Se comprueba en tu ordenador: no enviamos tus cookies ni tu historial a ningún servidor. No necesita cuenta."
+        }
+      ],
+      "exampleTitle": "Así avisa el robot",
+      "exampleAlert": "Cuidado: esta web imita a tu banco",
+      "exampleAlertBody": "El dominio no es el oficial. No escribas tus claves aquí.",
+      "exampleOfficial": "Ir a la oficial",
+      "exampleScoreLabel": "Privacidad de esta web",
+      "exampleScore": "42",
+      "faq": [
+        {
+          "q": "¿Qué permisos pide?",
+          "a": "Leer las cookies del sitio que visitas, dibujar el robot en la página y, si lo activas, bloquear rastreadores. Nada más."
+        },
+        {
+          "q": "¿Envía mis datos a algún sitio?",
+          "a": "No. Todo el análisis ocurre en tu navegador. Un test automático comprueba que la extensión no hace ninguna llamada de red."
+        },
+        {
+          "q": "¿Funciona en Chrome y Edge?",
+          "a": "Sí. Se instala con un clic desde la tienda cuando está publicada; mientras tanto puedes cargarla a mano en ambos."
+        }
+      ]
+    },
+    "sites": {
+      "intro": "Un directorio abierto, sin cuenta: los sitios que más aparecen en los informes de Rastro, con el contacto de privacidad verificado y los pasos exactos para darte de baja de cada uno.",
+      "statSites": "sitios",
+      "statSitesLabel": "con su trámite de baja",
+      "statFree": "Gratis",
+      "statFreeLabel": "sin cuenta ni registro",
+      "statSteps": "Paso a paso",
+      "statStepsLabel": "contacto y plazos reales",
+      "pillars": [
+        {
+          "icon": "globe",
+          "t": "Quién tiene tus datos",
+          "b": "Brokers, buscadores de personas, guías y registros: lo que muestran de ti y de dónde lo sacan."
+        },
+        {
+          "icon": "letter",
+          "t": "Cómo darte de baja",
+          "b": "El contacto de privacidad y los pasos exactos de cada sitio, comprobados, para pedir que te quiten."
+        },
+        {
+          "icon": "clock",
+          "t": "Cuánto suele tardar",
+          "b": "Te decimos el plazo típico de respuesta de cada sitio para que sepas qué esperar."
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Es gratis de verdad?",
+          "a": "Sí. El directorio y los pasos son abiertos y no necesitan cuenta. Con Pro, Rastro envía la carta por ti y lleva el plazo."
+        },
+        {
+          "q": "¿Garantizáis que me borren?",
+          "a": "No prometemos borrar: cada sitio decide. Te damos el trámite correcto y, con Pro, comprobamos si la ficha desaparece."
+        },
+        {
+          "q": "¿De dónde sale esta lista?",
+          "a": "De los sitios que más se repiten en los informes reales de Rastro. Revisamos el contacto de privacidad y lo fechamos."
+        }
+      ],
+      "directoryTitle": "Directorio por tipo de sitio"
+    },
+    "team": {
+      "trust": [
+        "Sin ver datos de nadie",
+        "Alta en un clic",
+        "Cada persona, su Pro"
+      ],
+      "stat1": "88 %",
+      "stat1Label": "de los ciberdelitos son estafas que empiezan por una persona",
+      "stat2": "1",
+      "stat2Label": "empleado despistado basta para exponer a toda la empresa",
+      "pillars": [
+        {
+          "icon": "users",
+          "t": "Pro para cada persona",
+          "b": "Informe, vigilancia, cartas RGPD enviadas por Rastro, escáner de Gmail, simulador y guardián. Para toda la plantilla."
+        },
+        {
+          "icon": "chart",
+          "t": "Un panel del riesgo humano",
+          "b": "Quién tiene el informe hecho, puntuación media y cuántos tienen contraseñas filtradas. La foto de tu empresa de un vistazo."
+        },
+        {
+          "icon": "lock",
+          "t": "Privacidad por diseño",
+          "b": "El empleado decide si comparte su puntuación. La empresa nunca ve hallazgos ni datos personales. Nunca."
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿La empresa ve los datos de los empleados?",
+          "a": "No. Solo la puntuación, si hay contraseñas filtradas y si la vigilancia está activa, y únicamente si el empleado decide compartirlo."
+        },
+        {
+          "q": "¿Cómo se dan de alta?",
+          "a": "Invitas por correo. Cada persona entra con un enlace, ya con Pro, y pide su primer informe. Altas y bajas en un clic."
+        },
+        {
+          "q": "¿Sirve como formación?",
+          "a": "Sí. Cada empleado ve, con sus propios datos, cómo le engañarían. Es la formación que de verdad se recuerda."
+        }
+      ]
+    },
+    "how": {
+      "pillars": [
+        {
+          "icon": "scan",
+          "t": "Fuentes de confianza",
+          "b": "Have I Been Pwned para filtraciones, un buscador web para perfiles y las propias IA para lo que dicen de ti."
+        },
+        {
+          "icon": "lock",
+          "t": "Lo mínimo imprescindible",
+          "b": "A cada fuente solo le enviamos lo necesario: a HIBP, tu correo; a los buscadores, tu nombre y ciudad. Nada más."
+        },
+        {
+          "icon": "clock",
+          "t": "Borrado automático",
+          "b": "Sin cuenta, tu solicitud y tu informe se borran a los 30 días. Con cuenta, mandas tú."
+        }
+      ]
+    }
   }
 }

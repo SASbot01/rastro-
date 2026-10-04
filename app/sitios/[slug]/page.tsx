@@ -5,6 +5,7 @@ import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { getMessages, translator } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { BROKERS, brokerBySlug } from "@/lib/brokers/catalog";
+import { ToolFaq } from "@/components/landing/ToolSections";
 
 export function generateStaticParams() {
   return BROKERS.map((b) => ({ slug: b.slug }));
@@ -37,6 +38,10 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
         <Link href="/sitios" className="link text-[14px]">← {tr("sites.all")}</Link>
         <p className="mt-4 eyebrow">{tr(`sites.kinds.${b.kind}`)}</p>
         <h1 className="mt-2 h1 text-ink">{tr("sites.pageTitle", { name: b.name })}</h1>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="badge tone-ok">{b.confidence === "verified" ? tr("sites.verified", { date: fmt.format(new Date(b.checked)) }) : tr("sites.likely")}</span>
+          {(b.typicalDays === 0 || b.typicalDays) && <span className="chip">{b.typicalDays === 0 ? tr("sites.typicalInstant") : tr("sites.typical", { n: b.typicalDays })}</span>}
+        </div>
 
         <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
           <div className="grid gap-4">
@@ -87,6 +92,8 @@ export default async function SitePage({ params }: PageProps<"/sitios/[slug]">) 
             </section>
           </aside>
         </div>
+
+        <section className="mt-14"><ToolFaq title={tr("toolkit.common.faqTitle")} items={messages.toolkit.sites.faq} /></section>
       </main>
       <SiteFooter messages={messages} />
     </>

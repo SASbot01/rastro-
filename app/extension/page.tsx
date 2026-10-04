@@ -4,6 +4,7 @@ import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { MascotDemo } from "@/components/MascotDemo";
 import { getMessages, translator } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
+import { Pillars, ToolFaq, TrustRow, SectionLabel, ExampleFrame, ToolIcon } from "@/components/landing/ToolSections";
 
 import { track } from "@/lib/events";
 export async function generateMetadata(): Promise<Metadata> {
@@ -40,7 +41,8 @@ export default async function ExtensionPage() {
       <main className="page py-10 sm:py-14">
         <p className="eyebrow">{tr("ext.eyebrow")}</p>
         <h1 className="mt-2 h1 text-ink">{tr("ext.title")}</h1>
-        <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-muted">{tr("ext.subtitle")}</p>
+        <p className="lead mt-3 max-w-[62ch]">{tr("ext.subtitle")}</p>
+        <TrustRow items={messages.toolkit.ext.trust} className="mt-5" />
 
         <section className="mt-6 rounded-card border border-accent/40 bg-accent-soft p-5">
           <h2 className="text-[16px] font-semibold text-ink">{tr("ext.play")}</h2>
@@ -85,6 +87,45 @@ export default async function ExtensionPage() {
             <p className="mt-3 text-[12.5px] leading-relaxed text-faint">{tr("ext.privacy")} <Link href="/extension/privacidad" className="text-accent underline-offset-2 hover:underline">{tr("ext.privacyLink")}</Link></p>
           </section>
         </div>
+
+        {/* Qué hace / por qué / qué te llevas */}
+        <section className="mt-14">
+          <SectionLabel>{tr("toolkit.common.howItWorks")}</SectionLabel>
+          <div className="mt-4"><Pillars items={messages.toolkit.ext.pillars} labels={[tr("toolkit.common.whatItDoes"), tr("toolkit.common.whyItMatters"), tr("toolkit.common.whatYouGet")]} /></div>
+        </section>
+
+        {/* Ejemplo: aviso del robot */}
+        <section className="reveal mt-14">
+          <h2 className="h2 text-ink">{messages.toolkit.ext.exampleTitle}</h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:items-start">
+            <ExampleFrame label={tr("toolkit.common.example")} note={tr("toolkit.common.sample")}>
+              <div className="card card-glow glow-bad p-5">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-danger/12 text-danger" aria-hidden="true"><ToolIcon name="alert" /></span>
+                  <div className="min-w-0">
+                    <p className="text-[15px] font-semibold text-danger">{messages.toolkit.ext.exampleAlert}</p>
+                    <p className="mt-1 text-[13.5px] leading-relaxed text-muted">{messages.toolkit.ext.exampleAlertBody}</p>
+                  </div>
+                </div>
+                <span className="btn btn-primary btn-sm mt-4 w-fit">{messages.toolkit.ext.exampleOfficial}</span>
+              </div>
+            </ExampleFrame>
+            <ExampleFrame label={tr("toolkit.common.example")}>
+              <div className="card p-5">
+                <div className="flex items-end justify-between gap-2">
+                  <p className="text-[13px] text-faint">{messages.toolkit.ext.exampleScoreLabel}</p>
+                  <span className="num text-[28px] text-warn">{messages.toolkit.ext.exampleScore}<span className="text-[13px] !font-medium !tracking-normal text-faint"> /100</span></span>
+                </div>
+                <div className="meter mt-2"><i className="!bg-warn" style={{ width: `${Number(messages.toolkit.ext.exampleScore)}%` }} /></div>
+                <ul className="mt-4 grid gap-2 text-[13.5px] text-muted">
+                  {(messages.ext.features as string[]).slice(1, 4).map((f) => <li key={f} className="flex gap-2.5"><span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />{f}</li>)}
+                </ul>
+              </div>
+            </ExampleFrame>
+          </div>
+        </section>
+
+        <section className="mt-14"><ToolFaq title={tr("toolkit.common.faqTitle")} items={messages.toolkit.ext.faq} /></section>
       </main>
       <MascotDemo locale={locale} labels={messages.ext as unknown as Record<string, unknown>} />
       <SiteFooter messages={messages} />

@@ -7,6 +7,7 @@ import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isPro, prices } from "@/lib/plan";
 import { searchImages, type ImageHit } from "@/lib/brave";
+import { Pillars, ToolFaq, CtaBand, TrustRow, SectionLabel } from "@/components/landing/ToolSections";
 
 export const dynamic = "force-dynamic";
 const CARD = "card p-5 sm:p-6";
@@ -31,6 +32,8 @@ export default async function ImagesPage() {
   // Una carta por pagina: agrupar imagenes por pagina de origen.
   const groups = new Map<string, ImageHit[]>();
   if (result?.ok) for (const h of result.hits) groups.set(h.pageUrl, [...(groups.get(h.pageUrl) ?? []), h]);
+  const k = messages.toolkit.images;
+  const showLanding = !(result?.ok && result.hits.length > 0);
 
   return (
     <>
@@ -38,7 +41,8 @@ export default async function ImagesPage() {
       <main className="page py-8 sm:py-12">
         <p className="eyebrow">{tr("images.eyebrow")}</p>
         <h1 className="mt-2 h1 text-ink">{tr("images.title")}</h1>
-        <p className="mt-2 max-w-[60ch] text-[15px] leading-relaxed text-muted">{tr("images.subtitle")}</p>
+        <p className="lead mt-3 max-w-[60ch]">{tr("images.subtitle")}</p>
+        <TrustRow items={k.trust} className="mt-5" />
 
         {!user ? (
           <section className={CARD + " mt-6"}><p className="text-[15px] font-semibold text-ink">{tr("tools.loginTitle")}</p><Link href="/entrar" className={"mt-4 " + BTN}>{tr("nav.login")}</Link></section>
@@ -74,6 +78,17 @@ export default async function ImagesPage() {
               ))}
             </ul>
             <p className="mt-4 text-[12.5px] leading-relaxed text-faint">{tr("images.removeHint")} <a href="https://support.google.com/websearch/troubleshooter/3111061" target="_blank" rel="noreferrer nofollow" className="text-accent underline underline-offset-4">{tr("images.google")}</a></p>
+          </>
+        )}
+
+        {showLanding && (
+          <>
+            <section className="mt-14">
+              <SectionLabel>{tr("toolkit.common.howItWorks")}</SectionLabel>
+              <div className="mt-4"><Pillars items={k.pillars} labels={[tr("toolkit.common.whatItDoes"), tr("toolkit.common.whyItMatters"), tr("toolkit.common.whatYouGet")]} /></div>
+            </section>
+            <section className="mt-14"><ToolFaq title={tr("toolkit.common.faqTitle")} items={k.faq} /></section>
+            <div className="mt-6"><CtaBand title={tr("landing.formTitle")} body={tr("landing.formBody")} cta={tr("account.newReport")} href="/#form" secondaryCta={tr("sites.footerLink")} secondaryHref="/sitios" /></div>
           </>
         )}
       </main>
