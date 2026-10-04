@@ -2308,6 +2308,21 @@
         "patched": "parcheado",
         "not_applicable": "no aplica"
       }
+    },
+    "svc": {
+      "title": "Servicios / puertos",
+      "empty": "Sin servicios todavía. Los añade el reconocimiento (nmap) por MCP, o a mano.",
+      "port": "Puerto",
+      "name": "Servicio",
+      "version": "Versión/banner",
+      "add": "Añadir servicio"
+    },
+    "logs": {
+      "title": "Registros de escaneo",
+      "hint": "Salidas de nmap, ffuf, curl… que el runner va guardando aquí, máquina tras máquina.",
+      "empty": "Sin registros todavía.",
+      "remove": "Borrar",
+      "clear": "Vaciar"
     }
   }
 }

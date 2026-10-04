@@ -39,7 +39,8 @@ test("lo que llega del navegador se limpia: tipos, topes y tamaño", () => {
   assert.equal(p.hypotheses[0].state, "open");
   assert.deepEqual(p.tools, ["nmap"]);
   assert.deepEqual([p.findings.length, p.findings[0].family, p.findings[0].severity, p.findings[0].status], [1, "other", "medium", "draft"]);
-  assert.equal(sanitizeWorkspace({ projects: { a: { name: "a", findings: Array.from({ length: 200 }, () => ({ title: "t", notes: "x".repeat(8000) })) } } }, "es"), null);
+  const huge = Object.fromEntries(Array.from({ length: 6 }, (_, k) => [`p${k}`, { name: "a", findings: Array.from({ length: 200 }, () => ({ title: "t", notes: "x".repeat(8000) })) }]));
+  assert.equal(sanitizeWorkspace({ projects: huge }, "es"), null);
   assert.equal(Object.keys(sanitizeWorkspace({}, "en")!.projects).length, 1);
 });
 
@@ -53,7 +54,7 @@ test("la chuleta usa el host del trabajo y nunca mete texto raro en el comando",
 });
 
 test("el informe en Markdown ordena los hallazgos por gravedad", () => {
-  const L: ReportLabels = { target: "Objetivo", host: "Host", scope: "Alcance", started: "Inicio", findings: "Hallazgos", none: "Sin hallazgos.", severity: "Gravedad", family: "Familia", where: "Dónde", status: "Estado", hypotheses: "Hipótesis", steps: "Pasos", tools: "Herramientas", cves: "CVE", cveSoftware: "Software",
+  const L: ReportLabels = { target: "Objetivo", host: "Host", scope: "Alcance", started: "Inicio", findings: "Hallazgos", none: "Sin hallazgos.", severity: "Gravedad", family: "Familia", where: "Dónde", status: "Estado", hypotheses: "Hipótesis", steps: "Pasos", tools: "Herramientas", cves: "CVE", cveSoftware: "Software", services: "Servicios",
     families: { access: "Control de acceso", logic: "Lógica", auth: "Autenticación", ssrf: "SSRF", injection: "Inyección", xss: "XSS", info: "Información", config: "Configuración", other: "Otra" },
     severities: { critical: "Crítica", high: "Alta", medium: "Media", low: "Baja", info: "Informativa" }, states: { draft: "Borrador", reported: "Reportado", accepted: "Aceptado", duplicate: "Duplicado", rejected: "Rechazado" }, hypothesisStates: { open: "abierta", confirmed: "confirmada", discarded: "descartada" }, cveStates: { investigating: "investigando", vulnerable: "vulnerable", exploited: "explotado", patched: "parcheado", not_applicable: "no aplica" } };
   const w = importLegacy(LEGACY, "es")!;

@@ -40,7 +40,7 @@ export function reportLabels(locale: Locale): ReportLabels {
   return {
     target: tr("lab.report.target"), host: tr("lab.report.host"), scope: tr("lab.report.scope"), started: tr("lab.report.started"),
     findings: tr("lab.find.title"), none: tr("lab.report.none"), severity: tr("lab.find.severity"), family: tr("lab.find.family"), where: tr("lab.find.where"), status: tr("lab.find.status"),
-    hypotheses: tr("lab.hyp.title"), steps: tr("lab.steps.title"), tools: tr("lab.tools.title"), cves: tr("lab.cve.title"), cveSoftware: tr("lab.cve.software"),
+    hypotheses: tr("lab.hyp.title"), steps: tr("lab.steps.title"), tools: tr("lab.tools.title"), cves: tr("lab.cve.title"), cveSoftware: tr("lab.cve.software"), services: tr("lab.svc.title"),
     families: map(FAMILIES, "lab.find.families"), severities: map(SEVERITIES, "lab.find.severities"), states: map(FINDING_STATES, "lab.find.states"),
     hypothesisStates: map(HYPOTHESIS_STATES, "lab.hyp.states"), cveStates: map(CVE_STATES, "lab.cve.states"),
   };
@@ -48,7 +48,7 @@ export function reportLabels(locale: Locale): ReportLabels {
 
 /** Resumen de un trabajo para listados (sin volcar todo el contenido). */
 export function jobSummary(id: string, p: LabProject) {
-  return { id, name: p.name, host: p.target.host, steps_done: p.steps.filter((s) => s.ok).length, steps_total: p.steps.length, findings: p.findings.length, cves: p.cves.length, hypotheses: p.hypotheses.length };
+  return { id, name: p.name, host: p.target.host, authorized: p.target.authorized, steps_done: p.steps.filter((s) => s.ok).length, steps_total: p.steps.length, findings: p.findings.length, cves: p.cves.length, services: p.services.length, logs: p.logs.length, hypotheses: p.hypotheses.length };
 }
 
 const SEV = (v: unknown): Severity => (SEVERITIES.includes(v as Severity) ? (v as Severity) : "medium");
@@ -72,6 +72,45 @@ export function labAddHypothesis(ws: LabWorkspace, jobId: string, txt: string, s
   p.hypotheses.push({ txt, state: (HYPOTHESIS_STATES.includes(state as HypothesisState) ? state : "open") as HypothesisState });
   return true;
 }
+export function labSetTarget(ws: LabWorkspace, jobId: string, t: { name?: string; host?: string; scope?: string; started?: string; authorized?: boolean }): boolean {
+  const p = ws.projects[jobId]; if (!p) return false;
+  if (t.name !== undefined) p.target.name = String(t.name).slice(0, 160);
+  if (t.host !== undefined) p.target.host = String(t.host).slice(0, 255);
+  if (t.scope !== undefined) p.target.scope = String(t.scope).slice(0, 2000);
+  if (t.started !== undefined) p.target.started = String(t.started).slice(0, 40);
+  if (t.authorized !== undefined) p.target.authorized = Boolean(t.authorized);
+  return true;
+}
+export function labAddService(ws: LabWorkspace, jobId: string, sv: { port?: number | string; proto?: string; name?: string; version?: string; notes?: string }): boolean {
+  const p = ws.projects[jobId]; if (!p) return false;
+  const port = Number(sv.port);
+  if (!(Number.isInteger(port) && port > 0 && port < 65536) && !sv.name) return false;
+  if (p.services.length >= LIMITS.services) return false;
+  const proto = sv.proto === "udp" ? "udp" : "tcp";
+  const i = p.services.findIndex((x) => x.port === port && x.proto === proto && port > 0);
+  const entry = { port: Number.isInteger(port) && port > 0 ? port : 0, proto, name: String(sv.name ?? "").slice(0, 80), version: String(sv.version ?? "").slice(0, 160), notes: String(sv.notes ?? "").slice(0, 2000) } as const;
+  if (i >= 0) p.services[i] = { ...entry }; else p.services.push({ ...entry });
+  return true;
+}
+export function labAddLog(ws: LabWorkspace, jobId: string, l: { tool?: string; cmd?: string; output?: string }): boolean {
+  const p = ws.projects[jobId]; if (!p) return false;
+  if (!l.cmd && !l.output) return false;
+  p.logs.push({ at: new Date().toISOString(), tool: String(l.tool ?? "").slice(0, 40), cmd: String(l.cmd ?? "").slice(0, 500), output: String(l.output ?? "").slice(0, LIMITS.logBytes) });
+  if (p.logs.length > LIMITS.logs) p.logs = p.logs.slice(-LIMITS.logs);
+  return true;
+}
+export function labSetStep(ws: LabWorkspace, jobId: string, opts: { text?: string; index?: number; done?: boolean }): boolean {
+  const p = ws.projects[jobId]; if (!p) return false;
+  if (typeof opts.index === "number" && p.steps[opts.index]) { if (opts.done !== undefined) p.steps[opts.index].ok = Boolean(opts.done); return true; }
+  if (opts.text) {
+    const i = p.steps.findIndex((s) => s.t.toLowerCase() === opts.text!.toLowerCase());
+    if (i >= 0) { if (opts.done !== undefined) p.steps[i].ok = Boolean(opts.done); return true; }
+    if (p.steps.length >= LIMITS.steps) return false;
+    p.steps.push({ t: opts.text.slice(0, 200), ok: Boolean(opts.done) }); return true;
+  }
+  return false;
+}
+
 export function labCreateJob(ws: LabWorkspace, locale: Locale, name: string, host?: string, scope?: string): string | null {
   if (Object.keys(ws.projects).length >= LIMITS.projects) return null;
   const id = "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
