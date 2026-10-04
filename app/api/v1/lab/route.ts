@@ -1,0 +1,99 @@
+import { z } from "zod";
+import { apiError, apiJson, authenticate, isIdentity, preflight } from "@/lib/api-auth";
+import { addLesson, autoEnrichJob, buildPayloads, canUseLab, jobSummary, labAddCve, labAddFinding, labAddHypothesis, labAddLog, labAddService, labCreateJob, labSetAttacker, labSetStep, labSetTarget, labStats, loadWorkspace, playbookSteps, reportLabels, saveWorkspace, searchLessons, toMarkdown, type PayloadCat } from "@/lib/lab";
+import { isLocale, type Locale } from "@/lib/i18n";
+
+/**
+ * Rastro Lab por API (v1), para el servidor MCP. Alcance: SOLO el cuaderno de
+ * la propia cuenta (nunca de terceros). Pensado para que Claude lleve los
+ * reportes de bug bounty: listar/crear trabajos, añadir hallazgos y CVE, y
+ * sacar el informe en Markdown. Requiere Pro (o admin), igual que la web.
+ */
+export const runtime = "nodejs";
+export const maxDuration = 30;
+export function OPTIONS() { return preflight(); }
+
+const body = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("list") }),
+  z.object({ action: z.literal("get"), job: z.string().min(1) }),
+  z.object({ action: z.literal("report"), job: z.string().min(1) }),
+  z.object({ action: z.literal("create_job"), name: z.string().trim().min(1).max(120), host: z.string().trim().max(255).optional(), scope: z.string().trim().max(2000).optional() }),
+  z.object({ action: z.literal("add_finding"), job: z.string().min(1), title: z.string().trim().min(1).max(200), where: z.string().trim().max(500).optional(), family: z.string().optional(), severity: z.string().optional(), status: z.string().optional(), notes: z.string().max(8000).optional() }),
+  z.object({ action: z.literal("add_cve"), job: z.string().min(1), id: z.string().trim().max(40).optional(), software: z.string().trim().max(120).optional(), version: z.string().trim().max(60).optional(), severity: z.string().optional(), state: z.string().optional(), notes: z.string().max(6000).optional(), ref: z.string().trim().max(500).optional() }),
+  z.object({ action: z.literal("add_hypothesis"), job: z.string().min(1), text: z.string().trim().min(1).max(2000), state: z.string().optional() }),
+  z.object({ action: z.literal("set_target"), job: z.string().min(1), name: z.string().trim().max(160).optional(), host: z.string().trim().max(255).optional(), scope: z.string().trim().max(2000).optional(), started: z.string().trim().max(40).optional(), authorized: z.boolean().optional() }),
+  z.object({ action: z.literal("add_service"), job: z.string().min(1), port: z.number().int().min(1).max(65535).optional(), proto: z.enum(["tcp", "udp"]).optional(), name: z.string().trim().max(80).optional(), version: z.string().trim().max(160).optional(), notes: z.string().max(2000).optional() }),
+  z.object({ action: z.literal("add_log"), job: z.string().min(1), tool: z.string().trim().max(40).optional(), cmd: z.string().trim().max(500).optional(), output: z.string().max(20000).optional() }),
+  z.object({ action: z.literal("set_step"), job: z.string().min(1), text: z.string().trim().max(200).optional(), index: z.number().int().min(0).optional(), done: z.boolean().optional() }),
+  z.object({ action: z.literal("set_attacker"), job: z.string().min(1), lhost: z.string().trim().max(255).optional(), lport: z.number().int().min(1).max(65535).optional() }),
+  z.object({ action: z.literal("payloads"), job: z.string().min(1), cat: z.enum(["revshell", "listener", "upgrade", "transfer"]).optional(), os: z.enum(["linux", "windows"]).optional(), file: z.string().trim().max(64).optional(), port: z.number().int().min(1).max(65535).optional() }),
+  z.object({ action: z.literal("autoenrich"), job: z.string().min(1) }),
+  z.object({ action: z.literal("playbook"), job: z.string().min(1), name: z.string().trim().max(80).optional(), port: z.number().int().min(1).max(65535).optional() }),
+  z.object({ action: z.literal("stats") }),
+  z.object({ action: z.literal("lesson_add"), text: z.string().trim().min(3).max(4000), service: z.string().trim().max(60).optional(), tags: z.array(z.string().trim().max(40)).max(10).optional() }),
+  z.object({ action: z.literal("lesson_search"), q: z.string().trim().max(120).optional(), service: z.string().trim().max(60).optional() }),
+]);
+
+export async function GET(request: Request) {
+  const auth = await authenticate(request);
+  if (!isIdentity(auth)) return auth;
+  if (!canUseLab(auth.user)) return apiError(402, "pro_required", "Rastro Lab requiere Pro.");
+  const locale: Locale = isLocale(auth.user.locale) ? auth.user.locale : "es";
+  const { workspace } = await loadWorkspace(auth.user.id, locale);
+  return apiJson({ jobs: Object.entries(workspace.projects).map(([id, p]) => jobSummary(id, p)), active: workspace.active });
+}
+
+export async function POST(request: Request) {
+  const auth = await authenticate(request);
+  if (!isIdentity(auth)) return auth;
+  if (!canUseLab(auth.user)) return apiError(402, "pro_required", "Rastro Lab requiere Pro.");
+  const parsed = body.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return apiError(400, "invalid_body", "Cuerpo no válido.", { issues: parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`) });
+  const data = parsed.data;
+  const locale: Locale = isLocale(auth.user.locale) ? auth.user.locale : "es";
+  const { workspace } = await loadWorkspace(auth.user.id, locale);
+
+  if (data.action === "list") return apiJson({ jobs: Object.entries(workspace.projects).map(([id, p]) => jobSummary(id, p)), active: workspace.active });
+  if (data.action === "get") {
+    const p = workspace.projects[data.job];
+    return p ? apiJson({ id: data.job, ...p }) : apiError(404, "not_found", "Trabajo no encontrado.");
+  }
+  if (data.action === "report") {
+    const p = workspace.projects[data.job];
+    return p ? apiJson({ id: data.job, name: p.name, markdown: toMarkdown(p, reportLabels(locale)) }) : apiError(404, "not_found", "Trabajo no encontrado.");
+  }
+  if (data.action === "payloads") {
+    const p = workspace.projects[data.job];
+    if (!p) return apiError(404, "not_found", "Trabajo no encontrado.");
+    return apiJson({ id: data.job, attacker: p.attacker, payloads: buildPayloads({ lhost: p.attacker.lhost, lport: p.attacker.lport, file: data.file, port: data.port }, { cat: data.cat as PayloadCat | undefined, os: data.os }) });
+  }
+  if (data.action === "playbook") {
+    const p = workspace.projects[data.job];
+    if (!p) return apiError(404, "not_found", "Trabajo no encontrado.");
+    const host = p.target.host.split(/[\s(]/)[0] || "<host>";
+    if (data.name || data.port) return apiJson({ steps: playbookSteps({ name: data.name, port: data.port, host }) });
+    const all = p.services.map((sv) => ({ service: sv.name || String(sv.port), port: sv.port, steps: playbookSteps({ name: sv.name, port: sv.port, host }) })).filter((x) => x.steps.length > 0);
+    return apiJson({ playbooks: all });
+  }
+  if (data.action === "autoenrich") return apiJson(await autoEnrichJob(auth.user.id, data.job, locale));
+  if (data.action === "stats") return apiJson(await labStats(auth.user.id, locale));
+  if (data.action === "lesson_add") { const l = await addLesson(auth.user.id, data); return l ? apiJson({ ok: true, lesson: l }) : apiError(422, "not_applied", "No se pudo guardar."); }
+  if (data.action === "lesson_search") return apiJson({ lessons: await searchLessons(auth.user.id, data.q, data.service) });
+
+  let jobId: string | null = null; let ok = false;
+  if (data.action === "create_job") { jobId = labCreateJob(workspace, locale, data.name, data.host, data.scope); ok = Boolean(jobId); }
+  else if (data.action === "add_finding") { ok = labAddFinding(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "add_cve") { ok = labAddCve(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "add_hypothesis") { ok = labAddHypothesis(workspace, data.job, data.text, data.state); jobId = data.job; }
+  else if (data.action === "set_target") { ok = labSetTarget(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "add_service") { ok = labAddService(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "add_log") { ok = labAddLog(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "set_step") { ok = labSetStep(workspace, data.job, data); jobId = data.job; }
+  else if (data.action === "set_attacker") { ok = labSetAttacker(workspace, data.job, data); jobId = data.job; }
+  if (!ok || !jobId) return apiError(422, "not_applied", "No se pudo aplicar (trabajo inexistente o límite alcanzado).");
+
+  const updatedAt = await saveWorkspace(auth.user.id, workspace, locale);
+  if (!updatedAt) return apiError(500, "save_failed", "No se pudo guardar.");
+  const p = workspace.projects[jobId];
+  return apiJson({ ok: true, job: jobSummary(jobId, p), updatedAt });
+}

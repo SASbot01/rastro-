@@ -10,22 +10,23 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
   const session = await getSession();
   const me = session ? await findUserByEmail(session.email) : null;
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-paper/90 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-[640px] lg:max-w-[920px] items-center justify-between gap-4 px-5 py-3.5">
+    <header className="sticky top-0 z-30 border-b border-line bg-paper/80 backdrop-blur-xl" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+      <div className="page flex min-h-[60px] items-center justify-between gap-3">
         <Link
           href="/"
-          className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-ink lg:invisible"
+          className="flex min-h-[44px] items-center gap-2 text-[16px] font-semibold tracking-[-0.02em] text-ink lg:invisible"
         >
-          <img src="/brand/logo-96.png" alt="" width={26} height={22} className="h-[22px] w-auto" />
-          {tr("nav.brand")}
+          <img src="/brand/logo-96.png" alt="" width={26} height={22} className="h-[22px] w-auto shrink-0" />
+          <span className="max-[339px]:sr-only">{tr("nav.brand")}</span>
         </Link>
         <TopTabs messages={messages} />
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
+          <Link href="/ayuda-urgente" aria-label={tr("experience.emergency")} title={tr("experience.emergency")} className="hit flex h-10 w-10 items-center justify-center rounded-full border border-danger/40 text-[15px] font-bold text-danger transition-colors hover:bg-danger/10">!</Link>
           <Link
             href="/soporte"
             aria-label={tr("support.button")}
             title={tr("support.button")}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-2 text-muted hover:text-ink"
+            className={"hit h-10 w-10 items-center justify-center rounded-full border border-line bg-surface-2 text-muted transition-colors hover:border-line-strong hover:text-ink " + (session ? "flex" : "hidden min-[420px]:flex")}
           >
             <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden="true">
               <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" strokeWidth="1.7" />
@@ -36,9 +37,9 @@ export async function SiteHeader({ locale, messages }: { locale: Locale; message
           <Link
             href={session ? "/cuenta" : "/entrar"}
             aria-label={session ? tr("nav.account") : tr("nav.login")}
-            className={"flex h-9 items-center justify-center overflow-hidden rounded-full text-[13px] font-semibold " + (session ? "w-9 bg-surface-2 text-ink" : "bg-accent px-3 text-black")}
+            className={"hit flex h-10 items-center justify-center overflow-hidden rounded-full text-[13.5px] font-semibold transition-[filter,border-color] " + (session ? "w-10 border border-line bg-surface-2 text-ink hover:border-accent/60" : "whitespace-nowrap bg-accent px-4 text-[#04210a] shadow-[0_6px_18px_-8px_rgb(77_252_95/0.7)] hover:brightness-105")}
           >
-            {me?.avatar ? <img src={me.avatar} alt="" className="h-9 w-9 object-cover" /> : session ? (me?.display_name ?? session.email).slice(0, 1).toUpperCase() : tr("nav.login")}
+            {me?.avatar ? <img src={me.avatar} alt="" className="h-10 w-10 object-cover" /> : session ? (me?.display_name ?? session.email).slice(0, 1).toUpperCase() : tr("nav.login")}
           </Link>
           <LocaleSwitcher current={locale} messages={messages} />
         </div>
@@ -53,25 +54,34 @@ export function SiteFooter({ messages }: { messages: Messages }) {
 
   return (
     <footer className="mt-auto border-t border-line">
-      <div className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8">
-        <p className="text-[13px] text-muted">{tr("footer.tagline")}</p>
-        <nav className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[13px]">
-          <Link href="/privacidad" className="text-muted underline underline-offset-4 hover:text-ink">
+      <div className="page py-9">
+        <p className="flex items-center gap-2 text-[14px] font-medium text-ink"><img src="/brand/logo-96.png" alt="" width={22} height={18} className="h-[18px] w-auto" />{tr("footer.tagline")}</p>
+        <nav className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-[13.5px]">
+          <Link href="/privacidad" className="link-muted inline-flex min-h-[36px] items-center">
             {tr("footer.privacy")}
           </Link>
-          <Link href="/aviso-legal" className="text-muted underline underline-offset-4 hover:text-ink">
+          <Link href="/aviso-legal" className="link-muted inline-flex min-h-[36px] items-center">
             {tr("footer.legal")}
           </Link>
-          <Link href="/como-funciona" className="text-muted underline underline-offset-4 hover:text-ink">
+          <Link href="/soporte" className="link-muted inline-flex min-h-[36px] items-center">
+            {tr("support.button")}
+          </Link>
+          <Link href="/como-funciona" className="link-muted inline-flex min-h-[36px] items-center">
             {tr("how.footerLink")}
           </Link>
-          <Link href="/sitios" className="text-muted underline underline-offset-4 hover:text-ink">
+          <Link href="/sitios" className="link-muted inline-flex min-h-[36px] items-center">
             {tr("sites.footerLink")}
           </Link>
-          <Link href="/equipos" className="text-muted underline underline-offset-4 hover:text-ink">
+          <Link href="/extension" className="link-muted inline-flex min-h-[36px] items-center">
+            {tr("ext.eyebrow")}
+          </Link>
+          <Link href="/api-docs" className="link-muted inline-flex min-h-[36px] items-center">
+            {tr("api.footerLink")}
+          </Link>
+          <Link href="/equipos" className="link-muted inline-flex min-h-[36px] items-center">
             {tr("team.eyebrow")}
           </Link>
-          <Link href="/pro" className="text-muted underline underline-offset-4 hover:text-ink">
+          <Link href="/pro" className="link-muted inline-flex min-h-[36px] items-center">
             {tr("pro.title")}
           </Link>
         </nav>

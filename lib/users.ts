@@ -2,6 +2,8 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { normalizeEmail } from "@/lib/crypto";
 import type { Locale } from "@/lib/i18n";
 
+import { track } from "@/lib/events";
+import { ilikeExact } from "@/lib/like-escape";
 /**
  * Cuentas persistentes. Una cuenta = un correo verificado. Se crea sola la
  * primera vez que alguien verifica un enlace; no hay registro aparte.
@@ -43,9 +45,31 @@ export async function ensureUser(email: string, locale: Locale): Promise<UserRow
     return null;
   }
 
+  if (Date.now() - new Date(user.created_at).getTime() < 10_000) void track("signup", { subject: user.id, locale });
+
   // Solicitudes hechas antes de tener cuenta (o desde otro dispositivo) pasan a ser suyas.
-  await supabase.from("requests").update({ user_id: user.id }).ilike("email", normalized).is("user_id", null);
+  // Patron escapado: "_" es un comodin en ILIKE y sin escapar enlazaria solicitudes de OTRO correo (ana_garcia@ ~ ana.garcia@).
+  await supabase.from("requests").update({ user_id: user.id }).ilike("email", ilikeExact(normalized)).is("user_id", null);
   return user;
+}
+
+/**
+ * Cuenta para alguien a quien OTRA persona invita (plan familiar, equipos). A diferencia de ensureUser, no marca
+ * `last_seen_at` ni cambia el idioma de una cuenta que ya existe: la persona aun no ha entrado. Con ensureUser el
+ * invitado salia como "activo" desde el primer momento (la etiqueta "pendiente/invitado" no aparecia nunca) y se
+ * contaba como alta en el embudo.
+ */
+export async function inviteUser(email: string, locale: Locale): Promise<UserRow | null> {
+  const normalized = normalizeEmail(email);
+  const existing = await findUserByEmail(normalized);
+  if (existing) return existing;
+  const { error } = await supabaseAdmin().from("users").insert({ email: normalized, locale });
+  // 23505 = otra peticion la acaba de crear: vale igual.
+  if (error && error.code !== "23505") {
+    console.error("[users] invitacion fallo:", error.message);
+    return null;
+  }
+  return findUserByEmail(normalized);
 }
 
 export async function findUserByEmail(email: string): Promise<UserRow | null> {

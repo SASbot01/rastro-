@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase";
-import { hashCode, normalizeEmail } from "@/lib/crypto";
+import { hashCode, normalizeEmail, safeEqual } from "@/lib/crypto";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { setSessionCookie } from "@/lib/session";
 import { claimAndStart } from "@/lib/verify";
@@ -51,13 +51,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "formErrors.codeLocked" }, { status: 429 });
   }
 
-  if (row.verify_code_hash !== hashCode(code)) {
-    const attempts = row.verify_attempts + 1;
+  // El intento se apunta ANTES de comparar y de forma atomica: con leer-comparar-sumar, muchas peticiones en
+  // paralelo leian todas "0 intentos" y probaban decenas de codigos (acertar abre sesion con ese correo).
+  const attempts = row.verify_attempts + 1;
+  const { data: counted } = await supabase
+    .from("requests")
+    .update({ verify_attempts: attempts })
+    .eq("id", row.id)
+    .eq("verify_attempts", row.verify_attempts)
+    .eq("status", "pending")
+    .select("id")
+    .maybeSingle();
+  if (!counted) return NextResponse.json({ ok: false, error: "formErrors.code" }, { status: 429 });
+
+  if (!safeEqual(row.verify_code_hash, hashCode(code))) {
     // Al agotar los intentos, el codigo y el enlace dejan de valer: hay que pedir otro.
-    await supabase
-      .from("requests")
-      .update(attempts >= MAX_ATTEMPTS ? { verify_attempts: attempts, verify_code_hash: null, verify_token: null } : { verify_attempts: attempts })
-      .eq("id", row.id);
+    if (attempts >= MAX_ATTEMPTS) await supabase.from("requests").update({ verify_code_hash: null, verify_token: null }).eq("id", row.id);
     return NextResponse.json(
       { ok: false, error: attempts >= MAX_ATTEMPTS ? "formErrors.codeLocked" : "formErrors.code" },
       { status: attempts >= MAX_ATTEMPTS ? 429 : 400 },

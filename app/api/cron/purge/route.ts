@@ -23,6 +23,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ ok: false }, { status: 500 });
   }
 
+  // Metricas de embudo: 13 meses bastan para comparar con el año anterior.
+  await supabaseAdmin().from("product_events").delete().lt("at", new Date(Date.now() - 400 * 86_400_000).toISOString());
+
   console.log(`[cron/purge] borradas ${data} solicitudes caducadas`);
   return NextResponse.json({ ok: true, deleted: data });
 }

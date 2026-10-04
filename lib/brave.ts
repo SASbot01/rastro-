@@ -104,11 +104,15 @@ export async function searchName(opts: {
   occupation?: string | null;
   locale: Locale;
 }): Promise<BraveResult> {
-  const query = buildNameQuery(opts.fullName, opts.city, opts.occupation);
+  return searchRaw(buildNameQuery(opts.fullName, opts.city, opts.occupation), opts.locale, RESULT_COUNT);
+}
+
+/** Busqueda web con una consulta ya montada (la usa tambien la comprobacion de sitios con site:). */
+export async function searchRaw(query: string, locale: Locale, count: number): Promise<BraveResult> {
   const params = new URLSearchParams({
     q: query,
-    count: String(RESULT_COUNT),
-    search_lang: opts.locale,
+    count: String(count),
+    search_lang: locale,
     safesearch: "off",
     text_decorations: "0",
     extra_snippets: "1",
@@ -134,7 +138,7 @@ export async function searchName(opts: {
   if (!response.ok) return { ok: false, query, reason: "error", detail: `HTTP ${response.status}` };
 
   const raw = (await response.json()) as BraveResponse;
-  const hits = (raw.web?.results ?? []).slice(0, RESULT_COUNT).map(toHit);
+  const hits = (raw.web?.results ?? []).slice(0, count).map(toHit);
   return { ok: true, query, hits, raw };
 }
 

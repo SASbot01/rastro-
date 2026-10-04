@@ -10,6 +10,7 @@ import { sendNoticeEmail, sendSimulatedPhishingEmail } from "@/lib/email";
 import type { Finding } from "@/lib/report/findings";
 import type { KnownAccount } from "@/lib/report/accounts";
 
+import { track } from "@/lib/events";
 /**
  * Simulador (v2). POST con `action`:
  *   generate -> crea (o regenera, solo Pro) la simulacion del ultimo informe
@@ -73,6 +74,7 @@ export async function POST(request: Request) {
     console.error("[/api/simulate] fallo:", result.detail);
     return NextResponse.redirect(absoluteUrl("/simulador?e=failed"), { status: 303 });
   }
+  void track("simulator_used", { subject: user.id });
   const { error } = await supabase.from("simulations").upsert({ user_id: user.id, request_id: report.request_id, content: result.simulation, model: result.model, sent_at: null }, { onConflict: "user_id,request_id" });
   if (error) console.error("[/api/simulate] guardar fallo:", error.message);
   return NextResponse.redirect(absoluteUrl("/simulador"), { status: 303 });

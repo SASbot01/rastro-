@@ -4,10 +4,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 
-const FIELD =
-  "w-full rounded-[12px] border border-line bg-surface-2 px-3.5 py-3 text-[16px] text-ink " +
-  "placeholder:text-faint transition-colors hover:border-faint focus:border-accent " +
-  "focus:outline-none focus:ring-2 focus:ring-accent/25 disabled:opacity-60";
+const FIELD = "field";
 
 /**
  * Entrar / crear cuenta: "Continuar con Google" (un toque) o correo con
@@ -69,13 +66,13 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
     }
   }
 
-  const card = "rounded-card border border-line bg-surface p-6 sm:p-8";
+  const card = "card card-glow rise mx-auto max-w-[480px] p-6 sm:p-8";
 
   if (step === "code") {
     return (
       <form onSubmit={checkCode} noValidate className={card} aria-live="polite">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("login.codeEyebrow")}</p>
-        <h1 className="mt-2 text-[22px] font-semibold tracking-[-0.02em] text-ink">{tr("login.codeTitle")}</h1>
+        <p className="eyebrow">{tr("login.codeEyebrow")}</p>
+        <h1 className="mt-2 h2 text-ink">{tr("login.codeTitle")}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("login.codeBody", { email })}</p>
         <input
           name="code"
@@ -87,18 +84,18 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
           placeholder={tr("sent.codePlaceholder")}
           disabled={busy}
           aria-invalid={Boolean(error)}
-          className={`mt-5 ${FIELD} text-center text-[24px] tracking-[0.3em]`}
+          className={`mt-5 ${FIELD} num text-center !text-[26px] !tracking-[0.3em]`}
         />
         {error && (
-          <p role="alert" className="mt-2 text-[12.5px] font-medium text-danger">
+          <p role="alert" className="mt-2 text-[13.5px] font-medium text-danger">
             {tr(error)}
           </p>
         )}
-        <button type="submit" disabled={busy} className="mt-4 w-full rounded-[12px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-60">
+        <button type="submit" disabled={busy} className="mt-4 w-full btn btn-primary btn-lg">
           {busy ? tr("sent.codeChecking") : tr("login.codeSubmit")}
         </button>
         <p className="mt-4 text-[12.5px] text-faint">{tr("login.codeLink")}</p>
-        <button type="button" onClick={() => setStep("email")} className="mt-3 text-[13px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+        <button type="button" onClick={() => setStep("email")} className="mt-3 link-muted text-[14px]">
           {tr("sent.again")}
         </button>
       </form>
@@ -107,14 +104,14 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
 
   return (
     <div className={card}>
-      <h1 className="text-[24px] font-semibold tracking-[-0.025em] text-ink">{tr("login.title")}</h1>
+      <h1 className="h2 text-ink">{tr("login.title")}</h1>
       <p className="mt-2 text-[15px] leading-relaxed text-muted">{tr("login.subtitle")}</p>
 
       {googleEnabled && (
         <form action="/api/auth/google/start" method="post" className="mt-6">
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-3 rounded-[12px] border border-line bg-surface-2 px-5 py-3.5 text-[15px] font-semibold text-ink hover:border-faint"
+            className="btn btn-secondary btn-lg w-full !gap-3"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
               <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.7v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z" />
@@ -124,7 +121,7 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
             </svg>
             {tr("login.google")}
           </button>
-          <p className="mt-2 text-center text-[12px] text-faint">{tr("login.googleNote")}</p>
+          <p className="note mt-2 text-center">{tr("login.googleNote")}</p>
         </form>
       )}
 
@@ -139,7 +136,7 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
       )}
 
       <form onSubmit={sendCode} noValidate>
-        <label className="block text-[13px] font-medium text-ink" htmlFor="login-email">
+        <label className="label" htmlFor="login-email">
           {tr("login.email")}
         </label>
         <input
@@ -151,22 +148,22 @@ export function LoginForm({ messages, locale, googleEnabled }: { messages: Messa
           placeholder={tr("form.emailPlaceholder")}
           disabled={busy}
           aria-invalid={Boolean(error)}
-          className={`mt-1.5 ${FIELD}`}
+          className={`mt-2 ${FIELD}`}
         />
         {error && (
-          <p role="alert" className="mt-1.5 text-[12.5px] font-medium text-danger">
+          <p role="alert" className="mt-2 text-[13.5px] font-medium text-danger">
             {tr(error)}
           </p>
         )}
-        <button type="submit" disabled={busy} className="mt-4 w-full rounded-[12px] bg-accent px-5 py-3.5 text-[15px] font-semibold text-black hover:opacity-90 disabled:opacity-60">
+        <button type="submit" disabled={busy} className="mt-4 w-full btn btn-primary btn-lg">
           {busy ? tr("login.submitting") : tr("login.submitCode")}
         </button>
-        <p className="mt-3 text-[12.5px] leading-relaxed text-faint">{tr("login.noPassword")}</p>
+        <p className="note mt-3">{tr("login.noPassword")}</p>
       </form>
 
-      <p className="mt-6 text-[13px] text-faint">
+      <p className="mt-6 border-t border-line pt-5 text-[14px] text-muted">
         {tr("login.noAccount")}{" "}
-        <Link href="/#form" className="font-medium text-accent underline underline-offset-4">
+        <Link href="/#form" className="link">
           {tr("login.noAccountCta")}
         </Link>
       </p>

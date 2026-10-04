@@ -42,7 +42,7 @@ export function GuideChecklist({ reportId, items, doneTemplate }: { reportId: st
           <li key={i}>
             <label className={"flex cursor-pointer items-start gap-3 rounded-[14px] border px-3.5 py-3 transition-colors " + (done[i] ? "border-accent/40 bg-accent-soft" : "border-line bg-surface-2 hover:border-faint")}>
               <input type="checkbox" checked={done[i]} onChange={() => toggle(i)} className="peer sr-only" />
-              <span aria-hidden="true" className={"mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold " + (done[i] ? "border-accent bg-accent text-black" : "border-faint text-faint")}>
+              <span aria-hidden="true" className={"peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold " + (done[i] ? "border-accent bg-accent text-black" : "border-faint text-faint")}>
                 {done[i] ? "✓" : i + 1}
               </span>
               <span className="min-w-0">

@@ -221,6 +221,8 @@ export function signalsFrom(
   attributedProfiles?: number,
   /** Volcados publicos (pastes) con el correo: cuentan como filtracion sin contrasena. */
   pastes = 0,
+  /** Sitios con contrasena capturada por un virus (stealer logs). */
+  stealerLogs = 0,
 ): ScoreSignals {
   const breaches = hibp.checked ? hibp.breaches : [];
   const hits: SearchHit[] = brave.ok ? brave.hits : [];
@@ -232,5 +234,6 @@ export function signalsFrom(
     aiKnowsCity: ai?.knows_city ?? false,
     contactDataPublic: ai?.contact_data_public ?? false,
     aiFalseData: ai?.false_claims ?? false,
+    stealerLogs,
   };
 }

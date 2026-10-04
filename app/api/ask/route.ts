@@ -5,6 +5,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { serverEnv } from "@/lib/env";
 import { LOCALES } from "@/lib/i18n";
 import { allowByIp } from "@/lib/rate-limit";
+import { clientIpFrom } from "@/lib/client-ip";
 
 /**
  * "Pregunta a Rastro": el muneco de la portada responde dudas sobre el
@@ -39,6 +40,12 @@ Rastro (rastropro.com) responde a "¿qué sabe la IA de ti?".
 - Plan familiar: si está disponible, el titular añade a personas de su casa (hasta 3 en total) y cada una tiene su cuenta Pro.
 - Identidad frente a la IA (v4): desde el informe, "Pedir rectificación con Rastro" crea la solicitud a ChatGPT/OpenAI, Gemini/Google, Perplexity, Meta AI o Copilot (arts. 16 y 17 RGPD) con la respuesta literal como prueba; se envía por Rastro donde aceptan correo. Y "Imágenes con tu nombre" (rastropro.com/imagenes, Pro): fotos que salen al buscar tu nombre y ciudad, con carta de retirada al sitio (derecho a la propia imagen).
 - Rastro Equipos (v5, rastropro.com/equipos): para empresas. Cada empleado tiene su Pro completo; la empresa ve un panel con puntuación media, quién tiene contraseñas filtradas y quién vigila, SOLO si el empleado decide compartir su puntuación (nunca ve hallazgos ni datos). Precios orientativos 149 €/mes (10 personas) y 299 €/mes (25).
+- Extensión Rastro Guardián (rastropro.com/extension, beta para Chrome/Edge/Brave): un personaje arrastrable que en cada web avisa en rojo si el dominio imita a un banco, a Correos, a la DGT o a Hacienda y te lleva a la web oficial; cuenta las cookies, dice cuántas empresas te siguen y pone una nota 0-100; botón «Rechazar por mí» y bloqueo opcional de rastreadores de publicidad. Todo se calcula en el navegador: no envía nada a ningún sitio.
+- Datos retirados: en Inicio y en Herramientas hay un contador de en cuántos sitios apareces, a cuántos les has pedido la retirada y en cuántos hemos comprobado que ya no sales. Volvemos a mirar cada página una vez por semana y, si el dato desaparece, te avisamos por correo y queda como prueba con fecha. Solo contamos como retirado lo que vimos y dejó de aparecer. No prometemos borrar: medimos.
+- Memoria de la IA (rastropro.com/ia): guardamos la respuesta literal de cada asistente (Perplexity, y ChatGPT y Gemini cuando están configurados) cada vez que miramos, con una ficha de qué sabe (trabajo, ciudad, contacto) y una cronología de cambios. Con Pro y la vigilancia activa preguntamos cada semana y avisamos por correo si cambia algo importante; también hay botón «Preguntar ahora» una vez al día.
+- Sitios de datos comprobados: el informe busca tu nombre completo uno a uno en los sitios de nuestro catálogo que publican o venden datos (Dateas, Axesor, eInforma, Infobel, Páginas Blancas y más) y te dice en cuáles apareces, con botón para pedir la retirada. Si tu nombre es común, confirma que eres tú antes de pedirla.
+- El informe enseña resultados en vivo mientras se genera: filtraciones y sitios en pocos segundos y una nota provisional; la definitiva llega cuando la IA termina de redactar (unos 30 segundos).
+- API (rastropro.com/api-docs): clave en Perfil → API; endpoints para el catálogo de sitios, portales de IA, redactar cartas RGPD, analizar mensajes sospechosos (Pro), calcular la puntuación y leer TUS propios informes. Nunca datos de terceros. 1.000 peticiones/día.
 - Cómo lo hacemos (rastropro.com/como-funciona): fuentes, qué guardamos, cuánto tiempo, regla de la puntuación y seguridad.
 - Nunca prometemos borrar: damos visibilidad y herramientas para reclamar.
 - Soporte: página /soporte. Pro: página /pro. Pedir informe: formulario en la portada.
@@ -61,7 +68,7 @@ export async function POST(request: Request) {
   const { question, locale, history } = parsed.data;
 
   const h = await headers();
-  const ip = h.get("x-forwarded-for")?.split(",")[0].trim() ?? h.get("x-real-ip") ?? "0.0.0.0";
+  const ip = clientIpFrom(h);
   if (!(await allowByIp(ip, "ask"))) return NextResponse.json({ ok: false, error: "ask.limit" }, { status: 429 });
 
   try {
