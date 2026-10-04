@@ -2221,7 +2221,12 @@
         "vhosts": "Virtual hosts",
         "raft": "Raft wordlist (alternative)",
         "basic": "Basic",
-        "ext": "With extensions"
+        "ext": "With extensions",
+        "connect": "Connect the VPN (foreground)",
+        "background": "Connect in background",
+        "myip": "Show my VPN IP (tun0 = LHOST)",
+        "check": "Check it reaches HTB",
+        "down": "Disconnect the VPN"
       }
     },
     "find": {

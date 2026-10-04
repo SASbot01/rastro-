@@ -6,6 +6,7 @@ import { defaultWorkspace, sanitizeWorkspace, type LabWorkspace } from "@/lib/la
 
 export * from "@/lib/lab-core";
 export * from "@/lib/lab-payloads-core";
+export * from "@/lib/lab-playbooks-core";
 
 /** Rastro Lab es para cuentas Pro y administradores. */
 export function canUseLab(user: UserRow | null): boolean {
@@ -28,6 +29,8 @@ export async function saveWorkspace(userId: string, ws: LabWorkspace, locale: "e
 }
 
 import { getMessages, translator, type Locale } from "@/lib/i18n";
+import { productFromVersion } from "@/lib/lab-playbooks-core";
+import { normCve, nvdToLabSeverity, searchCvesByProduct } from "@/lib/cve-lookup";
 import {
   CVE_STATES, FAMILIES, FINDING_STATES, HYPOTHESIS_STATES, SEVERITIES, LIMITS,
   newProject, type CveState, type Family, type FindingState, type HypothesisState,
@@ -127,4 +130,67 @@ export function labCreateJob(ws: LabWorkspace, locale: Locale, name: string, hos
   if (scope) p.target.scope = String(scope).slice(0, 2000);
   ws.projects[id] = p; ws.active = id;
   return id;
+}
+
+/**
+ * Fase 1 — encadenado automático: por cada servicio con versión del trabajo,
+ * busca CVEs en NVD y los añade como candidatos (estado "investigando") si no
+ * están ya. No explota nada: solo propone. Devuelve el recuento.
+ */
+export async function autoEnrichJob(userId: string, jobId: string, locale: Locale): Promise<{ ok: boolean; services: number; cvesAdded: number; details: Array<{ service: string; found: number }> }> {
+  const { workspace } = await loadWorkspace(userId, locale);
+  const p = workspace.projects[jobId];
+  if (!p) return { ok: false, services: 0, cvesAdded: 0, details: [] };
+  const existing = new Set(p.cves.map((c) => c.id).filter(Boolean));
+  let added = 0;
+  const details: Array<{ service: string; found: number }> = [];
+  for (const sv of p.services) {
+    if (!sv.version) continue;
+    const { product, version } = productFromVersion(sv.version);
+    if (!product) continue;
+    const hits = await searchCvesByProduct(product, version);
+    details.push({ service: `${sv.name || sv.port} ${sv.version}`, found: hits.length });
+    for (const h of hits.slice(0, 3)) {
+      const id = normCve(h.id);
+      if (!id || existing.has(id) || p.cves.length >= 80) continue;
+      existing.add(id);
+      p.cves.unshift({ id, software: product, version: version ?? "", severity: nvdToLabSeverity(h.severity, h.cvss), state: "investigating", notes: h.summary, ref: `https://nvd.nist.gov/vuln/detail/${id}` });
+      added += 1;
+    }
+  }
+  if (added > 0) await saveWorkspace(userId, workspace, locale);
+  return { ok: true, services: p.services.filter((s) => s.version).length, cvesAdded: added, details };
+}
+
+export interface Lesson { id: string; service: string | null; tags: string[]; text: string; created_at: string }
+
+/** Guarda una lección reutilizable (qué funcionó). La memoria que crece máquina tras máquina. */
+export async function addLesson(userId: string, lesson: { service?: string; tags?: string[]; text: string }): Promise<Lesson | null> {
+  if (!lesson.text?.trim()) return null;
+  const { data } = await supabaseAdmin().from("lab_lessons")
+    .insert({ user_id: userId, service: lesson.service?.slice(0, 60) ?? null, tags: (lesson.tags ?? []).slice(0, 10).map((t) => String(t).slice(0, 40)), text: lesson.text.slice(0, 4000) })
+    .select("id, service, tags, text, created_at").single<Lesson>();
+  return data ?? null;
+}
+
+/** Busca lecciones por servicio o palabra. Lo que recupera el equipo antes de atacar una máquina parecida. */
+export async function searchLessons(userId: string, q?: string, service?: string, limit = 20): Promise<Lesson[]> {
+  let query = supabaseAdmin().from("lab_lessons").select("id, service, tags, text, created_at").eq("user_id", userId);
+  if (service) query = query.ilike("service", `%${service}%`);
+  if (q) query = query.ilike("text", `%${q.replace(/[%_]/g, "")}%`);
+  const { data } = await query.order("created_at", { ascending: false }).limit(Math.min(limit, 50)).returns<Lesson[]>();
+  return data ?? [];
+}
+
+/** Métricas del cuaderno: trabajos, hallazgos por gravedad, servicios y CVEs. Fase 4. */
+export async function labStats(userId: string, locale: Locale) {
+  const { workspace } = await loadWorkspace(userId, locale);
+  const jobs = Object.values(workspace.projects);
+  const sev: Record<string, number> = { critical: 0, high: 0, medium: 0, low: 0, info: 0 };
+  let findings = 0, services = 0, cves = 0, exploited = 0;
+  for (const p of jobs) {
+    for (const f of p.findings) { findings += 1; sev[f.severity] = (sev[f.severity] ?? 0) + 1; }
+    services += p.services.length; cves += p.cves.length; exploited += p.cves.filter((c) => c.state === "exploited").length;
+  }
+  return { jobs: jobs.length, findings, findingsBySeverity: sev, services, cves, cvesExploited: exploited };
 }

@@ -2221,7 +2221,12 @@
         "vhosts": "Virtual hosts",
         "raft": "Diccionario raft (alternativo)",
         "basic": "Básico",
-        "ext": "Con extensiones"
+        "ext": "Con extensiones",
+        "connect": "Conectar la VPN (primer plano)",
+        "background": "Conectar en segundo plano",
+        "myip": "Ver mi IP de la VPN (tun0 = LHOST)",
+        "check": "Comprobar que llega a HTB",
+        "down": "Desconectar la VPN"
       }
     },
     "find": {

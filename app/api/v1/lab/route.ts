@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { apiError, apiJson, authenticate, isIdentity, preflight } from "@/lib/api-auth";
-import { buildPayloads, canUseLab, jobSummary, labAddCve, labAddFinding, labAddHypothesis, labAddLog, labAddService, labCreateJob, labSetAttacker, labSetStep, labSetTarget, loadWorkspace, reportLabels, saveWorkspace, toMarkdown, type PayloadCat } from "@/lib/lab";
+import { addLesson, autoEnrichJob, buildPayloads, canUseLab, jobSummary, labAddCve, labAddFinding, labAddHypothesis, labAddLog, labAddService, labCreateJob, labSetAttacker, labSetStep, labSetTarget, labStats, loadWorkspace, playbookSteps, reportLabels, saveWorkspace, searchLessons, toMarkdown, type PayloadCat } from "@/lib/lab";
 import { isLocale, type Locale } from "@/lib/i18n";
 
 /**
@@ -27,6 +27,11 @@ const body = z.discriminatedUnion("action", [
   z.object({ action: z.literal("set_step"), job: z.string().min(1), text: z.string().trim().max(200).optional(), index: z.number().int().min(0).optional(), done: z.boolean().optional() }),
   z.object({ action: z.literal("set_attacker"), job: z.string().min(1), lhost: z.string().trim().max(255).optional(), lport: z.number().int().min(1).max(65535).optional() }),
   z.object({ action: z.literal("payloads"), job: z.string().min(1), cat: z.enum(["revshell", "listener", "upgrade", "transfer"]).optional(), os: z.enum(["linux", "windows"]).optional(), file: z.string().trim().max(64).optional(), port: z.number().int().min(1).max(65535).optional() }),
+  z.object({ action: z.literal("autoenrich"), job: z.string().min(1) }),
+  z.object({ action: z.literal("playbook"), job: z.string().min(1), name: z.string().trim().max(80).optional(), port: z.number().int().min(1).max(65535).optional() }),
+  z.object({ action: z.literal("stats") }),
+  z.object({ action: z.literal("lesson_add"), text: z.string().trim().min(3).max(4000), service: z.string().trim().max(60).optional(), tags: z.array(z.string().trim().max(40)).max(10).optional() }),
+  z.object({ action: z.literal("lesson_search"), q: z.string().trim().max(120).optional(), service: z.string().trim().max(60).optional() }),
 ]);
 
 export async function GET(request: Request) {
@@ -62,6 +67,18 @@ export async function POST(request: Request) {
     if (!p) return apiError(404, "not_found", "Trabajo no encontrado.");
     return apiJson({ id: data.job, attacker: p.attacker, payloads: buildPayloads({ lhost: p.attacker.lhost, lport: p.attacker.lport, file: data.file, port: data.port }, { cat: data.cat as PayloadCat | undefined, os: data.os }) });
   }
+  if (data.action === "playbook") {
+    const p = workspace.projects[data.job];
+    if (!p) return apiError(404, "not_found", "Trabajo no encontrado.");
+    const host = p.target.host.split(/[\s(]/)[0] || "<host>";
+    if (data.name || data.port) return apiJson({ steps: playbookSteps({ name: data.name, port: data.port, host }) });
+    const all = p.services.map((sv) => ({ service: sv.name || String(sv.port), port: sv.port, steps: playbookSteps({ name: sv.name, port: sv.port, host }) })).filter((x) => x.steps.length > 0);
+    return apiJson({ playbooks: all });
+  }
+  if (data.action === "autoenrich") return apiJson(await autoEnrichJob(auth.user.id, data.job, locale));
+  if (data.action === "stats") return apiJson(await labStats(auth.user.id, locale));
+  if (data.action === "lesson_add") { const l = await addLesson(auth.user.id, data); return l ? apiJson({ ok: true, lesson: l }) : apiError(422, "not_applied", "No se pudo guardar."); }
+  if (data.action === "lesson_search") return apiJson({ lessons: await searchLessons(auth.user.id, data.q, data.service) });
 
   let jobId: string | null = null; let ok = false;
   if (data.action === "create_job") { jobId = labCreateJob(workspace, locale, data.name, data.host, data.scope); ok = Boolean(jobId); }
