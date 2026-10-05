@@ -1676,6 +1676,14 @@
       "cta": "Entrar en Rastro",
       "footer": "Si no conoces a esta empresa, ignora este correo."
     },
+    "ownerAlert": {
+      "subject": "Aviso de seguridad en tu equipo",
+      "greeting": "Hola:",
+      "body1": "A {member} le acaban de aparecer credenciales en una filtración: {breaches}.",
+      "body2": "Si usa esa contraseña para el correo, el CRM o cualquier herramienta de la empresa, conviene cambiarla hoy y activar la verificación en dos pasos. Ya le hemos avisado a esa persona.",
+      "cta": "Ver el panel del equipo",
+      "footer": "Recibes esto porque {member} comparte su puntuación con tu empresa en Rastro. Nunca vemos sus datos ni sus hallazgos, solo si hay credenciales en riesgo."
+    },
     "nameLabel": "Nombre de la empresa",
     "rename": "Guardar",
     "hubBody": "Gestiona las personas de tu equipo y su riesgo."

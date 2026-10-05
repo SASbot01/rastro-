@@ -1676,6 +1676,14 @@
       "cta": "Open Rastro",
       "footer": "If you don't know this company, ignore this email."
     },
+    "ownerAlert": {
+      "subject": "Security alert in your team",
+      "greeting": "Hi:",
+      "body1": "{member} just had credentials show up in a breach: {breaches}.",
+      "body2": "If they use that password for email, the CRM or any company tool, it should be changed today and two-step verification turned on. We've already alerted that person.",
+      "cta": "Open the team dashboard",
+      "footer": "You're getting this because {member} shares their score with your company on Rastro. We never see their data or findings, only whether credentials are at risk."
+    },
     "nameLabel": "Company name",
     "rename": "Save",
     "hubBody": "Manage the people in your team and their risk."

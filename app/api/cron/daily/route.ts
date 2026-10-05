@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getBreaches, getPastes } from "@/lib/hibp";
-import { sendDailyEmail } from "@/lib/email";
+import { sendDailyEmail, sendNoticeEmail } from "@/lib/email";
 import { createLoginLink } from "@/lib/login-link";
 import { absoluteUrl } from "@/lib/env";
 import { getMessages, isLocale, translator, type Locale } from "@/lib/i18n";
 import { isPro } from "@/lib/plan";
+import { orgById } from "@/lib/org";
 import { dailyOutcome } from "@/lib/daily-core";
 
 /**
@@ -20,7 +21,7 @@ export const maxDuration = 300;
 const BATCH = 40;
 const PAUSE_MS = 1600; // HIBP: ~1 peticion por segundo y medio por clave
 
-interface DueUser { id: string; email: string; locale: string; plan: "free" | "pro"; plan_until: string | null }
+interface DueUser { id: string; email: string; locale: string; plan: "free" | "pro"; plan_until: string | null; org_id: string | null; org_role: string | null; org_share_at: string | null }
 interface PrevCheck { breaches: number; pastes: number; new_breaches: string[]; day: string }
 interface LastReport { request_id: string; raw: { hibp?: { checked: boolean; breaches?: Array<{ name: string }> }; pastes?: { checked: boolean; pastes?: unknown[] } } | null }
 
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   const { data: users, error } = await supabase
     .from("users")
-    .select("id, email, locale, plan, plan_until")
+    .select("id, email, locale, plan, plan_until, org_id, org_role, org_share_at")
     .eq("monitoring", true)
     .eq("plan", "pro")
     // Se leen todas las cuentas (no solo las 40 primeras, que eran siempre las mismas) y se paran a los BATCH comprobados
@@ -122,6 +123,37 @@ export async function GET(request: Request) {
         await sendDailyEmail({ to: user.email, name: user.email.split("@")[0], lines, reportUrl: link, unsubscribeUrl: absoluteUrl("/herramientas").toString(), locale });
       } catch (e) {
         console.error(`[cron/daily] correo a ${user.id} fallo:`, e);
+      }
+
+      // Aviso al responsable de Equipos: solo credenciales NUEVAS con contrasena,
+      // y solo si el empleado es miembro de una org y ha dado su consentimiento
+      // (org_share_at). Nunca se comparten sus datos, solo que hay credenciales en riesgo.
+      const newPwBreaches = hibp.breaches.filter((b) => b.hasPassword && newBreaches.includes(b.name)).map((b) => b.name);
+      if (newPwBreaches.length > 0 && user.org_role === "member" && user.org_id && user.org_share_at) {
+        try {
+          const org = await orgById(user.org_id);
+          const { data: owner } = org
+            ? await supabase.from("users").select("email, locale").eq("id", org.owner_user_id).maybeSingle<{ email: string; locale: string }>()
+            : { data: null };
+          if (owner && owner.email !== user.email) {
+            const ol: Locale = isLocale(owner.locale) ? owner.locale : "es";
+            const ownerLink = await createLoginLink(owner.email, ol, "/equipo");
+            await sendNoticeEmail({
+              to: owner.email,
+              subject: tr(ol, "team.ownerAlert.subject"),
+              greeting: tr(ol, "team.ownerAlert.greeting"),
+              paragraphs: [
+                tr(ol, "team.ownerAlert.body1", { member: user.email, breaches: newPwBreaches.join(", ") }),
+                tr(ol, "team.ownerAlert.body2"),
+              ],
+              cta: tr(ol, "team.ownerAlert.cta"),
+              url: ownerLink,
+              footer: tr(ol, "team.ownerAlert.footer", { member: user.email }),
+            });
+          }
+        } catch (e) {
+          console.error(`[cron/daily] aviso al responsable de ${user.id} fallo:`, e);
+        }
       }
     }
     results.push({ user: user.id, status: alert ? `alerta (${newBreaches.length} brechas, ${newPastes} pastes)` : "ok" });
