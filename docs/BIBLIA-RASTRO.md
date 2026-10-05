@@ -38,6 +38,9 @@ Versión 11-09-2026. Fuente única para cualquier trabajo de marketing, contenid
 - **Reclamación a la AEPD**: escrito preparado + guía si no contestan.
 - **Escáner de Gmail (beta)**: conecta tu Gmail y lista en qué servicios estás registrado, desde cuándo y cuáles llevas años sin usar. Solo leemos remitente, asunto y fecha; no guardamos correos; el acceso se revoca solo al terminar. (Limitado a 100 personas hasta pasar la verificación de Google.)
 
+### API pública (para desarrolladores, CTF, equipos de ciber)
+rastropro.com/api-docs. Clave por cuenta. Endpoints: catálogo de sitios que venden datos (con contacto y trámite), portales de rectificación de las IA, redacción de cartas RGPD, «¿es una estafa?» (Pro), cálculo de la puntuación y lectura de TUS propios informes/cartas/comprobaciones. Nunca datos de terceros (a diferencia de HIBP, no se puede consultar a otras personas).
+
 ### Lo que NO hace (y no se puede decir que hace)
 - No borra datos por ti. No "limpia internet". Da visibilidad y las herramientas legales para reclamar.
 - No investiga a terceros. No es un buscador de personas.

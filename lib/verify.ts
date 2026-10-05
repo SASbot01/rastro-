@@ -4,6 +4,7 @@ import { runReportJob } from "@/lib/report/job";
 import { ensureUser } from "@/lib/users";
 import type { Locale } from "@/lib/i18n";
 
+import { track } from "@/lib/events";
 /**
  * Completar una verificacion de correo, venga por enlace (/verify) o por
  * codigo (/api/verify-code): crea/actualiza la cuenta, reclama la
@@ -48,6 +49,7 @@ export async function claimAndStart(row: VerifiableRow, locale: Locale): Promise
   if (!claimed) return { ok: false };
 
   const id = row.id;
+  void track("email_verified", { subject: id, locale });
   after(() => runReportJob(id));
   return { ok: true, id, userId: user?.id ?? null, alreadyVerified: false };
 }

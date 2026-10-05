@@ -133,3 +133,37 @@ export async function getPastes(email: string): Promise<PastesResult> {
     pastes: raw.map((p) => ({ source: p.Source, id: p.Id, title: p.Title ?? null, date: p.Date ?? null, emailCount: p.EmailCount })),
   };
 }
+
+
+export type StealerLogsResult =
+  | { checked: true; domains: string[] }
+  | { checked: false; reason: "no_key" | "not_entitled" | "rate_limited" | "error"; detail?: string };
+
+/**
+ * Registros de virus roba-contrasenas (stealer logs) donde aparece el correo: HIBP
+ * devuelve los DOMINIOS de los sitios cuya contrasena fue capturada, nunca la
+ * contrasena. Requiere el plan Pwned 5 de HIBP: con otro plan responde 401/403 y
+ * se marca 'not_entitled' (el informe dice que no se pudo consultar). 404 = ninguno.
+ */
+export async function getStealerLogs(email: string): Promise<StealerLogsResult> {
+  const key = serverEnv.hibpApiKey;
+  if (!key) return { checked: false, reason: "no_key" };
+  if (process.env.HIBP_STEALER_LOGS !== "1") return { checked: false, reason: "not_entitled" };
+  let response: Response;
+  try {
+    response = await fetch(`${HIBP_BASE}/stealerlogsbyemail/${encodeURIComponent(email)}`, {
+      headers: { "hibp-api-key": key, "user-agent": USER_AGENT, accept: "application/json" },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      cache: "no-store",
+    });
+  } catch (error) {
+    return { checked: false, reason: "error", detail: String(error) };
+  }
+  if (response.status === 404) return { checked: true, domains: [] };
+  if (response.status === 401 || response.status === 403) return { checked: false, reason: "not_entitled" };
+  if (response.status === 429) return { checked: false, reason: "rate_limited" };
+  if (!response.ok) return { checked: false, reason: "error", detail: `HTTP ${response.status}` };
+  const raw = (await response.json()) as unknown;
+  const domains = Array.isArray(raw) ? raw.filter((d): d is string => typeof d === "string").map((d) => d.toLowerCase()).slice(0, 100) : [];
+  return { checked: true, domains: [...new Set(domains)] };
+}

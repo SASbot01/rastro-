@@ -84,21 +84,21 @@ export function ProfileEditor({ messages, name, avatar, email }: { messages: Mes
   if (!open) {
     return (
       <div className="mt-3 flex flex-col items-center gap-1">
-        <button type="button" onClick={() => { setOpen(true); setSaved(false); }} className="text-[13px] font-medium text-accent underline underline-offset-4">{tr("profile2.edit")}</button>
+        <button type="button" onClick={() => { setOpen(true); setSaved(false); }} className="link text-[14px]">{tr("profile2.edit")}</button>
         {saved && <p className="text-[12px] text-accent">{tr("profile2.saved")}</p>}
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-4 w-full rounded-card border border-line bg-surface p-5 text-left">
+    <form onSubmit={onSubmit} className="mt-4 w-full card p-5 text-left">
       <div className="flex items-center gap-4">
         <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-surface-2 text-[24px] font-semibold text-accent">
           {photo ? <img src={photo} alt="" className="h-full w-full object-cover" /> : initial}
         </div>
         <div className="grid gap-1.5">
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => fileRef.current?.click()} className="rounded-[10px] border border-line bg-surface-2 px-3 py-1.5 text-[13px] font-semibold text-ink hover:border-faint">{tr("profile2.photoChange")}</button>
+            <button type="button" onClick={() => fileRef.current?.click()} className="btn btn-secondary btn-sm">{tr("profile2.photoChange")}</button>
             {photo && <button type="button" onClick={() => { setPhoto(null); setPhotoChanged(true); }} className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium text-muted hover:text-ink">{tr("profile2.photoRemove")}</button>}
           </div>
           <p className="text-[11.5px] text-faint">{tr("profile2.photoHelp")}</p>
@@ -109,7 +109,7 @@ export function ProfileEditor({ messages, name, avatar, email }: { messages: Mes
       <input id="profile-name" name="name" defaultValue={name} maxLength={60} minLength={2} required placeholder={tr("profile2.namePlaceholder")} className={"mt-1.5 " + field} />
       {error && <p role="alert" className="mt-2 text-[12.5px] text-danger">{tr(error)}</p>}
       <div className="mt-4 flex items-center gap-3">
-        <button type="submit" disabled={busy} className="rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90 disabled:opacity-60">{busy ? tr("profile2.saving") : tr("profile2.save")}</button>
+        <button type="submit" disabled={busy} className="btn btn-primary btn-sm">{busy ? tr("profile2.saving") : tr("profile2.save")}</button>
         <button type="button" onClick={() => { setOpen(false); setPhoto(avatar); setPhotoChanged(false); }} className="text-[14px] font-medium text-muted hover:text-ink">{tr("profile2.cancel")}</button>
       </div>
     </form>

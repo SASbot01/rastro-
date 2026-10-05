@@ -19,6 +19,7 @@ export function LocaleSwitcher({
 
   function choose(locale: Locale) {
     if (locale === current) return;
+    // eslint-disable-next-line react-hooks/immutability -- browser cookie API in an event handler
     document.cookie = `${LOCALE_COOKIE}=${locale};path=/;max-age=${ONE_YEAR};samesite=lax`;
     startTransition(() => router.refresh());
   }
@@ -27,7 +28,7 @@ export function LocaleSwitcher({
     <div
       role="group"
       aria-label={tr("locale.switchTo")}
-      className="flex items-center rounded-full border border-line bg-surface-2 p-0.5"
+      className="flex items-center rounded-full border border-line bg-surface-2 p-[2px] data-[pending]:opacity-60"
       data-pending={pending || undefined}
     >
       {LOCALES.map((locale) => {
@@ -39,8 +40,8 @@ export function LocaleSwitcher({
             onClick={() => choose(locale)}
             aria-current={active ? "true" : undefined}
             className={
-              "rounded-full px-2.5 py-1 text-[12px] font-medium uppercase tracking-wide transition-colors " +
-              (active ? "bg-accent text-black" : "text-muted hover:text-ink")
+              "min-h-[40px] min-w-[38px] rounded-full px-2.5 text-[12px] font-semibold uppercase tracking-wide transition-colors " +
+              (active ? "bg-ink text-paper" : "text-muted hover:text-ink")
             }
           >
             {locale}

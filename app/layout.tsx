@@ -1,3 +1,4 @@
+import { RefCapture } from "@/components/RefCapture";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
@@ -6,6 +7,7 @@ import { getMessages, translator } from "@/lib/i18n";
 import { BottomNav, SideNav } from "@/components/BottomNav";
 import { AskRastro } from "@/components/AskRastro";
 import "./globals.css";
+import "./experience.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,6 +19,7 @@ export const viewport: Viewport = {
   themeColor: "#0a0a0a",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,16 +47,19 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
+  const messages = getMessages(locale);
   // Analitica sin cookies (Plausible). Solo se carga si hay dominio configurado.
   const plausible = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
   // Cloudflare Web Analytics (gratis, sin cookies): token del panel de Cloudflare.
   const cfToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
   return (
-    <html lang={locale} className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full pb-[76px] sm:pb-0">
+    <html lang={locale} data-theme="dark" className={`${inter.variable} h-full antialiased`}>
+      <body className="min-h-full pb-[calc(64px+env(safe-area-inset-bottom))] sm:pb-0">
+        <a className="ex-skip" href="#page-content">{messages.experience.skipContent}</a>
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px]">
           <SideNav messages={getMessages(locale)} />
-          <div className="flex min-h-screen min-w-0 flex-1 flex-col">{children}</div>
+          <div id="page-content" tabIndex={-1} className="flex min-h-screen min-w-0 flex-1 flex-col"><RefCapture />
+        {children}</div>
         </div>
         <BottomNav messages={getMessages(locale)} />
         <AskRastro messages={getMessages(locale)} locale={locale} />

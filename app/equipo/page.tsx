@@ -7,10 +7,11 @@ import { getSession } from "@/lib/session";
 import { findUserByEmail } from "@/lib/users";
 import { levelFor } from "@/lib/report/score";
 import { memberSnapshots, orgForOwner, orgMembers } from "@/lib/org";
+import { sharedMonitoring } from "@/lib/team-privacy";
 
 export const dynamic = "force-dynamic";
-const CARD = "rounded-card border border-line bg-surface p-5 sm:p-6";
-const FIELD = "min-w-0 flex-1 rounded-[12px] border border-line bg-surface-2 px-3.5 py-2.5 text-[14px] text-ink placeholder:text-faint focus:border-accent focus:outline-none";
+const CARD = "card p-5 sm:p-6";
+const FIELD = "field min-w-0 flex-1 !min-h-[48px]";
 const LEVEL_TEXT = { green: "text-ok", orange: "text-warn", red: "text-danger" } as const;
 
 /** v5 — Panel de Rastro Equipos (solo titular). Ve lo que cada persona comparte: puntuacion, contrasenas filtradas, vigilancia. */
@@ -36,15 +37,16 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
   return (
     <>
       <SiteHeader locale={locale} messages={messages} />
-      <main className="mx-auto w-full max-w-[640px] lg:max-w-[920px] px-5 py-8 sm:py-12">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("team.eyebrow")}</p>
-        <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.025em] text-ink">{org ? org.name : tr("team.dashTitle")}</h1>
+      <main className="page py-8 sm:py-12">
+        <p className="eyebrow">{tr("team.eyebrow")}</p>
+        <h1 className="mt-2 h1 text-ink">{org ? org.name : tr("team.dashTitle")}</h1>
+        <section className="ex-panel mt-5"><h2 className="text-base font-medium">{tr("experience.teamPrivacy")}</h2><p className="ex-note mt-2">{tr("experience.teamPrivacyBody")}</p></section>
         {e && <p role="alert" className="mt-3 text-[13px] font-medium text-danger">{tr(`team.${e}`)}</p>}
 
         {/* Nombre / creacion */}
         <form action="/api/org" method="post" className="mt-4 flex gap-2">
           <input name="name" required minLength={2} maxLength={80} defaultValue={org?.name ?? ""} placeholder={tr("team.nameLabel")} className={FIELD} />
-          <button type="submit" className="shrink-0 rounded-[12px] border border-line bg-surface-2 px-4 py-2.5 text-[14px] font-semibold text-ink hover:border-faint">{tr("team.rename")}</button>
+          <button type="submit" className="shrink-0 btn btn-secondary btn-sm">{tr("team.rename")}</button>
         </form>
 
         {org && (
@@ -54,7 +56,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                 { v: avg ?? "—", l: tr("team.avg"), cls: avg !== null ? LEVEL_TEXT[levelFor(avg)] : "text-faint" },
                 { v: `${withPw}/${shared.length}`, l: tr("team.withPasswords"), cls: withPw ? "text-danger" : "text-ink" },
                 { v: `${shared.length}/${members.length}`, l: tr("team.withReport"), cls: "text-ink" },
-                { v: `${members.filter((m) => m.monitoring).length}/${members.length}`, l: tr("team.withMonitoring"), cls: "text-ink" },
+                { v: `${members.filter((m) => sharedMonitoring(m) === true).length}/${members.filter((m) => m.org_share_at).length}`, l: tr("team.withMonitoring"), cls: "text-ink" },
               ].map((x) => (
                 <li key={x.l} className={CARD + " !p-4"}><p className={"text-[24px] font-semibold tracking-[-0.02em] " + x.cls}>{x.v}</p><p className="mt-0.5 text-[12px] text-faint">{x.l}</p></li>
               ))}
@@ -65,7 +67,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                 <h2 className="text-[16px] font-semibold text-ink">{tr("team.dashTitle")}</h2>
                 <div className="flex items-center gap-3">
                   <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-[11px] font-semibold text-muted">{tr("team.seats", { used: 1 + members.length, total: org.seats })}</span>
-                  <a href="/api/org/export" className="text-[13px] font-medium text-accent underline underline-offset-4">{tr("team.export")}</a>
+                  <a href="/api/org/export" className="link text-[14px]">{tr("team.export")}</a>
                 </div>
               </div>
               {ok === "added" && <p className="mt-2 text-[13px] text-accent">{tr("family.pending")}</p>}
@@ -83,7 +85,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                           <td className="py-2.5 pr-3 text-muted">{!m.last_seen_at ? tr("team.status.invited") : m.org_share_at ? (s ? tr("team.status.active") : tr("team.status.noreport")) : tr("team.notShared")}</td>
                           <td className={"py-2.5 pr-3 font-semibold " + (s ? LEVEL_TEXT[levelFor(s.score)] : "text-faint")}>{s ? s.score : "—"}</td>
                           <td className={"py-2.5 pr-3 " + (s && s.passwords > 0 ? "text-danger" : "text-muted")}>{s ? s.passwords : "—"}</td>
-                          <td className="py-2.5 pr-3 text-muted">{m.monitoring ? tr("team.on") : tr("team.off")}</td>
+                          <td className="py-2.5 pr-3 text-muted">{sharedMonitoring(m) === null ? "—" : sharedMonitoring(m) ? tr("team.on") : tr("team.off")}</td>
                           <td className="py-2.5 pr-3 text-faint">{s ? fmt.format(new Date(s.at)) : "—"}</td>
                           <td className="py-2.5 text-right"><form action="/api/org/members" method="post"><input type="hidden" name="action" value="remove" /><input type="hidden" name="email" value={m.email} /><button type="submit" className="text-[12.5px] text-muted underline underline-offset-4 hover:text-ink">{tr("team.remove")}</button></form></td>
                         </tr>
@@ -96,7 +98,7 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                 <form action="/api/org/members" method="post" className="mt-4 flex gap-2">
                   <input type="hidden" name="action" value="add" />
                   <input name="email" type="email" required placeholder={tr("team.emailPlaceholder")} className={FIELD} />
-                  <button type="submit" className="shrink-0 rounded-[12px] bg-accent px-4 py-2.5 text-[14px] font-semibold text-black hover:opacity-90">{tr("team.invite")}</button>
+                  <button type="submit" className="shrink-0 btn btn-primary btn-sm">{tr("team.invite")}</button>
                 </form>
               )}
             </section>

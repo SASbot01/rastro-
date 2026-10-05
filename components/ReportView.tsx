@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { ReportExperience } from "@/components/experience/ReportExperience";
 import { brokerForHost } from "@/lib/brokers/catalog";
 import { AI_RECTIFY } from "@/lib/assistants";
 import { ShareButton } from "@/components/ShareButton";
+import { ScoreRing } from "@/components/experience/ScoreRing";
 import { translator, type Locale, type Messages } from "@/lib/i18n";
 import { levelFor, type Level } from "@/lib/report/score";
 import type { Action, Category, Finding, Severity } from "@/lib/report/findings";
@@ -24,6 +26,7 @@ export interface ReportData {
   generator: "ai" | "template";
   accounts?: KnownAccount[];
   assistants?: AssistantView[];
+  site_checks?: Array<{ slug: string; name: string; host: string; status: "listed" | "not_found" | "unknown"; url: string | null; title: string | null }> | null;
 }
 
 export interface AssistantView {
@@ -36,7 +39,8 @@ export interface AssistantView {
 const CATEGORY_ORDER: Category[] = ["breaches", "ai", "profiles", "false"];
 
 const LEVEL_TEXT: Record<Level, string> = { green: "text-ok", orange: "text-warn", red: "text-danger" };
-const LEVEL_STROKE: Record<Level, string> = { green: "#4dfc5f", orange: "#ffb020", red: "#ff5f5f" };
+const LEVEL_GLOW: Record<Level, string> = { green: "glow-ok", orange: "glow-warn", red: "glow-bad" };
+const SEVERITY_TONE: Record<Severity, string> = { high: "tone-bad", medium: "tone-warn", low: "", info: "" };
 
 const SEVERITY_DOT: Record<Severity, string> = {
   high: "bg-danger",
@@ -45,7 +49,8 @@ const SEVERITY_DOT: Record<Severity, string> = {
   info: "bg-faint",
 };
 
-const CARD = "rounded-card border border-line bg-surface";
+const CARD = "card";
+const SUMMARY = "flex min-h-[60px] items-center justify-between gap-3 px-5 py-4";
 
 function hostOf(url: string | null): string | null {
   if (!url) return null;
@@ -64,27 +69,6 @@ function Chevron({ cls }: { cls: string }) {
   );
 }
 
-/** Anillo de score: SVG puro, sin dependencias. */
-function ScoreRing({ score, level, label }: { score: number; level: Level; label: string }) {
-  const size = 148;
-  const stroke = 10;
-  const r = (size - stroke) / 2;
-  const c = 2 * Math.PI * r;
-  const offset = c * (1 - score / 100);
-  return (
-    <div className="relative h-[148px] w-[148px] shrink-0" role="img" aria-label={`${score}/100 — ${label}`}>
-      <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full -rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#262626" strokeWidth={stroke} />
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={LEVEL_STROKE[level]} strokeWidth={stroke} strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset} />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className={"text-[44px] leading-none font-semibold tracking-[-0.04em] " + LEVEL_TEXT[level]}>{score}</span>
-        <span className="mt-1 text-[11px] font-medium uppercase tracking-[0.08em] text-faint">/100</span>
-      </div>
-    </div>
-  );
-}
-
 export function ReportView({
   report,
   requestId,
@@ -93,6 +77,7 @@ export function ReportView({
   messages,
   partial,
   pro,
+  reveal,
 }: {
   report: ReportData;
   requestId: string;
@@ -103,6 +88,7 @@ export function ReportView({
   partial?: boolean;
   /** Plan Pro activo: habilita las cartas de supresion. */
   pro?: boolean;
+  reveal?: boolean;
 }) {
   const tr = translator(messages);
   const level = levelFor(report.score);
@@ -114,45 +100,46 @@ export function ReportView({
   })).filter((g) => g.items.length > 0);
 
   return (
+    <ReportExperience report={report} requestId={requestId} fullName={fullName} locale={locale} messages={messages} pro={pro} reveal={reveal}>
     <article className="grid gap-4 lg:grid-cols-[360px_minmax(0,1fr)] lg:items-start lg:gap-8">
       {/* Columna fija: puntuacion + compartir + acciones */}
       <div className="grid gap-4 lg:sticky lg:top-20">
-        <section className={CARD + " p-6 sm:p-8"}>
+        <section className={CARD + " card-glow p-6 sm:p-8 " + LEVEL_GLOW[level]}>
           <div className="flex items-center justify-between gap-3">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">{tr("report.eyebrow")}</p>
-            <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-ink">
-              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+            <p className="eyebrow">{tr("report.eyebrow")}</p>
+            <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink">
+              <img src="/brand/logo-96.png" alt="" width={20} height={17} className="h-[15px] w-auto" />
               Rastro
             </span>
           </div>
-          <div className="mt-6 flex items-center gap-6">
-            <ScoreRing score={report.score} level={level} label={tr(`report.level.${level}`)} />
+          <div className="mt-6 flex items-center gap-5">
+            <ScoreRing score={report.score} label={tr(`report.level.${level}`)} size={136} />
             <div className="min-w-0">
-              <p className={"text-[20px] leading-tight font-semibold tracking-[-0.02em] " + LEVEL_TEXT[level]}>{tr(`report.level.${level}`)}</p>
+              <p className={"text-[21px] leading-tight font-semibold tracking-[-0.025em] " + LEVEL_TEXT[level]}>{tr(`report.level.${level}`)}</p>
               <p className="mt-1 text-[13px] text-faint">{tr("report.scoreLabel")}</p>
-              <p className="mt-3 truncate text-[14px] text-muted">{tr("report.for", { name: fullName })}</p>
-              <p className="text-[12.5px] text-faint">{date}</p>
+              <p className="mt-3 truncate text-[14.5px] text-muted">{tr("report.for", { name: fullName })}</p>
+              <p className="text-[13px] text-faint">{date}</p>
             </div>
           </div>
-          <p className="mt-6 text-[15.5px] leading-[1.65] text-ink">{report.summary}</p>
-          <p className="mt-3 text-[12.5px] text-faint">{tr("report.scoreHint")}</p>
-          {partial && <p className="mt-2 text-[12.5px] leading-relaxed text-faint">{tr("report.partial")}</p>}
+          <p className="mt-6 text-[16px] leading-[1.7] text-ink">{report.summary}</p>
+          <p className="mt-3 text-[13px] leading-relaxed text-faint">{tr("report.scoreHint")}</p>
+          {partial && <p className="mt-2 rounded-[12px] border border-warn/30 bg-warn/10 px-3.5 py-2.5 text-[13px] leading-relaxed text-warn">{tr("report.partial")}</p>}
         </section>
 
         <ShareButton requestId={requestId} score={report.score} messages={messages} />
 
         {report.actions.length > 0 && (
-          <section className={CARD + " border-accent/30 p-5 sm:p-6"}>
-            <h3 className="text-[15px] font-semibold text-ink">{tr("report.actionsTitle")}</h3>
+          <section className={CARD + " card-accent p-5 sm:p-6"}>
+            <h3 className="h3 text-ink">{tr("report.actionsTitle")}</h3>
             <ol className="mt-4 grid gap-4">
               {report.actions.map((a, i) => (
                 <li key={i} className="flex gap-3">
-                  <span aria-hidden="true" className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-semibold text-black">
+                  <span aria-hidden="true" className="num flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] text-black">
                     {i + 1}
                   </span>
                   <div>
-                    <h4 className="text-[15px] font-semibold text-ink">{a.title}</h4>
-                    <p className="mt-0.5 text-[14px] leading-[1.6] text-muted">{a.detail}</p>
+                    <h4 className="text-[15.5px] font-semibold leading-snug text-ink">{a.title}</h4>
+                    <p className="mt-1 text-[14.5px] leading-[1.65] text-muted">{a.detail}</p>
                   </div>
                 </li>
               ))}
@@ -164,26 +151,82 @@ export function ReportView({
       {/* Columna plegable: cuentas y hallazgos */}
       <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
         <div className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 px-1">
-          <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-faint">
+          <h2 className="text-[12.5px] font-semibold uppercase tracking-[0.1em] text-muted">
             {report.findings.length === 1 ? tr("report.countOne") : tr("report.counts", { n: report.findings.length })}
           </h2>
           <p className="text-[12.5px] text-faint">{tr("report.whatYouSee")}</p>
         </div>
 
+        {report.site_checks && report.site_checks.length > 0 && (() => {
+          const listed = report.site_checks.filter((c) => c.status === "listed");
+          const clean = report.site_checks.filter((c) => c.status === "not_found");
+          const unknown = report.site_checks.filter((c) => c.status === "unknown");
+          return (
+            <details className={"acc group min-w-0 overflow-hidden " + CARD} open={listed.length > 0}>
+              <summary className={SUMMARY}>
+                <span className="flex min-w-0 items-center gap-2 text-[16px] font-semibold tracking-[-0.015em] text-ink">
+                  {tr("report.sitesTitle")}
+                  <span className={"badge tabular-nums " + (listed.length > 0 ? "tone-bad" : "tone-ok")}>{listed.length} / {report.site_checks.length - unknown.length}</span>
+                </span>
+                <Chevron cls="group-open:rotate-180" />
+              </summary>
+              <div className="acc-body border-t border-line px-5 pt-4 pb-5">
+                <p className="text-[14.5px] leading-relaxed text-muted">{tr(listed.length > 0 ? "report.sitesBodyListed" : "report.sitesBodyClean", { n: report.site_checks.length - unknown.length })}</p>
+                {listed.length > 0 && (
+                  <ul className="mt-3 grid gap-2">
+                    {listed.map((c) => (
+                      <li key={c.slug} className="tile min-w-0 border border-danger/20 p-4">
+                        <div className="flex min-w-0 items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="text-[15.5px] font-semibold leading-snug text-ink">{c.name}</p>
+                            {c.url && <a href={c.url} target="_blank" rel="noreferrer nofollow" className="link-muted mt-0.5 block truncate text-[13px]">{c.title || c.url}</a>}
+                          </div>
+                          <span className="badge tone-bad shrink-0 uppercase">{tr("report.sitesListed")}</span>
+                        </div>
+                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                          {pro ? (
+                            <form action="/api/letters" method="post">
+                              <input type="hidden" name="request_id" value={requestId} />
+                              <input type="hidden" name="site_slug" value={c.slug} />
+                              <button type="submit" className="btn btn-primary btn-sm">{tr("report.sitesAsk")}</button>
+                            </form>
+                          ) : (
+                            <Link href="/pro" className="btn btn-secondary btn-sm">{tr("report.sitesAsk")} · {tr("pro.badge")}</Link>
+                          )}
+                          <Link href={`/sitios/${c.slug}`} className="btn btn-ghost btn-sm">{tr("report.sitesHow")}</Link>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <ul className="mt-3 flex flex-wrap gap-1.5">
+                  {clean.map((c) => (
+                    <li key={c.slug} className="chip"><svg viewBox="0 0 20 20" className="h-3 w-3 text-accent" aria-hidden="true"><path d="m4.5 10.5 3.5 3.5 7.5-8" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>{c.name}</li>
+                  ))}
+                  {unknown.map((c) => (
+                    <li key={c.slug} className="chip !text-faint" title={tr("report.sitesUnknown")}>? {c.name}</li>
+                  ))}
+                </ul>
+                <p className="note mt-4">{tr("report.sitesNote")}</p>
+              </div>
+            </details>
+          );
+        })()}
+
         {report.accounts && report.accounts.length > 0 && (
-          <details className={"group min-w-0 overflow-hidden " + CARD}>
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
-              <span className="flex items-center gap-2 text-[15px] font-semibold text-ink">
+          <details className={"acc group min-w-0 overflow-hidden " + CARD}>
+            <summary className={SUMMARY}>
+              <span className="flex items-center gap-2 text-[16px] font-semibold tracking-[-0.015em] text-ink">
                 {tr("report.accountsTitle")}
-                <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-semibold text-muted">{report.accounts.length}</span>
+                <span className="badge tabular-nums">{report.accounts.length}</span>
               </span>
               <Chevron cls="group-open:rotate-180" />
             </summary>
-            <div className="border-t border-line px-5 pt-3 pb-4">
-              <p className="text-[13px] leading-relaxed text-muted">{tr("report.accountsHint")}</p>
+            <div className="acc-body border-t border-line px-5 pt-4 pb-5">
+              <p className="text-[14.5px] leading-relaxed text-muted">{tr("report.accountsHint")}</p>
               <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
                 {report.accounts.map((a) => (
-                  <li key={(a.domain ?? a.name) + a.source} className="flex items-center justify-between gap-3 rounded-[12px] bg-surface-2 px-3.5 py-2.5">
+                  <li key={(a.domain ?? a.name) + a.source} className="tile flex items-center justify-between gap-3 px-3.5 py-3">
                     <div className="min-w-0">
                       {a.url ? (
                         <a href={a.url} target="_blank" rel="noreferrer nofollow" className="block truncate text-[14px] font-semibold text-ink underline-offset-4 hover:underline">
@@ -197,7 +240,7 @@ export function ReportView({
                       </p>
                     </div>
                     {a.hasPassword && (
-                      <span className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-accent">{tr("report.accountPassword")}</span>
+                      <span className="badge tone-bad shrink-0 uppercase">{tr("report.accountPassword")}</span>
                     )}
                   </li>
                 ))}
@@ -208,33 +251,33 @@ export function ReportView({
 
         {/* Respuesta literal de cada asistente de IA */}
         {report.assistants && report.assistants.some((a) => a.status === "ok") && (
-          <details className={"group min-w-0 overflow-hidden " + CARD}>
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
-              <span className="flex items-center gap-2 text-[15px] font-semibold text-ink">
+          <details className={"acc group min-w-0 overflow-hidden " + CARD}>
+            <summary className={SUMMARY}>
+              <span className="flex items-center gap-2 text-[16px] font-semibold tracking-[-0.015em] text-ink">
                 {tr("report.assistantsTitle")}
-                <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-semibold text-muted">{report.assistants.filter((a) => a.status === "ok").length}</span>
+                <span className="badge tabular-nums">{report.assistants.filter((a) => a.status === "ok").length}</span>
               </span>
               <Chevron cls="group-open:rotate-180" />
             </summary>
-            <div className="border-t border-line px-5 pt-3 pb-4">
-              <p className="text-[13px] leading-relaxed text-muted">{tr("report.assistantsBody", { name: fullName })}</p>
+            <div className="acc-body border-t border-line px-5 pt-4 pb-5">
+              <p className="text-[14.5px] leading-relaxed text-muted">{tr("report.assistantsBody", { name: fullName })}</p>
               <ul className="mt-3 grid gap-3">
                 {report.assistants.map((a) => (
-                  <li key={a.provider} className="rounded-[14px] bg-surface-2 p-4">
+                  <li key={a.provider} className="tile p-4">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <p className="text-[14px] font-semibold text-ink">{tr(`report.assistantNames.${a.provider}`)}</p>
+                      <p className="text-[15.5px] font-semibold text-ink">{tr(`report.assistantNames.${a.provider}`)}</p>
                       {a.status === "ok" && (
                         <span className="flex flex-wrap items-center gap-3">
                           {pro ? (
                             <form action="/api/ai-requests" method="post">
                               <input type="hidden" name="request_id" value={requestId} />
                               <input type="hidden" name="provider" value={a.provider} />
-                              <button type="submit" className="text-[12.5px] font-medium text-accent underline underline-offset-4">{tr("aiReq.withRastro")}</button>
+                              <button type="submit" className="link min-h-[44px] text-[13.5px]">{tr("aiReq.withRastro")}</button>
                             </form>
                           ) : (
-                            <Link href="/pro" className="text-[12.5px] font-medium text-muted underline underline-offset-4">{tr("aiReq.withRastro")} · {tr("pro.badge")}</Link>
+                            <Link href="/pro" className="link-muted text-[13.5px]">{tr("aiReq.withRastro")} · {tr("pro.badge")}</Link>
                           )}
-                          <a href={AI_RECTIFY[a.provider].url} target="_blank" rel="noreferrer nofollow" className="text-[12.5px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+                          <a href={AI_RECTIFY[a.provider].url} target="_blank" rel="noreferrer nofollow" className="link-muted text-[13.5px]">
                             {tr("report.rectify", { name: AI_RECTIFY[a.provider].name })}
                           </a>
                         </span>
@@ -242,7 +285,7 @@ export function ReportView({
                     </div>
                     {a.status === "ok" ? (
                       <>
-                        <blockquote className="mt-2 whitespace-pre-line border-l-2 border-accent pl-3 text-[13.5px] leading-relaxed text-muted">{a.answer}</blockquote>
+                        <blockquote className="mt-3 whitespace-pre-line border-l-2 border-accent pl-3.5 text-[14.5px] leading-[1.7] text-[#c9c9c4]">{a.answer}</blockquote>
                         {a.sources.length > 0 && (
                           <p className="mt-2 text-[12px] text-faint">
                             {tr("report.assistantSources")}:{" "}
@@ -275,12 +318,12 @@ export function ReportView({
                 ? "info"
                 : "low";
           return (
-            <details key={category} className={"group min-w-0 overflow-hidden " + CARD} open={worst === "high"}>
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
-                <span className="flex items-center gap-2.5 text-[15px] font-semibold text-ink">
+            <details key={category} className={"acc group min-w-0 overflow-hidden " + CARD} open={worst === "high"}>
+              <summary className={SUMMARY}>
+                <span className="flex items-center gap-2.5 text-[16px] font-semibold tracking-[-0.015em] text-ink">
                   <span aria-hidden="true" className={"h-2 w-2 rounded-full " + SEVERITY_DOT[worst]} />
                   {tr(`report.categories.${category}`)}
-                  <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-semibold text-muted">{items.length}</span>
+                  <span className="badge tabular-nums">{items.length}</span>
                 </span>
                 <Chevron cls="group-open:rotate-180" />
               </summary>
@@ -290,18 +333,20 @@ export function ReportView({
                   const known = host ? brokerForHost(host) : null;
                   return (
                     <li key={index} className="min-w-0">
-                      <details className="group/item min-w-0 overflow-hidden">
-                        <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-3.5 [&::-webkit-details-marker]:hidden">
-                          <span aria-hidden="true" className={"h-2 w-2 shrink-0 rounded-full " + SEVERITY_DOT[f.severity]} />
+                      <details className="acc group/item min-w-0 overflow-hidden">
+                        <summary className="flex min-h-[64px] cursor-pointer list-none items-start gap-3 px-5 py-4 transition-colors hover:bg-surface-2/40 [&::-webkit-details-marker]:hidden">
+                          <span aria-hidden="true" className={"mt-[7px] h-2 w-2 shrink-0 rounded-full " + SEVERITY_DOT[f.severity]} />
                           <span className="min-w-0 flex-1">
-                            <span className="block truncate text-[14.5px] font-medium text-ink">{f.title}</span>
-                            {host && <span className="block truncate text-[12px] text-faint">{host}</span>}
+                            <span className="block text-[15px] font-medium leading-snug text-ink">{f.title}</span>
+                            <span className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                              <span className={"badge uppercase " + SEVERITY_TONE[f.severity]}>{tr(`report.severity.${f.severity}`)}</span>
+                              {host && <span className="truncate text-[12.5px] text-faint">{host}</span>}
+                            </span>
                           </span>
-                          <span className="shrink-0 text-[11px] font-semibold uppercase tracking-wide text-faint">{tr(`report.severity.${f.severity}`)}</span>
-                          <Chevron cls="group-open/item:rotate-180" />
+                          <span className="mt-0.5"><Chevron cls="group-open/item:rotate-180" /></span>
                         </summary>
-                        <div className="grid gap-2.5 bg-surface-2/60 px-5 pt-1 pb-4 pl-10">
-                          <p className="text-[14px] leading-[1.6] text-muted">{f.detail}</p>
+                        <div className="acc-body grid gap-3 bg-surface-2/50 px-5 pt-3 pb-5 pl-10">
+                          <p className="text-[15px] leading-[1.7] text-[#c9c9c4]">{f.detail}</p>
                           {known && (
                             <Link href={`/sitios/${known.slug}`} className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/40 bg-accent-soft px-3 py-1 text-[12.5px] font-medium text-accent" title={tr("sites.knownHint")}>
                               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
@@ -310,7 +355,7 @@ export function ReportView({
                           )}
                           {f.source_url && (
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                              <a href={f.source_url} target="_blank" rel="noreferrer nofollow" className="inline-flex items-center gap-1 text-[13px] font-medium text-accent underline underline-offset-4">
+                              <a href={f.source_url} target="_blank" rel="noreferrer nofollow" className="link inline-flex min-h-[44px] items-center gap-1 text-[14px]">
                                 {tr("report.source")}
                                 <svg viewBox="0 0 16 16" className="h-3 w-3" aria-hidden="true">
                                   <path d="M6 3h7v7M13 3 6.5 9.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -321,12 +366,12 @@ export function ReportView({
                                   <form action="/api/letters" method="post">
                                     <input type="hidden" name="request_id" value={requestId} />
                                     <input type="hidden" name="finding_index" value={index} />
-                                    <button type="submit" className="text-[13px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+                                    <button type="submit" className="btn btn-secondary btn-sm">
                                       {tr("letters.generate")}
                                     </button>
                                   </form>
                                 ) : (
-                                  <Link href="/pro" className="text-[13px] font-medium text-muted underline underline-offset-4 hover:text-ink">
+                                  <Link href="/pro" className="btn btn-secondary btn-sm">
                                     {tr("letters.generate")} · {tr("pro.badge")}
                                   </Link>
                                 )
@@ -345,11 +390,12 @@ export function ReportView({
 
         <footer className="grid gap-3 px-1 pt-2">
           <p className="text-[12.5px] leading-relaxed text-faint">{tr("report.generated", { date })}</p>
-          <Link href="/#form" className="w-fit text-[14px] font-medium text-accent underline underline-offset-4">
+          <Link href="/#form" className="btn btn-secondary w-fit">
             {tr("report.again")}
           </Link>
         </footer>
       </div>
     </article>
+    </ReportExperience>
   );
 }

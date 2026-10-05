@@ -3,7 +3,7 @@ import { z } from "zod";
 import { absoluteUrl } from "@/lib/env";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getSession } from "@/lib/session";
-import { ensureUser, findUserByEmail } from "@/lib/users";
+import { findUserByEmail, inviteUser } from "@/lib/users";
 import { isPro } from "@/lib/plan";
 import { orgForOwner, orgMembers } from "@/lib/org";
 import { sendNoticeEmail } from "@/lib/email";
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
   }
   if (members.length >= org.seats - 1) return back("full");
   const locale: Locale = isLocale(owner.locale) ? owner.locale : "es";
-  const member = await ensureUser(email, locale);
+  const member = await inviteUser(email, locale); // sin marcarlo como "ya ha entrado"
   if (!member) return back("invalid");
   if ((isPro(member) && member.stripe_customer_id) || (member.org_id && member.org_id !== org.id) || member.family_owner_id) return back("exists");
   const { error } = await supabase.from("users").update({ plan: "pro", plan_until: owner.plan_until, plan_status: owner.plan_status, plan_kind: "member", org_id: org.id, org_role: "member" }).eq("id", member.id);
