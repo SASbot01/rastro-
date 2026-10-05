@@ -316,6 +316,18 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* Empresas */}
+        <section className="reveal pb-16 lg:pb-20">
+          <div className={CARD + " p-6 sm:p-8 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-8"}>
+            <div>
+              <p className={EYEBROW}>{tr("team.eyebrow")}</p>
+              <h2 className={"mt-2.5 " + H2}>{tr("team.title")}</h2>
+              <p className="lead mt-3 max-w-[60ch] !text-[15.5px]">{tr("team.subtitle")}</p>
+            </div>
+            <Link href="/equipos" className="btn btn-secondary mt-6 w-full shrink-0 lg:mt-0 lg:w-auto">{tr("team.cta")}<ArrowIcon /></Link>
+          </div>
+        </section>
+
         {/* FAQ */}
         <section className="reveal pb-16 lg:pb-20">
           <h2 className={H2}>{tr("landing.faqTitle")}</h2>

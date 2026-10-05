@@ -6,13 +6,15 @@ import { translator, type Messages } from "@/lib/i18n";
 
 /**
  * Barra inferior (movil) / barra superior (escritorio) con las 4 secciones:
- * Inicio · Informe · Herramientas · Perfil. El estado activo sale de la ruta.
+ * Inicio · Informe · Pro · Perfil. Un solo embudo: ver tu informe y pasar a Pro
+ * (o Equipos). Las herramientas de apoyo viven en Perfil y en el pie. El estado
+ * activo sale de la ruta.
  */
 const TABS = [
   { key: "home", href: "/", match: (p: string) => p === "/" },
   { key: "report", href: "/informe", match: (p: string) => p.startsWith("/informe") },
-  { key: "tools", href: "/herramientas", match: (p: string) => ["/herramientas", "/cartas", "/cuenta/buzon", "/guardian", "/simulador", "/imagenes", "/ayuda-urgente", "/ia"].some((route) => p.startsWith(route)) },
-  { key: "profile", href: "/cuenta", match: (p: string) => p === "/cuenta" || p.startsWith("/entrar") || p.startsWith("/pro") || p.startsWith("/lab") },
+  { key: "pro", href: "/pro", match: (p: string) => p.startsWith("/pro") || p.startsWith("/equipos") },
+  { key: "profile", href: "/cuenta", match: (p: string) => p === "/cuenta" || p.startsWith("/entrar") || p.startsWith("/herramientas") || p.startsWith("/cartas") || p.startsWith("/lab") },
 ] as const;
 
 function Icon({ name, active }: { name: (typeof TABS)[number]["key"]; active: boolean }) {
@@ -35,11 +37,11 @@ function Icon({ name, active }: { name: (typeof TABS)[number]["key"]; active: bo
           <path d="M12 7.5v4.5l3 2" {...common} />
         </svg>
       );
-    case "tools":
+    case "pro":
       return (
         <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" aria-hidden="true">
-          <path d="M4 7.5h16v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z" {...common} />
-          <path d="M4 8l8 5.5L20 8" {...common} />
+          <path d="M12 3l7 3v5c0 5-3.2 8.3-7 9.8C8.2 19.3 5 16 5 11V6l7-3z" {...common} />
+          <path d="M8.8 11.6l2.2 2.2 4.2-4.6" {...common} />
         </svg>
       );
     case "profile":

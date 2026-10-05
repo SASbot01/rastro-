@@ -41,7 +41,6 @@ const GROUPS: Array<{ key: "now" | "watch" | "guides"; items: Tool[] }> = [
     items: [
       { href: "/guardian", icon: "shield", title: "guardian.title", body: "sim.guardianHubBody", meta: "toolkit.hub.meta.guardian", tag: "toolkit.common.free" },
       { href: "/extension", icon: "puzzle", title: "ext.title", body: "ext.hubBody", meta: "toolkit.hub.meta.extension", tag: "toolkit.common.free" },
-      { href: "/simulador", icon: "bolt", title: "sim.title", body: "sim.hubBody", meta: "toolkit.hub.meta.simulador", tag: "toolkit.common.free" },
       { href: "/ayuda-urgente", icon: "alert", title: "experience.emergencyTitle", body: "experience.emergencyBody", meta: "toolkit.hub.meta.ayuda", tag: "experience.emergency", danger: true },
     ],
   },

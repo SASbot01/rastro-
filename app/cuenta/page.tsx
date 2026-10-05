@@ -8,7 +8,7 @@ import { findUserByEmail } from "@/lib/users";
 import { supabaseAdmin } from "@/lib/supabase";
 import { levelFor } from "@/lib/report/score";
 import { FAMILY_SEATS, isPro, prices } from "@/lib/plan";
-import { canUseLab } from "@/lib/lab";
+import { isAdminEmail } from "@/lib/domain-report";
 import { VigilCalendar } from "@/components/VigilCalendar";
 import { ProfileEditor } from "@/components/ProfileEditor";
 
@@ -205,8 +205,8 @@ export default async function AccountPage({ searchParams }: PageProps<"/cuenta">
             )}
           </section>
 
-          {/* Rastro Lab (herramienta profesional) */}
-          {canUseLab(user) && (
+          {/* Rastro Lab: herramienta interna del equipo, solo para administradores. */}
+          {isAdminEmail(user.email) && (
             <Link href="/lab" className={CARD + " flex items-center justify-between gap-3 hover:border-accent"}>
               <span className="min-w-0">
                 <span className="flex items-center gap-2"><h2 className="text-[15px] font-semibold text-ink">{tr("lab.hubTitle")}</h2><span className="badge tone-ok shrink-0">{tr("lab.hubTag")}</span></span>
