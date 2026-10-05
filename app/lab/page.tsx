@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { LabWorkspace } from "@/components/LabWorkspace";
+import { LabMcpGuide } from "@/components/LabMcpGuide";
 import { getMessages, isLocale, translator } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { getSession } from "@/lib/session";
@@ -35,6 +36,7 @@ export default async function LabPage() {
         <p className="lead mt-2 max-w-[62ch]">{tr("lab.subtitle")}</p>
         {canUseLab(user) ? (
           <div className="mt-6">
+            <LabMcpGuide messages={messages} />
             <LabContent userId={user.id} locale={isLocale(user.locale) ? user.locale : "es"} messages={messages} pageLocale={locale} />
           </div>
         ) : (

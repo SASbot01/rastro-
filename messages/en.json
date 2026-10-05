@@ -2280,6 +2280,63 @@
     "eyebrow": "Rastro Lab",
     "title": "Your notebook for labs and bug bounty",
     "subtitle": "One job per target: hypotheses by priority, steps, tools and findings ready for the report. Saved only in your account.",
+    "mcp": {
+      "title": "MCP guide: what Claude can do here",
+      "intro": "Connect the Rastro MCP and Claude works with you in the Lab —recon, CVEs, payloads and report— without leaving the chat. Always on authorized targets.",
+      "connectTitle": "How to connect it",
+      "connectBody": "Create your key in Profile → API and add the server with the command below (RASTRO_API_KEY variable). Restart Claude and you're set.",
+      "keyNote": "The key only touches your account. If it leaks, revoke it in Profile → API.",
+      "groupsTitle": "What Claude can do",
+      "examplesTitle": "Ask Claude like this",
+      "examples": [
+        "Create a job for HTB's Bedside box and set the target (authorized).",
+        "Take this nmap output and record the services: [paste the output].",
+        "Look up CVEs for Apache 2.4.68 and add them as candidates.",
+        "My tun0 is 10.10.14.95, port 443: give me a bash reverse shell.",
+        "Give me the enumeration guide for this job's SMB.",
+        "Export this job's report in Markdown.",
+        "Save this box's lesson for the next similar one."
+      ],
+      "groups": [
+        { "label": "Lab notebook", "tools": [
+          { "name": "lab_create_job", "desc": "Create a job (HTB box, bug bounty program)." },
+          { "name": "lab_list_jobs", "desc": "List your jobs and their status." },
+          { "name": "lab_get_job", "desc": "Open a full job." },
+          { "name": "lab_set_target", "desc": "Set host/IP, scope and whether it's authorized." },
+          { "name": "lab_add_finding", "desc": "Add a finding (where, severity, steps)." },
+          { "name": "lab_add_hypothesis", "desc": "Add an attack hypothesis." },
+          { "name": "lab_add_service", "desc": "Record a port/service from nmap." },
+          { "name": "lab_add_log", "desc": "Save scan or command output." },
+          { "name": "lab_set_step", "desc": "Mark or add plan steps." },
+          { "name": "lab_report_markdown", "desc": "Export the report in Markdown for the platform." }
+        ] },
+        { "label": "CVEs and exploits", "tools": [
+          { "name": "cve_lookup", "desc": "CVE details: NVD, CVSS, references and public PoC." },
+          { "name": "exploit_search", "desc": "Search public PoCs/exploits by software or keyword." },
+          { "name": "lab_add_cve", "desc": "Record a target CVE in the job." },
+          { "name": "lab_autoenrich", "desc": "For each versioned service, find and suggest CVEs." }
+        ] },
+        { "label": "Payloads and attack box", "tools": [
+          { "name": "lab_set_attacker", "desc": "Set your IP (tun0) and listener port." },
+          { "name": "lab_payloads", "desc": "Reverse shells, listener and TTY filled with your IP." },
+          { "name": "lab_playbook", "desc": "Per-service enumeration guide, host filled in." }
+        ] },
+        { "label": "Memory and metrics", "tools": [
+          { "name": "lesson_add", "desc": "Save a reusable team lesson." },
+          { "name": "lesson_search", "desc": "Search lessons before a similar box." },
+          { "name": "lab_stats", "desc": "Notebook metrics: jobs, findings, CVEs." }
+        ] },
+        { "label": "Defense", "tools": [
+          { "name": "domain_report", "desc": "Company domain exposure report." },
+          { "name": "guardian_check", "desc": "Is it a scam? Analyze a message (Pro)." },
+          { "name": "sites_catalog", "desc": "Sites that sell data and how to opt out." }
+        ] },
+        { "label": "Local recon (runner)", "tools": [
+          { "name": "recon_plan", "desc": "Show the target and what the runner can launch." },
+          { "name": "recon_run", "desc": "Run recon on your machine (allowlist, authorized only)." }
+        ] }
+      ]
+    },
     "hubTitle": "Rastro Lab",
     "hubBody": "Notebook for labs and bug bounty: hypotheses, steps, findings and a Markdown report.",
     "hubTag": "For professionals",

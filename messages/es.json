@@ -2280,6 +2280,63 @@
     "eyebrow": "Rastro Lab",
     "title": "Tu cuaderno de laboratorios y bug bounty",
     "subtitle": "Un trabajo por objetivo: hipótesis por prioridad, pasos, herramientas y hallazgos listos para el informe. Se guarda solo en tu cuenta.",
+    "mcp": {
+      "title": "Guía del MCP: qué puede hacer Claude aquí",
+      "intro": "Conecta el MCP de Rastro y Claude trabaja contigo en el Lab —recon, CVEs, payloads e informe— sin salir del chat. Siempre sobre objetivos autorizados.",
+      "connectTitle": "Cómo conectarlo",
+      "connectBody": "Crea tu clave en Perfil → API y añade el servidor con el comando de abajo (variable RASTRO_API_KEY). Reinicia Claude y listo.",
+      "keyNote": "La clave solo toca tu cuenta. Si se te filtra, revócala en Perfil → API.",
+      "groupsTitle": "Lo que Claude puede hacer",
+      "examplesTitle": "Pídeselo así a Claude",
+      "examples": [
+        "Crea un trabajo para la máquina Bedside de HTB y fija el objetivo (autorizado).",
+        "Toma esta salida de nmap y registra los servicios: [pega la salida].",
+        "Busca CVEs de Apache 2.4.68 y añádelos como candidatos.",
+        "Mi tun0 es 10.10.14.95, puerto 443: dame una reverse shell en bash.",
+        "Dame la guía de enumeración del SMB de este trabajo.",
+        "Saca el informe en Markdown de este trabajo.",
+        "Guarda la lección de esta máquina para la próxima parecida."
+      ],
+      "groups": [
+        { "label": "Cuaderno del Lab", "tools": [
+          { "name": "lab_create_job", "desc": "Crea un trabajo (máquina HTB, programa de bug bounty)." },
+          { "name": "lab_list_jobs", "desc": "Lista tus trabajos y su estado." },
+          { "name": "lab_get_job", "desc": "Abre un trabajo completo." },
+          { "name": "lab_set_target", "desc": "Fija host/IP, alcance y si está autorizado." },
+          { "name": "lab_add_finding", "desc": "Añade un hallazgo (dónde, gravedad, pasos)." },
+          { "name": "lab_add_hypothesis", "desc": "Añade una hipótesis de ataque." },
+          { "name": "lab_add_service", "desc": "Registra un puerto/servicio del nmap." },
+          { "name": "lab_add_log", "desc": "Guarda la salida de un escaneo o comando." },
+          { "name": "lab_set_step", "desc": "Marca o añade pasos del plan." },
+          { "name": "lab_report_markdown", "desc": "Saca el informe en Markdown para la plataforma." }
+        ] },
+        { "label": "CVE y exploits", "tools": [
+          { "name": "cve_lookup", "desc": "Ficha de un CVE: NVD, CVSS, referencias y PoC público." },
+          { "name": "exploit_search", "desc": "Busca PoC/exploits públicos por software o palabra." },
+          { "name": "lab_add_cve", "desc": "Registra un CVE del objetivo en el trabajo." },
+          { "name": "lab_autoenrich", "desc": "Por cada servicio con versión, busca y propone CVEs." }
+        ] },
+        { "label": "Payloads y máquina de ataque", "tools": [
+          { "name": "lab_set_attacker", "desc": "Fija tu IP (tun0) y el puerto de escucha." },
+          { "name": "lab_payloads", "desc": "Reverse shells, listener y TTY rellenados con tu IP." },
+          { "name": "lab_playbook", "desc": "Guía de enumeración por servicio, con el host puesto." }
+        ] },
+        { "label": "Memoria y métricas", "tools": [
+          { "name": "lesson_add", "desc": "Guarda una lección reutilizable del equipo." },
+          { "name": "lesson_search", "desc": "Busca lecciones antes de una máquina parecida." },
+          { "name": "lab_stats", "desc": "Métricas del cuaderno: trabajos, hallazgos, CVEs." }
+        ] },
+        { "label": "Defensa", "tools": [
+          { "name": "domain_report", "desc": "Informe de exposición de un dominio de empresa." },
+          { "name": "guardian_check", "desc": "¿Es una estafa? Analiza un mensaje (Pro)." },
+          { "name": "sites_catalog", "desc": "Sitios que venden datos y cómo darse de baja." }
+        ] },
+        { "label": "Recon local (runner)", "tools": [
+          { "name": "recon_plan", "desc": "Muestra el objetivo y qué puede lanzar el runner." },
+          { "name": "recon_run", "desc": "Lanza recon en tu máquina (lista blanca, solo autorizado)." }
+        ] }
+      ]
+    },
     "hubTitle": "Rastro Lab",
     "hubBody": "Cuaderno para laboratorios y bug bounty: hipótesis, pasos, hallazgos e informe en Markdown.",
     "hubTag": "Para profesionales",
