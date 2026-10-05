@@ -1,0 +1,151 @@
+<title>Rastro — Díptico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  /* Díptico Rastro. Pantalla: marca oscura. Impresión: papel blanco, tinta oscura, acento verde. Una cara por hoja A4. */
+  :root{
+    --bg:#0a0b0a; --surface:#141614; --surface2:#1b1e1b; --line:#272a27;
+    --ink:#f2f4f1; --muted:#a8b0a6; --faint:#767d74; --accent:#4dfc5f; --accent-ink:#0a0a0a;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased;padding:24px 16px;margin:0}
+  .wrap{display:flex;flex-direction:column;gap:28px;align-items:center}
+  .sheet{width:100%;max-width:800px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:40px;display:flex;flex-direction:column;gap:22px}
+  .brand{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:18px}
+  .brand .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;letter-spacing:-.02em}
+  .mark{width:30px;height:26px;flex:none}
+  .brand .side{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  h1{font-size:40px;line-height:1.04;letter-spacing:-.03em;font-weight:800;margin:6px 0 0;text-wrap:balance}
+  h1 .g{color:var(--accent)}
+  .lead{font-size:17px;color:var(--muted);max-width:60ch;margin:0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .card{background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:18px 18px 20px;min-width:0}
+  .card.accent{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  .card h3{margin:0;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .price{font-size:13px;font-weight:600;color:var(--accent)}
+  ul.feat{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+  ul.feat li{display:flex;gap:10px;font-size:14px;color:var(--muted);line-height:1.45}
+  ul.feat li::before{content:"";flex:none;width:7px;height:7px;margin-top:7px;border-radius:50%;background:var(--accent)}
+  .what{font-size:15px;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .what b{color:var(--accent);font-weight:700}
+  .trust{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;color:var(--muted);background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+  .cta{margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;background:color-mix(in srgb,var(--accent) 12%,var(--surface2));border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:16px;padding:16px 20px}
+  .cta .msg{font-size:16px;font-weight:700}
+  .cta .url{font-size:15px;font-weight:700;color:var(--accent);white-space:nowrap}
+  .foot{font-size:12px;color:var(--faint);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-wrap:wrap;gap:6px;justify-content:space-between}
+  .for{font-size:13.5px;color:var(--muted)}
+  .for b{color:var(--ink);font-weight:600}
+  @media (max-width:560px){ .sheet{padding:26px} h1{font-size:30px} .grid2{grid-template-columns:1fr} }
+  @page{ size:A4; margin:0 }
+  @media print{
+    :root{ --bg:#fff; --surface:#fff; --surface2:#f4f6f3; --line:#d9ddd6; --ink:#101410; --muted:#3f473e; --faint:#6a7166; --accent:#149b2a; color-scheme:light }
+    body{padding:0;background:#fff}
+    .wrap{gap:0}
+    .sheet{max-width:none;width:210mm;min-height:297mm;border:0;border-radius:0;padding:20mm;page-break-after:always;break-after:page;gap:16px;justify-content:flex-start}
+    .sheet:last-child{page-break-after:auto}
+    .cta{margin-top:24px}
+    a{color:inherit;text-decoration:none}
+  }
+</style>
+<div class="wrap">
+
+  <!-- CARA A — PERSONAS -->
+  <section class="sheet" aria-label="Para ti">
+    <div class="brand">
+      <span class="logo">
+        <svg class="mark" viewBox="0 0 40 34" fill="none" aria-hidden="true"><path d="M4 30 L14 4 h7 L11 30 Z" fill="#4dfc5f"/><path d="M22 4 h8 a6 6 0 0 1 0 12 h-5 l7 14 h-8 l-7-14 h5 a2 2 0 0 0 0-4 h-3 Z" fill="#4dfc5f"/></svg>
+        Rastro
+      </span>
+      <span class="side">Para ti</span>
+    </div>
+    <div>
+      <p class="eyebrow">¿Qué sabe la IA de ti?</p>
+      <h1>Mira lo que la IA <span class="g">sabe de ti</span></h1>
+    </div>
+    <p class="lead">Rastro te hace un informe gratis de tu exposición: filtraciones de tus contraseñas, perfiles públicos y lo que dicen ChatGPT y otras IA sobre ti. Con una nota de 0 a 100 y qué hacer con cada cosa, en lenguaje de persona normal.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>Gratis <span class="price">0 €</span></h3>
+        <ul class="feat">
+          <li>Tu informe de exposición y tu nota de 0 a 100.</li>
+          <li>Filtraciones, perfiles públicos, lo que dice la IA y datos falsos sobre ti.</li>
+          <li>Tres acciones concretas para empezar hoy.</li>
+        </ul>
+      </div>
+      <div class="card accent">
+        <h3>Rastro Pro <span class="price">19 €/mes · 99 €/año</span></h3>
+        <ul class="feat">
+          <li>Vigilancia mensual: te avisamos si aparece algo nuevo.</li>
+          <li>Cartas de supresión RGPD enviadas por Rastro, con copia para ti.</li>
+          <li>Calendario de plazos y reclamación a la AEPD si no contestan.</li>
+          <li>Pedimos la retirada por ti y comprobamos que el dato desaparece.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="for"><b>¿Para quién?</b> Cualquiera que quiera saber qué hay de él en internet y recuperar el control. No hace falta saber de tecnología.</p>
+    <div class="trust">
+      <span class="chip">Solo informes sobre ti mismo</span>
+      <span class="chip">Verificamos tu correo</span>
+      <span class="chip">Se borra a los 30 días</span>
+      <span class="chip">No prometemos borrar: ejercemos tu derecho y lo comprobamos</span>
+    </div>
+    <div class="cta">
+      <span class="msg">Haz tu informe gratis</span>
+      <span class="url">rastropro.com</span>
+    </div>
+    <div class="foot"><span>Rastro · Mira lo que la IA sabe de ti.</span><span>rastropro.com</span></div>
+  </section>
+
+  <!-- CARA B — EMPRESAS -->
+  <section class="sheet" aria-label="Para tu empresa">
+    <div class="brand">
+      <span class="logo">
+        <svg class="mark" viewBox="0 0 40 34" fill="none" aria-hidden="true"><path d="M4 30 L14 4 h7 L11 30 Z" fill="#4dfc5f"/><path d="M22 4 h8 a6 6 0 0 1 0 12 h-5 l7 14 h-8 l-7-14 h5 a2 2 0 0 0 0-4 h-3 Z" fill="#4dfc5f"/></svg>
+        Rastro Equipos
+      </span>
+      <span class="side">Para tu empresa</span>
+    </div>
+    <div>
+      <p class="eyebrow">Rastro Equipos</p>
+      <h1>Tu equipo, sin ser el <span class="g">eslabón débil</span></h1>
+    </div>
+    <p class="lead">El 88 % de los ciberataques empiezan por una persona, no por el servidor. Rastro Equipos protege a cada empleado y te da el riesgo humano de tu empresa en un panel — sin que tú veas sus datos.</p>
+    <div class="what">Lo que de verdad abre la puerta a una empresa no es un fallo del servidor: es una <b>contraseña reutilizada</b> que se ha filtrado. Rastro vigila eso y te avisa antes de que la usen.</div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Para cada empleado</h3>
+        <ul class="feat">
+          <li>Cuenta Pro completa: informe, vigilancia, cartas RGPD y guardián.</li>
+          <li>Formación real: ve cómo le engañarían con sus propios datos.</li>
+          <li>Privacidad por diseño: él decide si comparte su puntuación.</li>
+        </ul>
+      </div>
+      <div class="card accent">
+        <h3>Para ti, el responsable</h3>
+        <ul class="feat">
+          <li>Panel del riesgo humano: nota media y cuántos tienen contraseñas filtradas.</li>
+          <li>Vigilancia de filtraciones del dominio, correos y credenciales del CRM: si aparecen, aviso.</li>
+          <li>Centinela: tu CRM te avisa de logins fallidos, accesos desde país nuevo o exportaciones masivas.</li>
+          <li>Nunca vemos los datos ni los hallazgos de tu gente.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="for"><b>¿Para quién?</b> Gestorías, clínicas y dentistas, despachos de abogados, inmobiliarias, colegios — pymes de 10 a 50 personas sin informático. <b>Por qué ahora:</b> NIS2 y el seguro de ciberriesgo piden pruebas; Rastro da un informe mensual de exposición del equipo.</p>
+    <div class="trust">
+      <span class="chip">Desde 149 €/mes</span>
+      <span class="chip">Primer mes para probar</span>
+      <span class="chip">La empresa solo ve lo que el empleado comparte</span>
+    </div>
+    <div class="cta">
+      <span class="msg">Protege a tu equipo</span>
+      <span class="url">rastropro.com/equipos</span>
+    </div>
+    <div class="foot"><span>Rastro · Informes solo sobre uno mismo.</span><span>rastropro.com/equipos</span></div>
+  </section>
+
+</div>
