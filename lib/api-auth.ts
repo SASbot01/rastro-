@@ -64,7 +64,7 @@ export async function authenticate(request: Request, opts: { ai?: boolean } = {}
   if (!key || key.revoked_at) return apiError(401, "unauthorized", "Clave no valida o revocada.");
   const { data: user } = await supabase
     .from("users")
-    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, plan_kind, family_owner_id, org_id, org_role, org_share_at, display_name, avatar")
+    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, plan_kind, family_owner_id, org_id, org_role, org_share_at, display_name, avatar, quest_streak, quest_best, quest_last")
     .eq("id", key.user_id)
     .maybeSingle<UserRow>();
   if (!user) return apiError(401, "unauthorized", "Cuenta no encontrada.");

@@ -28,6 +28,9 @@ export interface UserRow {
   org_share_at: string | null;
   display_name: string | null;
   avatar: string | null;
+  quest_streak: number;
+  quest_best: number;
+  quest_last: string | null;
 }
 
 /** Crea la cuenta si no existe, actualiza last_seen_at y enlaza sus solicitudes antiguas. */
@@ -38,7 +41,7 @@ export async function ensureUser(email: string, locale: Locale): Promise<UserRow
   const { data: user, error } = await supabase
     .from("users")
     .upsert({ email: normalized, locale, last_seen_at: new Date().toISOString() }, { onConflict: "email" })
-    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, plan_kind, family_owner_id, org_id, org_role, org_share_at, display_name, avatar")
+    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, plan_kind, family_owner_id, org_id, org_role, org_share_at, display_name, avatar, quest_streak, quest_best, quest_last")
     .single<UserRow>();
   if (error || !user) {
     console.error("[users] upsert fallo:", error?.message);
@@ -75,7 +78,7 @@ export async function inviteUser(email: string, locale: Locale): Promise<UserRow
 export async function findUserByEmail(email: string): Promise<UserRow | null> {
   const { data } = await supabaseAdmin()
     .from("users")
-    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, plan_kind, family_owner_id, org_id, org_role, org_share_at, display_name, avatar")
+    .select("id, email, locale, plan, plan_until, created_at, monitoring, monitoring_consent_at, monitor_last_at, stripe_customer_id, plan_status, plan_kind, family_owner_id, org_id, org_role, org_share_at, display_name, avatar, quest_streak, quest_best, quest_last")
     .eq("email", normalizeEmail(email))
     .maybeSingle<UserRow>();
   return data ?? null;

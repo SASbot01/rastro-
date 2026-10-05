@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { AskBubble } from "@/components/AskBubble";
+import { DailyQuest } from "@/components/DailyQuest";
+import { madridDay, viewState } from "@/lib/daily-quest-core";
 import { GuideChecklist } from "@/components/GuideChecklist";
 import { RemovalCounter } from "@/components/RemovalCounter";
 import { removalStats, type RemovalStats } from "@/lib/removals";
@@ -143,6 +145,23 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
   const dateFmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
   const chips = messages.dash.askChips as string[];
 
+  // Reto diario de privacidad + racha (retención).
+  const bank = ((messages.dash as unknown as { questBank?: Array<{ icon: string; title: string; body: string }> }).questBank) ?? [];
+  const today = madridDay(new Date());
+  const qv = viewState(user.quest_streak ?? 0, user.quest_best ?? 0, user.quest_last, today, bank.length);
+  const quest = bank[qv.index] ?? null;
+  const questLabels = {
+    eyebrow: tr("dash.quest.eyebrow"),
+    today: tr("dash.quest.today"),
+    doneBtn: tr("dash.quest.doneBtn"),
+    doneToday: tr("dash.quest.doneToday"),
+    comeback: tr("dash.quest.comeback"),
+    start: tr("dash.quest.start"),
+    days: tr("dash.quest.days", { n: "{n}" }),
+    dayOne: tr("dash.quest.dayOne"),
+    best: tr("dash.quest.best", { n: "{n}" }),
+  };
+
   const quick = [
     { href: "/#form", label: tr("dash.quick.report"), icon: "M12 5v14M5 12h14" },
     { href: "/cuenta/buzon", label: tr("dash.quick.scan"), icon: "M4 6h16v12H4zM4 7l8 6 8-6" },
@@ -153,6 +172,12 @@ export async function Dashboard({ locale, messages, user }: { locale: Locale; me
     <main className="page py-8 sm:py-10">
       <h1 className="h1 text-ink">{tr("dash.hello", { name })}</h1>
       <p className="lead mt-2 !text-[15.5px]">{tr("experience.dashboardBody")}</p>
+
+      {quest && (
+        <div className="mt-5">
+          <DailyQuest quest={quest} initialStreak={qv.streak} initialBest={qv.best} initialDone={qv.doneToday} labels={questLabels} />
+        </div>
+      )}
 
       {!latest ? (
         <section className={CARD + " mt-5 p-6"}>
