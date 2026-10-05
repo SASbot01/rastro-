@@ -13,6 +13,7 @@ import { translator, type Messages } from "@/lib/i18n";
 const TABS = [
   { key: "home", href: "/", match: (p: string) => p === "/" },
   { key: "report", href: "/informe", match: (p: string) => p.startsWith("/informe") },
+  { key: "community", href: "/comunidad", match: (p: string) => p.startsWith("/comunidad") },
   { key: "pro", href: "/pro", match: (p: string) => p.startsWith("/pro") || p.startsWith("/equipos") },
   { key: "profile", href: "/cuenta", match: (p: string) => p === "/cuenta" || p.startsWith("/entrar") || p.startsWith("/herramientas") || p.startsWith("/cartas") || p.startsWith("/lab") },
 ] as const;
@@ -35,6 +36,13 @@ function Icon({ name, active }: { name: (typeof TABS)[number]["key"]; active: bo
         <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" aria-hidden="true">
           <circle cx="12" cy="12" r="8.5" {...common} />
           <path d="M12 7.5v4.5l3 2" {...common} />
+        </svg>
+      );
+    case "community":
+      return (
+        <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" aria-hidden="true">
+          <path d="M4 5h16v11H9l-4 3.5V16H4z" {...common} />
+          <path d="M8.5 10.5h7M8.5 7.5h7" {...common} />
         </svg>
       );
     case "pro":
@@ -63,7 +71,7 @@ export function BottomNav({ messages }: { messages: Messages }) {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper/85 backdrop-blur-xl sm:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <ul className="mx-auto grid max-w-[520px] grid-cols-4 px-1.5">
+      <ul className="mx-auto grid max-w-[560px] grid-cols-5 px-1">
         {TABS.map((t) => {
           const active = t.match(pathname);
           return (

@@ -16,6 +16,7 @@ export const EVENTS = [
   "ai_change_detected", "site_check_listed", "extension_page_viewed", "extension_download", "nurture_sent", "lab_started",
   "domain_report_requested", "domain_report_generated", "domain_report_viewed",
   "quest_done",
+  "forum_thread_created", "forum_reply_created", "team_request",
 ] as const;
 export type EventName = (typeof EVENTS)[number];
 

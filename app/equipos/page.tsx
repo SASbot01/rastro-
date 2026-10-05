@@ -17,17 +17,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** v5 — Landing publica de Rastro Equipos (B2B). */
-function Card({ name, p, per, cta, contact, href }: { name: string; p: string; per: string; cta: string; contact: string; href: string | null }) {
+function Card({ name, p, per, cta }: { name: string; p: string; per: string; cta: string; contact: string; href: string | null }) {
+  // Las empresas entran por solicitud de acceso (login especial), no por auto-checkout.
   return (
     <div className="flex flex-col card p-6">
       <h2 className="text-[15px] font-semibold text-ink">{name}</h2>
       <p className="mt-4 text-[40px] leading-none font-semibold tracking-[-0.03em] text-ink">{p}</p>
       <p className="mt-1 text-[13px] text-faint">{per}</p>
-      {href ? (
-        <a href={href} className="mt-6 btn btn-primary">{cta}</a>
-      ) : (
-        <Link href="/soporte?p=/equipos" className="mt-6 btn btn-secondary">{contact}</Link>
-      )}
+      <Link href="/empresas/acceso" className="mt-6 btn btn-primary">{cta}</Link>
     </div>
   );
 }

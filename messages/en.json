@@ -203,6 +203,7 @@
     "tabs": {
       "home": "Home",
       "report": "Report",
+      "community": "Community",
       "pro": "Pro",
       "tools": "Tools",
       "profile": "Profile"
@@ -1080,6 +1081,68 @@
     "colFree": "Free",
     "colPro": "Pro",
     "personalFoundOne": "You appear on one site that publishes or sells your data. With Pro we request removal today."
+  },
+  "forum": {
+    "eyebrow": "Community",
+    "title": "Rastro Community",
+    "lead": "A calm place to talk about privacy and cybersecurity, ask questions and share what you learn. With respect and no jargon.",
+    "all": "All",
+    "new": "Start a new topic",
+    "titlePlaceholder": "Title: what do you want to talk about?",
+    "bodyPlaceholder": "Say it in your own words. Don't paste personal data, yours or anyone else's.",
+    "publish": "Publish",
+    "rules": "Rules: always respectful, no personal data (yours or others') and no spam. Anything that breaks this is removed.",
+    "loginPrompt": "Sign in with your account to post and reply.",
+    "empty": "No topics here yet. Be the first to start one.",
+    "official": "Rastro",
+    "by": "by {name}",
+    "repliesShort": "repl.",
+    "replies": "{n} replies",
+    "replyOne": "1 reply",
+    "noReplies": "No replies yet",
+    "reply": "Reply",
+    "replyPlaceholder": "Write your reply…",
+    "report": "Report",
+    "reportReason": "What's wrong? (optional)",
+    "reportSend": "Send report",
+    "moderateHide": "Hide",
+    "tags": {
+      "general": "General",
+      "estafas": "Scams",
+      "contrasenas": "Passwords",
+      "privacidad": "Privacy",
+      "ayuda": "Help",
+      "noticias": "News"
+    },
+    "errors": {
+      "title_short": "The title is too short.",
+      "title_long": "The title is too long.",
+      "body_empty": "Write something before posting.",
+      "rate": "You've posted a lot today. Try again tomorrow.",
+      "server": "Couldn't post. Try again.",
+      "reported": "Thanks, we'll review it.",
+      "posted": "Posted."
+    }
+  },
+  "teamAccess": {
+    "title": "Business access",
+    "lead": "Rastro Teams is activated with a special access: it isn't self-serve. Leave us your details and we'll contact you to set it up.",
+    "name": "Your name",
+    "company": "Company name",
+    "role": "Your role",
+    "phone": "Contact phone",
+    "email": "Work email",
+    "seats": "Number of people",
+    "message": "Tell us what you need (optional)",
+    "submit": "Send request",
+    "privacy": "We only use these details to contact you about Rastro Teams.",
+    "thanksTitle": "Request received",
+    "thanksBody": "Thanks. We've received your request and will write to the email you left to activate access for your company.",
+    "userLogin": "Are you a regular user? Sign in here",
+    "errors": {
+      "invalid": "Check the name, company and email.",
+      "rate": "Too many attempts. Try again later."
+    }
   },
   "mailbox": {
     "title": "Inbox scanner",

@@ -203,6 +203,7 @@
     "tabs": {
       "home": "Inicio",
       "report": "Informe",
+      "community": "Comunidad",
       "pro": "Pro",
       "tools": "Herramientas",
       "profile": "Perfil"
@@ -1080,6 +1081,68 @@
     "colFree": "Gratis",
     "colPro": "Pro",
     "personalFoundOne": "Apareces en un sitio que publica o vende tus datos. Con Pro pedimos la retirada hoy mismo."
+  },
+  "forum": {
+    "eyebrow": "Comunidad",
+    "title": "Comunidad Rastro",
+    "lead": "Un sitio tranquilo para hablar de privacidad y ciberseguridad, resolver dudas y compartir lo que aprendes. Con respeto y sin tecnicismos.",
+    "all": "Todos",
+    "new": "Escribir un tema nuevo",
+    "titlePlaceholder": "Título: ¿de qué quieres hablar?",
+    "bodyPlaceholder": "Cuéntalo con tus palabras. No pegues datos personales, ni tuyos ni de otras personas.",
+    "publish": "Publicar",
+    "rules": "Normas: respeto siempre, nada de datos personales (tuyos o de otros) ni spam. Lo que incumpla se retira.",
+    "loginPrompt": "Entra con tu cuenta para escribir y responder.",
+    "empty": "Aún no hay temas aquí. Sé el primero en abrir uno.",
+    "official": "Rastro",
+    "by": "por {name}",
+    "repliesShort": "resp.",
+    "replies": "{n} respuestas",
+    "replyOne": "1 respuesta",
+    "noReplies": "Sin respuestas todavía",
+    "reply": "Responder",
+    "replyPlaceholder": "Escribe tu respuesta…",
+    "report": "Reportar",
+    "reportReason": "¿Qué pasa? (opcional)",
+    "reportSend": "Enviar reporte",
+    "moderateHide": "Ocultar",
+    "tags": {
+      "general": "General",
+      "estafas": "Estafas",
+      "contrasenas": "Contraseñas",
+      "privacidad": "Privacidad",
+      "ayuda": "Ayuda",
+      "noticias": "Noticias"
+    },
+    "errors": {
+      "title_short": "El título es muy corto.",
+      "title_long": "El título es muy largo.",
+      "body_empty": "Escribe algo antes de publicar.",
+      "rate": "Has publicado mucho por hoy. Inténtalo mañana.",
+      "server": "No se pudo publicar. Prueba otra vez.",
+      "reported": "Gracias, lo revisaremos.",
+      "posted": "Publicado."
+    }
+  },
+  "teamAccess": {
+    "title": "Acceso para empresas",
+    "lead": "Rastro Equipos se activa con un acceso especial: no se da de alta solo. Déjanos tus datos y te contactamos para activarlo.",
+    "name": "Tu nombre",
+    "company": "Nombre de la empresa",
+    "role": "Tu cargo",
+    "phone": "Teléfono de contacto",
+    "email": "Correo de empresa",
+    "seats": "Nº de personas",
+    "message": "Cuéntanos qué necesitáis (opcional)",
+    "submit": "Enviar solicitud",
+    "privacy": "Solo usamos estos datos para contactarte sobre Rastro Equipos.",
+    "thanksTitle": "Solicitud recibida",
+    "thanksBody": "Gracias. Hemos recibido tu solicitud y te escribiremos al correo que nos has dejado para activar el acceso de tu empresa.",
+    "userLogin": "¿Eres un usuario normal? Entra aquí",
+    "errors": {
+      "invalid": "Revisa el nombre, la empresa y el correo.",
+      "rate": "Demasiados intentos. Prueba más tarde."
+    }
   },
   "mailbox": {
     "title": "Escáner de buzón",
