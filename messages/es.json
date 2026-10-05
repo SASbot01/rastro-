@@ -1059,6 +1059,22 @@
       {
         "q": "¿Qué datos usáis para las cartas?",
         "a": "Tu nombre, tu correo y la URL exacta donde apareces. Nada más. Las cartas salen de nuestro correo y tú recibes copia de todo."
+      },
+      {
+        "q": "¿Tengo derecho a que me borren? (RGPD)",
+        "a": "Sí. El RGPD te da el derecho de supresión (artículo 17): puedes pedir a cualquier web que borre tus datos personales. Rastro redacta y envía esa petición por ti, con la base legal citada, y guarda la fecha como prueba."
+      },
+      {
+        "q": "¿Y si el sitio no contesta o se niega?",
+        "a": "Tienen un mes para responder. Si no lo hacen, o se niegan sin motivo, Rastro te prepara la reclamación ante la AEPD (la Agencia Española de Protección de Datos) con toda la cronología y las pruebas listas para presentar."
+      },
+      {
+        "q": "¿Podéis hacer esto en mi nombre?",
+        "a": "Sí, porque tú nos autorizas. El RGPD permite ejercer tus derechos a través de un tercero con tu consentimiento. Solo actuamos sobre ti: Rastro nunca pide datos de otras personas."
+      },
+      {
+        "q": "¿Cuánto tiempo guardáis mis datos?",
+        "a": "Con cuenta, mientras la tengas. Sin cuenta, el informe se borra solo a los 30 días. Puedes pedir el borrado total cuando quieras; el responsable del tratamiento y el contacto están en el aviso legal."
       }
     ],
     "colFree": "Gratis",
@@ -1683,6 +1699,22 @@
       "body2": "Si usa esa contraseña para el correo, el CRM o cualquier herramienta de la empresa, conviene cambiarla hoy y activar la verificación en dos pasos. Ya le hemos avisado a esa persona.",
       "cta": "Ver el panel del equipo",
       "footer": "Recibes esto porque {member} comparte su puntuación con tu empresa en Rastro. Nunca vemos sus datos ni sus hallazgos, solo si hay credenciales en riesgo."
+    },
+    "sentinelAlert": {
+      "subject": "Centinela: evento crítico en tu empresa",
+      "greeting": "Hola:",
+      "body1": "El Centinela ha detectado un evento crítico en una de tus apps: {kind} ({detail}).",
+      "body2": "Revisa quién y desde dónde. Si no lo reconoces, cambia las credenciales afectadas y activa la verificación en dos pasos. Te avisamos como mucho una vez por hora para cada tipo de evento.",
+      "cta": "Ver el Centinela",
+      "footer": "Recibes esto porque tu app envía eventos de seguridad a Rastro con tu clave de Equipos. Puedes revocarla cuando quieras en tu cuenta."
+    },
+    "sentinel": {
+      "title": "Centinela",
+      "body": "Conecta tu CRM u otra app para que avise aquí de logins fallidos, accesos desde países nuevos o exportaciones masivas.",
+      "empty": "Aún no has conectado ninguna app. Crea una clave en tu cuenta y envía eventos a /api/v1/sentinel.",
+      "connect": "Cómo conectar",
+      "recent": "Últimos eventos",
+      "none": "Sin eventos por ahora."
     },
     "nameLabel": "Nombre de la empresa",
     "rename": "Guardar",

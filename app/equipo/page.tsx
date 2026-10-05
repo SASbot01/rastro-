@@ -8,6 +8,10 @@ import { findUserByEmail } from "@/lib/users";
 import { levelFor } from "@/lib/report/score";
 import { memberSnapshots, orgForOwner, orgMembers } from "@/lib/org";
 import { sharedMonitoring } from "@/lib/team-privacy";
+import { supabaseAdmin } from "@/lib/supabase";
+
+interface SentinelRow { id: string; kind: string; severity: "info" | "warn" | "critical"; actor: string | null; country: string | null; created_at: string }
+const SEV_TEXT = { info: "text-muted", warn: "text-warn", critical: "text-danger" } as const;
 
 export const dynamic = "force-dynamic";
 const CARD = "card p-5 sm:p-6";
@@ -33,6 +37,9 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
   const shared = members.filter((m) => m.org_share_at && snaps.has(m.id));
   const avg = shared.length ? Math.round(shared.reduce((a, m) => a + (snaps.get(m.id)?.score ?? 0), 0) / shared.length) : null;
   const withPw = shared.filter((m) => (snaps.get(m.id)?.passwords ?? 0) > 0).length;
+  const { data: sentinel } = org
+    ? await supabaseAdmin().from("sentinel_events").select("id, kind, severity, actor, country, created_at").eq("org_id", org.id).order("created_at", { ascending: false }).limit(8).returns<SentinelRow[]>()
+    : { data: null };
 
   return (
     <>
@@ -100,6 +107,30 @@ export default async function TeamPage({ searchParams }: PageProps<"/equipo">) {
                   <input name="email" type="email" required placeholder={tr("team.emailPlaceholder")} className={FIELD} />
                   <button type="submit" className="shrink-0 btn btn-primary btn-sm">{tr("team.invite")}</button>
                 </form>
+              )}
+            </section>
+
+            {/* Centinela: eventos de seguridad que envían las apps del cliente */}
+            <section className={CARD + " mt-4"}>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-[16px] font-semibold text-ink">{tr("team.sentinel.title")}</h2>
+                <Link href="/api-docs" className="link text-[14px]">{tr("team.sentinel.connect")}</Link>
+              </div>
+              <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted">{tr("team.sentinel.body")}</p>
+              {!sentinel || sentinel.length === 0 ? (
+                <p className="mt-3 rounded-[12px] bg-surface-2 px-3.5 py-3 text-[13px] leading-relaxed text-faint">{tr("team.sentinel.empty")}</p>
+              ) : (
+                <ul className="mt-3 grid gap-1.5">
+                  {sentinel.map((ev) => (
+                    <li key={ev.id} className="flex items-center justify-between gap-3 rounded-[12px] bg-surface-2 px-3.5 py-2.5 text-[13.5px]">
+                      <span className="min-w-0">
+                        <span className={"font-semibold " + SEV_TEXT[ev.severity]}>{ev.kind}</span>
+                        {(ev.actor || ev.country) && <span className="text-faint"> · {[ev.actor, ev.country].filter(Boolean).join(" · ")}</span>}
+                      </span>
+                      <span className="shrink-0 text-[12px] text-faint">{fmt.format(new Date(ev.created_at))}</span>
+                    </li>
+                  ))}
+                </ul>
               )}
             </section>
           </>

@@ -1059,6 +1059,22 @@
       {
         "q": "What data do you use for the letters?",
         "a": "Your name, your email and the exact URL where you appear. Nothing else. Letters go out from our email and you get a copy of everything."
+      },
+      {
+        "q": "Do I have the right to be erased? (GDPR)",
+        "a": "Yes. The GDPR gives you the right to erasure (Article 17): you can ask any site to delete your personal data. Rastro drafts and sends that request for you, citing the legal basis, and keeps the date as proof."
+      },
+      {
+        "q": "What if the site ignores me or refuses?",
+        "a": "They have one month to answer. If they don't, or refuse without cause, Rastro prepares your complaint to the AEPD (Spain's Data Protection Agency) with the full timeline and evidence ready to file."
+      },
+      {
+        "q": "Can you do this on my behalf?",
+        "a": "Yes, because you authorize us. The GDPR lets you exercise your rights through a third party with your consent. We only act on you: Rastro never requests other people's data."
+      },
+      {
+        "q": "How long do you keep my data?",
+        "a": "With an account, for as long as you keep it. Without one, the report auto-deletes after 30 days. You can request full deletion any time; the data controller and contact are in the legal notice."
       }
     ],
     "colFree": "Free",
@@ -1683,6 +1699,22 @@
       "body2": "If they use that password for email, the CRM or any company tool, it should be changed today and two-step verification turned on. We've already alerted that person.",
       "cta": "Open the team dashboard",
       "footer": "You're getting this because {member} shares their score with your company on Rastro. We never see their data or findings, only whether credentials are at risk."
+    },
+    "sentinelAlert": {
+      "subject": "Sentinel: critical event in your company",
+      "greeting": "Hi:",
+      "body1": "Sentinel detected a critical event in one of your apps: {kind} ({detail}).",
+      "body2": "Check who and from where. If you don't recognize it, change the affected credentials and turn on two-step verification. We alert you at most once per hour per event type.",
+      "cta": "Open Sentinel",
+      "footer": "You're getting this because your app sends security events to Rastro with your Teams key. You can revoke it any time in your account."
+    },
+    "sentinel": {
+      "title": "Sentinel",
+      "body": "Connect your CRM or another app so it reports failed logins, logins from new countries or bulk exports here.",
+      "empty": "You haven't connected any app yet. Create a key in your account and send events to /api/v1/sentinel.",
+      "connect": "How to connect",
+      "recent": "Latest events",
+      "none": "No events yet."
     },
     "nameLabel": "Company name",
     "rename": "Save",
