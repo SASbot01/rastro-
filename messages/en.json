@@ -1628,6 +1628,7 @@
     "features": [
       "Each person gets a full Pro account: report, daily and monthly monitoring, GDPR letters sent by Rastro, Gmail scanner, simulator and guardian.",
       "Company dashboard: who has a report, average score, how many have leaked passwords, who enabled monitoring.",
+      "Company leak monitoring: we check your domain and team emails against breach databases; if leaked credentials show up —the ones that open your email, CRM or tools— we alert the owner so they get changed.",
       "Privacy by design: the employee decides whether to share their score; the company never sees findings or data.",
       "Email invitations, add and remove in one click, CSV export.",
       "Real training: each employee sees how they'd be scammed with their own data."

@@ -1628,6 +1628,7 @@
     "features": [
       "Cada persona tiene su cuenta Pro completa: informe, vigilancia diaria y mensual, cartas RGPD enviadas por Rastro, escáner de Gmail, simulador y guardián.",
       "Panel de empresa: quién tiene el informe hecho, puntuación media, cuántos tienen contraseñas filtradas, quién activó la vigilancia.",
+      "Vigilancia de filtraciones de la empresa: revisamos el dominio y los correos del equipo contra las bases de brechas; si aparecen credenciales filtradas —las que abren vuestro correo, CRM o herramientas— avisamos al responsable para que se cambien.",
       "Privacidad por diseño: el empleado decide si comparte su puntuación; la empresa nunca ve hallazgos ni datos.",
       "Invitaciones por correo, altas y bajas en un clic, exportación a CSV.",
       "Formación real: cada empleado ve cómo le engañarían a él con sus propios datos."
